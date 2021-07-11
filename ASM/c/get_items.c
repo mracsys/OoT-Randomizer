@@ -185,17 +185,6 @@ void push_delayed_item(uint8_t flag) {
     search_key.flag = flag;
     override_t override = lookup_override_by_key(search_key);
     if (override.key.all != 0) {
-        push_pending_item(override);
-    }
-}
-
-void push_delayed_lacs_item(uint8_t flag) {
-    override_key_t search_key = { .all = 0 };
-    search_key.scene = 0xFF;
-    search_key.type = OVR_DELAYED;
-    search_key.flag = flag;
-    override_t override = lookup_override_by_key(search_key);
-    if (override.key.all != 0) {
         /*
             Give Ganon's Castle Boss Key immediately to inventory and save.
             Prevents the player from softlocking by savewarping away from Temple of Time

@@ -368,7 +368,7 @@
 ;   b       0x80056F84
 ;   sw      t9, 0x0008 (s0)
 .orga 0xACCE88 ; In memory: 0x80056F28
-    jal     push_delayed_lacs_item
+    jal     push_delayed_item
     li      a0, DELAYED_LIGHT_ARROWS
     nop
     nop
