@@ -190,7 +190,7 @@ void push_delayed_item(uint8_t flag) {
             Prevents the player from softlocking by savewarping away from Temple of Time
             before the get item animation delivers the item.
         */
-        if (override.value.item_id == 0x9A && override.value.player != PLAYER_ID) {
+        if (override.value.item_id == 0x9A && override.value.player == PLAYER_ID) {
             z64_file_t *save = &z64_file;
             // Give GC boss key
             give_dungeon_item(save, 0x01, 10);
