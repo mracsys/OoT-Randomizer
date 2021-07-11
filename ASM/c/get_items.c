@@ -189,6 +189,33 @@ void push_delayed_item(uint8_t flag) {
     }
 }
 
+void push_delayed_lacs_item(uint8_t flag) {
+    override_key_t search_key = { .all = 0 };
+    search_key.scene = 0xFF;
+    search_key.type = OVR_DELAYED;
+    search_key.flag = flag;
+    override_t override = lookup_override_by_key(search_key);
+    if (override.key.all != 0) {
+        /*
+            Give Ganon's Castle Boss Key immediately to inventory and save.
+            Prevents the player from softlocking by savewarping away from Temple of Time
+            before the get item animation delivers the item.
+        */
+        if (override.value.item_id == 0x9A && override.value.player != PLAYER_ID) {
+            z64_file_t *save = &z64_file;
+            // Give GC boss key
+            give_dungeon_item(save, 0x01, 10);
+
+            // Save Game
+            save->entrance_index = z64_game.entrance_index;
+            save->scene_index = z64_game.scene_index;
+            commit_scene_flags(&z64_game);
+            save_game(&z64_game + 0x1F74);
+        }
+        push_pending_item(override);
+    }
+}
+
 void pop_pending_item() {
     pending_item_queue[0] = pending_item_queue[1];
     pending_item_queue[1] = pending_item_queue[2];
