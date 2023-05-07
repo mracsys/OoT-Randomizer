@@ -1,5 +1,5 @@
 from Region import TimeOfDay
-
+from EntranceShuffle import EntranceShuffleError
 
 class Entrance(object):
 
@@ -16,6 +16,7 @@ class Entrance(object):
         self.type = None
         self.shuffled = False
         self.decoupled = False
+        self.connector = False
         self.data = None
         self.primary = False
         self.always = False
@@ -37,6 +38,7 @@ class Entrance(object):
         new_entrance.primary = self.primary
         new_entrance.always = self.always
         new_entrance.never = self.never
+        new_entrance.connector = self.connector
 
         return new_entrance
 
@@ -79,6 +81,7 @@ class Entrance(object):
         target_entrance = Entrance('Root -> ' + self.connected_region.name, root)
         target_entrance.connect(self.connected_region)
         target_entrance.replaces = self
+        target_entrance.connector = self.connector
         root.exits.append(target_entrance)
         return target_entrance
 

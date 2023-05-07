@@ -2,7 +2,7 @@ import random
 import logging
 from itertools import chain
 from Fill import ShuffleError
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 from Search import Search
 from Region import TimeOfDay
 from Rules import set_entrances_based_rules
@@ -19,6 +19,8 @@ def set_all_entrances_data(world):
         forward_entrance.primary = True
         if type == 'Grotto':
             forward_entrance.data['index'] = 0x1000 + forward_entrance.data['grotto_id']
+        if 'connector' in forward_entrance.data.keys():
+            forward_entrance.connector = forward_entrance.data['connector']
         if world.settings.decouple_entrances and type not in ('ChildBoss', 'AdultBoss'):
             forward_entrance.decoupled = True
         if return_entry:
@@ -29,6 +31,8 @@ def set_all_entrances_data(world):
             forward_entrance.bind_two_way(return_entrance)
             if type == 'Grotto':
                 return_entrance.data['index'] = 0x2000 + return_entrance.data['grotto_id']
+            if 'connector' in return_entrance.data.keys():
+                return_entrance.connector = return_entrance.data['connector']
             if world.settings.decouple_entrances and type not in ('ChildBoss', 'AdultBoss'):
                 return_entrance.decoupled = True
 
@@ -94,7 +98,7 @@ entrance_shuffle_table = [
                         ('Fire Temple Lower -> DMC Fire Temple Entrance',                   { 'index': 0x024A, 'blue_warp': 0x0564, 'blue_warp_addresses': [0xACA516, 0xCA3DF2, 0xCA3DE6] })),
     ('Dungeon',         ('Lake Hylia -> Water Temple Lobby',                                { 'index': 0x0010 }),
                         ('Water Temple Lobby -> Lake Hylia',                                { 'index': 0x021D, 'blue_warp': 0x060C, 'blue_warp_addresses': [0xAC995A, 0xCA3E82, 0xCA3E76] })),
-    ('Dungeon',         ('Desert Colossus -> Spirit Temple Lobby',                          { 'index': 0x0082 }),
+    ('Dungeon',         ('Desert Colossus -> Spirit Temple Lobby',                          { 'index': 0x0082, 'connector': True }),
                         ('Spirit Temple Lobby -> Desert Colossus From Spirit Lobby',        { 'index': 0x01E1, 'blue_warp': 0x0610, 'blue_warp_addresses': [0xACA402, 0xCA3F12, 0xCA3F06] })),
     ('Dungeon',         ('Graveyard Warp Pad Region -> Shadow Temple Entryway',             { 'index': 0x0037 }),
                         ('Shadow Temple Entryway -> Graveyard Warp Pad Region',             { 'index': 0x0205, 'blue_warp': 0x0580, 'blue_warp_addresses': [0xACA496, 0xCA3FA2, 0xCA3F96] })),
@@ -182,11 +186,11 @@ entrance_shuffle_table = [
                         ('KF Links House -> Kokiri Forest',                                 { 'index': 0x0211 })),
     ('SpecialInterior', ('ToT Entrance -> Temple of Time',                                  { 'index': 0x0053 }),
                         ('Temple of Time -> ToT Entrance',                                  { 'index': 0x0472 })),
-    ('SpecialInterior', ('Kakariko Village -> Kak Windmill',                                { 'index': 0x0453 }),
+    ('SpecialInterior', ('Kakariko Village -> Kak Windmill',                                { 'index': 0x0453, 'connector': True }),
                         ('Kak Windmill -> Kakariko Village',                                { 'index': 0x0351 })),
-    ('SpecialInterior', ('Kakariko Village -> Kak Potion Shop Front',                       { 'index': 0x0384 }),
+    ('SpecialInterior', ('Kakariko Village -> Kak Potion Shop Front',                       { 'index': 0x0384, 'connector': True }),
                         ('Kak Potion Shop Front -> Kakariko Village',                       { 'index': 0x044B })),
-    ('SpecialInterior', ('Kak Backyard -> Kak Potion Shop Back',                            { 'index': 0x03EC }),
+    ('SpecialInterior', ('Kak Backyard -> Kak Potion Shop Back',                            { 'index': 0x03EC, 'connector': True }),
                         ('Kak Potion Shop Back -> Kak Backyard',                            { 'index': 0x04FF })),
 
     ('Grotto',          ('Desert Colossus -> Colossus Grotto',                              { 'grotto_id': 0x00, 'entrance': 0x05BC, 'content': 0xFD, 'scene': 0x5C }),
@@ -265,60 +269,60 @@ entrance_shuffle_table = [
     ('Grave',           ('Graveyard -> Graveyard Dampes Grave',                             { 'index': 0x044F }),
                         ('Graveyard Dampes Grave -> Graveyard',                             { 'index': 0x0359 })),
 
-    ('Overworld',       ('Kokiri Forest -> LW Bridge From Forest',                          { 'index': 0x05E0 }),
-                        ('LW Bridge -> Kokiri Forest',                                      { 'index': 0x020D })),
-    ('Overworld',       ('Kokiri Forest -> Lost Woods',                                     { 'index': 0x011E }),
-                        ('LW Forest Exit -> Kokiri Forest',                                 { 'index': 0x0286 })),
-    ('Overworld',       ('Lost Woods -> GC Woods Warp',                                     { 'index': 0x04E2 }),
-                        ('GC Woods Warp -> Lost Woods',                                     { 'index': 0x04D6 })),
-    ('Overworld',       ('Lost Woods -> Zora River',                                        { 'index': 0x01DD }),
-                        ('Zora River -> Lost Woods',                                        { 'index': 0x04DA })),
-    ('Overworld',       ('LW Beyond Mido -> SFM Entryway',                                  { 'index': 0x00FC }),
-                        ('SFM Entryway -> LW Beyond Mido',                                  { 'index': 0x01A9 })),
-    ('Overworld',       ('LW Bridge -> Hyrule Field',                                       { 'index': 0x0185 }),
-                        ('Hyrule Field -> LW Bridge',                                       { 'index': 0x04DE })),
-    ('Overworld',       ('Hyrule Field -> Lake Hylia',                                      { 'index': 0x0102 }),
-                        ('Lake Hylia -> Hyrule Field',                                      { 'index': 0x0189 })),
-    ('Overworld',       ('Hyrule Field -> Gerudo Valley',                                   { 'index': 0x0117 }),
-                        ('Gerudo Valley -> Hyrule Field',                                   { 'index': 0x018D })),
-    ('Overworld',       ('Hyrule Field -> Market Entrance',                                 { 'index': 0x0276 }),
-                        ('Market Entrance -> Hyrule Field',                                 { 'index': 0x01FD })),
-    ('Overworld',       ('Hyrule Field -> Kakariko Village',                                { 'index': 0x00DB }),
-                        ('Kakariko Village -> Hyrule Field',                                { 'index': 0x017D })),
-    ('Overworld',       ('Hyrule Field -> ZR Front',                                        { 'index': 0x00EA }),
-                        ('ZR Front -> Hyrule Field',                                        { 'index': 0x0181 })),
-    ('Overworld',       ('Hyrule Field -> Lon Lon Ranch',                                   { 'index': 0x0157 }),
-                        ('Lon Lon Ranch -> Hyrule Field',                                   { 'index': 0x01F9 })),
-    ('Overworld',       ('Lake Hylia -> Zoras Domain',                                      { 'index': 0x0328 }),
-                        ('Zoras Domain -> Lake Hylia',                                      { 'index': 0x0560 })),
-    ('Overworld',       ('GV Fortress Side -> Gerudo Fortress',                             { 'index': 0x0129 }),
-                        ('Gerudo Fortress -> GV Fortress Side',                             { 'index': 0x022D })),
-    ('Overworld',       ('GF Outside Gate -> Wasteland Near Fortress',                      { 'index': 0x0130 }),
-                        ('Wasteland Near Fortress -> GF Outside Gate',                      { 'index': 0x03AC })),
-    ('Overworld',       ('Wasteland Near Colossus -> Desert Colossus',                      { 'index': 0x0123 }),
-                        ('Desert Colossus -> Wasteland Near Colossus',                      { 'index': 0x0365 })),
-    ('Overworld',       ('Market Entrance -> Market',                                       { 'index': 0x00B1 }),
-                        ('Market -> Market Entrance',                                       { 'index': 0x0033 })),
-    ('Overworld',       ('Market -> Castle Grounds',                                        { 'index': 0x0138 }),
-                        ('Castle Grounds -> Market',                                        { 'index': 0x025A })),
-    ('Overworld',       ('Market -> ToT Entrance',                                          { 'index': 0x0171 }),
-                        ('ToT Entrance -> Market',                                          { 'index': 0x025E })),
-    ('Overworld',       ('Kakariko Village -> Graveyard',                                   { 'index': 0x00E4 }),
-                        ('Graveyard -> Kakariko Village',                                   { 'index': 0x0195 })),
-    ('Overworld',       ('Kak Behind Gate -> Death Mountain',                               { 'index': 0x013D }),
-                        ('Death Mountain -> Kak Behind Gate',                               { 'index': 0x0191 })),
-    ('Overworld',       ('Death Mountain -> Goron City',                                    { 'index': 0x014D }),
-                        ('Goron City -> Death Mountain',                                    { 'index': 0x01B9 })),
-    ('Overworld',       ('GC Darunias Chamber -> DMC Lower Local',                          { 'index': 0x0246 }),
-                        ('DMC Lower Nearby -> GC Darunias Chamber',                         { 'index': 0x01C1 })),
-    ('Overworld',       ('Death Mountain Summit -> DMC Upper Local',                        { 'index': 0x0147 }),
-                        ('DMC Upper Nearby -> Death Mountain Summit',                       { 'index': 0x01BD })),
-    ('Overworld',       ('ZR Behind Waterfall -> Zoras Domain',                             { 'index': 0x0108 }),
-                        ('Zoras Domain -> ZR Behind Waterfall',                             { 'index': 0x019D })),
-    ('Overworld',       ('ZD Behind King Zora -> Zoras Fountain',                           { 'index': 0x0225 }),
-                        ('Zoras Fountain -> ZD Behind King Zora',                           { 'index': 0x01A1 })),
+    ('Overworld',       ('Kokiri Forest -> LW Bridge From Forest',                          { 'index': 0x05E0, 'connector': True }),
+                        ('LW Bridge -> Kokiri Forest',                                      { 'index': 0x020D, 'connector': True })),
+    ('Overworld',       ('Kokiri Forest -> Lost Woods',                                     { 'index': 0x011E, 'connector': True }),
+                        ('LW Forest Exit -> Kokiri Forest',                                 { 'index': 0x0286, 'connector': True })),
+    ('Overworld',       ('Lost Woods -> GC Woods Warp',                                     { 'index': 0x04E2, 'connector': True }),
+                        ('GC Woods Warp -> Lost Woods',                                     { 'index': 0x04D6, 'connector': True })),
+    ('Overworld',       ('Lost Woods -> Zora River',                                        { 'index': 0x01DD, 'connector': True }),
+                        ('Zora River -> Lost Woods',                                        { 'index': 0x04DA, 'connector': True })),
+    ('Overworld',       ('LW Beyond Mido -> SFM Entryway',                                  { 'index': 0x00FC, 'connector': True }),
+                        ('SFM Entryway -> LW Beyond Mido',                                  { 'index': 0x01A9, 'connector': True })),
+    ('Overworld',       ('LW Bridge -> Hyrule Field',                                       { 'index': 0x0185, 'connector': True }),
+                        ('Hyrule Field -> LW Bridge',                                       { 'index': 0x04DE, 'connector': True })),
+    ('Overworld',       ('Hyrule Field -> Lake Hylia',                                      { 'index': 0x0102, 'connector': True }),
+                        ('Lake Hylia -> Hyrule Field',                                      { 'index': 0x0189, 'connector': True })),
+    ('Overworld',       ('Hyrule Field -> Gerudo Valley',                                   { 'index': 0x0117, 'connector': True }),
+                        ('Gerudo Valley -> Hyrule Field',                                   { 'index': 0x018D, 'connector': True })),
+    ('Overworld',       ('Hyrule Field -> Market Entrance',                                 { 'index': 0x0276, 'connector': True }),
+                        ('Market Entrance -> Hyrule Field',                                 { 'index': 0x01FD, 'connector': True })),
+    ('Overworld',       ('Hyrule Field -> Kakariko Village',                                { 'index': 0x00DB, 'connector': True }),
+                        ('Kakariko Village -> Hyrule Field',                                { 'index': 0x017D, 'connector': True })),
+    ('Overworld',       ('Hyrule Field -> ZR Front',                                        { 'index': 0x00EA, 'connector': True }),
+                        ('ZR Front -> Hyrule Field',                                        { 'index': 0x0181, 'connector': True })),
+    ('Overworld',       ('Hyrule Field -> Lon Lon Ranch',                                   { 'index': 0x0157, 'connector': True }),
+                        ('Lon Lon Ranch -> Hyrule Field',                                   { 'index': 0x01F9, 'connector': True })),
+    ('Overworld',       ('Lake Hylia -> Zoras Domain',                                      { 'index': 0x0328, 'connector': True }),
+                        ('Zoras Domain -> Lake Hylia',                                      { 'index': 0x0560, 'connector': True })),
+    ('Overworld',       ('GV Fortress Side -> Gerudo Fortress',                             { 'index': 0x0129, 'connector': True }),
+                        ('Gerudo Fortress -> GV Fortress Side',                             { 'index': 0x022D, 'connector': True })),
+    ('Overworld',       ('GF Outside Gate -> Wasteland Near Fortress',                      { 'index': 0x0130, 'connector': True }),
+                        ('Wasteland Near Fortress -> GF Outside Gate',                      { 'index': 0x03AC, 'connector': True })),
+    ('Overworld',       ('Wasteland Near Colossus -> Desert Colossus',                      { 'index': 0x0123, 'connector': True }),
+                        ('Desert Colossus -> Wasteland Near Colossus',                      { 'index': 0x0365, 'connector': True })),
+    ('Overworld',       ('Market Entrance -> Market',                                       { 'index': 0x00B1, 'connector': True }),
+                        ('Market -> Market Entrance',                                       { 'index': 0x0033, 'connector': True })),
+    ('Overworld',       ('Market -> Castle Grounds',                                        { 'index': 0x0138, 'connector': True }),
+                        ('Castle Grounds -> Market',                                        { 'index': 0x025A, 'connector': True })),
+    ('Overworld',       ('Market -> ToT Entrance',                                          { 'index': 0x0171, 'connector': True }),
+                        ('ToT Entrance -> Market',                                          { 'index': 0x025E, 'connector': True })),
+    ('Overworld',       ('Kakariko Village -> Graveyard',                                   { 'index': 0x00E4, 'connector': True }),
+                        ('Graveyard -> Kakariko Village',                                   { 'index': 0x0195, 'connector': True })),
+    ('Overworld',       ('Kak Behind Gate -> Death Mountain',                               { 'index': 0x013D, 'connector': True }),
+                        ('Death Mountain -> Kak Behind Gate',                               { 'index': 0x0191, 'connector': True })),
+    ('Overworld',       ('Death Mountain -> Goron City',                                    { 'index': 0x014D, 'connector': True }),
+                        ('Goron City -> Death Mountain',                                    { 'index': 0x01B9, 'connector': True })),
+    ('Overworld',       ('GC Darunias Chamber -> DMC Lower Local',                          { 'index': 0x0246, 'connector': True }),
+                        ('DMC Lower Nearby -> GC Darunias Chamber',                         { 'index': 0x01C1, 'connector': True })),
+    ('Overworld',       ('Death Mountain Summit -> DMC Upper Local',                        { 'index': 0x0147, 'connector': True }),
+                        ('DMC Upper Nearby -> Death Mountain Summit',                       { 'index': 0x01BD, 'connector': True })),
+    ('Overworld',       ('ZR Behind Waterfall -> Zoras Domain',                             { 'index': 0x0108, 'connector': True }),
+                        ('Zoras Domain -> ZR Behind Waterfall',                             { 'index': 0x019D, 'connector': True })),
+    ('Overworld',       ('ZD Behind King Zora -> Zoras Fountain',                           { 'index': 0x0225, 'connector': True }),
+                        ('Zoras Fountain -> ZD Behind King Zora',                           { 'index': 0x01A1, 'connector': True })),
 
-    ('Overworld',       ('GV Lower Stream -> Lake Hylia',                                   { 'index': 0x0219 })),
+    ('Overworld',       ('GV Lower Stream -> Lake Hylia',                                   { 'index': 0x0219, 'connector': True })),
 
     ('OwlDrop',         ('LH Owl Flight -> Hyrule Field',                                   { 'index': 0x027E, 'addresses': [0xAC9F26] })),
     ('OwlDrop',         ('DMT Owl Flight -> Kak Impas Rooftop',                             { 'index': 0x0554, 'addresses': [0xAC9EF2] })),
@@ -336,6 +340,11 @@ entrance_shuffle_table = [
     ('Extra',           ('ZD Eyeball Frog Timeout -> Zoras Domain',                         { 'index': 0x0153 })),
     ('Extra',           ('ZR Top of Waterfall -> Zora River',                               { 'index': 0x0199 })),
 ]
+
+
+CHILD_FORBIDDEN = ['OGC Great Fairy Fountain -> Castle Grounds', 'GV Carpenter Tent -> GV Fortress Side']
+ADULT_FORBIDDEN = ['HC Great Fairy Fountain -> Castle Grounds', 'HC Storms Grotto -> Castle Grounds']
+
 
 def _add_boss_entrances():
     # Compute this at load time to save a lot of duplication
@@ -501,8 +510,7 @@ def shuffle_random_entrances(worlds):
                 entrance_pools['GrottoGraveReverse'] = [entrance.reverse for entrance in entrance_pools['GrottoGrave']]
 
         if worlds[0].settings.shuffle_overworld_entrances:
-            exclude_overworld_reverse = ('Overworld' in worlds[0].settings.mix_entrance_pools) and not worlds[0].settings.decouple_entrances
-            entrance_pools['Overworld'] = world.get_shufflable_entrances(type='Overworld', only_primary=exclude_overworld_reverse)
+            entrance_pools['Overworld'] = world.get_shufflable_entrances(type='Overworld', only_primary=False)
             if not worlds[0].settings.decouple_entrances:
                 entrance_pools['Overworld'].remove(world.get_entrance('GV Lower Stream -> Lake Hylia'))
 
@@ -542,6 +550,7 @@ def shuffle_random_entrances(worlds):
             # Ensure that when trying to place the last entrance of a one way pool, we don't assume the rest of the targets are reachable
             for target in one_way_target_entrance_pools[pool_type]:
                 target.add_rule((lambda entrances=entrance_pool: (lambda state, **kwargs: any(entrance.connected_region == None for entrance in entrances)))())
+        
         # Disconnect all one way entrances at this point (they need to be connected during all of the above process)
         for entrance in chain.from_iterable(one_way_entrance_pools.values()):
             entrance.disconnect()
@@ -591,6 +600,11 @@ def shuffle_random_entrances(worlds):
             # Delete all unused extra targets after placing a one way pool, since the unused targets won't ever be replaced
             for unused_target in one_way_target_entrance_pools[pool_type]:
                 delete_target_entrance(unused_target)
+
+        # Shuffle mixed pool first to increase chances of valid world
+        if 'Mixed' in entrance_pools.keys():
+            shuffle_entrance_pool(world, worlds, entrance_pools['Mixed'], target_entrance_pools['Mixed'], locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances)
+            entrance_pools.pop('Mixed', None)
 
         for pool_type, entrance_pool in entrance_pools.items():
             shuffle_entrance_pool(world, worlds, entrance_pool, target_entrance_pools[pool_type], locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances)
@@ -652,6 +666,20 @@ def shuffle_one_way_priority_entrances(worlds, world, one_way_priorities, one_wa
 # Shuffle all entrances within a provided pool
 def shuffle_entrance_pool(world, worlds, entrance_pool, target_entrances, locations_to_ensure_reachable, check_all=False, retry_count=20, placed_one_way_entrances=()):
 
+    #region_connectors = sort_entrances_by_region(entrance_pool)
+    #target_connectors = [t for t in target_entrances if t.connector]
+    #target_interiors = [t for t in target_entrances if not t.connector]
+
+    ec = Counter(entrance_pool)
+    tc = Counter(target_entrances)
+    for e, c in ec.items():
+        if c>1:
+            logging.getLogger('').debug('Duplicate entrance %s' % e.name)
+    for t, c in tc.items():
+        if c>1:
+            logging.getLogger('').debug('Duplicate target %s' % t.name)
+
+
     # Split entrances between those that have requirements (restrictive) and those that do not (soft). These are primarily age or time of day requirements.
     restrictive_entrances, soft_entrances = split_entrances_by_requirements(worlds, entrance_pool, target_entrances)
 
@@ -659,15 +687,45 @@ def shuffle_entrance_pool(world, worlds, entrance_pool, target_entrances, locati
         retry_count -= 1
         rollbacks = []
 
+        
+        unpooled_targets['oo'] = []
+        unpooled_targets['gg'] = []
+        unpooled_targets['og'] = []
+        unpooled_targets['go'] = []
+
+        pooled_targets['oo'] = []
+        pooled_targets['gg'] = []
+        pooled_targets['og'] = []
+        pooled_targets['go'] = []
+        global skipped
+        skipped = []
+        global should_skip_forward
+        global should_skip_reverse
+        should_skip_forward = {}
+        should_skip_reverse = {}
+        global retry_num
+        retry_num = 20 - retry_count - 1
+        
         try:
-            # Shuffle restrictive entrances first while more regions are available in order to heavily reduce the chances of the placement failing.
+            # Shuffle one entrance per region. This is mainly to ensure every region has a path to it in overworld mixed pools
+            # where some regions only have one or two ways in.
+            #shuffle_entrances(worlds, region_connectors, target_connectors, rollbacks, locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances, partial=True)
+
+            # Shuffle remaining connectors randomly among all entrances regardless of region. If connectors run out, move on to "interior" entrances that lead to dead ends.
+            # Shuffle restrictive entrances next while more regions are available in order to heavily reduce the chances of the placement failing.
             shuffle_entrances(worlds, restrictive_entrances, target_entrances, rollbacks, locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances)
+            #shuffle_entrances(worlds, restrictive_entrances, target_connectors, rollbacks, locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances, partial=True)
+            #shuffle_entrances(worlds, restrictive_entrances, target_interiors, rollbacks, locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances)
 
             # Shuffle the rest of the entrances, we don't have to check for beatability/reachability of locations when placing those, unless specified otherwise
             if check_all:
                 shuffle_entrances(worlds, soft_entrances, target_entrances, rollbacks, locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances)
+                #shuffle_entrances(worlds, soft_entrances, target_connectors, rollbacks, locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances, partial=True)
+                #shuffle_entrances(worlds, soft_entrances, target_interiors, rollbacks, locations_to_ensure_reachable, placed_one_way_entrances=placed_one_way_entrances)
             else:
                 shuffle_entrances(worlds, soft_entrances, target_entrances, rollbacks, placed_one_way_entrances=placed_one_way_entrances)
+                #shuffle_entrances(worlds, soft_entrances, target_connectors, rollbacks, placed_one_way_entrances=placed_one_way_entrances, partial=True)
+                #shuffle_entrances(worlds, soft_entrances, target_interiors, rollbacks, placed_one_way_entrances=placed_one_way_entrances)
 
             # Fully validate the resulting world to ensure everything is still fine after shuffling this pool
             complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
@@ -692,7 +750,7 @@ def shuffle_entrance_pool(world, worlds, entrance_pool, target_entrances, locati
 
 
 # Split entrances based on their requirements to figure out how each entrance should be handled when shuffling them
-def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrances):
+def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrances, entrances_to_exclude=[]):
 
     # First, disconnect all root assumed entrances and save which regions they were originally connected to, so we can reconnect them later
     original_connected_regions = {}
@@ -710,6 +768,8 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
     soft_entrances = []
 
     for entrance in entrances_to_split:
+        if entrance in entrances_to_exclude:
+            continue
         # Here, we find entrances that may be unreachable under certain conditions
         if not max_search.spot_access(entrance, age='both', tod=TimeOfDay.ALL):
             restrictive_entrances.append(entrance)
@@ -727,17 +787,56 @@ def split_entrances_by_requirements(worlds, entrances_to_split, assumed_entrance
     return restrictive_entrances, soft_entrances
 
 
+# Link entrances to their vanilla hint regions. Used to ensure at least one
+# connector is attached to a given region.
+# Hint region boundaries align better with in-game areas than the logic regions. 
+def sort_entrances_by_region(entrances_to_sort):
+    
+    # Sort entrances by hint region
+    region_exits = {}
+    for entrance in entrances_to_sort:
+        try:
+            entrance_area = HintArea.at(entrance)
+        except HintAreaNotFound:
+            continue
+        else:
+            if entrance_area in region_exits:
+                region_exits[entrance_area].append(entrance)
+            else:
+                region_exits[entrance_area] = [entrance]
+
+    # Select a random entrance from each region to attach a connector.
+    # Only one connector per region is enforced to preserve world structure variety.
+    region_connectors = []
+    for entrance_area, entrances in region_exits.items():
+        if not entrances[0].world.settings.decouple_entrances:
+            forbidden_entrances = CHILD_FORBIDDEN + ADULT_FORBIDDEN
+            connector_candidates = list(filter(lambda entrance: ((entrance.name not in forbidden_entrances) and ((not entrance.reverse) or (entrance.reverse.name not in forbidden_entrances))), entrances))
+        else:
+            connector_candidates = entrances
+        # Hyrule Castle and Outside Ganon's Castle are pseudo-areas for warp song shuffle.
+        # They only contain forbidden entrances for each age. The only age-independent
+        # entrance (to Market) is part of the CASTLE_GROUNDS hint area. Since the
+        # pseudo-areas don't have any candidates available and are covered by another
+        # area, filter them out.
+        if len(connector_candidates) > 0:
+            region_connectors.append(random.choice(connector_candidates))
+
+    return region_connectors
+
+
 def replace_entrance(worlds, entrance, target, rollbacks, locations_to_ensure_reachable, itempool, placed_one_way_entrances=()):
     try:
         check_entrances_compatibility(entrance, target, rollbacks, placed_one_way_entrances)
         change_connections(entrance, target)
         validate_world(entrance.world, worlds, entrance, locations_to_ensure_reachable, itempool, placed_one_way_entrances=placed_one_way_entrances)
         rollbacks.append((entrance, target))
+        #logging.getLogger('').debug('Connected %s To %s [World %d]', entrance, target, entrance.world.id)
         return True
     except EntranceShuffleError as error:
         # If the entrance can't be placed there, log a debug message and change the connections back to what they were previously
-        logging.getLogger('').debug('Failed to connect %s To %s (Reason: %s) [World %d]',
-                                    entrance, entrance.connected_region or target.connected_region, error, entrance.world.id)
+        #logging.getLogger('').debug('Failed to connect %s To %s (Reason: %s) [World %d]',
+        #                            entrance, entrance.connected_region or target.connected_region, error, entrance.world.id)
         if entrance.connected_region:
             restore_connections(entrance, target)
     return False
@@ -772,10 +871,28 @@ def place_one_way_priority_entrance(worlds, world, priority_name, allowed_region
                     return
     raise EntranceShuffleError(f'Unable to place priority one-way entrance for {priority_name} [World {world.id}].')
 
+unpooled_targets = {
+    'oo': [],
+    'gg': [],
+    'og': [],
+    'go': []
+}
+
+pooled_targets = {
+    'oo': [],
+    'gg': [],
+    'og': [],
+    'go': []
+}
+
+retry_num = 0
+skipped = []
+should_skip_forward = {}
+should_skip_reverse = {}
 
 # Shuffle entrances by placing them instead of entrances in the provided target entrances list
 # While shuffling entrances, the algorithm will ensure worlds are still valid based on multiple criterias
-def shuffle_entrances(worlds, entrances, target_entrances, rollbacks, locations_to_ensure_reachable=(), placed_one_way_entrances=()):
+def shuffle_entrances(worlds, entrances, target_entrances, rollbacks, locations_to_ensure_reachable=(), placed_one_way_entrances=(), partial=False):
 
     # Retrieve all items in the itempool, all worlds included
     complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
@@ -785,14 +902,87 @@ def shuffle_entrances(worlds, entrances, target_entrances, rollbacks, locations_
     # Place all entrances in the pool, validating worlds during every placement
     for entrance in entrances:
         if entrance.connected_region != None:
+            if entrance in should_skip_forward.keys():
+                #logging.getLogger('').debug(f'Forward entrance skipped: {entrance.name} already connected {should_skip_forward[entrance]} times')
+                if should_skip_forward[entrance]["count"] >= 2:
+                    logging.getLogger('').debug(f'Forward entrance connected multiple times: {entrance.name}')
+            if entrance in should_skip_reverse.keys():
+                #logging.getLogger('').debug(f'Reverse entrance skipped: {entrance.name} already connected {should_skip_reverse[entrance]} times')
+                if should_skip_reverse[entrance]["count"] >= 2:
+                    logging.getLogger('').debug(f'Reverse entrance connected multiple times: {entrance.name}')
+            if entrance not in should_skip_forward.keys() and entrance not in should_skip_reverse.keys():
+                logging.getLogger('').debug(f'Unconnected entrance skipped: {entrance.name}')
+            if entrance in should_skip_forward.keys() and entrance in should_skip_reverse.keys():
+                logging.getLogger('').debug(f'Forward/Reverse entrance skipped: {entrance.name}')
+            skipped.append(entrance.name)
             continue
+        if partial and len([t for t in target_entrances if t.connected_region != None]) == 0:
+            break
         random.shuffle(target_entrances)
 
         for target in target_entrances:
             if target.connected_region == None:
                 continue
 
+            all_entrances = worlds[0].get_shuffled_entrances()
+            previous_etype = entrance.type
+            previous_ttype = target.replaces.type
+            unlinked_entrances = len([e for e in all_entrances if e.connected_region == None])
+            unlinked_targets = len([t for t in all_entrances if t.assumed.connected_region != None])
             if replace_entrance(worlds, entrance, target, rollbacks, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances):
+                updated_entrances = len([e for e in all_entrances if e.connected_region == None])
+                updated_targets = len([t for t in all_entrances if t.assumed.connected_region != None])
+                pool_mismatch = False
+                if previous_etype == 'Overworld' and previous_ttype == 'Overworld':
+                    pooled_targets['oo'].append(target.name)
+                    if entrance.reverse.assumed not in target_entrances:
+                        unpooled_targets['oo'].append(entrance.reverse.assumed.name)
+                    else:
+                        pooled_targets['oo'].append(entrance.reverse.assumed.name)
+                    if unlinked_entrances - updated_entrances != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Entrance connection mismatch for {entrance.name} to {target.name}')
+                    if unlinked_targets - updated_targets != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Target connection mismatch for {entrance.name} to {target.name}')
+                if previous_etype in ['Grotto','Grave'] and previous_ttype in ['Grotto','Grave']:
+                    pooled_targets['gg'].append(target.name)
+                    if entrance.reverse.assumed not in target_entrances:
+                        unpooled_targets['gg'].append(entrance.reverse.assumed.name)
+                    else:
+                        pooled_targets['gg'].append(entrance.reverse.assumed.name)
+                    if unlinked_entrances - updated_entrances != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Entrance connection mismatch for {entrance.name} to {target.name}')
+                    if unlinked_targets - updated_targets != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Target connection mismatch for {entrance.name} to {target.name}')
+                if previous_etype == 'Overworld' and previous_ttype in ['Grotto','Grave']:
+                    pooled_targets['og'].append(target.name)
+                    if entrance.reverse.assumed not in target_entrances:
+                        unpooled_targets['og'].append(entrance.reverse.assumed.name)
+                    else:
+                        pooled_targets['og'].append(entrance.reverse.assumed.name)
+                    if unlinked_entrances - updated_entrances != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Entrance connection mismatch for {entrance.name} to {target.name}')
+                    if unlinked_targets - updated_targets != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Target connection mismatch for {entrance.name} to {target.name}')
+                if previous_etype in ['Grotto','Grave'] and previous_ttype == 'Overworld':
+                    pooled_targets['go'].append(target.name)
+                    if entrance.reverse.assumed not in target_entrances:
+                        unpooled_targets['go'].append(entrance.reverse.assumed.name)
+                    else:
+                        pooled_targets['go'].append(entrance.reverse.assumed.name)
+                    if unlinked_entrances - updated_entrances != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Entrance connection mismatch for {entrance.name} to {target.name}')
+                    if unlinked_targets - updated_targets != 2:
+                        pool_mismatch = True
+                        logging.getLogger('').debug(f'Target connection mismatch for {entrance.name} to {target.name}')
+                if pool_mismatch:
+                    break
                 break
 
         if entrance.connected_region == None:
@@ -828,8 +1018,6 @@ def validate_world(world, worlds, entrance_placed, locations_to_ensure_reachable
         # This means we need to hard check that none of the relevant entrances are ever reachable as that age
         # This is mostly relevant when mixing entrance pools or shuffling special interiors (such as windmill or kak potion shop)
         # Warp Songs and Overworld Spawns can also end up inside certain indoors so those need to be handled as well
-        CHILD_FORBIDDEN = ['OGC Great Fairy Fountain -> Castle Grounds', 'GV Carpenter Tent -> GV Fortress Side']
-        ADULT_FORBIDDEN = ['HC Great Fairy Fountain -> Castle Grounds', 'HC Storms Grotto -> Castle Grounds']
 
         for entrance in world.get_shufflable_entrances():
             if entrance.shuffled:
@@ -967,11 +1155,30 @@ def get_entrance_replacing(region, entrance_name):
 
 # Change connections between an entrance and a target assumed entrance, in order to test the connections afterwards if necessary
 def change_connections(entrance, target_entrance):
-    entrance.connect(target_entrance.disconnect())
+    forward_target = target_entrance.disconnect()
+    entrance.connect(forward_target)
     entrance.replaces = target_entrance.replaces
+    global should_skip_forward
+    global should_skip_reverse
+    if entrance in should_skip_forward.keys():
+        should_skip_forward[entrance]["count"] += 1
+    else:
+        should_skip_forward[entrance] = {
+            "count": 1,
+            "entrance": entrance
+        }
     if entrance.reverse and not entrance.decoupled:
-        target_entrance.replaces.reverse.connect(entrance.reverse.assumed.disconnect())
+        reverse_target = entrance.reverse.assumed.disconnect()
+        target_entrance.replaces.reverse.connect(reverse_target)
         target_entrance.replaces.reverse.replaces = entrance.reverse
+        if target_entrance.replaces.reverse in should_skip_reverse.keys():
+            should_skip_reverse[target_entrance.replaces.reverse]["count"] += 1
+        else:
+            should_skip_reverse[target_entrance.replaces.reverse] = {
+                "count": 1,
+                "entrance": target_entrance.replaces.reverse
+            }
+
 
 
 # Restore connections between an entrance and a target assumed entrance
@@ -986,11 +1193,11 @@ def restore_connections(entrance, target_entrance):
 # Confirm the replacement of a target entrance by a new entrance, logging the new connections and completely deleting the target entrances
 def confirm_replacement(entrance, target_entrance):
     delete_target_entrance(target_entrance)
-    logging.getLogger('').debug('Connected %s To %s [World %d]', entrance, entrance.connected_region, entrance.world.id)
+    #logging.getLogger('').debug('Connected %s To %s [World %d]', entrance, entrance.connected_region, entrance.world.id)
     if entrance.reverse and not entrance.decoupled:
         replaced_reverse = target_entrance.replaces.reverse
         delete_target_entrance(entrance.reverse.assumed)
-        logging.getLogger('').debug('Connected %s To %s [World %d]', replaced_reverse, replaced_reverse.connected_region, replaced_reverse.world.id)
+        #logging.getLogger('').debug('Connected %s To %s [World %d]', replaced_reverse, replaced_reverse.connected_region, replaced_reverse.world.id)
 
 
 # Delete an assumed target entrance, by disconnecting it if needed and removing it from its parent region

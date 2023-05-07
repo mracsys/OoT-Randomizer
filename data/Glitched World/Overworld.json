@@ -185,7 +185,7 @@
     },
     {
         "region_name": "LW Bridge",
-        "hint": "LOST_WOODS",
+        "hint": "LOST_WOODS_BRIDGE",
         "locations": {
             "LW Gift from Saria": "True"
         },

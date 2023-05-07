@@ -307,7 +307,7 @@
     {
         "region_name": "LW Bridge From Forest",
         "scene": "Lost Woods",
-        "hint": "LOST_WOODS",
+        "hint": "LOST_WOODS_BRIDGE",
         "locations": {
             "LW Gift from Saria": "True"
         },
@@ -318,7 +318,7 @@
     {
         "region_name": "LW Bridge",
         "scene": "Lost Woods",
-        "hint": "LOST_WOODS",
+        "hint": "LOST_WOODS_BRIDGE",
         "exits": {
             "Kokiri Forest": "True",
             "Hyrule Field": "True",
@@ -678,7 +678,7 @@
     {
         "region_name": "Market Entrance",
         "scene": "Market Entrance",
-        "hint": "MARKET",
+        "hint": "MARKET_ENTRANCE",
         "exits": {
             "Hyrule Field": "is_adult or at_day",
             "Market": "True",
@@ -716,7 +716,7 @@
     {
         "region_name": "ToT Entrance",
         "scene": "ToT Entrance",
-        "hint": "MARKET",
+        "hint": "TOT_ENTRANCE",
         "locations": {
             "ToT Gossip Stone (Left)": "True",
             "ToT Gossip Stone (Left-Center)": "True",
