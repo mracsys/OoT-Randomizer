@@ -21,7 +21,7 @@ from Patches import patch_rom
 from Cosmetics import patch_cosmetics
 from Dungeon import create_dungeons
 from Fill import distribute_items_restrictive, ShuffleError
-from Item import Item
+from Item import Item, ItemInfo
 from ItemPool import generate_itempool
 from Hints import buildGossipHints
 from HintList import clearHintExclusionCache, misc_item_hint_table, misc_location_hint_table
@@ -68,6 +68,7 @@ def main(settings, window=dummy_window(), max_attempts=10):
             else:
                 logger.info('Retrying...\n\n')
             settings.reset_distribution()
+    return None
     patch_and_output(settings, window, spoiler, rom)
     logger.debug('Total Time: %s', time.process_time() - start)
     return spoiler
@@ -132,6 +133,14 @@ def generate(settings, window=dummy_window()):
         world.distribution.configure_effective_starting_items(worlds, world)
     if worlds[0].enable_goal_hints:
         replace_goal_names(worlds)
+    #for i in ItemInfo.items.values():
+    #    print(f'{i.name}: {i.solver_id}')
+    #for i in ItemInfo.events.values():
+    #    print(f'{i.name}: {i.solver_id}')
+    #for loc in worlds[0].get_locations():
+    #    print(f'name: {loc.name}, rule_string: {loc.rule_string}, transformed_rule: {loc.transformed_rule}')
+    #    print(f'access_rule: {loc.access_rule(worlds[0].state, age="child", spot=loc)}')
+    #return None
     return make_spoiler(settings, worlds, window=window)
 
 

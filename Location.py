@@ -29,6 +29,8 @@ class Location(object):
         self.disabled = DisableType.ENABLED
         self.always = False
         self.never = False
+        self.rule_string = ''
+        self.transformed_rule = ''
         if filter_tags is None:
             self.filter_tags = None
         elif isinstance(filter_tags, str):
