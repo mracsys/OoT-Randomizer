@@ -27,6 +27,7 @@ class World(object):
         self.regions = []
         self.itempool = []
         self._cached_locations = None
+        self._cached_entrances = None
         self._entrance_cache = {}
         self._region_cache = {}
         self._location_cache = {}
@@ -1149,6 +1150,14 @@ class World(object):
             for region in self.regions:
                 self._cached_locations.extend(region.locations)
         return self._cached_locations
+
+
+    def get_entrances(self):
+        if self._cached_entrances is None:
+            self._cached_entrances = []
+            for region in self.regions:
+                self._cached_entrances.extend(region.exits)
+        return self._cached_entrances
 
 
     def get_unfilled_locations(self):
