@@ -10,13 +10,13 @@ from Goals import replace_goal_names
 
 def read_settings(settingsFile: str) -> Settings:
     settings_base = {}
-    
+
     try:
         with open(settingsFile, encoding='utf-8') as f:
             settings_base.update(json.load(f))
     except Exception as ex:
         raise ex
-    
+
     settings = Settings(settings_base)
     settings.output_settings = False
     settings.update_seed('TESTLOGICAPITEST')
