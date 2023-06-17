@@ -73,9 +73,9 @@ if __name__ == "__main__":
             f'"name": "{loc.name}",\n'
             f'"rule_string": "{loc.rule_string}",\n'
             f'"transformed_rule": "{loc.transformed_rule}",\n'
-            f'"visited": "{s.visited(loc)}",\n'
-            f'"child_access_rule": "{str(loc.access_rule(s.state_list[0], age="child", spot=loc)).lower()}",\n'
-            f'"adult_access_rule": "{str(loc.access_rule(s.state_list[0], age="adult", spot=loc)).lower()}"\n'
+            f'"visited": {str(s.visited(loc)).lower()},\n'
+            f'"child_access_rule": {str(loc.access_rule(s.state_list[0], age="child", spot=loc)).lower()},\n'
+            f'"adult_access_rule": {str(loc.access_rule(s.state_list[0], age="adult", spot=loc)).lower()}\n'
             f'}},\n'
         )
     logic_output = logic_output[:-2] + '\n}'
