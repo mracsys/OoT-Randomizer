@@ -80,3 +80,4 @@ if __name__ == "__main__":
         )
     logic_output = logic_output[:-2] + '\n}'
     print(logic_output)
+    sys.stdout.flush()
