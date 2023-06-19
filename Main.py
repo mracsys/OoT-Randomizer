@@ -68,7 +68,6 @@ def main(settings, window=dummy_window(), max_attempts=10):
             else:
                 logger.info('Retrying...\n\n')
             settings.reset_distribution()
-    return None
     patch_and_output(settings, window, spoiler, rom)
     logger.debug('Total Time: %s', time.process_time() - start)
     return spoiler
@@ -133,22 +132,6 @@ def generate(settings, window=dummy_window()):
         world.distribution.configure_effective_starting_items(worlds, world)
     if worlds[0].enable_goal_hints:
         replace_goal_names(worlds)
-    s = Search([world.state for world in worlds])
-    logic_output = '{\n'
-    for loc in worlds[0].get_locations():
-        logic_output += f'"{loc.name}": {{\n"name": "{loc.name}",\n"rule_string": "{loc.rule_string}",\n"transformed_rule": "{loc.transformed_rule}",\n"child_access_rule": "{str(loc.access_rule(s.state_list[0], age="child", spot=loc)).lower()}",\n"adult_access_rule": "{str(loc.access_rule(s.state_list[0], age="adult", spot=loc)).lower()}"\n}},\n'
-    logic_output = logic_output[:-2] + '\n}'
-    import time
-    start_time = time.time_ns()
-    for l in worlds[0].get_locations():
-        child_access = l.access_rule(s.state_list[0], age="child", spot=l)
-        adult_access = l.access_rule(s.state_list[0], age="adult", spot=l)
-    for e in worlds[0].get_entrances():
-        child_access = e.access_rule(s.state_list[0], age="child", spot=e)
-        adult_access = e.access_rule(s.state_list[0], age="adult", spot=e)
-    end_time = time.time_ns()
-    print((end_time - start_time) / 1000000000.0)
-    return None
     return make_spoiler(settings, worlds, window=window)
 
 
