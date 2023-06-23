@@ -5,8 +5,8 @@
 #include <float.h>
 #include <stdint.h>
 #include <inttypes.h>
-#include "gz_menu.h"
-#include "gz_util.h"
+#include "menu.h"
+#include "util.h"
 
 struct item_data
 {

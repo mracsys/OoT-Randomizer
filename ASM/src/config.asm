@@ -116,6 +116,21 @@ INITIAL_SAVE_DATA:
 EXTENDED_OBJECT_TABLE:
 .endarea
 
+; gz stack
+.area 0x2000
+_stack:
+.endarea
+
+; gz temp storage for original stack pointer and return address
+.area 0x08
+_startup_data:
+.endarea
+
+; gz game state update address
+.area 0x04
+gz_leave_func:
+.endarea
+
 FREE_BOMBCHU_DROPS:
 .word 0x00
 

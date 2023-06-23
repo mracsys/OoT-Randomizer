@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
-#include "gz_menu.h"
+#include "menu.h"
 
 struct item_data
 {

@@ -4,7 +4,7 @@
 #include <set/set.h>
 #include <vector/vector.h>
 #include "files.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "osk.h"
 #include "resource.h"
 #include "sys.h"

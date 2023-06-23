@@ -1,6 +1,6 @@
 #ifndef FILE_H
 #define FILE_H
-#include "gz_menu.h"
+#include "menu.h"
 
 enum get_file_mode
 {

@@ -4,7 +4,7 @@
 #include <vector/vector.h>
 #include <n64.h>
 #include "settings.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 enum cmdact
@@ -48,15 +48,6 @@ enum cull_view_state
   CULLVIEW_ACTIVE,
   CULLVIEW_STOP,
   CULLVIEW_STOPPING,
-};
-
-enum holl_view_state
-{
-  HOLLVIEW_INACTIVE,
-  HOLLVIEW_START,
-  HOLLVIEW_ACTIVE,
-  HOLLVIEW_BEGIN_STOP,
-  HOLLVIEW_STOP,
 };
 
 enum path_view_state
@@ -193,8 +184,6 @@ struct gz
   int                   movie_oca_input_pos;
   int                   movie_oca_sync_pos;
   int                   movie_room_load_pos;
-  int                   movie_last_recorded_frame;
-  int                   movie_rerecords;
   _Bool                 oca_input_flag;
   _Bool                 oca_sync_flag;
   _Bool                 room_load_flag;
@@ -212,7 +201,6 @@ struct gz
   enum hit_view_state   hit_view_state;
   enum cull_view_state  cull_view_state;
   enum path_view_state  path_view_state;
-  enum holl_view_state  holl_view_state;
   _Bool                 noclip_on;
   _Bool                 hide_rooms;
   _Bool                 hide_actors;
@@ -284,7 +272,6 @@ void          gz_col_view(void);
 void          gz_hit_view(void);
 void          gz_cull_view(void);
 void          gz_path_view(void);
-void          gz_holl_view(void);
 
 void          gz_update_cam(void);
 void          gz_free_view(void);

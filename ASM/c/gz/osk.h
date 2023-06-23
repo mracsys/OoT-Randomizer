@@ -1,6 +1,6 @@
 #ifndef OSK_H
 #define OSK_H
-#include "gz_menu.h"
+#include "menu.h"
 
 typedef int (*osk_callback_t)(const char *str, void *data);
 

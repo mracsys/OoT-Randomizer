@@ -8,9 +8,9 @@
 #include "gz.h"
 #include "input.h"
 #include "mem.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
-#include "gz_util.h"
+#include "util.h"
 #include "watchlist.h"
 
 #define MEM_VIEW_ROWS     16

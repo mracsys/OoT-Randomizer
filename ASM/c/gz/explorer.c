@@ -3,13 +3,13 @@
 #include <malloc.h>
 #include <mips.h>
 #include <n64.h>
-#include "gz_gfx.h"
+#include "gfx.h"
 #include "gu.h"
 #include "input.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
 #include "settings.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 enum state

@@ -1,6 +1,6 @@
 #ifndef ITEM_OPTION_H
 #define ITEM_OPTION_H
-#include "gz_menu.h"
+#include "menu.h"
 
 struct menu_item *item_option_create(struct menu *menu, int x, int y,
                                      int n_items, const int8_t *item_list,

@@ -8,18 +8,18 @@
 #include <vector/vector.h>
 #include "explorer.h"
 #include "geometry.h"
-#include "gz_gfx.h"
+#include "gfx.h"
 #include "gu.h"
 #include "gz.h"
 #include "input.h"
 #include "io.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
 #include "settings.h"
 #include "start.h"
-#include "gz_util.h"
+#include "util.h"
 #include "watchlist.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 __attribute__((section(".data")))
@@ -400,7 +400,6 @@ static void main_hook(void)
   gz_hit_view();
   gz_cull_view();
   gz_path_view();
-  gz_holl_view();
 
   /* execute free camera in view mode */
   gz_free_view();
@@ -606,22 +605,12 @@ HOOK void input_hook(void)
         }
     }
     if (gz.movie_state == MOVIE_RECORDING) {
-      /* clear rerecords for empty movies */
-      if (gz.movie_frame == 0 && gz.movie_input.size == 0) {
-        gz.movie_last_recorded_frame = -1;
-        gz.movie_rerecords = 0;
-      }
       if (gz.movie_frame >= gz.movie_input.size) {
         if (gz.movie_input.size == gz.movie_input.capacity)
           vector_reserve(&gz.movie_input, 128);
         vector_push_back(&gz.movie_input, 1, NULL);
       }
-      /* if the last recorded frame is not the previous frame,
-         increment the rerecord count */
-      if (gz.movie_last_recorded_frame >= gz.movie_frame)
-        ++gz.movie_rerecords;
-      gz.movie_last_recorded_frame = gz.movie_frame++;
-      z_to_movie(gz.movie_last_recorded_frame, &zi[0], gz.reset_flag);
+      z_to_movie(gz.movie_frame++, &zi[0], gz.reset_flag);
     }
     else if (gz.movie_state == MOVIE_PLAYING) {
       if (gz.movie_frame >= gz.movie_input.size) {
@@ -989,10 +978,9 @@ HOOK void guPerspectiveF_hook(MtxF *mf)
   maybe_init_gp();
   if (gz.ready && settings->bits.wiivc_cam) {
     /* overwrite the scale argument in guPerspectiveF */
-    /* this assumes that mf is at 0($sp) on entry, which should be true */
     __asm__ ("la      $t0, 0x3F800000;"
-             "sw      $t0, 0x0048 + %0;"
-             :: "R"(mf) : "t0");
+             "sw      $t0, 0x0048($sp);"
+             ::: "t0");
   }
   mf->xx = 1.f;
   mf->xy = 0.f;
@@ -1085,7 +1073,6 @@ static void init(void)
   gz.hit_view_state = HITVIEW_INACTIVE;
   gz.cull_view_state = CULLVIEW_INACTIVE;
   gz.path_view_state = PATHVIEW_INACTIVE;
-  gz.holl_view_state = HOLLVIEW_INACTIVE;
   gz.noclip_on = 0;
   gz.hide_rooms = 0;
   gz.hide_actors = 0;

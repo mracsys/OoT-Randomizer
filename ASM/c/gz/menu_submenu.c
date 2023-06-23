@@ -1,4 +1,4 @@
-#include "gz_menu.h"
+#include "menu.h"
 
 static int activate_proc(struct menu_item *item)
 {

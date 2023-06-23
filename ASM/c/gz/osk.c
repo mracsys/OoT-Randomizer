@@ -1,5 +1,5 @@
 #include "input.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "osk.h"
 #include "resource.h"
 

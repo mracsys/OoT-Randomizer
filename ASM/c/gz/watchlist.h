@@ -1,6 +1,6 @@
 #ifndef WATCHLIST_H
 #define WATCHLIST_H
-#include "gz_menu.h"
+#include "menu.h"
 
 struct menu_item *watchlist_create(struct menu *menu,
                                    struct menu *menu_release,

@@ -3,14 +3,14 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <string.h>
-#include "gz_gfx.h"
+#include "gfx.h"
 #include "gz.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
 #include "settings.h"
 #include "state.h"
 #include "watchlist.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 struct command_info command_info[COMMAND_MAX] =
@@ -354,14 +354,6 @@ void command_pathview(void)
     gz.path_view_state = PATHVIEW_START;
   else
     gz.path_view_state = PATHVIEW_STOP;
-}
-
-void command_hollview(void)
-{
-  if (gz.holl_view_state == HOLLVIEW_INACTIVE)
-    gz.holl_view_state = HOLLVIEW_START;
-  else
-    gz.holl_view_state = HOLLVIEW_BEGIN_STOP;
 }
 
 void command_resetlag(void)

@@ -3,10 +3,10 @@
 #include <string.h>
 #include <stdint.h>
 #include "input.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
 #include "settings.h"
-#include "gz_z64.h"
+#include "z64.h"
 
 static int8_t     joy_x;
 static int8_t     joy_y;

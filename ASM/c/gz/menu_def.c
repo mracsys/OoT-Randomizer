@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include "gz_gfx.h"
-#include "gz_menu.h"
+#include "gfx.h"
+#include "menu.h"
 
 struct static_icon_data
 {

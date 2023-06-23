@@ -741,9 +741,7 @@ typedef struct
   uint32_t          fw_room_index;            /* 0x0E7C */
   int32_t           fw_set;                   /* 0x0E80 */
   char              unk_0xE84[0x0018];        /* 0x0E84 */
-  uint32_t          gs_flags[6];              /* 0x0E9C */
-  char              unk_EBC[0x0004];          /* 0x0EB4 */
-  int32_t           high_scores[7];           /* 0x0EB8 */
+  uint8_t           gs_flags[56];             /* 0x0E9C */
   uint16_t          event_chk_inf[14];        /* 0x0ED4 */
   uint16_t          item_get_inf[4];          /* 0x0EF0 */
   uint16_t          inf_table[30];            /* 0x0EF8 */
@@ -904,27 +902,6 @@ typedef struct
   int8_t            y;                        /* 0x0003 */
                                               /* 0x0004 */
 } z64_controller_t;
-
-enum z64_actor_id
-{
-  Z64_ACTOR_EN_HOLL = 0x0023
-};
-
-enum z64_actor_type
-{
-  Z64_ACTORTYPE_SWITCH,
-  Z64_ACTORTYPE_BG,
-  Z64_ACTORTYPE_PLAYER,
-  Z64_ACTORTYPE_EXPLOSIVE,
-  Z64_ACTORTYPE_NPC,
-  Z64_ACTORTYPE_ENEMY,
-  Z64_ACTORTYPE_PROP,
-  Z64_ACTORTYPE_ITEMACTION,
-  Z64_ACTORTYPE_MISC,
-  Z64_ACTORTYPE_BOSS,
-  Z64_ACTORTYPE_DOOR,
-  Z64_ACTORTYPE_CHEST
-};
 
 typedef struct z64_actor_s z64_actor_t;
 struct z64_actor_s

@@ -9,7 +9,7 @@
 #include "sys.h"
 #include "yaz0.h"
 #include "zu.h"
-#include "gz_z64.h"
+#include "z64.h"
 
 static void serial_write(void **p, void *data, uint32_t length)
 {

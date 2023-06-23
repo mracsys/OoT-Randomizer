@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
-#include "gz_menu.h"
-#include "gz_util.h"
+#include "menu.h"
+#include "util.h"
 
 struct item_data
 {

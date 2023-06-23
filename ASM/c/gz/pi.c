@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <n64.h>
 #include "pi.h"
-#include "gz_util.h"
+#include "util.h"
 
 typedef void io_func_t(uint32_t dev_addr, uint32_t ram_addr, size_t size);
 

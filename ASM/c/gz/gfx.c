@@ -4,9 +4,9 @@
 #include <string.h>
 #include <mips.h>
 #include <n64.h>
-#include "gz_gfx.h"
-#include "gz_util.h"
-#include "gz_z64.h"
+#include "gfx.h"
+#include "util.h"
+#include "z64.h"
 #include "zu.h"
 
 #define           GFX_DISP_SIZE     0x10000

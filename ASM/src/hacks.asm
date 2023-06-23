@@ -161,6 +161,164 @@ Gameplay_InitSkybox:
 .headersize 0
 
 ;==================================================================================================
+; gz hooks
+;==================================================================================================
+
+; play.s
+.headersize(0x8009A170 - 0xB100D0)
+
+; play.s, func_8009A750
+; Replaces:
+;   lw      v1, 0x1360(s2)
+;   addiu   $at, $zero, 0x0051
+.org 0x8009AA44
+    jal     entrance_offset_hook
+    nop
+
+; play.s, func_8009C0A8
+; Replaces:
+;   jal     func_80080C48
+.org 0x8009C758
+    jal     draw_room_hook
+
+; play.s, func_8009C0A8
+; Replaces:
+;   jal     func_80080C48
+.org 0x8009C770
+    jal     draw_room_hook
+
+; play.s, func_8009C0A8
+; Replaces:
+;   jal     func_80024AB4
+.org 0x8009C838
+    jal     draw_actors_hook
+
+; play.s, func_8009A750
+; Replaces:
+;   jal     func_800CDCC0
+.org 0x8009AC80
+    jal     srand_hook
+
+; graph.s
+.headersize(0x800A0FF0 - 0xB16F50)
+
+; graph.s, func_800A1688
+; Replaces:
+;   jal     func_800A0BA0
+;   lw      a0, 0x0064($sp)
+.org 0x800A16AC
+    jal     input_hook
+    nop
+
+; graph.s, func_800A1688
+; Replaces:
+;   jal     func_800C3DC8
+.org 0x800A183C
+    jal     ocarina_update_hook
+
+; graph.s, func_800A1130
+; Replaces:
+;   jal     func_8009FEC0
+.org 0x800A1198
+    jal     disp_hook
+
+; graph.s, func_800A1130
+; Replaces:
+;   jal     func_8009FEC0
+.org 0x800A11B0
+    jal     disp_hook
+
+; graph.s, func_800A1130
+; Replaces:
+;   jal     func_8009FEC0
+.org 0x800A11C8
+    jal     disp_hook
+
+; graph.s, func_800A1130
+; Replaces:
+;   jal     func_8009FEC0
+.org 0x800A11E4
+    jal     disp_hook
+
+; sound.s
+.headersize(0x800B0280 - 0xB261E0)
+
+; sound.s, func_800C1F20
+; Replaces:
+;   jal     func_800A279C
+.org 0x800C1F40
+    jal     ocarina_input_hook
+
+; sound.s, func_800C2E74
+; Replaces:
+;   bne     t6, $zero, lbl_800C2EB0
+;   lui     t7, 0x8012
+;   b       lbl_800C2EC0
+;   addiu   a0, $zero, 0x0003
+.org 0x800C2EA0
+    jal     ocarina_sync_hook
+    nop
+    b       @@ocarina_sync_hook_branch
+    nop
+.skip 8
+@@ocarina_sync_hook_branch:
+
+
+; sound.s, func_800C3A24
+; Replaces:
+;   jal     func_800BBD80
+.org 0x800C3A50
+    jal     afx_rand_hook
+
+; room.s
+.headersize(0x8007F540 - 0xAF54A0)
+
+; room.s, func_80080BA4
+; Replaces:
+;   jal     func_80002030
+.org 0x80080BD0
+    jal     room_load_sync_hook
+
+; camera.s
+.headersize(0x800355F0 - 0xAAB550)
+
+; camera.s, func_8004860C
+; Replaces:
+;   jalr    $ra, t9
+.org 0x80048A30
+    jal     camera_hook
+
+; n64_lib.s
+.headersize(0x800CC5C0 - 0xB42520)
+
+; n64_lib.s, func_800D0340
+; Replaces:
+;   jal     func_800D0830
+;   swc1    $f14, 0x0038($sp)
+.org 0x800D0358
+    jal     guPerspectiveF_hook
+    sw      $a2, 0x0038($sp)
+
+; n64_lib.s, func_800D0570
+; Replaces:
+;   mfc1    a2, $f12
+;   mfc1    a3, $f14
+.org 0x800D0590
+    nop
+    nop
+
+; game.s
+.headersize(0x800A0700 - 0xB16660)
+
+; game.s, func_800A0BD0
+; Replaces:
+;   lw      t9, 0x0004(s0)
+.org 0x800A0BF8
+    jal     _start
+
+.headersize(0)
+
+;==================================================================================================
 ; Remove Kokiri Sword Safety
 ;==================================================================================================
 

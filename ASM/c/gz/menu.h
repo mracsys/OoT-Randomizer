@@ -2,7 +2,7 @@
 #define MENU_H
 #include <stdint.h>
 #include <list/list.h>
-#include "gz_gfx.h"
+#include "gfx.h"
 
 #define MENU_NOVALUE 0
 

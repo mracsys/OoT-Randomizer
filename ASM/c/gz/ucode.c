@@ -1,7 +1,7 @@
 #include <mips.h>
 #include <n64.h>
 #include "ucode.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 _Alignas(8) __attribute__((weak))

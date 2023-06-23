@@ -1,4 +1,4 @@
-#include "gz_menu.h"
+#include "menu.h"
 #include "settings.h"
 
 static const char *cheat_names[] =

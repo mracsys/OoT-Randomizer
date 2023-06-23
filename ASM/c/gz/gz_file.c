@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "files.h"
-#include "gz_gfx.h"
+#include "gfx.h"
 #include "gz.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
 #include "settings.h"
 #include "sys.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 static int byte_mod_proc(struct menu_item *item,
@@ -169,7 +169,7 @@ static void clear_intro_flags_proc(struct menu_item *item, void *data)
 
 static void set_reward_flags_proc(struct menu_item *item, void *data)
 {
-  zu_set_event_flag(0x07);
+  zu_set_event_flag(0x19);
   zu_set_event_flag(0x25);
   zu_set_event_flag(0x37);
   zu_set_event_flag(0x48);
@@ -180,7 +180,7 @@ static void set_reward_flags_proc(struct menu_item *item, void *data)
 
 static void clear_reward_flags_proc(struct menu_item *item, void *data)
 {
-  zu_clear_event_flag(0x07);
+  zu_clear_event_flag(0x19);
   zu_clear_event_flag(0x25);
   zu_clear_event_flag(0x37);
   zu_clear_event_flag(0x48);

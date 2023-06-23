@@ -2,7 +2,7 @@
 #define SETTINGS_H
 #include <stdint.h>
 #include "input.h"
-#include "gz_z64.h"
+#include "z64.h"
 
 #define SETTINGS_ADDRESS            0x7A00
 #define SETTINGS_MAXSIZE            (0x8000-(SETTINGS_ADDRESS))
@@ -134,8 +134,6 @@ struct settings_bits
   uint32_t path_view_xlu    : 1;
   uint32_t path_view_points : 1;
   uint32_t path_view_lines  : 1;
-  uint32_t holl_view_xlu    : 1;
-  uint32_t holl_view_all    : 1;
   uint32_t watches_visible  : 1;
 };
 

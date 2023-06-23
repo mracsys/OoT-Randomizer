@@ -5,7 +5,7 @@
 #include "iodev.h"
 #include "pi.h"
 #include "sd_host.h"
-#include "gz_util.h"
+#include "util.h"
 
 static int      cart_irqf;
 static uint32_t cart_lat;

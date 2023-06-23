@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
-#include "gz_gfx.h"
+#include "gfx.h"
 #include "gz.h"
 #include "item_option.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 struct equipment_item_option

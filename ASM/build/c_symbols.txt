@@ -5,11 +5,17 @@ SYMBOL TABLE:
 00000000 l    d  .MIPS.abiflags	00000000 .MIPS.abiflags
 00000000 l    d  .reginfo	00000000 .reginfo
 00000000 l    d  .text	00000000 .text
+00000000 l    d  .text.hook	00000000 .text.hook
 00000000 l    d  .rodata	00000000 .rodata
 00000000 l    d  .rodata.cst4	00000000 .rodata.cst4
 00000000 l    d  .rodata.str1.4	00000000 .rodata.str1.4
 00000000 l    d  .rodata.cst8	00000000 .rodata.cst8
 00000000 l    d  .data	00000000 .data
+00000000 l    d  .dtor_n	00000000 .dtor_n
+00000000 l    d  .dtor_i	00000000 .dtor_i
+00000000 l    d  .ctor_n	00000000 .ctor_n
+00000000 l    d  .ctor_i	00000000 .ctor_i
+00000000 l    d  .stack	00000000 .stack
 00000000 l    d  .sdata	00000000 .sdata
 00000000 l    d  .sbss	00000000 .sbss
 00000000 l    d  .bss	00000000 .bss
@@ -60,14 +66,1488 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 get_items.c
 0000001c l       .rodata.cst4	00000000 $LC0
 00000000 l    df *ABS*	00000000 gfx.c
+00000000 l    df *ABS*	00000000 adex.c
+00007094 l     F .text	0000003c is_word_char
+000070d0 l     F .text	00000030 stack_peek
+00007100 l     F .text	0000008c parse_word
+0000718c l     F .text	000000b0 make_tok
+0000723c l     F .text	00000080 stack_pop
+000072bc l     F .text	00000024 stack_push
+000002b4 l     O .rodata	00000028 op_s
+00000264 l     O .rodata	00000028 op_ar
+0000028c l     O .rodata	00000028 op_prec
+0000024c l     O .rodata	00000018 syms
+0000005c l       .rodata.str1.4	00000000 $LC4
+00000064 l       .rodata.str1.4	00000000 $LC5
+0000006c l       .rodata.str1.4	00000000 $LC6
+0000004c l       .rodata.str1.4	00000000 $LC0
+00000050 l       .rodata.str1.4	00000000 $LC1
+00000054 l       .rodata.str1.4	00000000 $LC2
+00000058 l       .rodata.str1.4	00000000 $LC3
+00000000 l    df *ABS*	00000000 ed64_v1.c
+00007d74 l     F .text	0000006c sd_set_spd
+0000004c l     O .sbss	00000002 spi_cfg
+00007de0 l     F .text	00000048 sd_spi_ss
+00007e28 l     F .text	00000064 sd_spi_io
+00007e8c l     F .text	00000028 disk_write
+000002a4 l     O .data	0000003c sd_host
+00007eb4 l     F .text	000000d4 sd_rx_mblk
+00007f88 l     F .text	00000054 cart_unlock
+00000054 l     O .sbss	00000004 cart_lat
+00000050 l     O .sbss	00000004 cart_pwd
+00000058 l     O .sbss	00000004 cart_irqf
+00007fdc l     F .text	00000054 cart_lock_safe
+00008030 l     F .text	00000030 cart_lock
+00008060 l     F .text	0000012c probe
+0000818c l     F .text	00000028 disk_read
+000081b4 l     F .text	00000020 disk_init
+000081d4 l     F .text	00000060 sd_spi_tx_buf
+00008234 l     F .text	00000074 sd_spi_tx_clk
+000082a8 l     F .text	00000074 sd_spi_rx_buf
+00000000 l    df *ABS*	00000000 ed64_v2.c
+0000831c l     F .text	0000006c sd_set_spd
+0000005c l     O .sbss	00000002 spi_cfg
+00008388 l     F .text	00000054 cart_lock_safe
+00000068 l     O .sbss	00000004 cart_irqf
+00000064 l     O .sbss	00000004 cart_lat
+00000060 l     O .sbss	00000004 cart_pwd
+000083dc l     F .text	00000030 cart_lock
+0000840c l     F .text	00000054 cart_unlock
+00008460 l     F .text	00000124 fifo_write
+00008584 l     F .text	0000004c fifo_poll
+000085d0 l     F .text	00000128 probe
+000086f8 l     F .text	00000124 fifo_read
+0000881c l     F .text	00000100 sd_rx_mblk
+0000891c l     F .text	00000028 disk_write
+00000308 l     O .data	0000003c sd_host
+00008944 l     F .text	00000028 disk_read
+0000896c l     F .text	00000020 disk_init
+0000898c l     F .text	00000090 sd_dat_rx
+00008a1c l     F .text	00000080 sd_dat_tx
+00008a9c l     F .text	00000090 sd_cmd_rx
+00008b2c l     F .text	00000090 sd_dat_tx_buf
+00008bbc l     F .text	0000008c sd_cmd_tx_buf
+00008c48 l     F .text	000000a0 sd_dat_tx_clk
+00008ce8 l     F .text	000000a0 sd_cmd_rx_buf
+00008d88 l     F .text	000000a0 sd_dat_rx_buf
+00000000 l    df *ABS*	00000000 ed64_x.c
+00008e28 l     F .text	00000050 sd_set_spd
+0000006c l     O .sbss	00000002 spi_cfg
+00008e78 l     F .text	00000054 cart_lock_safe
+00000078 l     O .sbss	00000004 cart_irqf
+00000074 l     O .sbss	00000004 cart_lat
+00000070 l     O .sbss	00000004 cart_pwd
+00008ecc l     F .text	00000030 cart_lock
+00008efc l     F .text	00000054 cart_unlock
+00008f50 l     F .text	00000100 fifo_write
+00009050 l     F .text	0000004c fifo_poll
+0000909c l     F .text	00000098 probe
+00009134 l     F .text	00000100 fifo_read
+00009234 l     F .text	000000c0 sd_rx_mblk
+000092f4 l     F .text	00000028 disk_write
+0000036c l     O .data	0000003c sd_host
+0000931c l     F .text	00000028 disk_read
+00009344 l     F .text	00000020 disk_init
+00009364 l     F .text	000000cc sd_dat_rx_buf
+00009430 l     F .text	0000008c sd_dat_tx
+000094bc l     F .text	0000009c sd_cmd_tx_buf
+00009558 l     F .text	000000a0 sd_cmd_rx
+000095f8 l     F .text	000000a0 sd_dat_rx
+00009698 l     F .text	000000bc sd_dat_tx_buf
+00009754 l     F .text	000000b4 sd_dat_tx_clk
+00009808 l     F .text	000000b0 sd_cmd_rx_buf
+00000000 l    df *ABS*	00000000 explorer.c
+000098b8 l     F .text	00000074 think_proc
+0000992c l     F .text	0000017c activate_proc
+00009aa8 l     F .text	00000f4c draw_proc
+00000558 l     O .data	00000008 null_dl.5
+0000007c l     O .sbss	00000004 zbuf.4
+000004a8 l     O .data	000000b0 init_rcp.3
+00000428 l     O .data	00000080 init_xlu.2
+000003e8 l     O .data	00000040 lat_mesh.1
+000003a8 l     O .data	00000040 vert_mesh.0
+0000a9f4 l     F .text	00000038 leave_proc
+0000aa2c l     F .text	00000038 enter_proc
+00000020 l       .rodata.cst4	00000000 $LC0
+00000000 l       .rodata.cst8	00000000 $LC1
+00000008 l       .rodata.cst8	00000000 $LC2
+00000010 l       .rodata.cst8	00000000 $LC3
+00000024 l       .rodata.cst4	00000000 $LC4
+00000018 l       .rodata.cst8	00000000 $LC5
+00000020 l       .rodata.cst8	00000000 $LC6
+00000028 l       .rodata.cst4	00000000 $LC7
+0000002c l       .rodata.cst4	00000000 $LC8
+00000038 l       .rodata.cst4	00000000 $LC11
+0000003c l       .rodata.cst4	00000000 $LC12
+00000030 l       .rodata.cst4	00000000 $LC9
+00000034 l       .rodata.cst4	00000000 $LC10
+00000040 l       .rodata.cst4	00000000 $LC13
+00000044 l       .rodata.cst4	00000000 $LC14
+00000048 l       .rodata.cst4	00000000 $LC15
+0000004c l       .rodata.cst4	00000000 $LC16
+00000050 l       .rodata.cst4	00000000 $LC17
+000000ec l       .rodata.str1.4	00000000 $LC18
+000000f8 l       .rodata.str1.4	00000000 $LC19
+00000000 l    df *ABS*	00000000 fat.c
+0000abb8 l     F .text	0000003c cvt_lower
+0000abf4 l     F .text	00000084 name_comp
+0000ac78 l     F .text	0000004c name_trim
+0000acc4 l     F .text	00000130 char_is_sfn
+0000adf4 l     F .text	0000013c cvt_sfn
+0000af30 l     F .text	00000770 unix2dos
+0000b6a0 l     F .text	000001dc dos2unix
+0000b87c l     F .text	00000040 get_word
+0000b8bc l     F .text	0000002c set_word
+0000b8e8 l     F .text	00000034 file_data
+0000b91c l     F .text	000000d0 cache_flush
+0000b9ec l     F .text	000001d8 cache_prep
+0000bbc4 l     F .text	0000008c file_sect
+0000bc50 l     F .text	000002d4 get_clust
+0000bf24 l     F .text	00000158 find_free_clust
+0000c07c l     F .text	00000114 get_sfn
+0000c190 l     F .text	000000c4 entry_mod
+0000c254 l     F .text	000000b8 name_split
+0000c30c l     F .text	00000170 name_is_sfn
+0000c47c l     F .text	0000034c set_clust
+0000c7c8 l     F .text	00000310 resize_clust_chain
+0000cbb4 l     F .text	00000048 begin_dir
+0000ce90 l     F .text	00000168 dir_remove
+0000dc84 l     F .text	00000138 dir_find
+0000ddbc l     F .text	00000ad8 dir_insert
+00000104 l       .rodata.str1.4	00000000 $LC0
+00000108 l       .rodata.str1.4	00000000 $LC1
+0000010c l       .rodata.str1.4	00000000 $LC2
+00000110 l       .rodata.str1.4	00000000 $LC3
+00000000 l    df *ABS*	00000000 files.c
+00010480 l     F .text	00000084 stricmp
+00010504 l     F .text	00000064 scroll_down_proc
+0000657c l     O .bss	0000001c gf_dir_state
+0000655c l     O .bss	00000020 gf_dir_entries
+00010568 l     F .text	0000003c scroll_up_proc
+000105a4 l     F .text	00000148 file_nav_proc
+00006524 l     O .bss	00000038 gf_files
+000106ec l     F .text	00000060 file_enter_proc
+0001074c l     F .text	000002ac dir_entry_comp
+000109f8 l     F .text	00000154 return_path
+000000b0 l     O .sbss	00000004 gf_suffix_length
+000000b4 l     O .sbss	00000004 gf_suffix
+000000b8 l     O .sbss	00000004 gf_mode
+000000ac l     O .sbss	00000004 gf_callback_proc
+00010b70 l     F .text	00000078 overwrite_prompt_proc
+00006598 l     O .bss	00000050 gf_menu
+000000a8 l     O .sbss	00000004 gf_callback_data
+00010b4c l     F .text	00000024 accept_proc
+00000098 l     O .sbss	00000004 gf_name
+00010be8 l     F .text	000001c4 file_draw_proc
+00010dac l     F .text	00000044 name_activate_proc
+000000a5 l     O .sbss	00000001 gf_untitled
+00011920 l     F .text	00000050 osk_callback_proc
+00010df0 l     F .text	0000002c mkdir_proc
+0001141c l     F .text	00000094 mkdir_osk_callback_proc
+00010e1c l     F .text	00000348 update_list
+0000009c l     O .sbss	00000004 gf_location
+00011164 l     F .text	000002b8 update_view
+0000008c l     O .sbss	00000004 gf_mkdir
+00000094 l     O .sbss	00000004 gf_accept
+00000090 l     O .sbss	00000004 gf_clear
+00000088 l     O .sbss	00000004 gf_scroll_up
+00000084 l     O .sbss	00000004 gf_scroll_down
+000000a0 l     O .sbss	00000004 gf_reset
+000114b0 l     F .text	00000058 reset_proc
+00011508 l     F .text	00000240 set_name
+000000a4 l     O .sbss	00000001 gf_dirty_name
+00011748 l     F .text	000001b8 file_activate_proc
+00011900 l     F .text	00000020 clear_proc
+00000080 l     O .sbss	00000001 ready.0
+00000120 l       .rodata.str1.4	00000000 $LC0
+00000124 l       .rodata.str1.4	00000000 $LC1
+00000054 l       .rodata.cst4	00000000 $LC3
+00000134 l       .rodata.str1.4	00000000 $LC4
+00000138 l       .rodata.str1.4	00000000 $LC5
+0000013c l       .rodata.str1.4	00000000 $LC6
+00000144 l       .rodata.str1.4	00000000 $LC7
+00000154 l       .rodata.str1.4	00000000 $LC9
+00000160 l       .rodata.str1.4	00000000 $LC10
+00000168 l       .rodata.str1.4	00000000 $LC11
+0000016c l       .rodata.str1.4	00000000 $LC12
+00000174 l       .rodata.str1.4	00000000 $LC13
+0000017c l       .rodata.str1.4	00000000 $LC14
+00000188 l       .rodata.str1.4	00000000 $LC15
+00000190 l       .rodata.str1.4	00000000 $LC16
+00000000 l    df *ABS*	00000000 flags.c
+00011d70 l     F .text	0000004c get_flag_word
+00011dbc l     F .text	00000124 modify_flag
+00011ee0 l     F .text	000000d4 flag_proc
+000000cc l     O .sbss	00000004 view_record_index
+00006654 l     O .bss	0000001c records
+00011fb4 l     F .text	0000015c update_view
+000000c8 l     O .sbss	00000004 view_record_name
+000000c0 l     O .sbss	00000004 view_pagedown
+000000c4 l     O .sbss	00000004 view_pageup
+00006a70 l     O .bss	00000040 view_rows
+00006670 l     O .bss	00000400 view_cells
+00012110 l     F .text	0000005c page_down_proc
+0001216c l     F .text	00000040 page_up_proc
+000121ac l     F .text	00000040 next_record_proc
+000121ec l     F .text	000000fc log_draw_proc
+00006638 l     O .bss	0000001c events
+000122e8 l     F .text	00000028 log_clear_proc
+00012310 l     F .text	000000ac log_undo_proc
+000123bc l     F .text	000000cc add_record
+00012488 l     F .text	00000044 prev_record_proc
+000065e8 l     O .bss	00000050 log.1
+00012aa4 l     F .text	000001d8 log_think_proc
+000000bc l     O .sbss	00000004 t_flag.0
+00000198 l       .rodata.str1.4	00000000 $LC0
+000001a0 l       .rodata.str1.4	00000000 $LC1
+000001a4 l       .rodata.str1.4	00000000 $LC2
+000001a8 l       .rodata.str1.4	00000000 $LC3
+000001b8 l       .rodata.str1.4	00000000 $LC4
+000001c8 l       .rodata.str1.4	00000000 $LC5
+000001d4 l       .rodata.str1.4	00000000 $LC6
+000001e0 l       .rodata.str1.4	00000000 $LC7
+000001e8 l       .rodata.str1.4	00000000 $LC8
+000001f4 l       .rodata.str1.4	00000000 $LC9
+000001fc l       .rodata.str1.4	00000000 $LC10
+00000204 l       .rodata.str1.4	00000000 $LC11
+00000210 l       .rodata.str1.4	00000000 $LC12
+00000218 l       .rodata.str1.4	00000000 $LC13
+00000228 l       .rodata.str1.4	00000000 $LC14
+00000230 l       .rodata.str1.4	00000000 $LC15
+00000234 l       .rodata.str1.4	00000000 $LC16
+0000023c l       .rodata.str1.4	00000000 $LC17
+00000240 l       .rodata.str1.4	00000000 $LC18
+00000244 l       .rodata.str1.4	00000000 $LC19
+00000258 l       .rodata.str1.4	00000000 $LC20
+00000058 l       .rodata.cst4	00000000 $LC21
+00000264 l       .rodata.str1.4	00000000 $LC22
+00000000 l    df *ABS*	00000000 geometry.c
+0000005c l       .rodata.cst4	00000000 $LC0
+00000060 l       .rodata.cst4	00000000 $LC1
+00000028 l       .rodata.cst8	00000000 $LC2
+00000030 l       .rodata.cst8	00000000 $LC3
+00000038 l       .rodata.cst8	00000000 $LC4
+00000000 l    df *ABS*	00000000 gfx.c
+00013254 l     F .text	000002ac gfx_printf_f_va
+00006ce8 l     O .bss	00000028 gfx_modes
+00006ab0 l     O .bss	000000e0 gfx_chars
+000000d0 l     O .sbss	00000004 gfx_char_font
+000000e4 l     O .sbss	00000004 gfx_disp
+000000e0 l     O .sbss	00000004 gfx_disp_w
+000000dc l     O .sbss	00000004 gfx_disp_p
+000000d8 l     O .sbss	00000004 gfx_disp_d
+000000d4 l     O .sbss	00000001 gfx_synced
+00000560 l     O .data	00000080 mode_init.0
+00006b90 l     O .bss	00000014 gfx_mode_stack_pos
+00006ba8 l     O .bss	00000140 gfx_mode_stack
+00014be4 l     F .text	00000314 draw_chars
+00014ef8 l     F .text	00000110 gfx_printf_n_va
+00000064 l       .rodata.cst4	00000000 $LC0
+00000068 l       .rodata.cst4	00000000 $LC1
+0000006c l       .rodata.cst4	00000000 $LC2
+00000070 l       .rodata.cst4	00000000 $LC3
+00000074 l       .rodata.cst4	00000000 $LC4
+00000000 l    df *ABS*	00000000 gu.c
+00000080 l       .rodata.cst4	00000000 $LC3
+00000084 l       .rodata.cst4	00000000 $LC4
+00000078 l       .rodata.cst4	00000000 $LC1
+0000007c l       .rodata.cst4	00000000 $LC2
+00000088 l       .rodata.cst4	00000000 $LC5
+0000008c l       .rodata.cst4	00000000 $LC6
+00000090 l       .rodata.cst4	00000000 $LC7
+00000000 l    df *ABS*	00000000 gz.c
+00016df8 l     F .text	000000a8 mask_input
+00016ea0 l     F .text	0000001c main_return_proc
+00016ebc l     F .text	00000060 update_cpu_counter
+000000f4 l     O .sbss	00000004 count.7
+00016f1c l     F .text	0000148c main_hook
+000000f0 l     O .sbss	00000004 input_pos.6
+000003b4 l     O .rodata	00000014 input_list.5
+00000378 l     O .rodata	0000003c buttons.4
+000005e0 l     O .data	00000004 splash_time.3
+000000ec l     O .sbss	00000004 logo_texture.2
+000000e9 l     O .sbss	00000001 global_ctors_done.1
+000000e8 l     O .sbss	00000001 global_dtors_done.0
+0001857c l     F .text	000000fc set_locate
+00006db0 l     O .bss	00000050 menu.10
+00006d60 l     O .bss	00000050 watches.9
+00006d10 l     O .bss	00000050 global.8
+00000000 l     O .dtor_n	00000004 dtor_n
+00000000 l     O .dtor_i	00000004 dtor_i
+00000000 l     O .ctor_n	00000004 ctor_n
+00000000 l     O .ctor_i	00000004 ctor_i
+00000094 l       .rodata.cst4	00000000 $LC0
+00000098 l       .rodata.cst4	00000000 $LC1
+00000278 l       .rodata.str1.4	00000000 $LC2
+00000280 l       .rodata.str1.4	00000000 $LC3
+0000009c l       .rodata.cst4	00000000 $LC4
+000000a0 l       .rodata.cst4	00000000 $LC5
+00000288 l       .rodata.str1.4	00000000 $LC6
+000000a4 l       .rodata.cst4	00000000 $LC8
+0000028c l       .rodata.str1.4	00000000 $LC7
+00000294 l       .rodata.str1.4	00000000 $LC9
+000002a4 l       .rodata.str1.4	00000000 $LC10
+000002b0 l       .rodata.str1.4	00000000 $LC11
+000002b8 l       .rodata.str1.4	00000000 $LC12
+000002c8 l       .rodata.str1.4	00000000 $LC13
+000002d8 l       .rodata.str1.4	00000000 $LC14
+000002e4 l       .rodata.str1.4	00000000 $LC15
+000002ec l       .rodata.str1.4	00000000 $LC16
+00000304 l       .rodata.str1.4	00000000 $LC18
+0000030c l       .rodata.str1.4	00000000 $LC19
+00000314 l       .rodata.str1.4	00000000 $LC20
+0000031c l       .rodata.str1.4	00000000 $LC21
+00000324 l       .rodata.str1.4	00000000 $LC22
+00000330 l       .rodata.str1.4	00000000 $LC23
+00000338 l       .rodata.str1.4	00000000 $LC24
+00000340 l       .rodata.str1.4	00000000 $LC25
+00000348 l       .rodata.str1.4	00000000 $LC26
+00000350 l       .rodata.str1.4	00000000 $LC27
+00000358 l       .rodata.str1.4	00000000 $LC28
+000002f0 l       .rodata.str1.4	00000000 $LC17
+00000000 l    df *ABS*	00000000 gz_camera.c
+00019d28 l     F .text	00000054 get_target_point
+00019d7c l     F .text	00000348 cam_manual
+000000a8 l       .rodata.cst4	00000000 $LC0
+000000ac l       .rodata.cst4	00000000 $LC1
+00000040 l       .rodata.cst8	00000000 $LC2
+000000b0 l       .rodata.cst4	00000000 $LC3
+000000b4 l       .rodata.cst4	00000000 $LC4
+000000b8 l       .rodata.cst4	00000000 $LC5
+000000bc l       .rodata.cst4	00000000 $LC6
+000000c0 l       .rodata.cst4	00000000 $LC7
+000000c4 l       .rodata.cst4	00000000 $LC8
+000000c8 l       .rodata.cst4	00000000 $LC9
+000000cc l       .rodata.cst4	00000000 $LC10
+000000d0 l       .rodata.cst4	00000000 $LC11
+000000d4 l       .rodata.cst4	00000000 $LC12
+000000e0 l       .rodata.cst4	00000000 $LC15
+000000e4 l       .rodata.cst4	00000000 $LC16
+000000d8 l       .rodata.cst4	00000000 $LC13
+000000dc l       .rodata.cst4	00000000 $LC14
+00000000 l    df *ABS*	00000000 gz_cheats.c
+0001a8e0 l     F .text	00000098 cheat_proc
+00006e00 l     O .bss	00000050 menu.0
+000003c8 l     O .rodata	0000004c cheat_names
+00000364 l       .rodata.str1.4	00000000 $LC0
+00000000 l    df *ABS*	00000000 gz_col_view.c
+0001aa9c l     F .text	00000038 release_mem
+0001aad4 l     F .text	00000104 poly_writer_flush
+0001abd8 l     F .text	0000008c line_writer_flush
+0001ac64 l     F .text	000008cc do_poly_list
+0001b530 l     F .text	000000dc do_dyn_list
+0001b60c l     F .text	00000154 tri_norm
+0001b760 l     F .text	000002ac draw_quad
+0001ba0c l     F .text	00000258 do_waterbox_list
+0001bc64 l     F .text	000001ec init_poly_gfx
+0001be50 l     F .text	0000016c init_line_gfx
+0001bfbc l     F .text	00000030 ico_sph_subdivide_edge
+0001bfec l     F .text	00000a14 draw_ico_sphere
+00000120 l     O .sbss	00000004 p_sph_gfx.12
+00007240 l     O .bss	000002a0 sph_vtx.11
+000070d8 l     O .bss	00000168 sph_gfx.10
+0001ca00 l     F .text	0000094c do_hitbox_list
+0000011c l     O .sbss	00000004 p_cyl_gfx.9
+00006ff0 l     O .bss	000000e8 cyl_gfx.8
+00006e50 l     O .bss	000001a0 cyl_vtx.7
+0000015c l     O .sbss	00000004 col_view_scene.24
+00000158 l     O .sbss	00000004 col_view_water.23
+00000154 l     O .sbss	00000004 col_view_wfc.22
+00000150 l     O .sbss	00000004 col_view_line.21
+0000014c l     O .sbss	00000004 col_view_rd.20
+00000148 l     O .sbss	00000004 stc_poly.19
+00000144 l     O .sbss	00000004 stc_line.18
+0000013c l     O .sbss	00000008 dyn_poly_buf.17
+00000134 l     O .sbss	00000008 dyn_line_buf.16
+00000130 l     O .sbss	00000004 dyn_gfx_idx.15
+00000128 l     O .sbss	00000008 hit_gfx_buf.14
+00000124 l     O .sbss	00000004 hit_gfx_idx.13
+00000119 l     O .sbss	00000001 path_view_points.6
+00000118 l     O .sbss	00000001 path_view_lines.5
+00000110 l     O .sbss	00000008 poly_gfx_buf.4
+00000108 l     O .sbss	00000008 line_gfx_buf.3
+00000104 l     O .sbss	00000004 path_gfx_idx.2
+000000fc l     O .sbss	00000008 cull_gfx_buf.1
+000000f8 l     O .sbss	00000004 cull_gfx_idx.0
+000000e8 l       .rodata.cst4	00000000 $LC1
+000000ec l       .rodata.cst4	00000000 $LC2
+000000f0 l       .rodata.cst4	00000000 $LC3
+000000f4 l       .rodata.cst4	00000000 $LC4
+000000f8 l       .rodata.cst4	00000000 $LC5
+00000048 l       .rodata.cst8	00000000 $LC6
+000000fc l       .rodata.cst4	00000000 $LC7
+00000100 l       .rodata.cst4	00000000 $LC8
+00000104 l       .rodata.cst4	00000000 $LC9
+00000108 l       .rodata.cst4	00000000 $LC10
+0000010c l       .rodata.cst4	00000000 $LC11
+00000050 l       .rodata.cst8	00000000 $LC12
+00000058 l       .rodata.cst8	00000000 $LC13
+00000110 l       .rodata.cst4	00000000 $LC14
+00000000 l    df *ABS*	00000000 gz_command.c
+00000114 l       .rodata.cst4	00000000 $LC0
+00000118 l       .rodata.cst4	00000000 $LC1
+0000011c l       .rodata.cst4	00000000 $LC2
+00000438 l       .rodata.str1.4	00000000 $LC3
+00000444 l       .rodata.str1.4	00000000 $LC4
+00000450 l       .rodata.str1.4	00000000 $LC5
+00000464 l       .rodata.str1.4	00000000 $LC6
+00000474 l       .rodata.str1.4	00000000 $LC7
+00000488 l       .rodata.str1.4	00000000 $LC8
+00000498 l       .rodata.str1.4	00000000 $LC9
+000004ac l       .rodata.str1.4	00000000 $LC10
+000004c0 l       .rodata.str1.4	00000000 $LC11
+000004d4 l       .rodata.str1.4	00000000 $LC12
+000004e0 l       .rodata.str1.4	00000000 $LC13
+00000000 l    df *ABS*	00000000 gz_debug.c
+0001fa9c l     F .text	00000054 pop_object_proc
+0001faf0 l     F .text	00000090 actor_index_dec_proc
+0001fb80 l     F .text	000000a4 actor_index_inc_proc
+0001fc24 l     F .text	0000006c kill_actor_proc
+0001fc90 l     F .text	00000080 goto_actor_proc
+0001fd10 l     F .text	000000e4 toggle_cullzone_proc
+0001fdf4 l     F .text	0000000c break_proc
+0001fe00 l     F .text	00000080 rdb_draw_proc
+0001fe80 l     F .text	0000001c stop_rdb_proc
+0001fe9c l     F .text	0000001c start_rdb_proc
+0001feb8 l     F .text	00000094 fetch_actor_info_proc
+0001ff4c l     F .text	000000d8 spawn_actor_attached_b_proc
+00020024 l     F .text	00000070 spawn_actor_proc
+00020094 l     F .text	0000009c push_object_proc
+00020130 l     F .text	00000074 word_mod_proc
+000201a4 l     F .text	00000074 halfword_mod_proc
+00020218 l     F .text	0000008c edit_actor_proc
+000202a4 l     F .text	00000210 objects_draw_proc
+000204b4 l     F .text	00000398 actor_draw_proc
+00000a28 l     O .data	00000070 draw_lines.4
+0002084c l     F .text	00000074 byte_optionmod_proc
+000208c0 l     F .text	00000348 disp_draw_proc
+000074e0 l     O .bss	00000010 t.2
+000004c8 l     O .rodata	00000010 disp_name.1
+00020c08 l     F .text	000005d0 heap_draw_proc
+00000160 l     O .sbss	00000004 t.0
+00007738 l     O .bss	00000050 menu.15
+000076e8 l     O .bss	00000050 heap.14
+00007698 l     O .bss	00000050 disp.13
+00007648 l     O .bss	00000050 objects.12
+000075f8 l     O .bss	00000050 actors.11
+000075a8 l     O .bss	00000050 rdb.10
+00007558 l     O .bss	00000050 flags.9
+00007508 l     O .bss	00000050 mem.8
+0000016c l     O .sbss	00000008 adi.7
+000074f0 l     O .bss	00000018 asi.6
+00000164 l     O .sbss	00000008 ai.5
+000009c8 l     O .data	00000060 v.3
+00000068 l       .rodata.cst8	00000000 $LC3
+00000068 l       .rodata.cst8	00000000 $LC14
+000006e4 l       .rodata.str1.4	00000000 $LC1
+000006dc l       .rodata.str1.4	00000000 $LC0
+000006f0 l       .rodata.str1.4	00000000 $LC2
+00000700 l       .rodata.str1.4	00000000 $LC4
+00000714 l       .rodata.str1.4	00000000 $LC5
+00000724 l       .rodata.str1.4	00000000 $LC6
+00000734 l       .rodata.str1.4	00000000 $LC7
+00000744 l       .rodata.str1.4	00000000 $LC8
+00000750 l       .rodata.str1.4	00000000 $LC9
+00000758 l       .rodata.str1.4	00000000 $LC10
+00000760 l       .rodata.str1.4	00000000 $LC11
+00000768 l       .rodata.str1.4	00000000 $LC12
+00000060 l       .rodata.cst8	00000000 $LC13
+00000778 l       .rodata.str1.4	00000000 $LC15
+00000780 l       .rodata.str1.4	00000000 $LC16
+00000784 l       .rodata.str1.4	00000000 $LC17
+00000798 l       .rodata.str1.4	00000000 $LC18
+00000120 l       .rodata.cst4	00000000 $LC19
+000007a0 l       .rodata.str1.4	00000000 $LC20
+000007bc l       .rodata.str1.4	00000000 $LC21
+000007d4 l       .rodata.str1.4	00000000 $LC22
+000007ec l       .rodata.str1.4	00000000 $LC23
+00000804 l       .rodata.str1.4	00000000 $LC24
+0000081c l       .rodata.str1.4	00000000 $LC25
+00000834 l       .rodata.str1.4	00000000 $LC26
+0000084c l       .rodata.str1.4	00000000 $LC27
+00000864 l       .rodata.str1.4	00000000 $LC28
+0000087c l       .rodata.str1.4	00000000 $LC29
+00000124 l       .rodata.cst4	00000000 $LC30
+00000894 l       .rodata.str1.4	00000000 $LC31
+0000089c l       .rodata.str1.4	00000000 $LC32
+000008a4 l       .rodata.str1.4	00000000 $LC33
+000008b4 l       .rodata.str1.4	00000000 $LC34
+000008bc l       .rodata.str1.4	00000000 $LC35
+000008c4 l       .rodata.str1.4	00000000 $LC36
+000008cc l       .rodata.str1.4	00000000 $LC37
+000008d4 l       .rodata.str1.4	00000000 $LC38
+000008d8 l       .rodata.str1.4	00000000 $LC39
+000008e4 l       .rodata.str1.4	00000000 $LC40
+000008ec l       .rodata.str1.4	00000000 $LC41
+000008f0 l       .rodata.str1.4	00000000 $LC42
+000008f8 l       .rodata.str1.4	00000000 $LC44
+00000900 l       .rodata.str1.4	00000000 $LC45
+00000904 l       .rodata.str1.4	00000000 $LC46
+00000908 l       .rodata.str1.4	00000000 $LC47
+00000910 l       .rodata.str1.4	00000000 $LC48
+00000918 l       .rodata.str1.4	00000000 $LC49
+00000924 l       .rodata.str1.4	00000000 $LC50
+00000930 l       .rodata.str1.4	00000000 $LC51
+0000093c l       .rodata.str1.4	00000000 $LC52
+00000948 l       .rodata.str1.4	00000000 $LC53
+00000954 l       .rodata.str1.4	00000000 $LC54
+0000095c l       .rodata.str1.4	00000000 $LC55
+0000096c l       .rodata.str1.4	00000000 $LC56
+0000097c l       .rodata.str1.4	00000000 $LC57
+00000988 l       .rodata.str1.4	00000000 $LC58
+00000994 l       .rodata.str1.4	00000000 $LC59
+00000000 l    df *ABS*	00000000 gz_equips.c
+00021a1c l     F .text	00000070 button_item_proc
+00021a8c l     F .text	0000014c equip_switch_proc
+00007788 l     O .bss	00000050 menu.0
+000009c4 l       .rodata.str1.4	00000000 $LC0
+00000128 l       .rodata.cst4	00000000 $LC1
+0000012c l       .rodata.cst4	00000000 $LC2
+00000000 l    df *ABS*	00000000 gz_file.c
+00021f1c l     F .text	00000010 call_navi_proc
+00021f2c l     F .text	0000000c set_time_proc
+00021f38 l     F .text	00000078 byte_switch_proc
+00021fb0 l     F .text	00000074 halfword_optionmod_proc
+00022024 l     F .text	00000074 byte_mod_proc
+00022098 l     F .text	00000074 halfword_mod_proc
+0002210c l     F .text	0000004c clear_reward_flags_proc
+00022158 l     F .text	000000b4 clear_intro_flags_proc
+0002220c l     F .text	00000034 clear_carpenter_flags_proc
+00022240 l     F .text	0000001c clear_epona_flag_proc
+0002225c l     F .text	0000004c set_reward_flags_proc
+000222a8 l     F .text	000000b4 set_intro_flags_proc
+0002235c l     F .text	00000034 set_carpenter_flags_proc
+00022390 l     F .text	0000001c set_epona_flag_proc
+000223ac l     F .text	00000064 load_debug_file_proc
+00022410 l     F .text	00000044 restore_gs_proc
+000077d8 l     O .bss	00000050 menu.0
+000009cc l       .rodata.str1.4	00000000 $LC0
+000009d4 l       .rodata.str1.4	00000000 $LC1
+000009e8 l       .rodata.str1.4	00000000 $LC2
+000009f4 l       .rodata.str1.4	00000000 $LC3
+00000a04 l       .rodata.str1.4	00000000 $LC4
+00000a10 l       .rodata.str1.4	00000000 $LC5
+00000a1c l       .rodata.str1.4	00000000 $LC6
+00000a30 l       .rodata.str1.4	00000000 $LC7
+00000a40 l       .rodata.str1.4	00000000 $LC8
+00000a54 l       .rodata.str1.4	00000000 $LC9
+00000a5c l       .rodata.str1.4	00000000 $LC11
+00000a64 l       .rodata.str1.4	00000000 $LC13
+00000a70 l       .rodata.str1.4	00000000 $LC14
+00000a7c l       .rodata.str1.4	00000000 $LC16
+00000000 l    df *ABS*	00000000 gz_inventory.c
+000229d0 l     F .text	000000c4 equipment_item_proc
+00022a94 l     F .text	0000007c capacity_item_proc
+00022b10 l     F .text	00000080 quest_item_switch_proc
+00022b90 l     F .text	00000084 byte_switch_proc
+00022c14 l     F .text	00000070 item_switch_proc
+00022c84 l     F .text	0000007c byte_mod_indirect_proc
+00022d00 l     F .text	00000078 magic_capacity_proc
+00022d78 l     F .text	00000074 byte_mod_proc
+00022dec l     F .text	00000074 halfword_mod_proc
+00022e60 l     F .text	00000064 dungeon_option_proc
+00022ec4 l     F .text	00000074 magic_acquired_proc
+00022f38 l     F .text	00000064 double_defense_proc
+00022f9c l     F .text	00000098 update_bgs
+00023034 l     F .text	00000078 bgs_switch_proc
+000230ac l     F .text	000000bc equipment_switch_proc
+00007918 l     O .bss	00000050 menu.6
+000078c8 l     O .bss	00000050 equipment.5
+00007878 l     O .bss	00000050 quest.4
+00007828 l     O .bss	00000050 amount.3
+00000854 l     O .rodata	00000054 equipment_item_list
+0000073c l     O .rodata	00000118 capacity_item_list
+00000abc l     O .data	00000008 multi_options.2
+00000ab4 l     O .data	00000008 options.1
+00000b90 l     O .data	00000034 equipment_list
+00000af0 l     O .data	000000a0 item_list
+00000ae0 l     O .data	0000000e bottle_options
+00000ad4 l     O .data	0000000c adult_trade_options
+00000ac4 l     O .data	0000000d child_trade_options
+00000a98 l     O .data	0000001c di.0
+000006dc l     O .rodata	00000060 quest_item_list
+0000064c l     O .rodata	00000090 song_list
+00000a88 l       .rodata.str1.4	00000000 $LC0
+00000a90 l       .rodata.str1.4	00000000 $LC1
+00000aa4 l       .rodata.str1.4	00000000 $LC2
+00000ab0 l       .rodata.str1.4	00000000 $LC3
+00000130 l       .rodata.cst4	00000000 $LC4
+00000134 l       .rodata.cst4	00000000 $LC5
+00000ab8 l       .rodata.str1.4	00000000 $LC6
+00000ac4 l       .rodata.str1.4	00000000 $LC7
+00000ad8 l       .rodata.str1.4	00000000 $LC8
+00000aec l       .rodata.str1.4	00000000 $LC9
+00000af8 l       .rodata.str1.4	00000000 $LC10
+00000b00 l       .rodata.str1.4	00000000 $LC11
+00000b08 l       .rodata.str1.4	00000000 $LC12
+00000b14 l       .rodata.str1.4	00000000 $LC13
+00000b20 l       .rodata.str1.4	00000000 $LC14
+00000b30 l       .rodata.str1.4	00000000 $LC15
+00000b38 l       .rodata.str1.4	00000000 $LC16
+00000138 l       .rodata.cst4	00000000 $LC17
+0000013c l       .rodata.cst4	00000000 $LC18
+00000000 l    df *ABS*	00000000 gz_macro.c
+00024448 l     F .text	0000003c prev_state_proc
+00024484 l     F .text	0000003c next_state_proc
+000244c0 l     F .text	000000a0 byte_ztarget_proc
+00024560 l     F .text	000000a4 wiivc_cam_proc
+00024604 l     F .text	000000a4 hack_room_load_proc
+000246a8 l     F .text	000000a8 hack_oca_sync_proc
+00024750 l     F .text	000000a8 hack_oca_input_proc
+000247f8 l     F .text	00000034 rewind_switch_proc
+0002482c l     F .text	0000009c quick_play_proc
+000248c8 l     F .text	0000001c load_state_proc
+000248e4 l     F .text	00000064 quick_record_proc
+00024948 l     F .text	0000001c save_state_proc
+00024964 l     F .text	0000009c export_state_proc
+00024ac4 l     F .text	00000104 do_export_state
+00024a00 l     F .text	00000040 import_state_proc
+00024ebc l     F .text	000001f8 do_import_state
+00024a40 l     F .text	00000044 export_macro_proc
+00024bc8 l     F .text	00000290 do_export_macro
+00024a84 l     F .text	00000040 import_macro_proc
+00025330 l     F .text	0000046c do_import_macro
+00024e58 l     F .text	00000064 clear_state_proc
+000250b4 l     F .text	0000027c state_info_draw_proc
+0002579c l     F .text	00000070 movie_pos_proc
+0002580c l     F .text	000000fc trim_switch_proc
+00025908 l     F .text	0000007c play_switch_proc
+00025984 l     F .text	0000004c record_switch_proc
+000259d0 l     F .text	00000034 advance_switch_proc
+00025a04 l     F .text	0000004c pause_switch_proc
+00007a08 l     O .bss	00000050 menu.3
+000079b8 l     O .bss	00000050 menu_settings.2
+00007968 l     O .bss	00000050 menu_vcont.1
+0002682c l     F .text	000000b0 vcont_enable_proc
+000266a8 l     F .text	000000e0 vcont_joy_proc
+00026594 l     F .text	00000114 vcont_button_proc
+00026788 l     F .text	000000a4 vcont_plugged_proc
+000008b0 l     O .rodata	00000038 buttons.0
+00007a58 l     O .bss	00000010 vcont_raw
+00000174 l     O .sbss	00000004 vcont_plugged
+00000c80 l       .rodata.str1.4	00000000 $LC0
+00000c94 l       .rodata.str1.4	00000000 $LC1
+00000ca8 l       .rodata.str1.4	00000000 $LC2
+00000cbc l       .rodata.str1.4	00000000 $LC3
+00000cc4 l       .rodata.str1.4	00000000 $LC4
+00000ccc l       .rodata.str1.4	00000000 $LC5
+00000cd4 l       .rodata.str1.4	00000000 $LC6
+00000cdc l       .rodata.str1.4	00000000 $LC8
+00000cf4 l       .rodata.str1.4	00000000 $LC9
+00000d08 l       .rodata.str1.4	00000000 $LC10
+00000d18 l       .rodata.str1.4	00000000 $LC11
+00000d1c l       .rodata.str1.4	00000000 $LC12
+00000d20 l       .rodata.str1.4	00000000 $LC13
+00000140 l       .rodata.cst4	00000000 $LC14
+00000d28 l       .rodata.str1.4	00000000 $LC15
+00000d34 l       .rodata.str1.4	00000000 $LC16
+00000d4c l       .rodata.str1.4	00000000 $LC17
+00000d54 l       .rodata.str1.4	00000000 $LC18
+00000d5c l       .rodata.str1.4	00000000 $LC19
+00000d6c l       .rodata.str1.4	00000000 $LC20
+00000d7c l       .rodata.str1.4	00000000 $LC21
+00000d88 l       .rodata.str1.4	00000000 $LC22
+00000d98 l       .rodata.str1.4	00000000 $LC23
+00000da4 l       .rodata.str1.4	00000000 $LC24
+00000db0 l       .rodata.str1.4	00000000 $LC25
+00000dc0 l       .rodata.str1.4	00000000 $LC26
+00000dd0 l       .rodata.str1.4	00000000 $LC27
+00000ddc l       .rodata.str1.4	00000000 $LC28
+00000de8 l       .rodata.str1.4	00000000 $LC29
+00000df4 l       .rodata.str1.4	00000000 $LC30
+00000e04 l       .rodata.str1.4	00000000 $LC31
+00000e14 l       .rodata.str1.4	00000000 $LC32
+00000e28 l       .rodata.str1.4	00000000 $LC33
+00000e3c l       .rodata.str1.4	00000000 $LC34
+00000e48 l       .rodata.str1.4	00000000 $LC35
+00000e5c l       .rodata.str1.4	00000000 $LC36
+00000e70 l       .rodata.str1.4	00000000 $LC37
+00000e84 l       .rodata.str1.4	00000000 $LC38
+00000e98 l       .rodata.str1.4	00000000 $LC39
+00000ea8 l       .rodata.str1.4	00000000 $LC40
+00000eb8 l       .rodata.str1.4	00000000 $LC41
+00000ec8 l       .rodata.str1.4	00000000 $LC42
+00000ee0 l       .rodata.str1.4	00000000 $LC43
+00000ef0 l       .rodata.str1.4	00000000 $LC44
+00000efc l       .rodata.str1.4	00000000 $LC45
+00000f08 l       .rodata.str1.4	00000000 $LC46
+00000000 l    df *ABS*	00000000 gz_movie.c
+00000000 l    df *ABS*	00000000 gz_scene.c
+00026d8c l     F .text	0000005c set_entrance_proc
+00026de8 l     F .text	00000030 clear_scene_flags_proc
+00026e18 l     F .text	00000034 set_scene_flags_proc
+00026e4c l     F .text	00000020 reset_cam_proc
+00026e6c l     F .text	0000003c teleport_dec_proc
+00026ea8 l     F .text	0000003c teleport_inc_proc
+00026ee4 l     F .text	00000068 cam_dist_max_proc
+00026f4c l     F .text	00000068 cam_dist_min_proc
+00026fb4 l     F .text	00000068 cam_bhv_proc
+0002701c l     F .text	00000068 cam_mode_proc
+00027084 l     F .text	00000098 col_view_mode_proc
+0002711c l     F .text	00000088 path_view_xlu_proc
+000271a4 l     F .text	0000008c path_view_lines_proc
+00027230 l     F .text	0000008c path_view_points_proc
+000272bc l     F .text	0000008c hit_view_shade_proc
+00027348 l     F .text	0000008c hit_view_xlu_proc
+000273d4 l     F .text	0000008c hit_view_oc_proc
+00027460 l     F .text	0000008c hit_view_ac_proc
+000274ec l     F .text	0000008c hit_view_at_proc
+00027578 l     F .text	0000008c col_view_upd_proc
+00027604 l     F .text	00000088 col_view_rd_proc
+0002768c l     F .text	00000080 col_view_shade_proc
+0002770c l     F .text	00000084 col_view_line_proc
+00027790 l     F .text	00000084 col_view_wfc_proc
+00027814 l     F .text	00000084 col_view_water_proc
+00027898 l     F .text	00000084 col_view_xlu_proc
+0002791c l     F .text	00000060 hide_actors_proc
+0002797c l     F .text	00000060 hide_rooms_proc
+000279dc l     F .text	00000058 set_cam_input_mask
+00027a34 l     F .text	00000068 lock_cam_proc
+00027a9c l     F .text	00000068 enable_cam_proc
+00027b04 l     F .text	000000b8 path_view_proc
+00027bbc l     F .text	000000b0 hit_view_proc
+00027c6c l     F .text	000000b8 col_view_proc
+00027d24 l     F .text	000000fc load_room_proc
+00007b58 l     O .bss	00000050 menu.3
+00007b08 l     O .bss	00000050 collision.2
+00007ab8 l     O .bss	00000050 camera.1
+00007a68 l     O .bss	00000050 explorer.0
+00000f10 l       .rodata.str1.4	00000000 $LC0
+00000f18 l       .rodata.str1.4	00000000 $LC1
+00000f24 l       .rodata.str1.4	00000000 $LC2
+00000f38 l       .rodata.str1.4	00000000 $LC3
+00000f44 l       .rodata.str1.4	00000000 $LC4
+00000f50 l       .rodata.str1.4	00000000 $LC5
+00000f5c l       .rodata.str1.4	00000000 $LC6
+00000f68 l       .rodata.str1.4	00000000 $LC7
+00000f74 l       .rodata.str1.4	00000000 $LC8
+00000f80 l       .rodata.str1.4	00000000 $LC9
+00000f8c l       .rodata.str1.4	00000000 $LC10
+00000f9c l       .rodata.str1.4	00000000 $LC11
+00000fa0 l       .rodata.str1.4	00000000 $LC12
+00000fa4 l       .rodata.str1.4	00000000 $LC13
+00000fb4 l       .rodata.str1.4	00000000 $LC14
+00000fc4 l       .rodata.str1.4	00000000 $LC15
+00000fd0 l       .rodata.str1.4	00000000 $LC16
+00000fe0 l       .rodata.str1.4	00000000 $LC17
+00000fe8 l       .rodata.str1.4	00000000 $LC19
+00000ff4 l       .rodata.str1.4	00000000 $LC20
+00001000 l       .rodata.str1.4	00000000 $LC21
+00001010 l       .rodata.str1.4	00000000 $LC22
+0000101c l       .rodata.str1.4	00000000 $LC23
+00001024 l       .rodata.str1.4	00000000 $LC24
+0000102c l       .rodata.str1.4	00000000 $LC25
+00001038 l       .rodata.str1.4	00000000 $LC26
+00001048 l       .rodata.str1.4	00000000 $LC27
+0000104c l       .rodata.str1.4	00000000 $LC28
+00001054 l       .rodata.str1.4	00000000 $LC29
+0000105c l       .rodata.str1.4	00000000 $LC30
+00001068 l       .rodata.str1.4	00000000 $LC31
+00001070 l       .rodata.str1.4	00000000 $LC32
+00001078 l       .rodata.str1.4	00000000 $LC33
+00001080 l       .rodata.str1.4	00000000 $LC34
+00001088 l       .rodata.str1.4	00000000 $LC36
+00001094 l       .rodata.str1.4	00000000 $LC38
+000010a4 l       .rodata.str1.4	00000000 $LC39
+000010b4 l       .rodata.str1.4	00000000 $LC40
+00000000 l    df *ABS*	00000000 gz_settings.c
+000287f0 l     F .text	0000003c profile_dec_proc
+0002882c l     F .text	0000003c profile_inc_proc
+00028868 l     F .text	00000048 activate_command_proc
+000288b0 l     F .text	0000001c tab_next_proc
+000288cc l     F .text	0000001c tab_prev_proc
+000288e8 l     F .text	00000030 restore_settings_proc
+00028918 l     F .text	00000054 load_settings_proc
+0002896c l     F .text	00000044 save_settings_proc
+000289b0 l     F .text	00000098 break_type_proc
+00028a48 l     F .text	0000009c lag_unit_proc
+00028ae4 l     F .text	0000008c macro_input_proc
+00028b70 l     F .text	0000008c pause_display_proc
+00028bfc l     F .text	0000008c timer_proc
+00028c88 l     F .text	0000008c lag_counter_proc
+00028d14 l     F .text	00000088 log_proc
+00028d9c l     F .text	0000008c input_pressrel_proc
+00028e28 l     F .text	0000008c input_display_proc
+00028eb4 l     F .text	000000c8 generic_position_proc
+00028f7c l     F .text	00000050 log_position_proc
+00028fcc l     F .text	0000006c menu_position_proc
+00029038 l     F .text	000000a0 drop_shadow_proc
+000290d8 l     F .text	0000017c font_proc
+000009dc l     O .rodata	00000012 font_options
+00007bf8 l     O .bss	00000050 menu.1
+00007ba8 l     O .bss	00000050 commands.0
+000010bc l       .rodata.str1.4	00000000 $LC0
+000010cc l       .rodata.str1.4	00000000 $LC1
+000010e0 l       .rodata.str1.4	00000000 $LC2
+000010f0 l       .rodata.str1.4	00000000 $LC3
+00001104 l       .rodata.str1.4	00000000 $LC4
+00001118 l       .rodata.str1.4	00000000 $LC5
+00001120 l       .rodata.str1.4	00000000 $LC6
+00001128 l       .rodata.str1.4	00000000 $LC7
+0000112c l       .rodata.str1.4	00000000 $LC8
+00001130 l       .rodata.str1.4	00000000 $LC9
+00001138 l       .rodata.str1.4	00000000 $LC11
+00001144 l       .rodata.str1.4	00000000 $LC12
+00001154 l       .rodata.str1.4	00000000 $LC13
+00001164 l       .rodata.str1.4	00000000 $LC14
+00001174 l       .rodata.str1.4	00000000 $LC15
+00001178 l       .rodata.str1.4	00000000 $LC16
+00001184 l       .rodata.str1.4	00000000 $LC18
+0000118c l       .rodata.str1.4	00000000 $LC19
+0000119c l       .rodata.str1.4	00000000 $LC20
+000011a8 l       .rodata.str1.4	00000000 $LC21
+000011b4 l       .rodata.str1.4	00000000 $LC23
+000011c0 l       .rodata.str1.4	00000000 $LC24
+000011d0 l       .rodata.str1.4	00000000 $LC25
+000011e0 l       .rodata.str1.4	00000000 $LC26
+000011f4 l       .rodata.str1.4	00000000 $LC27
+000011f8 l       .rodata.str1.4	00000000 $LC28
+00000000 l    df *ABS*	00000000 gz_warps.c
+000298f0 l     F .text	00000014 clear_csp_proc
+00000178 l     O .sbss	00000008 null_cs.0
+00029904 l     F .text	00000054 warp_proc
+00029958 l     F .text	000000f0 places_proc
+00029a48 l     F .text	00000154 warp_info_draw_proc
+00029b9c l     F .text	00000098 cutscene_option_proc
+00029c34 l     F .text	00000098 age_option_proc
+00029ccc l     F .text	00000074 halfword_mod_proc
+00007c98 l     O .bss	00000050 menu.2
+00007c48 l     O .bss	00000050 places.1
+00000a38 l     O .rodata	00000060 scene_categories
+00000c28 l     O .data	00000011 __compound_literal.0
+00000c1c l     O .data	0000000a __compound_literal.1
+00000c0c l     O .data	00000010 __compound_literal.2
+00000bfc l     O .data	0000000f __compound_literal.3
+00000bf0 l     O .data	0000000c __compound_literal.4
+00000be0 l     O .data	0000000f __compound_literal.5
+00000bd0 l     O .data	00000010 __compound_literal.6
+00000bc4 l     O .data	00000009 __compound_literal.7
+000011fc l       .rodata.str1.4	00000000 $LC0
+00001214 l       .rodata.str1.4	00000000 $LC1
+0000122c l       .rodata.str1.4	00000000 $LC2
+00001244 l       .rodata.str1.4	00000000 $LC3
+0000125c l       .rodata.str1.4	00000000 $LC4
+00001274 l       .rodata.str1.4	00000000 $LC5
+0000127c l       .rodata.str1.4	00000000 $LC6
+00001284 l       .rodata.str1.4	00000000 $LC7
+00001288 l       .rodata.str1.4	00000000 $LC9
+00001294 l       .rodata.str1.4	00000000 $LC10
+000012a0 l       .rodata.str1.4	00000000 $LC12
+000012a8 l       .rodata.str1.4	00000000 $LC13
+00000000 l    df *ABS*	00000000 hb_io.c
+0002a1a4 l     F .text	00000018 hb_check
+0002a1bc l     F .text	00000038 hb_sd_init
+0002a1f4 l     F .text	00000044 hb_sd_read
+0002a238 l     F .text	000000c4 hb_sd_write
+0002a2fc l     F .text	00000010 clock_ticks
+0002a30c l     F .text	0000000c clock_freq
+0002a318 l     F .text	00000070 cpu_reset
+00000000 l    df *ABS*	00000000 input.c
+0002a388 l     F .text	00000040 bitmask_button_index
+0002a3c8 l     F .text	0000002c activate_proc
+00000c64 l     O .data	00000001 input_enabled
+0002a3f4 l     F .text	000001dc draw_proc
+0002a6f0 l     F .text	00000254 think_proc
+00000188 l     O .sbss	00000002 pad
+00007ed0 l     O .bss	00000040 button_time
+00000186 l     O .sbss	00000002 pad_pressed_raw
+0000018b l     O .sbss	00000001 joy_x
+0000018a l     O .sbss	00000001 joy_y
+00000182 l     O .sbss	00000002 pad_released
+00000184 l     O .sbss	00000002 pad_pressed
+00000180 l     O .sbss	00000002 pad_reserved
+00007e04 l     O .bss	0000008c bind_component_state
+00007d0c l     O .bss	00000023 bind_disable
+00007ce8 l     O .bss	00000023 bind_override
+00007d30 l     O .bss	00000023 bind_pressed
+00007d78 l     O .bss	0000008c bind_time
+00007d54 l     O .bss	00000023 bind_pressed_raw
+00007e90 l     O .bss	00000040 button_reserve_count
+00001304 l       .rodata.str1.4	00000000 $LC0
+00000144 l       .rodata.cst4	00000000 $LC1
+00000000 l    df *ABS*	00000000 io.c
+0000018c l     O .sbss	00000004 current_dev
+00000000 l    df *ABS*	00000000 item_option.c
+0002b430 l     F .text	00000064 find_item_index
+0002b494 l     F .text	00000098 animate_wheel
+0002b52c l     F .text	000000b0 wheel_navigate_proc
+0002b5dc l     F .text	0000000c wheel_destroy_proc
+0002b5e8 l     F .text	0000002c enter_proc
+0002b614 l     F .text	00000038 think_proc
+0002b64c l     F .text	00000034 navigate_proc
+0002b680 l     F .text	00000038 destroy_proc
+0002b6b8 l     F .text	000000fc activate_proc
+0002baa0 l     F .text	000004c8 wheel_draw_proc
+0002b7b4 l     F .text	000002ec draw_proc
+00000ca8 l     O .data	00000098 init_rcp.1
+00000c68 l     O .data	00000040 mesh.0
+00000070 l       .rodata.cst8	00000000 $LC0
+00000148 l       .rodata.cst4	00000000 $LC1
+0000014c l       .rodata.cst4	00000000 $LC2
+00000158 l       .rodata.cst4	00000000 $LC5
+00000150 l       .rodata.cst4	00000000 $LC3
+00000154 l       .rodata.cst4	00000000 $LC4
+00000078 l       .rodata.cst8	00000000 $LC6
+00000080 l       .rodata.cst8	00000000 $LC7
+00000088 l       .rodata.cst8	00000000 $LC8
+0000015c l       .rodata.cst4	00000000 $LC9
+00000000 l    df *ABS*	00000000 mem.c
+0002c100 l     F .text	000000b4 add_watch_proc
+000001b0 l     O .sbss	00000004 view_domain_index
+00007f10 l     O .bss	0000001c domains
+000001ac l     O .sbss	00000004 view_data_size
+000001a8 l     O .sbss	00000001 view_float
+0002c1b4 l     F .text	00000278 update_view
+000001a4 l     O .sbss	00000004 view_address
+0000019c l     O .sbss	00000004 view_domain_name
+00000194 l     O .sbss	00000004 view_pagedown
+00000198 l     O .sbss	00000004 view_pageup
+0000812c l     O .bss	00000040 view_rows
+00007f2c l     O .bss	00000200 view_cells
+00000190 l     O .sbss	00000004 view_cell_header
+0002c42c l     F .text	00000058 page_down_proc
+0002c484 l     F .text	00000058 page_up_proc
+0002c4dc l     F .text	00000040 next_domain_proc
+0002c51c l     F .text	00000184 cell_proc
+0002c6a0 l     F .text	0000005c add_domain
+0002c6fc l     F .text	0000018c make_cells
+0002c888 l     F .text	00000154 float_cell_proc
+0002c9dc l     F .text	00000044 prev_domain_proc
+0002cfcc l     F .text	0000003c address_proc
+0002ced4 l     F .text	000000f8 data_type_proc
+000001a0 l     O .sbss	00000004 view_type
+0000130c l       .rodata.str1.4	00000000 $LC0
+00001314 l       .rodata.str1.4	00000000 $LC1
+00000160 l       .rodata.cst4	00000000 $LC2
+00000164 l       .rodata.cst4	00000000 $LC3
+0000131c l       .rodata.str1.4	00000000 $LC4
+00001328 l       .rodata.str1.4	00000000 $LC5
+00001334 l       .rodata.str1.4	00000000 $LC6
+00001340 l       .rodata.str1.4	00000000 $LC7
+00001348 l       .rodata.str1.4	00000000 $LC8
+00001350 l       .rodata.str1.4	00000000 $LC9
+00001358 l       .rodata.str1.4	00000000 $LC10
+00001360 l       .rodata.str1.4	00000000 $LC11
+00001368 l       .rodata.str1.4	00000000 $LC12
+00001370 l       .rodata.str1.4	00000000 $LC13
+00001378 l       .rodata.str1.4	00000000 $LC14
+00001380 l       .rodata.str1.4	00000000 $LC15
+00001388 l       .rodata.str1.4	00000000 $LC16
+00001390 l       .rodata.str1.4	00000000 $LC17
+0000139c l       .rodata.str1.4	00000000 $LC18
+000013a8 l       .rodata.str1.4	00000000 $LC19
+000013b0 l       .rodata.str1.4	00000000 $LC20
+000013b8 l       .rodata.str1.4	00000000 $LC21
+000013c0 l       .rodata.str1.4	00000000 $LC23
+000013c4 l       .rodata.str1.4	00000000 $LC24
+00000000 l    df *ABS*	00000000 menu.c
+0002d150 l     F .text	0000004c menu_deselect
+0002df34 l     F .text	0000024c menu_nav_compare
+00000168 l       .rodata.cst4	00000000 $LC0
+0000016c l       .rodata.cst4	00000000 $LC1
+00000170 l       .rodata.cst4	00000000 $LC2
+000013c8 l       .rodata.str1.4	00000000 $LC3
+00000000 l    df *ABS*	00000000 menu_button.c
+0002e2ec l     F .text	00000010 enter_proc
+0002e2fc l     F .text	00000034 activate_proc
+0002e330 l     F .text	0000014c draw_proc
+00000174 l       .rodata.cst4	00000000 $LC0
+00000000 l    df *ABS*	00000000 menu_checkbox.c
+0002e600 l     F .text	00000010 enter_proc
+0002e610 l     F .text	00000038 think_proc
+0002e648 l     F .text	0000007c activate_proc
+0002e6c4 l     F .text	00000198 draw_proc
+000001b4 l     O .sbss	00000004 texture.0
+000013cc l       .rodata.str1.4	00000000 $LC0
+00000178 l       .rodata.cst4	00000000 $LC1
+00000000 l    df *ABS*	00000000 menu_def.c
+0002e930 l     F .text	0000000c tooltip_destroy_proc
+0002e93c l     F .text	00000040 imenu_think_proc
+0002e97c l     F .text	0000000c tab_destroy_proc
+0002e988 l     F .text	00000154 static_icon_draw_proc
+0002eadc l     F .text	00000094 tooltip_draw_proc
+0002eb70 l     F .text	00000034 imenu_activate_proc
+0002eba4 l     F .text	00000034 imenu_navigate_proc
+000013d8 l       .rodata.str1.4	00000000 $LC0
+00000000 l    df *ABS*	00000000 menu_floatinput.c
+0002efc8 l     F .text	0000002c sign_navigate_proc
+0002eff4 l     F .text	0000009c digit_navigate_proc
+0002f090 l     F .text	000000b4 destroy_proc
+0002f144 l     F .text	00000344 activate_proc
+0002f488 l     F .text	00000038 navigate_proc
+0002f4c0 l     F .text	00000050 draw_proc
+0002f510 l     F .text	000000a4 think_proc
+00000090 l       .rodata.cst8	00000000 $LC0
+000013dc l       .rodata.str1.4	00000000 $LC1
+000013e0 l       .rodata.str1.4	00000000 $LC2
+00000098 l       .rodata.cst8	00000000 $LC3
+0000017c l       .rodata.cst4	00000000 $LC4
+00000180 l       .rodata.cst4	00000000 $LC5
+00000000 l    df *ABS*	00000000 menu_intinput.c
+0002fcf8 l     F .text	00000254 activate_proc
+0002ff4c l     F .text	0000002c sign_navigate_proc
+0002ff78 l     F .text	00000098 digit_navigate_proc
+00030010 l     F .text	00000068 destroy_proc
+00030078 l     F .text	00000038 navigate_proc
+000300b0 l     F .text	00000050 draw_proc
+00030100 l     F .text	000000a4 think_proc
+00000000 l    df *ABS*	00000000 menu_option.c
+00030568 l     F .text	00000088 think_proc
+000305f0 l     F .text	0000009c activate_proc
+0003068c l     F .text	000000e8 navigate_proc
+00030774 l     F .text	0000006c destroy_proc
+00000000 l    df *ABS*	00000000 menu_positioning.c
+00030954 l     F .text	00000048 navigate_proc
+0003099c l     F .text	00000060 activate_proc
+000309fc l     F .text	00000110 draw_proc
+000001b8 l     O .sbss	00000004 texture.0
+000013e4 l       .rodata.str1.4	00000000 $LC0
+00000184 l       .rodata.cst4	00000000 $LC1
+00000000 l    df *ABS*	00000000 menu_prompt.c
+00030bbc l     F .text	0000003c do_callback
+000001c4 l     O .sbss	00000004 prompt_callback_proc
+000001c0 l     O .sbss	00000004 prompt_callback_data
+00030bf8 l     F .text	00000034 leave_proc
+00030c2c l     F .text	0000000c destroy_proc
+00030c38 l     F .text	00000034 activate_proc
+0000816c l     O .bss	00000050 prompt_menu
+000001bc l     O .sbss	00000001 ready.0
+00000000 l    df *ABS*	00000000 menu_strinput.c
+00030e34 l     F .text	0000012c activate_proc
+00030f60 l     F .text	000000c4 char_navigate_proc
+00000af4 l     O .rodata	00000042 charset
+00031024 l     F .text	00000068 destroy_proc
+0003108c l     F .text	00000038 navigate_proc
+000310c4 l     F .text	00000050 draw_proc
+00031114 l     F .text	000000a4 think_proc
+00000000 l    df *ABS*	00000000 menu_submenu.c
+00031514 l     F .text	0000003c activate_proc
+00000000 l    df *ABS*	00000000 menu_switch.c
+00031594 l     F .text	00000010 enter_proc
+000315a4 l     F .text	00000038 think_proc
+000315dc l     F .text	0000007c activate_proc
+00031658 l     F .text	000003b4 draw_proc
+00000188 l       .rodata.cst4	00000000 $LC0
+00000000 l    df *ABS*	00000000 menu_userwatch.c
+00031b0c l     F .text	00000048 type_proc
+00031b54 l     F .text	00000048 address_proc
+00000000 l    df *ABS*	00000000 menu_watch.c
+00031cac l     F .text	0000031c draw_proc
+00000b88 l     O .rodata	00000028 watch_type_size
+000013f0 l       .rodata.str1.4	00000000 $LC0
+000013f8 l       .rodata.str1.4	00000000 $LC1
+00001400 l       .rodata.str1.4	00000000 $LC2
+00001408 l       .rodata.str1.4	00000000 $LC3
+0000140c l       .rodata.str1.4	00000000 $LC4
+00001410 l       .rodata.str1.4	00000000 $LC5
+00001418 l       .rodata.str1.4	00000000 $LC6
+0000141c l       .rodata.str1.4	00000000 $LC7
+00001420 l       .rodata.str1.4	00000000 $LC8
+00001428 l       .rodata.str1.4	00000000 $LC9
+0000018c l       .rodata.cst4	00000000 $LC10
+0000142c l       .rodata.str1.4	00000000 $LC11
+00000190 l       .rodata.cst4	00000000 $LC12
+00000194 l       .rodata.cst4	00000000 $LC13
+00001434 l       .rodata.str1.4	00000000 $LC14
+00001438 l       .rodata.str1.4	00000000 $LC15
+00000198 l       .rodata.cst4	00000000 $LC16
+00000000 l    df *ABS*	00000000 noclip.c
+000320a4 l     F .text	00000154 noclip_update
+000001c8 l     O .sbss	00000004 saved_player_update_func
+000001a0 l       .rodata.cst4	00000000 $LC1
+0000019c l       .rodata.cst4	00000000 $LC0
+00000000 l    df *ABS*	00000000 osk.c
+000322a0 l     F .text	000000ac draw_text_proc
+00008274 l     O .bss	00000020 osk_buf
+000001d0 l     O .sbss	00000004 osk_cursor_pos
+0003234c l     F .text	000001b0 draw_shortcut
+000324fc l     F .text	000001c0 draw_tooltip_proc
+000001d8 l     O .sbss	00000004 osk_text
+000326bc l     F .text	00000080 insert_char
+0003273c l     F .text	0000001c space_proc
+00032758 l     F .text	00000020 key_proc
+00032778 l     F .text	0000014c navigate_proc
+000001cd l     O .sbss	00000001 osk_shift_state
+000081bc l     O .bss	00000068 osk_letters
+000001d4 l     O .sbss	00000004 osk_minus
+000328c4 l     F .text	0000009c navigate_text_proc
+00032960 l     F .text	0000004c activate_text_proc
+000001e0 l     O .sbss	00000004 osk_callback_proc
+000001dc l     O .sbss	00000004 osk_callback_data
+00008224 l     O .bss	00000050 osk_menu
+000001cc l     O .sbss	00000001 ready.0
+0000143c l       .rodata.str1.4	00000000 $LC0
+00001440 l       .rodata.str1.4	00000000 $LC1
+000001a4 l       .rodata.cst4	00000000 $LC2
+00001444 l       .rodata.str1.4	00000000 $LC3
+0000144c l       .rodata.str1.4	00000000 $LC4
+00001458 l       .rodata.str1.4	00000000 $LC5
+00001460 l       .rodata.str1.4	00000000 $LC6
+00001468 l       .rodata.str1.4	00000000 $LC7
+00001474 l       .rodata.str1.4	00000000 $LC8
+00001484 l       .rodata.str1.4	00000000 $LC9
+00001498 l       .rodata.str1.4	00000000 $LC10
+0000149c l       .rodata.str1.4	00000000 $LC11
+000014a0 l       .rodata.str1.4	00000000 $LC12
+000014a4 l       .rodata.str1.4	00000000 $LC13
+000014a8 l       .rodata.str1.4	00000000 $LC14
+000014ac l       .rodata.str1.4	00000000 $LC15
+000014b0 l       .rodata.str1.4	00000000 $LC16
+000014b4 l       .rodata.str1.4	00000000 $LC17
+000014b8 l       .rodata.str1.4	00000000 $LC18
+000014bc l       .rodata.str1.4	00000000 $LC19
+000014c0 l       .rodata.str1.4	00000000 $LC20
+000014c4 l       .rodata.str1.4	00000000 $LC21
+000014c8 l       .rodata.str1.4	00000000 $LC22
+000014cc l       .rodata.str1.4	00000000 $LC23
+000014d0 l       .rodata.str1.4	00000000 $LC24
+000014d4 l       .rodata.str1.4	00000000 $LC25
+000014d8 l       .rodata.str1.4	00000000 $LC26
+000014dc l       .rodata.str1.4	00000000 $LC27
+000014e0 l       .rodata.str1.4	00000000 $LC28
+000014e4 l       .rodata.str1.4	00000000 $LC29
+000014e8 l       .rodata.str1.4	00000000 $LC30
+000014ec l       .rodata.str1.4	00000000 $LC31
+000014f0 l       .rodata.str1.4	00000000 $LC32
+000014f4 l       .rodata.str1.4	00000000 $LC33
+000014f8 l       .rodata.str1.4	00000000 $LC34
+000014fc l       .rodata.str1.4	00000000 $LC35
+00001500 l       .rodata.str1.4	00000000 $LC36
+00001504 l       .rodata.str1.4	00000000 $LC37
+00001508 l       .rodata.str1.4	00000000 $LC38
+0000150c l       .rodata.str1.4	00000000 $LC39
+00001510 l       .rodata.str1.4	00000000 $LC40
+00001514 l       .rodata.str1.4	00000000 $LC41
+00001518 l       .rodata.str1.4	00000000 $LC42
+0000151c l       .rodata.str1.4	00000000 $LC43
+00001520 l       .rodata.str1.4	00000000 $LC44
+00001524 l       .rodata.str1.4	00000000 $LC45
+00001528 l       .rodata.str1.4	00000000 $LC46
+0000152c l       .rodata.str1.4	00000000 $LC47
+00001530 l       .rodata.str1.4	00000000 $LC48
+00000000 l    df *ABS*	00000000 pi.c
+00033110 l     F .text	000000a4 pio_write
+000331b4 l     F .text	00000090 pio_read
+00033244 l     F .text	000000e4 do_transfer
+00033328 l     F .text	000001a4 dma_write
+000334cc l     F .text	000001a4 dma_read
+00000000 l    df *ABS*	00000000 rdb.c
+00033770 l     F .text	00000068 rdb_continue
+00033e38 l     F .text	0000003c rdb_enable_watch
+00034450 l     F .text	00000040 rdb_startall
+00008470 l     O .bss	00000018 rdb_fault_mq
+00034410 l     F .text	00000040 rdb_stopall
+00033e74 l     F .text	00000008 rdb_disable_watch
+000337d8 l     F .text	00000058 hex_char
+00033830 l     F .text	0000002c check_addr
+0003385c l     F .text	000002a0 rdb_get_reg
+00033afc l     F .text	00000284 rdb_set_reg
+00033d80 l     F .text	0000007c rdb_set_bkp
+00033dfc l     F .text	0000003c rdb_clear_bkp
+00008490 l     O .bss	00000530 rdb
+00033e7c l     F .text	0000001c sx_imm
+00033e98 l     F .text	00000058 decode_i_so
+00033ef0 l     F .text	00000054 decode_i_si
+00033f44 l     F .text	00000064 decode_i_sto
+00033fa8 l     F .text	00000060 decode_i_tsi
+00034008 l     F .text	0000006c decode_i_tob
+00034074 l     F .text	00000074 decode_i_t1ob
+000340e8 l     F .text	00000044 decode_r_dta
+0003412c l     F .text	00000040 decode_r_dts
+0003416c l     F .text	00000034 decode_r_st
+000341a0 l     F .text	00000040 decode_r_dst
+000341e0 l     F .text	00000044 decode_r_stc
+00034224 l     F .text	0000004c decode_r_d1s1t1
+00034270 l     F .text	0000003c decode_r_d1s1
+000342ac l     F .text	0000003c decode_r_s1t1
+000342e8 l     F .text	00000084 rdb_getc
+0003436c l     F .text	00000050 rdb_flush
+000343bc l     F .text	00000054 rdb_putc
+00001f20 l     O .rodata	00000020 rdb_threads
+00034490 l     F .text	00000208 rdb_putpkt
+00034698 l     F .text	00000218 rdb_stop_reply
+000001e5 l     O .sbss	00000001 rdb_active
+00000000 l     O .stack	00001000 rdb_stack.2
+000361e8 l     F .text	00001170 rdb_main
+000082a0 l     O .bss	000001b0 rdb_thread.1
+000001e4 l     O .sbss	00000001 fault_event_set.0
+00008450 l     O .bss	00000020 rdb_fault_mesg
+00001f00 l     O .rodata	00000020 rdb_thread_name
+00000000 l    df *ABS*	00000000 resource.c
+000375a4 l     F .text	00000070 rc_zicon_action_buttons
+00037614 l     F .text	0000006c rc_zicon_rupee
+00037680 l     F .text	00000074 rc_zicon_note
+000376f4 l     F .text	00000068 rc_zicon_item_24
+0003775c l     F .text	00000068 rc_zicon_item
+000377c4 l     F .text	000000fc rc_font_generic
+000378c0 l     F .text	00000098 rc_zfont_nes
+00037958 l     F .text	000000d4 rc_zicon_item_gray
+00037a2c l     F .text	000000cc rc_grc_font_generic
+00037af8 l     F .text	0000004c rc_font_pixelzim
+00037b44 l     F .text	00000050 rc_font_werdnasreturn
+00037b94 l     F .text	00000050 rc_font_smwtextnc
+00037be4 l     F .text	00000048 rc_font_pressstart2p
+00037c2c l     F .text	00000050 rc_font_pixelintv
+00037c7c l     F .text	00000048 rc_font_pcsenior
+00037cc4 l     F .text	0000004c rc_font_origamimommy
+00037d10 l     F .text	0000004c rc_font_notalot35
+00037d5c l     F .text	00000054 rc_font_fipps
+00037db0 l     F .text	00000030 rd_font_generic
+000089c0 l     O .bss	00000070 res_data
+00001ff0 l     O .rodata	00000070 res_ctor
+00001f80 l     O .rodata	00000070 res_dtor
+00037f48 l     F .text	00000020 rc_texture_crosshair
+00037f68 l     F .text	00000020 rc_icon_osk
+00037f88 l     F .text	00000020 rc_icon_save
+00037fa8 l     F .text	00000020 rc_icon_file
+00037fc8 l     F .text	00000020 rc_icon_arrow
+00037fe8 l     F .text	00000020 rc_icon_movie
+00038008 l     F .text	00000020 rc_icon_macro
+00038028 l     F .text	00000020 rc_icon_pause
+00038048 l     F .text	00000020 rc_icon_buttons
+00038068 l     F .text	00000020 rc_icon_amount
+00038088 l     F .text	00000020 rc_icon_daytime
+000380a8 l     F .text	00000020 rc_icon_check
+00001534 l       .rodata.str1.4	00000000 $LC1
+00001540 l       .rodata.str1.4	00000000 $LC2
+00001550 l       .rodata.str1.4	00000000 $LC3
+0000155c l       .rodata.str1.4	00000000 $LC4
+0000156c l       .rodata.str1.4	00000000 $LC5
+00001578 l       .rodata.str1.4	00000000 $LC6
+00001584 l       .rodata.str1.4	00000000 $LC7
+00001594 l       .rodata.str1.4	00000000 $LC8
+000015a0 l       .rodata.str1.4	00000000 $LC9
+000015a8 l       .rodata.str1.4	00000000 $LC10
+000015b4 l       .rodata.str1.4	00000000 $LC11
+000015c0 l       .rodata.str1.4	00000000 $LC12
+000015cc l       .rodata.str1.4	00000000 $LC13
+000015d8 l       .rodata.str1.4	00000000 $LC14
+000015e4 l       .rodata.str1.4	00000000 $LC15
+000015f0 l       .rodata.str1.4	00000000 $LC16
+000015fc l       .rodata.str1.4	00000000 $LC17
+00001608 l       .rodata.str1.4	00000000 $LC18
+00001618 l       .rodata.str1.4	00000000 $LC19
+00001628 l       .rodata.str1.4	00000000 $LC20
+00001638 l       .rodata.str1.4	00000000 $LC21
+00000000 l    df *ABS*	00000000 sd_host.c
+000380c8 l     F .text	00000068 crc7
+00038130 l     F .text	00000064 crc16_wide
+00038194 l     F .text	00000064 set_spd
+000381f8 l     F .text	00000400 card_cmd
+000385f8 l     F .text	00000110 rx_blk_spi
+00038708 l     F .text	00000110 rx_blk_sd
+00038818 l     F .text	000001cc stop_wr
+00000000 l    df *ABS*	00000000 settings.c
+00008a30 l     O .bss	00000194 settings_store
+00000000 l    df *ABS*	00000000 state.c
+00039844 l     F .text	00000010 addr_comp
+00039854 l     F .text	00000048 serial_write
+0003989c l     F .text	000001e0 save_ovl
+00039a7c l     F .text	0000004c serial_read
+00039ac8 l     F .text	000001b4 load_ovl
+00039c7c l     F .text	0000004c reloc_col_hdr
+000001a8 l       .rodata.cst4	00000000 $LC0
+00000000 l    df *ABS*	00000000 sys.c
+0003dd24 l     F .text	00000048 get_origin
+000001e8 l     O .sbss	00000004 wd
+0003dd6c l     F .text	00000064 make_sn
+00008cd0 l     O .bss	00001090 fat
+0003ddd0 l     F .text	00000034 ent_mode
+0003de04 l     F .text	000000b8 ent_stat
+0003debc l     F .text	00000068 get_desc
+00008bd0 l     O .bss	00000100 desc_list
+0003df24 l     F .text	00000034 wd_path
+0003df58 l     F .text	000000b4 init_fat
+000001ec l     O .sbss	00000001 fat_ready
+0003e00c l     F .text	00000074 check_path
+0003e080 l     F .text	000000e4 ent_access
+0003e164 l     F .text	000000d0 new_desc
+0003e234 l     F .text	00000048 wd_find
+0003e27c l     F .text	0000004c delete_desc
+0003e2c8 l     F .text	000000a8 seek_file
+00001644 l       .rodata.str1.4	00000000 $LC0
+00000000 l    df *ABS*	00000000 ucode.c
+00000000 l    df *ABS*	00000000 watchlist.c
+0003f64c l     F .text	00000010 anchor_button_enter_proc
+0003f65c l     F .text	00000028 scroll_up_proc
+000001f8 l     O .sbss	00000004 watchfile_scroll
+0003f684 l     F .text	0000004c scroll_down_proc
+00009df0 l     O .bss	0000001c watchfile_entries
+0003f6d0 l     F .text	00000048 get_member
+0003f718 l     F .text	00000050 entry_enter_proc
+0003f768 l     F .text	00000024 destroy_proc
+0003f78c l     F .text	00000050 import_button_proc
+0003f894 l     F .text	0000055c import_callback
+0003f7dc l     F .text	00000084 watchfile_destroy
+0003f860 l     F .text	00000034 watchfile_leave_proc
+00000200 l     O .sbss	00000004 watchfile_list_data
+000021e4 l     O .rodata	00000028 watch_type_name
+000001f4 l     O .sbss	00000001 ready.1
+00009da0 l     O .bss	00000050 watchfile_menu
+000001fc l     O .sbss	00000004 watchfile_return
+00009d60 l     O .bss	00000040 watchfile_items
+000407e4 l     F .text	000000dc entry_draw_proc
+000405b8 l     F .text	00000120 entry_activate_proc
+0003fdf0 l     F .text	00000078 edit_watch_in_memory_proc
+0003fe68 l     F .text	00000120 remove_member
+0003ff88 l     F .text	00000024 remove_button_proc
+0003ffac l     F .text	00000110 position_proc
+000400bc l     F .text	00000188 anchor_button_draw_proc
+000001f0 l     O .sbss	00000004 texture.0
+00040244 l     F .text	000000a0 release_member
+000402e4 l     F .text	000002d4 add_member
+00040768 l     F .text	0000007c anchor_button_activate_proc
+00000208 l     O .sbss	00000004 list_icons
+00000204 l     O .sbss	00000004 wrench
+000021bc l     O .rodata	00000028 watch_type_size
+000406d8 l     F .text	00000090 add_button_proc
+00040988 l     F .text	000000c0 toggle_visibility_proc
+00001648 l       .rodata.str1.4	00000000 $LC0
+00001660 l       .rodata.str1.4	00000000 $LC2
+00001650 l       .rodata.str1.4	00000000 $LC1
+00001664 l       .rodata.str1.4	00000000 $LC4
+0000166c l       .rodata.str1.4	00000000 $LC5
+000001ac l       .rodata.cst4	00000000 $LC6
+00001674 l       .rodata.str1.4	00000000 $LC7
+00001678 l       .rodata.str1.4	00000000 $LC8
+00001680 l       .rodata.str1.4	00000000 $LC9
+0000168c l       .rodata.str1.4	00000000 $LC10
+00000000 l    df *ABS*	00000000 yaz0.c
+00040e5c l     F .text	00000090 yaz0_get_code
+0000021c l     O .sbss	00000004 yaz0_cp
+00000220 l     O .sbss	00000004 yaz0
+0000ae10 l     O .bss	00000400 yaz0_code_buf
+00040eec l     F .text	00000158 yaz0_continue
+00000218 l     O .sbss	00000004 yaz0_op
+0000020c l     O .sbss	00000004 yaz0_chunk_end
+00000210 l     O .sbss	00000004 yaz0_group_pos
+00000214 l     O .sbss	00000001 yaz0_group_header
+00009e10 l     O .bss	00001000 yaz0_buf
+00000000 l    df *ABS*	00000000 zu.c
+000411b8 l     F .text	000000ac gen_lighting
+00041264 l     F .text	000000b4 set_lighting
+0000b210 l     O .bss	00000040 t_stab.1
+00000224 l     O .sbss	00000004 rdphalf_1.0
+00000000 l    df *ABS*	00000000 zu_scenes.c
+00003374 l     O .data	00000008 __compound_literal.0
+0000336c l     O .data	00000008 __compound_literal.1
+00003364 l     O .data	00000008 __compound_literal.2
+00003358 l     O .data	0000000c __compound_literal.3
+00003350 l     O .data	00000008 __compound_literal.4
+00003348 l     O .data	00000008 __compound_literal.5
+00003334 l     O .data	00000014 __compound_literal.6
+00003324 l     O .data	00000010 __compound_literal.7
+0000331c l     O .data	00000008 __compound_literal.8
+00003314 l     O .data	00000008 __compound_literal.9
+00003308 l     O .data	0000000c __compound_literal.10
+00003304 l     O .data	00000004 __compound_literal.11
+000032d0 l     O .data	00000034 __compound_literal.12
+000032b0 l     O .data	00000020 __compound_literal.13
+00003290 l     O .data	00000020 __compound_literal.14
+0000328c l     O .data	00000004 __compound_literal.15
+00003288 l     O .data	00000004 __compound_literal.16
+00003284 l     O .data	00000004 __compound_literal.17
+00003280 l     O .data	00000004 __compound_literal.18
+0000327c l     O .data	00000004 __compound_literal.19
+00003278 l     O .data	00000004 __compound_literal.20
+00003274 l     O .data	00000004 __compound_literal.21
+00003270 l     O .data	00000004 __compound_literal.22
+00003264 l     O .data	0000000c __compound_literal.23
+00003260 l     O .data	00000004 __compound_literal.24
+0000325c l     O .data	00000004 __compound_literal.25
+0000323c l     O .data	00000020 __compound_literal.26
+00003230 l     O .data	0000000c __compound_literal.27
+00003224 l     O .data	0000000c __compound_literal.28
+00003218 l     O .data	0000000c __compound_literal.29
+00003204 l     O .data	00000014 __compound_literal.30
+000031f0 l     O .data	00000014 __compound_literal.31
+000031c4 l     O .data	0000002c __compound_literal.32
+00003198 l     O .data	0000002c __compound_literal.33
+0000316c l     O .data	0000002c __compound_literal.34
+00003164 l     O .data	00000008 __compound_literal.35
+0000315c l     O .data	00000008 __compound_literal.36
+00003154 l     O .data	00000008 __compound_literal.37
+00003150 l     O .data	00000004 __compound_literal.38
+0000314c l     O .data	00000004 __compound_literal.39
+00003148 l     O .data	00000004 __compound_literal.40
+00003144 l     O .data	00000004 __compound_literal.41
+00003140 l     O .data	00000004 __compound_literal.42
+0000313c l     O .data	00000004 __compound_literal.43
+00003134 l     O .data	00000008 __compound_literal.44
+00003130 l     O .data	00000004 __compound_literal.45
+0000312c l     O .data	00000004 __compound_literal.46
+00003128 l     O .data	00000004 __compound_literal.47
+0000311c l     O .data	0000000c __compound_literal.48
+00003118 l     O .data	00000004 __compound_literal.49
+00003110 l     O .data	00000008 __compound_literal.50
+0000310c l     O .data	00000004 __compound_literal.51
+00003104 l     O .data	00000008 __compound_literal.52
+00003100 l     O .data	00000004 __compound_literal.53
+000030fc l     O .data	00000004 __compound_literal.54
+000030f4 l     O .data	00000008 __compound_literal.55
+000030ec l     O .data	00000008 __compound_literal.56
+000030e8 l     O .data	00000004 __compound_literal.57
+000030e4 l     O .data	00000004 __compound_literal.58
+000030d4 l     O .data	00000010 __compound_literal.59
+000030d0 l     O .data	00000004 __compound_literal.60
+000030c4 l     O .data	0000000c __compound_literal.61
+0000308c l     O .data	00000038 __compound_literal.62
+00003088 l     O .data	00000004 __compound_literal.63
+00003084 l     O .data	00000004 __compound_literal.64
+0000307c l     O .data	00000008 __compound_literal.65
+00003074 l     O .data	00000008 __compound_literal.66
+00003054 l     O .data	00000020 __compound_literal.67
+0000304c l     O .data	00000008 __compound_literal.68
+00003044 l     O .data	00000008 __compound_literal.69
+0000303c l     O .data	00000008 __compound_literal.70
+00003038 l     O .data	00000004 __compound_literal.71
+0000302c l     O .data	0000000c __compound_literal.72
+00003028 l     O .data	00000004 __compound_literal.73
+00003020 l     O .data	00000008 __compound_literal.74
+0000301c l     O .data	00000004 __compound_literal.75
+00003010 l     O .data	0000000c __compound_literal.76
+0000300c l     O .data	00000004 __compound_literal.77
+00003008 l     O .data	00000004 __compound_literal.78
+00003004 l     O .data	00000004 __compound_literal.79
+00003000 l     O .data	00000004 __compound_literal.80
+00002fb8 l     O .data	00000048 __compound_literal.81
+00002f78 l     O .data	00000040 __compound_literal.82
+00002f54 l     O .data	00000024 __compound_literal.83
+00002f40 l     O .data	00000014 __compound_literal.84
+00002f0c l     O .data	00000034 __compound_literal.85
+00002efc l     O .data	00000010 __compound_literal.86
+00002ed4 l     O .data	00000028 __compound_literal.87
+00002ec0 l     O .data	00000014 __compound_literal.88
+00002ea8 l     O .data	00000018 __compound_literal.89
+00002e94 l     O .data	00000014 __compound_literal.90
+00002e6c l     O .data	00000028 __compound_literal.91
+00002e48 l     O .data	00000024 __compound_literal.92
+00002dfc l     O .data	0000004c __compound_literal.93
+00002df0 l     O .data	0000000c __compound_literal.94
+00002ddc l     O .data	00000014 __compound_literal.95
+00002dc4 l     O .data	00000018 __compound_literal.96
+00002dac l     O .data	00000018 __compound_literal.97
+00002d9c l     O .data	00000010 __compound_literal.98
+00002d70 l     O .data	0000002c __compound_literal.99
+00002d5c l     O .data	00000014 __compound_literal.100
+00002d58 l     O .data	00000004 __compound_literal.101
+00002d54 l     O .data	00000004 __compound_literal.102
+00002d50 l     O .data	00000004 __compound_literal.103
+00002d4c l     O .data	00000004 __compound_literal.104
+00002d48 l     O .data	00000004 __compound_literal.105
+00002d44 l     O .data	00000004 __compound_literal.106
+00002d40 l     O .data	00000004 __compound_literal.107
+00002d3c l     O .data	00000004 __compound_literal.108
+00002d38 l     O .data	00000004 __compound_literal.109
+00002d34 l     O .data	00000004 __compound_literal.110
 00000000 l    df *ABS*	00000000 hud_colors.c
 00000000 l    df *ABS*	00000000 icetrap.c
 00000000 l    df *ABS*	00000000 item_draw_functions.c
-00000020 l       .rodata.cst4	00000000 $LC0
-00000024 l       .rodata.cst4	00000000 $LC1
-00000028 l       .rodata.cst4	00000000 $LC2
-0000002c l       .rodata.cst4	00000000 $LC3
-00000030 l       .rodata.cst4	00000000 $LC4
+000001b0 l       .rodata.cst4	00000000 $LC0
+000001b4 l       .rodata.cst4	00000000 $LC1
+000001b8 l       .rodata.cst4	00000000 $LC2
+000001bc l       .rodata.cst4	00000000 $LC3
+000001c0 l       .rodata.cst4	00000000 $LC4
 00000000 l    df *ABS*	00000000 item_draw_table.c
 00000000 l    df *ABS*	00000000 item_effects.c
 00000000 l    df *ABS*	00000000 item_table.c
@@ -75,515 +1555,1151 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 main.c
 00000000 l    df *ABS*	00000000 menu.c
 00000000 l    df *ABS*	00000000 misc_colors.c
-00000050 l     O .sbss	00000004 frames
-00000034 l       .rodata.cst4	00000000 $LC0
-00000038 l       .rodata.cst4	00000000 $LC1
-0000003c l       .rodata.cst4	00000000 $LC2
-00000040 l       .rodata.cst4	00000000 $LC3
-00000044 l       .rodata.cst4	00000000 $LC4
-00000048 l       .rodata.cst4	00000000 $LC5
+0000022c l     O .sbss	00000004 frames
+000001c4 l       .rodata.cst4	00000000 $LC0
+000001c8 l       .rodata.cst4	00000000 $LC1
+000001cc l       .rodata.cst4	00000000 $LC2
+000001d0 l       .rodata.cst4	00000000 $LC3
+000001d4 l       .rodata.cst4	00000000 $LC4
+000001d8 l       .rodata.cst4	00000000 $LC5
 00000000 l    df *ABS*	00000000 model_text.c
-0000004c l       .rodata.str1.4	00000000 $LC2
+00002a04 l       .rodata.str1.4	00000000 $LC2
 00000000 l    df *ABS*	00000000 models.c
-00000050 l       .rodata.cst4	00000000 $LC5
-0000004c l       .rodata.cst4	00000000 $LC4
-00000054 l       .rodata.cst4	00000000 $LC6
-00000058 l       .rodata.cst4	00000000 $LC7
-0000005c l       .rodata.cst4	00000000 $LC8
-00000060 l       .rodata.cst4	00000000 $LC9
-00000064 l       .rodata.cst4	00000000 $LC10
+000001e0 l       .rodata.cst4	00000000 $LC5
+000001dc l       .rodata.cst4	00000000 $LC4
+000001e4 l       .rodata.cst4	00000000 $LC6
+000001e8 l       .rodata.cst4	00000000 $LC7
+000001ec l       .rodata.cst4	00000000 $LC8
+000001f0 l       .rodata.cst4	00000000 $LC9
+000001f4 l       .rodata.cst4	00000000 $LC10
 00000000 l    df *ABS*	00000000 obj_comb.c
-00000068 l       .rodata.cst4	00000000 $LC0
-0000006c l       .rodata.cst4	00000000 $LC1
+000001f8 l       .rodata.cst4	00000000 $LC0
+000001fc l       .rodata.cst4	00000000 $LC1
 00000000 l    df *ABS*	00000000 obj_kibako.c
 00000000 l    df *ABS*	00000000 obj_kibako2.c
 00000000 l    df *ABS*	00000000 objects.c
-00000074 l       .rodata.cst4	00000000 $LC1
-00000070 l       .rodata.cst4	00000000 $LC0
+00000204 l       .rodata.cst4	00000000 $LC1
+00000200 l       .rodata.cst4	00000000 $LC0
 00000000 l    df *ABS*	00000000 pots.c
 00000000 l    df *ABS*	00000000 rainbow.c
-0000039c l     O .rodata	00000015 cycle_colors
-00000000 l       .rodata.cst8	00000000 $LC0
-00000078 l       .rodata.cst4	00000000 $LC1
-0000007c l       .rodata.cst4	00000000 $LC2
+0000244c l     O .rodata	00000015 cycle_colors
+000000a0 l       .rodata.cst8	00000000 $LC0
+00000208 l       .rodata.cst4	00000000 $LC1
+0000020c l       .rodata.cst4	00000000 $LC2
 00000000 l    df *ABS*	00000000 refill.c
 00000000 l    df *ABS*	00000000 rng.c
-00000080 l       .rodata.cst4	00000000 $LC0
-00000084 l       .rodata.cst4	00000000 $LC1
+00000210 l       .rodata.cst4	00000000 $LC0
+00000214 l       .rodata.cst4	00000000 $LC1
 00000000 l    df *ABS*	00000000 save.c
 00000000 l    df *ABS*	00000000 scarecrow.c
 00000000 l    df *ABS*	00000000 scene.c
 00000000 l    df *ABS*	00000000 text.c
-00000064 l     O .sbss	00000004 text_buf
-00000068 l     O .sbss	00000004 text_end
+00000240 l     O .sbss	00000004 text_buf
+00000244 l     O .sbss	00000004 text_end
 00000000 l    df *ABS*	00000000 textures.c
 00000000 l    df *ABS*	00000000 trade_quests.c
-000003b4 l     O .rodata	00000008 sMaskPaymentPrice
+00002464 l     O .rodata	00000008 sMaskPaymentPrice
 00000000 l    df *ABS*	00000000 triforce.c
-0000006c l     O .sbss	00000004 render_triforce_flag
-00000070 l     O .sbss	00000004 frames
-00000008 l       .rodata.cst8	00000000 $LC0
-00000010 l       .rodata.cst8	00000000 $LC1
-00000018 l       .rodata.cst8	00000000 $LC2
-00000020 l       .rodata.cst8	00000000 $LC3
+00000248 l     O .sbss	00000004 render_triforce_flag
+0000024c l     O .sbss	00000004 frames
+000000a8 l       .rodata.cst8	00000000 $LC0
+000000b0 l       .rodata.cst8	00000000 $LC1
+000000b8 l       .rodata.cst8	00000000 $LC2
+000000c0 l       .rodata.cst8	00000000 $LC3
 00000000 l    df *ABS*	00000000 twinrova.c
 00000000 l    df *ABS*	00000000 util.c
 00000000 l    df *ABS*	00000000 weather.c
-00008594 g     F .text	00000114 draw_gi_deku_nut
-0000009c g     O .sdata	00000004 RNG_SEED_INT
-0000bad4 g     F .text	00000054 scale_factor
-0000e4f0 g     F .text	0000003c SaveFile_SetMaskAsPaid
-00009eb4 g     F .text	0000001c give_defense
-0000a188 g     F .text	0000002c call_effect_function
+00000000         *UND*	00000000 z64_audio_cmd_read_pos
+00018544 g     F .text	00000038 vector_at
+0004434c g     F .text	00000114 draw_gi_deku_nut
+000000a0 g     O .sdata	00000004 RNG_SEED_INT
+0004788c g     F .text	00000054 scale_factor
+00013048 g     F .text	00000050 vec3f_norm
+0004a2a8 g     F .text	0000003c SaveFile_SetMaskAsPaid
+00045c6c g     F .text	0000001c give_defense
+00045f40 g     F .text	0000002c call_effect_function
 00003ec0 g     F .text	000003d0 read_file_data
+00000000         *UND*	00000000 strcpy
 00000000         *UND*	00000000 PLAYER_ID
-00009f94 g     F .text	0000001c clear_excess_hearts
-0000ca24 g     F .text	00000078 object_index_or_spawn
-000074a8 g     F .text	00000088 give_ice_trap
-0000d394 g     F .text	00000188 Sram_WriteSave
-0000d364 g     F .text	00000030 SsSram_ReadWrite_Safe
-0000a960 g     F .text	00000274 update_bombchu_trail_colors
-0000e21c g     F .text	0000003c GetTradeSlot
+00045d4c g     F .text	0000001c clear_excess_hearts
+0001979c g     F .text	00000014 list_next
+00000000         *UND*	00000000 z64_oob_timer
+00001280  w    O .data	000003f0 gspL3DEX2_fifoDataStart
+0001a0c4 g     F .text	00000678 gz_update_cam
+00000000         *UND*	00000000 fmodf
+000487dc g     F .text	00000078 object_index_or_spawn
+00043260 g     F .text	00000088 give_ice_trap
+0002ce24 g     F .text	000000b0 mem_goto
+00000000         *UND*	00000000 osRecvMesg
+00015668 g     F .text	00000024 gfx_printf_f
+00019aa8 g     F .text	00000050 list_insert_after_size
+0004914c g     F .text	00000188 Sram_WriteSave
+0004911c g     F .text	00000030 SsSram_ReadWrite_Safe
+00046718 g     F .text	00000274 update_bombchu_trail_colors
+00000000         *UND*	00000000 z64_SwitchAgeEquips
+00049fd4 g     F .text	0000003c GetTradeSlot
+0000f3d8 g     F .text	00000170 fat_create_path
+000329ac g     F .text	00000764 menu_get_osk_string
+00000000         *UND*	00000000 z64_event_state_2
 00005370 g     F .text	0000007c item_overrides_init
+00000000         *UND*	00000000 __divdi3
+0002d454 g     F .text	00000040 menu_get_alpha
 00000000         *UND*	00000000 MW_SEND_OWN_ITEMS
-0000ce94 g     F .text	0000001c draw_pot_hack
-0000a2b0 g     F .text	00000018 scale_upgrade
-0000f3c4 g     F .text	00000014 clear_twinrova_vars
-00000048 g     O .sdata	00000004 a_note_glow_max
-0000e7a8 g     F .text	00000044 TurnInTradeItem
+00000000         *UND*	00000000 z64_hud_state
+00040a48 g     F .text	000001a8 watchlist_create
+00014588 g     F .text	00000294 gfx_disp_rdp_load_tile
+00013988 g     F .text	0000005c gfx_mode_replace
+00042818 g     F .text	0000010c zu_gfx_restore
+0001643c g     F .text	00000048 guMtxL2F
+00048c4c g     F .text	0000001c draw_pot_hack
+00046068 g     F .text	00000018 scale_upgrade
+00000000         *UND*	00000000 lroundf
+0002e5f0 g     F .text	00000010 menu_button_set_texture
+0002ebfc g     F .text	0000009c menu_add_static_icon
+000003b0 g     F .text.hook	000000a8 camera_hook
+00000000         *UND*	00000000 z64_LoadActionLabel
+0003e600 g     F .text	000000b8 fstatat
+00000000         *UND*	00000000 z64_camera_state
+0004b17c g     F .text	00000014 clear_twinrova_vars
+0000004c g     O .sdata	00000004 a_note_glow_max
+00041680 g     F .text	000001b4 zu_room_mesh
+00000000         *UND*	00000000 z64_CheckAfxConfigBusy
+00000000         *UND*	00000000 z64_UpdateCtxtInput
+00000000         *UND*	00000000 vsprintf
+0001043c g     F .text	00000044 fat_flush
+0004a560 g     F .text	00000044 TurnInTradeItem
+00000000         *UND*	00000000 gspF3DEX2_NoN_fifoTextStart
+00000000         *UND*	00000000 z64_LoadRoom
+00000000         *UND*	00000000 z64_UpdateEquipment
 0000000c g     O .sbss	00000004 CHEST_TEXTURE_MATCH_CONTENTS
-00007850 g     F .text	0000009c draw_gi_various_opa0
+00043608 g     F .text	0000009c draw_gi_various_opa0
+0002aeb4 g     F .text	0000006c input_free
 00000000         *UND*	00000000 CFG_HEART_COLOR
+0002add4 g     F .text	0000000c input_x
+0002af20 g     F .text	00000014 input_bind_set_disable
+00042d5c g     F .text	00000058 zu_set_lighting
 00000000         *UND*	00000000 CFG_CHILD_TRADE_SHUFFLE
-00007f60 g     F .text	0000012c draw_gi_magic_arrows
-0000e7ec g     F .text	0000001c IsClaimCheckTraded
+00043d18 g     F .text	0000012c draw_gi_magic_arrows
+0002adec g     F .text	00000020 input_pad
+00000000         *UND*	00000000 z64_letterbox_target
+00000000         *UND*	00000000 z64_audio_cmd_buf
+0004a5a4 g     F .text	0000001c IsClaimCheckTraded
+00000000         *UND*	00000000 gz_leave
+00000000         *UND*	00000000 __RESOURCE_LIST__
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED
-00007430 g     F .text	0000004c rupee_hud_color
+000431e8 g     F .text	0000004c rupee_hud_color
+00000000         *UND*	00000000 strerror
+00038da4 g     F .text	0000016c sd_read
+0000d520 g     F .text	00000764 fat_dir
+0002ec98 g     F .text	00000038 menu_add_static_custom
 000052d0 g     F .text	00000074 Collectible_WaitForMessageBox
+0000caf4 g     F .text	0000004c fat_root
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED
-0000a1bc g     F .text	00000014 hookshot_upgrade
-0000a718 g     F .text	000000a4 update_sword_trail_colors
-0000e34c g     F .text	00000038 SaveFile_TradeItemIsOwned
+00000000         *UND*	00000000 z64_part_max
+00045f74 g     F .text	00000014 hookshot_upgrade
+000464d0 g     F .text	000000a4 update_sword_trail_colors
+00000000         *UND*	00000000 z64_sfx_write_pos
+0004a104 g     F .text	00000038 SaveFile_TradeItemIsOwned
+00000000         *UND*	00000000 z64_afx_counter
 00005684 g     F .text	00000054 lookup_override
-0000e15c g     F .text	00000054 init_textures
-00000094 g     O .sdata	00000004 text_height
-0000a2e4 g     F .text	0000001c stick_upgrade
-00002960 g     O .data	000000fc adultSkeleton
+0002edc8 g     F .text	000000bc menu_add_tab
+00049f14 g     F .text	00000054 init_textures
+00041130 g     F .text	00000088 yaz0_advance
+00040c3c g     F .text	0000013c watchlist_store
+00000000         *UND*	00000000 z64_SpawnActor
+00000000         *UND*	00000000 memmove
+00000098 g     O .sdata	00000004 text_height
+0004609c g     F .text	0000001c stick_upgrade
+000155cc g     F .text	00000010 gfx_font_xheight
+000195b0 g     F .text	000000a8 set_difference
+00000000         *UND*	00000000 snprintf
+00005a74 g     O .data	000000fc adultSkeleton
 00000010 g     O .data	00000018 medals
-0000deb0 g     F .text	0000002c text_init
+00049c68 g     F .text	0000002c text_init
+0002d730 g     F .text	00000050 menu_activate
+0002af8c g     F .text	000000bc binder_create
 00000000         *UND*	00000000 INCOMING_PLAYER
-00000080 g     O .sdata	00000004 beating_no_dd
+00014850 g     F .text	00000394 gfx_flush
+00000084 g     O .sdata	00000004 beating_no_dd
 00000000         *UND*	00000000 TRIFORCE_PIECES_REQUIRED
-00000030 g     O .sdata	00000004 c_note_font_glow_max
+00000034 g     O .sdata	00000004 c_note_font_glow_max
+0001f4e0 g     F .text	00000054 command_noclip
 00003ac0 g     F .text	00000290 process_extern_ctxt
+0002d68c g     F .text	000000a4 menu_think
 00000000 g     F .text	00000054 Actor_SetWorldToHome_End
+00011970 g     F .text	00000400 menu_get_file
+00000a14 g     F .text.hook	000003b0 input_hook
 00006438 g     F .text	00000084 drop_bombs_or_chus
-00008efc g     F .text	0000018c draw_gi_gs_token
-00009924 g     F .text	0000029c draw_gi_boss_keys
-0000b43c g     F .text	00000074 FindSize
+00044cb4 g     F .text	0000018c draw_gi_gs_token
+000456dc g     F .text	0000029c draw_gi_boss_keys
+00000000         *UND*	00000000 __errno
+00031aec g     F .text	0000000c menu_switch_get
+00000000         *UND*	00000000 z64_play_ovl_ptr
+0001f3dc g     F .text	0000003c gz_hide_menu
+00040bf0 g     F .text	0000004c watchlist_add
+0002d9cc g     F .text	00000038 menu_activate_top
+000471f4 g     F .text	00000074 FindSize
 0000003c g     O .sbss	00000004 active_override_is_outgoing
-00009eec g     F .text	00000024 give_double_magic
-00000074 g     O .sdata	00000004 normal_dd
-00007094 g     F .text	0000039c update_hud_colors
-00007b2c g     F .text	000000c0 draw_gi_various_xlu01
+00000000         *UND*	00000000 z64_thread_irqmgr
+00045ca4 g     F .text	00000024 give_double_magic
+00000078 g     O .sdata	00000004 normal_dd
+00000000         *UND*	00000000 z64_pfx
+00042e4c g     F .text	0000039c update_hud_colors
+00019c60 g     F .text	000000c8 grc_resource_get
+000307e0 g     F .text	00000134 menu_add_option
+000166c4 g     F .text	00000734 guMtxInvertF
+000438e4 g     F .text	000000c0 draw_gi_various_xlu01
 00000000         *UND*	00000000 CFG_DUNGEON_REWARDS
-0000ee3c g     F .text	0000001c CanBuy_RightSideMask
-00000056 g     O .sbss	00000001 adult_safe
-0000a3bc g     F .text	00000070 letter_to_bottle
+0002ef2c g     F .text	00000050 menu_tab_previous
+00000020 g     O .sdata	00000004 settings
+00018504 g     F .text	00000020 vector_init
+0004abf4 g     F .text	0000001c CanBuy_RightSideMask
+00000000         *UND*	00000000 osGetCurrFaultedThread
+00000232 g     O .sbss	00000001 adult_safe
+00046174 g     F .text	00000070 letter_to_bottle
 00000000         *UND*	00000000 CFG_B_BUTTON_COLOR
-0000bccc g     F .text	000000c0 collectible_draw
+00041aac g     F .text	0000014c zu_vlist_bbox
+00000000         *UND*	00000000 z64_random
+00000000         *UND*	00000000 z64_map_mark_ovl
+00047a84 g     F .text	000000c0 collectible_draw
+0002b284 g     F .text	0000006c fifo_read
+0003208c g     F .text	0000000c menu_watch_get_type
+00026bb4 g     F .text	000001d8 gz_movie_seek
 000054bc g     F .text	00000040 resolve_alternative_override
+0002d320 g     F .text	00000008 menu_set_pxoffset
 00000000         *UND*	00000000 CFG_CUSTOM_MESSAGE_1
-0000e1d0 g     F .text	0000004c GetTradeItemByAP
-0000bfb8 g     F .text	00000064 ocarina_of_time_draw
+00013500 g     F .text	00000084 gfx_start
+000137a4 g     F .text	000000e8 gfx_mode_push
+00000000         *UND*	00000000 _gp
+0003f5b0 g     F .text	0000009c unload_l3dex2
+00049f88 g     F .text	0000004c GetTradeItemByAP
+0002d400 g     F .text	00000008 menu_set_cell_height
+00000000         *UND*	00000000 z64_letterbox_current
+00018ac0 g     F .text	00000084 vector_shrink_to_fit
+00047d70 g     F .text	00000064 ocarina_of_time_draw
 000050dc g     F .text	00000048 check_ganon_entry
 00000210 g     O .data	00000010 items_sprite
+00000000         *UND*	00000000 z64_thread_padmgr
+00040d78 g     F .text	000000e4 watchlist_fetch
+0001efbc g     F .text	00000020 command_colview
 00000000         *UND*	00000000 CFG_DUNGEON_REWARD_AREAS
-0000bdf0 g     F .text	00000100 collectible_draw_other
-0000848c g     F .text	00000108 draw_gi_goron_swords
+00000000         *UND*	00000000 osSendMesg
+00047ba8 g     F .text	00000100 collectible_draw_other
+0003ea10 g     F .text	00000168 truncate
+0002db98 g     F .text	0000000c menu_item_enable
+0002d594 g     F .text	0000005c menu_cell_screen_y
+00000000         *UND*	00000000 sqrtf
+00000000         *UND*	00000000 fgets
+00044244 g     F .text	00000108 draw_gi_goron_swords
+0002b048 g     F .text	000000a4 io_init
+0001f218 g     F .text	0000006c command_togglewatches
 00000000         *UND*	00000000 CFG_DISPLAY_DPAD
-0000a590 g     F .text	0000003c before_skybox_init
+00046348 g     F .text	0000003c before_skybox_init
+00025a50 g     F .text	000009fc gz_macro_menu
+00000134 g     F .text.hook	00000080 draw_actors_hook
+00000000         *UND*	00000000 z64_song_ptr
+000396f4 g     F .text	00000074 settings_save
 00006784 g     F .text	000000ac dispatch_item
-00000058 g     O .sbss	00000002 illegal_model
+0002dc20 g     F .text	00000098 menu_item_remove
+00030c6c g     F .text	000001c8 menu_prompt
+00016484 g     F .text	00000240 guMtxDetF
+00031b9c g     F .text	000000ec menu_add_userwatch
+0001f054 g     F .text	00000034 command_resettimer
+00000000         *UND*	00000000 __osPiGetAccess
+00000234 g     O .sbss	00000002 illegal_model
+00000000 g     F .text.hook	000000a0 entrance_offset_hook
+0002dcb8 g     F .text	0000003c menu_destroy
+00000458 g     F .text.hook	00000174 room_load_sync_hook
 00000028 g     O .sbss	00000004 active_item_graphic_id
+00000000         *UND*	00000000 z64_scene_table
 000001e0 g     O .data	00000010 dpad_sprite
-00000070 g     O .sdata	00000004 a_button
+00000074 g     O .sdata	00000004 a_button
+00000000         *UND*	00000000 memcpy
 00000000         *UND*	00000000 CFG_SHOW_SETTING_INFO
 0000000c g     O .sdata	00000008 hash_sprites
+0001f39c g     F .text	00000040 gz_show_menu
 000056d8 g     F .text	00000140 activate_override
-0000a504 g     F .text	0000003c before_game_state_update
-0000dda0 g     F .text	00000048 store_scarecrow_fix
-0000c3a4 g     F .text	0000010c obj_comb_drop_collectible
-0000ee58 g     F .text	00000028 set_triforce_render
-0000c758 g     F .text	00000064 ObjKibako_SpawnCollectible_Hack
-00000064 g     O .sdata	00000004 a_note_r
+0002d530 g     F .text	00000008 menu_set_alpha
+000462bc g     F .text	0000003c before_game_state_update
+00049b58 g     F .text	00000048 store_scarecrow_fix
+0003efd8 g     F .text	00000084 seekdir
+0002f5b4 g     F .text	0000034c menu_add_floatinput
+00012f5c g     F .text	00000030 vec3f_dot
+00037ed0 g     F .text	00000078 resource_load_grc_texture
+00000000         *UND*	00000000 z64_camera_shake
+0001eefc g     F .text	00000014 command_turbo
+0004815c g     F .text	0000010c obj_comb_drop_collectible
+000001b4 g     F .text.hook	000000f8 disp_hook
+0001568c g     F .text	00000040 guMtxIdent
+000301a4 g     F .text	0000025c menu_add_intinput
+00019508 g     F .text	000000a8 set_intersection
+0004ac10 g     F .text	00000028 set_triforce_render
+0003e59c g     F .text	00000020 creat
+0001ef2c g     F .text	00000038 command_advance
+0002a5d0 g     F .text	000000b4 bind_make
+00048510 g     F .text	00000064 ObjKibako_SpawnCollectible_Hack
+00000000         *UND*	00000000 z64_DrawActors
+00013c80 g     F .text	00000030 gfx_texldr_destroy
+00000000         *UND*	00000000 z64_file_mq
+00000068 g     O .sdata	00000004 a_note_r
+0002f900 g     F .text	0000000c menu_floatinput_get
+0001f088 g     F .text	00000034 command_starttimer
+0002ed20 g     F .text	000000a8 menu_add_imenu
+00000268 g     O .data	00000014 adex_error_name
+0001ee0c g     F .text	000000c8 command_break
 00000000         *UND*	00000000 CFG_C_NOTE_COLOR
+0002ae6c g     F .text	00000048 input_reserve
 00000000         *UND*	00000000 OUTGOING_PLAYER
+0001f844 g     F .text	0000005c command_prevstate
+0000ebcc g     F .text	000003a8 fat_path
 000002bc g     O .bss	00000258 collectible_scene_flags_table
-0000f46c g     F .text	00000240 override_weather_state
+0001f11c g     F .text	00000034 command_void
+00018490 g     F .text	00000074 do_global_dtors
+00000000         *UND*	00000000 __osViIntrCount
+0004b224 g     F .text	00000240 override_weather_state
+0003efac g     F .text	0000002c rewinddir
 00005aa0 g     F .text	00000044 push_delayed_item
-0000a250 g     F .text	00000030 slingshot_upgrade
-0000dad4 g     F .text	000001d0 Sram_CopySave
+00046008 g     F .text	00000030 slingshot_upgrade
+0004988c g     F .text	000001d0 Sram_CopySave
+00000000         *UND*	00000000 malloc
+0003e6b8 g     F .text	00000038 isatty
 000013fc g     F .text	00000da4 draw_dpad
-00000268 g     O .data	000011b8 item_draw_table
-0000d1f8 g     F .text	00000028 health_and_magic_refill
-0000d2b4 g     F .text	00000048 Seeded_Rand_Centered
-00009088 g     F .text	000001d0 draw_gi_blue_fire_candle
-0000e144 g     F .text	00000018 get_texture
-0000e568 g     F .text	000000ac SaveFile_NextOwnedTradeItem
-00009bf8 g     F .text	00000008 no_effect
-0000e114 g     F .text	00000030 text_flush
+000189dc g     F .text	000000c0 set_union
+0000337c g     O .data	000011b8 item_draw_table
+00048fb0 g     F .text	00000028 health_and_magic_refill
+00042cc0 g     F .text	0000009c zu_load_disp_p
+0004906c g     F .text	00000048 Seeded_Rand_Centered
+00000000         *UND*	00000000 z64_object_table
+00044e40 g     F .text	000001d0 draw_gi_blue_fire_candle
+00000000         *UND*	00000000 vsnprintf
+00041bf8 g     F .text	00000148 zu_vlist_transform
+00049efc g     F .text	00000018 get_texture
+00037de0 g     F .text	00000080 resource_get
+00019758 g     F .text	0000001c set_destroy
+0004a320 g     F .text	000000ac SaveFile_NextOwnedTradeItem
+0001f9b4 g     F .text	00000074 gz_warp
+000194c4 g     F .text	00000044 set_erase
+000459b0 g     F .text	00000008 no_effect
+0002b35c g     F .text	00000040 clock_ticks
+00000000         *UND*	00000000 z64_CreateSkyVtx
+00049ecc g     F .text	00000030 text_flush
+00000000         *UND*	00000000 z64_ocarina_counter
 00000000         *UND*	00000000 CFG_RAINBOW_SWORD_INNER_ENABLED
-0000dedc g     F .text	000000a8 text_print_size
-00000060 g     O .sbss	00000001 curr_scene_setup
+0002d2e0 g     F .text	00000040 menu_get_pxoffset
+0002ae0c g     F .text	00000020 input_pressed_raw
+00049c94 g     F .text	000000a8 text_print_size
+00000000         *UND*	00000000 z64_actor_ovl_tab
+0000023c g     O .sbss	00000001 curr_scene_setup
 000000bc g     O .bss	00000200 alt_overrides
-0000ea80 g     F .text	00000154 SetupMaskShopHelloDialogOverride
+00034950 g     F .text	00000050 rdb_stop
+0002da74 g     F .text	00000038 menu_select_top
+00012e6c g     F .text	00000038 vec3f_sub
+00000000         *UND*	00000000 z64_scene_config_table
+0004a838 g     F .text	00000154 SetupMaskShopHelloDialogOverride
+00000000         *UND*	00000000 z64_part_ovl_tab
 00000220 g     O .data	00000010 medals_sprite
+0001f0f0 g     F .text	00000010 command_reset
 00003a44 g     F .text	00000064 interpolate
-0000a228 g     F .text	00000028 bow_upgrade
+00045fe0 g     F .text	00000028 bow_upgrade
 00000000         *UND*	00000000 VERSION_STRING_TXT
 000002a4 g     F .text	00000034 agony_vibrate_setup
 000001a0 g     O .data	00000010 item_digit_sprite
+0003f104 g     F .text	000000a8 rmdir
+0001f100 g     F .text	0000001c command_fileselect
+000349a0 g     F .text	00000010 rdb_check
 00004c44 g     F .text	0000025c draw_file_message
+00000000         *UND*	00000000 z64_timer_state
+00000000         *UND*	00000000 z64_ctxt
+00000000         *UND*	00000000 z64_thread_main
+00000000         *UND*	00000000 z64_day_speed
+0003eef0 g     F .text	000000b4 readdir
 0000633c g     F .text	000000fc Item00_KillActorIfFlagIsSet
 00005bf4 g     F .text	0000007c after_item_received
+00000000         *UND*	00000000 z64_Math_SinS
+00000000         *UND*	00000000 z64_part_space
+00019b3c g     F .text	00000024 list_push_back_size
+00000000         *UND*	00000000 z64_song_counter
+0000cad8 g     F .text	0000001c fat_rewind
 00000000         *UND*	00000000 SPOILER_AVAILABLE
-0000a1b4 g     F .text	00000008 no_upgrade
-0000ae48 g     F .text	00000224 update_navi_colors
+00045f6c g     F .text	00000008 no_upgrade
+0001fa28 g     F .text	0000005c command_reload
+00023168 g     F .text	000012e0 gz_inventory_menu
+0002e924 g     F .text	0000000c menu_checkbox_set
+0001481c g     F .text	00000034 gfx_rdp_load_tile
+00013cb0 g     F .text	0000010c gfx_texture_create
+00046c00 g     F .text	00000224 update_navi_colors
+0002d3b4 g     F .text	00000008 menu_set_cell_width
+00000000         *UND*	00000000 z64_OcarinaUpdate
+00000000         *UND*	00000000 z64_stab
 00005178 g     F .text	00000158 give_ganon_boss_key
-0000d24c g     F .text	0000000c Seeded_Rand_Seed
-0000a360 g     F .text	0000001c arrows_to_rupee
-00000040 g     O .sdata	00000004 a_note_font_glow_max
-000003bc g     O .rodata	00000268 trade_quest_items
-00007bec g     F .text	00000118 draw_gi_various_opa0_xlu1
+0000eb6c g     F .text	00000018 fat_path_target
+00000000         *UND*	00000000 z64_thread_sched
+00049004 g     F .text	0000000c Seeded_Rand_Seed
+00046118 g     F .text	0000001c arrows_to_rupee
+00027e20 g     F .text	000009d0 gz_scene_menu
+00000044 g     O .sdata	00000004 a_note_font_glow_max
+000313bc g     F .text	00000158 menu_strinput_set
+0002d368 g     F .text	00000008 menu_set_pyoffset
+00000000         *UND*	00000000 z64_AfxCmdF
+00000000         *UND*	00000000 osStartThread
+0000086c g     F .text.hook	000001a8 ocarina_sync_hook
+0000246c g     O .rodata	00000268 trade_quest_items
+000439a4 g     F .text	00000118 draw_gi_various_opa0_xlu1
+00042498 g     F .text	00000048 zu_void
+0001a73c g     F .text	000001a4 gz_free_view
+0002b230 g     F .text	00000054 fifo_poll
 00000514 g     O .bss	00000010 active_override
 00000018 g     O .sdata	00000008 empty_dlist
-0000005c g     O .sbss	00000004 RANDOMIZER_RNG_SEED
-0000e808 g     F .text	00000070 IsTradeItemTraded
+0000032c g     F .text.hook	00000084 guPerspectiveF_hook
+0003e6f0 g     F .text	0000008c lseek
+00000000         *UND*	00000000 z64_song_state
+00000000         *UND*	00000000 z64_SeedRandom
+00029254 g     F .text	0000069c gz_settings_menu
+00000238 g     O .sbss	00000004 RANDOMIZER_RNG_SEED
+0004a5c0 g     F .text	00000070 IsTradeItemTraded
 00000000         *UND*	00000000 INCOMING_ITEM
-00000068 g     O .sdata	00000004 c_button
+0003f500 g     F .text	00000014 have_l3dex2
+00000000         *UND*	00000000 __bss_end
+000002f8 g     O .rodata	00000040 gfx_cm_desaturate
+0000006c g     O .sdata	00000004 c_button
 00000000 g     O .sdata	00000004 dungeon_count
-00009d44 g     F .text	00000014 give_dungeon_item
+00045afc g     F .text	00000014 give_dungeon_item
 000021a0 g     F .text	00000128 draw_background
-0000a2c8 g     F .text	0000001c nut_upgrade
+0002da3c g     F .text	00000038 menu_return_top
+00000000         *UND*	00000000 z64_afx_cmd_write_pos
+0001993c g     F .text	000000ec list_transfer
+00046080 g     F .text	0000001c nut_upgrade
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED
+0003b0a8 g     F .text	00002c7c load_state
+0002d224 g     F .text	0000002c menu_imitate
+00019a28 g     F .text	00000060 list_splice
+00000000         *UND*	00000000 z64_item_highlight_vram
 00005a38 g     F .text	00000068 push_coop_item
+00031c88 g     F .text	0000000c menu_userwatch_address
 00000008 g     O .sdata	00000004 scene_fog_distance
-0000ccb0 g     F .text	000001e4 draw_pot
+0002b0ec g     F .text	0000006c disk_init
+00048a68 g     F .text	000001e4 draw_pot
 00000000         *UND*	00000000 CFG_BOMBCHU_TRAIL_OUTER_COLOR
-0000e9a4 g     F .text	00000068 SetBiggoronAnimationState
-0000e434 g     F .text	0000003c SaveFile_UnsetTradeItemAsTraded
-0000bc00 g     F .text	00000024 models_reset
+0003ec8c g     F .text	000000b4 chmod
+0004a75c g     F .text	00000068 SetBiggoronAnimationState
+0001f03c g     F .text	00000018 command_timer
+0004a1ec g     F .text	0000003c SaveFile_UnsetTradeItemAsTraded
+00000000         *UND*	00000000 z64_DrawRoom
+00013aa8 g     F .text	000001d8 gfx_texldr_load
+000479b8 g     F .text	00000024 models_reset
 00000000         *UND*	00000000 TIME_STRING_TXT
+00031fc8 g     F .text	000000ac menu_add_watch
+00000000         *UND*	00000000 z64_FlushAfxCmd
 00000270 g     F .text	00000008 agony_inside_radius_setup
 0000603c g     F .text	000000f0 get_collectible_flag_offset
-00008a1c g     F .text	0000016c draw_gi_scales
+000447d4 g     F .text	0000016c draw_gi_scales
+0001f150 g     F .text	000000c8 command_age
 00000bd8 g     F .text	00000074 draw_forest_hallway_chest_base
+000130ec g     F .text	00000044 vec3f_rej
 00000200 g     O .data	00000010 quest_items_sprite
 00005b18 g     F .text	00000070 after_key_received
+00000d40 g     O .data	00000334 vr4300_op_mnem
+00000a98 g     O .rodata	00000040 input_button_color
+00030b0c g     F .text	000000b0 menu_add_positioning
 00000000         *UND*	00000000 PLANDOMIZER_USED
-00000078 g     O .sbss	00000001 KAKARIKO_WEATHER_FORECAST
-0000f3ec g     F .text	0000003c heap_alloc
+00000254 g     O .sbss	00000001 KAKARIKO_WEATHER_FORECAST
+00000000         *UND*	00000000 cosf
+0004b1a4 g     F .text	0000003c heap_alloc
 00000038 g     O .sbss	00000004 active_item_row
-0000a540 g     F .text	00000050 after_game_state_update
+000462f8 g     F .text	00000050 after_game_state_update
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE
+00013e04 g     F .text	00000030 gfx_texture_destroy
 0000003c g     O .bss	00000080 outgoing_queue
-0000cee0 g     F .text	0000001c draw_flying_pot_hack
+00048c98 g     F .text	0000001c draw_flying_pot_hack
 000007a8 g     F .text	00000024 get_chest_type
-0000a42c g     F .text	00000034 health_upgrade_cap
+000461e4 g     F .text	00000034 health_upgrade_cap
+0001388c g     F .text	000000fc gfx_mode_pop
 000022c8 g     F .text	0000177c draw_dungeon_info
-0000a5cc g     F .text	0000004c after_scene_init
+00046384 g     F .text	0000004c after_scene_init
 00000000         *UND*	00000000 FONT_TEXTURE
+00015bbc g     F .text	00000514 guMtxCatF
+00000000         *UND*	00000000 z64_Math_CosS
 00000000         *UND*	00000000 SRAM_SLOTS
 00000000         *UND*	00000000 CFG_FILE_SELECT_HASH
+000311b8 g     F .text	000001d8 menu_add_strinput
 00000200 g     O .rodata	0000000c icon_sprites
 00000000         *UND*	00000000 OCARINAS_SHUFFLED
-0000dfa4 g     F .text	00000170 text_flush_size
+00049d5c g     F .text	00000170 text_flush_size
+0003eb78 g     F .text	00000114 rename
+0003369c g     F .text	0000002c pi_read_locked
 00005e7c g     F .text	000001b4 get_item
-0000808c g     F .text	00000144 draw_gi_various_opa10_xlu32
-0000004c g     O .sdata	00000004 a_note_glow_base
+00043e44 g     F .text	00000144 draw_gi_various_opa10_xlu32
+00000000         *UND*	00000000 z64_UpdateItemButton
+00030418 g     F .text	00000150 menu_intinput_set
+00000050 g     O .sdata	00000004 a_note_glow_base
 00000008 g     O .sbss	00000004 CHEST_SIZE_MATCH_CONTENTS
 00000000         *UND*	00000000 CFG_ADULT_TRADE_SHUFFLE
-00000044 g     O .sdata	00000004 a_note_font_glow_base
+00000000         *UND*	00000000 osCreateMesgQueue
+0002dba4 g     F .text	00000024 menu_item_disable
+00000048 g     O .sdata	00000004 a_note_font_glow_base
+0002d328 g     F .text	00000040 menu_get_pyoffset
 00000000         *UND*	00000000 CFG_RAINBOW_BOMBCHU_TRAIL_OUTER_ENABLED
 00000000         *UND*	00000000 CFG_RAINBOW_SWORD_OUTER_ENABLED
-00009ed0 g     F .text	0000001c give_magic
+00013e78 g     F .text	0000012c gfx_texture_copy
+00000000         *UND*	00000000 calloc
+00021bd8 g     F .text	00000344 gz_equips_menu
+0001ef64 g     F .text	0000001c command_recordmacro
+00045c88 g     F .text	0000001c give_magic
+000002e0 g     O .data	00000028 everdrive64_v2
 00000190 g     O .data	00000010 linkhead_skull_sprite
 00000030 g     O .sbss	00000004 active_item_text_id
-0000747c g     F .text	00000014 ice_trap_is_pending
+0001f284 g     F .text	00000118 gz_apply_settings
+00000000         *UND*	00000000 z64_cimg
+00000000         *UND*	00000000 z64_fw_state_2
+0002ca20 g     F .text	00000404 mem_menu_create
+00043234 g     F .text	00000014 ice_trap_is_pending
+00000000         *UND*	00000000 z64_CreateStaticCollision
 00000524 g     O .bss	00006000 cfg_item_overrides
-00000020 g     O .sdata	00000004 text_cursor_border_max
+00000024 g     O .sdata	00000004 text_cursor_border_max
+00041d40 g     F .text	0000001c zu_vlist_destroy
+00019a88 g     F .text	00000020 list_insert
+00019c24 g     F .text	0000003c list_destroy
 00000000         *UND*	00000000 DPAD_TEXTURE
+00000000         *UND*	00000000 z64_minimap_entrance_r
+0003e870 g     F .text	000001a0 write
+00000000         *UND*	00000000 z64_LoadMinimap
+00000000         *UND*	00000000 z64_part_pos
 000059a8 g     F .text	00000090 push_pending_item
-00007d04 g     F .text	0000012c draw_rutos_letter
-00009dec g     F .text	000000c8 give_small_key_ring
+00043abc g     F .text	0000012c draw_rutos_letter
+00042564 g     F .text	00000148 zu_gfx_init
+00045ba4 g     F .text	000000c8 give_small_key_ring
+00039cc8 g     F .text	000013e0 save_state
+0003e5bc g     F .text	00000044 fstat
+00000000         *UND*	00000000 fprintf
+00031550 g     F .text	00000044 menu_add_submenu
+00000000         *UND*	00000000 z64_afx_config_busy
+0000e894 g     F .text	000002d8 fat_find
 00000278 g     F .text	0000002c agony_outside_radius_setup
 00000000         *UND*	00000000 CFG_DPAD_DUNGEON_INFO_ENABLE
-0000ceb0 g     F .text	00000030 draw_hba_pot_hack
-0000e470 g     F .text	00000080 SaveFile_TradeItemIsTraded
-0000ea0c g     F .text	0000005c ShouldSkullKidSpawn
+000188fc g     F .text	00000084 set_insert
+000006d4 g     F .text.hook	00000198 ocarina_input_hook
+000410e4 g     F .text	0000004c yaz0_read
+00016200 g     F .text	00000160 guRotateRPYF
+00048c68 g     F .text	00000030 draw_hba_pot_hack
+0004a228 g     F .text	00000080 SaveFile_TradeItemIsTraded
+00042924 g     F .text	000000f8 zu_gfx_flush
+0002d780 g     F .text	0000004c menu_select
+0000fe2c g     F .text	000000ec fat_mtime
+0002ecd0 g     F .text	00000050 menu_add_tooltip
+0002d8ec g     F .text	00000064 menu_enter
+00000000         *UND*	00000000 z64_sound_state
+00001670  w    O .data	00001190 gspL3DEX2_fifoTextStart
+0002d408 g     F .text	00000044 menu_get_font
+00018678 g     F .text	00000048 set_get
+0001f8a0 g     F .text	0000005c command_nextstate
+0001eed4 g     F .text	00000014 command_levitate
+0003f238 g     F .text	000000d4 chdir
+0004a7c4 g     F .text	0000005c ShouldSkullKidSpawn
+00000000         *UND*	00000000 z64_input_direct
 0000002c g     O .sbss	00000004 active_item_object_id
 00000000         *UND*	00000000 CFG_RAINBOW_BOOM_TRAIL_INNER_ENABLED
-0000a280 g     F .text	00000030 wallet_upgrade
-0000b590 g     F .text	000000ec check_skeleton
+0001f8fc g     F .text	0000005c command_prevpos
+00046038 g     F .text	00000030 wallet_upgrade
+00000000         *UND*	00000000 log10f
+00047348 g     F .text	000000ec check_skeleton
+00013fa4 g     F .text	000001c0 gfx_texture_copy_tile
+0002b3e4 g     F .text	0000004c cpu_reset
 00000024 g     O .sbss	00000004 active_item_fast_chest
+00013a50 g     F .text	00000048 gfx_data_append
 00000020 g     O .sbss	00000002 num_override_flags
-00000054 g     O .sdata	00000004 c_note_g
+00000058 g     O .sdata	00000004 c_note_g
 00004ea0 g     F .text	0000023c draw_file_select_hash
-0000b2cc g     F .text	00000170 FindModelData
-00000034 g     O .sdata	00000004 c_note_font_glow_base
+00000000         *UND*	00000000 z64_audio_cmd_write_pos
+0002ef7c g     F .text	0000004c menu_tab_next
+00000000         *UND*	00000000 __CTOR_LIST__
+000000a0 g     F .text.hook	00000094 draw_room_hook
+0002e534 g     F .text	000000bc menu_add_button_icon
+00047084 g     F .text	00000170 FindModelData
+00000038 g     O .sdata	00000004 c_note_font_glow_base
+00000000         *UND*	00000000 cos
+0001ef10 g     F .text	0000001c command_pause
 00000660 g     F .text	0000002c set_bombchu_bowling_prize_flag
+00000000         *UND*	00000000 __osPiRelAccess
+0001f418 g     F .text	000000c8 gz_log
 0000068c g     F .text	0000011c get_chest_override
 00000000         *UND*	00000000 POTCRATE_TEXTURES_MATCH_CONTENTS
+00000000         *UND*	00000000 z64_night_sfx
+00000000         *UND*	00000000 z64_CreateSkyGfx
+000413cc g     F .text	00000098 zu_getfile
 00000d20 g     F .text	000006dc handle_dpad
 00000000         *UND*	00000000 START_TWINROVA_FIGHT
+0003225c g     F .text	00000044 gz_noclip_stop
+000186c0 g     F .text	0000001c set_at
+000131ac g     F .text	000000a8 vec3f_xfmw
 00006dac g     F .text	000000f8 sprite_draw
+00032074 g     F .text	0000000c menu_watch_get_address
 00000000         *UND*	00000000 CFG_BOOM_TRAIL_OUTER_COLOR
+00041834 g     F .text	00000048 zu_mesh_destroy
+000135a0 g     F .text	0000015c gfx_mode_apply
+00007d58 g     F .text	0000001c adex_destroy
+0001f630 g     F .text	00000114 command_loadstate
 000001b0 g     O .data	00000010 key_rupee_clock_sprite
-00009d00 g     F .text	0000000c give_biggoron_sword
-0000d220 g     F .text	0000002c Seeded_Rand_Next
+00045ab8 g     F .text	0000000c give_biggoron_sword
+00048fd8 g     F .text	0000002c Seeded_Rand_Next
 0000586c g     F .text	000000b0 push_outgoing_override
+0003f21c g     F .text	0000001c lstat
 00006b40 g     F .text	00000070 give_sarias_gift
+0000f780 g     F .text	000000f4 fat_empty
+00007a90 g     F .text	000002c8 adex_eval
+00000000         *UND*	00000000 sin
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED
+0004187c g     F .text	0000001c zu_vlist_init
 000061f8 g     F .text	0000008c Set_CollectibleOverrideFlag
-00000038 g     O .sdata	00000004 c_note_glow_max
-0000bd8c g     F .text	00000064 heart_piece_draw
+00019af8 g     F .text	00000044 list_insert_after
+00019b84 g     F .text	000000a0 list_erase
+0002dcf4 g     F .text	00000034 menu_item_screen_x
+00000000         *UND*	00000000 z64_event_camera
+0000003c g     O .sdata	00000004 c_note_glow_max
+0003e7bc g     F .text	000000b4 read
+0001a978 g     F .text	00000124 gz_cheats_menu
+0002ae4c g     F .text	00000020 input_released
+00047b44 g     F .text	00000064 heart_piece_draw
+00000000         *UND*	00000000 z64_mtx_stack_top
 00000000         *UND*	00000000 CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED
-0000e310 g     F .text	0000003c SaveFile_UnsetTradeItemAsOwned
-000081d0 g     F .text	0000015c draw_gi_bullet_bags
+0002a960 g     F .text	00000474 input_update
+0002d19c g     F .text	00000088 menu_init
+0004a0c8 g     F .text	0000003c SaveFile_UnsetTradeItemAsOwned
+00043f88 g     F .text	0000015c draw_gi_bullet_bags
+000349b0 g     F .text	00001838 vr4300_decode_insn
 00006c0c g     F .text	000001a0 sprite_load
-0000768c g     F .text	000000a4 draw_gi_sold_out
+00043444 g     F .text	000000a4 draw_gi_sold_out
+000426ac g     F .text	00000060 zu_gfx_destroy
 000062e8 g     F .text	00000054 Item_DropCollectible_Actor_Spawn_Override
+00041464 g     F .text	000000a8 zu_getfile_idx
 000000c4 g     F .text	0000015c Actor_StoreChestType
 00000230 g     O .data	00000010 stones_sprite
 00000000         *UND*	00000000 NO_COLLECTIBLE_HEARTS
 00000000         *UND*	00000000 OUTGOING_KEY
-00000098 g     O .sdata	00000004 text_width
+000158a4 g     F .text	00000318 guLookAtF
+00000000         *UND*	00000000 strncmp
+00041d5c g     F .text	0000002c zu_sram_read
+0000009c g     O .sdata	00000004 text_width
+000336c8 g     F .text	00000054 pi_write
+00000000         *UND*	00000000 z64_sky_images
 000000d4 g     O .data	00000014 extern_ctxt
-0000e6c0 g     F .text	000000e8 UpdateTradeEquips
-0000a37c g     F .text	0000001c bombs_to_rupee
-00000028 g     O .sdata	00000004 text_cursor_inner_max
-0000005c g     O .sdata	00000004 a_note_b
+00000000         *UND*	00000000 z64_GetInput
+0004a478 g     F .text	000000e8 UpdateTradeEquips
+00046134 g     F .text	0000001c bombs_to_rupee
+0000002c g     O .sdata	00000004 text_cursor_inner_max
+00000060 g     O .sdata	00000004 a_note_b
 00000000 g     O .sbss	00000004 EXTRA_BOWLING_SHUFFLE
+00000000         *UND*	00000000 pow
 00000000         *UND*	00000000 Gameplay_InitSkybox
 00000128 g     O .data	00000040 num_to_bits
+00000000         *UND*	00000000 z64_thread_dmamgr
+00000000         *UND*	00000000 strncpy
+0003ed40 g     F .text	000000a8 unlink
 00000240 g     O .data	00000028 setup_db
-0000b948 g     F .text	00000060 get_object
-00009c0c g     F .text	000000bc give_triforce_piece
-0000143c g     O .data	00001428 item_table
+00047700 g     F .text	00000060 get_object
+000459c4 g     F .text	000000bc give_triforce_piece
+00031a0c g     F .text	000000d4 menu_add_switch
+00004550 g     O .data	00001428 item_table
+0002f90c g     F .text	000003ec menu_floatinput_set
+00039768 g     F .text	000000dc settings_load
+00000000         *UND*	00000000 z64_link
+0002644c g     F .text	00000148 gz_vcont_set
+00026b94 g     F .text	00000020 gz_movie_rewind
 000001f0 g     O .data	00000010 font_sprite
+00030914 g     F .text	0000000c menu_option_get
+00000000         *UND*	00000000 realloc
 00000220 g     F .text	00000050 Actor_After_UpdateAll_Hack
-0000c59c g     F .text	000000b4 get_smallcrate_override
+00041318 g     F .text	0000003c zu_seg_locate
+00033670 g     F .text	0000002c pi_write_locked
+00048354 g     F .text	000000b4 get_smallcrate_override
 00000022 g     O .sbss	00000001 satisified_pending_frames
-0000b9f4 g     F .text	00000068 scale_top_matrix
+000477ac g     F .text	00000068 scale_top_matrix
 00005b88 g     F .text	0000006c pop_ice_trap
-000086a8 g     F .text	00000118 draw_gi_recovery_heart
+00044460 g     F .text	00000118 draw_gi_recovery_heart
 00000004 g     O .data	00000009 reward_rows
+000211d8 g     F .text	00000844 gz_debug_menu
+000422b8 g     F .text	00000030 zu_execute_filemenu
+000124cc g     F .text	00000554 flag_menu_create
+0000cff8 g     F .text	00000528 fat_rw
 0000002c g     O .bss	00000010 collectible_override
 00000000         *UND*	00000000 TWINROVA_ACTION_TIMER
-0000b06c g     F .text	00000040 update_misc_colors
+00000000         *UND*	00000000 z64_file
+00000000         *UND*	00000000 z64_dins_state_1
+0002d5f0 g     F .text	00000034 menu_get_selector
+0000ff18 g     F .text	00000524 fat_init
+00000000         *UND*	00000000 log2f
+00013774 g     F .text	00000030 gfx_mode_set
+00046e24 g     F .text	00000040 update_misc_colors
 00000014 g     O .sbss	00000001 GANON_BOSS_KEY_CONDITION
+00041098 g     F .text	0000004c yaz0_get_byte
 00006bdc g     F .text	00000030 sprite_bytes
-0000e614 g     F .text	000000ac SaveFile_PrevOwnedTradeItem
-00000058 g     O .sdata	00000004 c_note_r
+0004a3cc g     F .text	000000ac SaveFile_PrevOwnedTradeItem
+0000005c g     O .sdata	00000004 c_note_r
 00000000         *UND*	00000000 CFG_C_BUTTON_COLOR
-0000a1fc g     F .text	0000002c bomb_bag_upgrade
-000000a0 g     O .sdata	00000004 Sram_InitNewSave
-0000a300 g     F .text	00000010 magic_upgrade
-0000a0b0 g     F .text	00000078 resolve_item_text_id
-0000cb48 g     F .text	000000b4 get_pot_override
-0000a1d0 g     F .text	0000002c strength_upgrade
-00009fb0 g     F .text	00000090 open_mask_shop
-0000b920 g     F .text	00000028 load_object
-0000dca4 g     F .text	00000074 Save_Write_Hook
-0000a340 g     F .text	00000020 ocarina_upgrade
-0000832c g     F .text	00000160 draw_gi_small_rupees
-0000a128 g     F .text	00000060 resolve_upgrades
+00000000         *UND*	00000000 z64_seq_ctl
+00045fb4 g     F .text	0000002c bomb_bag_upgrade
+00000000         *UND*	00000000 z64_Camera_ChangeMode
+00000000         *UND*	00000000 sscanf
+000000a4 g     O .sdata	00000004 Sram_InitNewSave
+00000000         *UND*	00000000 z64_thread_audio
+00012a20 g     F .text	00000084 update_flag_records
+00000000         *UND*	00000000 z64_InitPauseObjects
+000460b8 g     F .text	00000010 magic_upgrade
+00045e68 g     F .text	00000078 resolve_item_text_id
+00048900 g     F .text	000000b4 get_pot_override
+00041d88 g     F .text	0000002c zu_sram_write
+000197b0 g     F .text	0000002c list_prev_in
+000163ac g     F .text	0000004c guTranslateF
+00041378 g     F .text	00000034 zu_seg_relocate
+00000000         *UND*	00000000 osSetEventMesg
+00015644 g     F .text	00000024 gfx_printf_n
+00045f88 g     F .text	0000002c strength_upgrade
+00000000         *UND*	00000000 z64_afx_cfg
+0002e918 g     F .text	0000000c menu_checkbox_get
+000392d8 g     F .text	0000041c settings_load_default
+00000000         *UND*	00000000 z64_thread_fault
+00040924 g     F .text	00000064 watchlist_hide
+00045d68 g     F .text	00000090 open_mask_shop
+000476d8 g     F .text	00000028 load_object
+00049a5c g     F .text	00000074 Save_Write_Hook
+000460f8 g     F .text	00000020 ocarina_upgrade
+000440e4 g     F .text	00000160 draw_gi_small_rupees
+00045ee0 g     F .text	00000060 resolve_upgrades
 000007cc g     F .text	0000018c set_chest_texture
 000001c0 g     O .data	00000010 song_note_sprite
 00000000         *UND*	00000000 CFG_A_NOTE_COLOR
-0000007c g     O .sdata	00000004 normal_no_dd
+00029d40 g     F .text	00000464 gz_warps_menu
+00000080 g     O .sdata	00000004 normal_no_dd
 00000b20 g     F .text	000000a4 should_draw_forest_hallway_chest
-0000006c g     O .sdata	00000004 b_button
-0000c254 g     F .text	00000064 bowling_heart_piece_draw
-0000d2fc g     F .text	00000068 Save_Open
+00000070 g     O .sdata	00000004 b_button
+00000000         *UND*	00000000 z64_sfx_mute
+000186dc g     F .text	00000090 vector_reserve
+00012f0c g     F .text	00000050 vec3f_cross
+0001f01c g     F .text	00000020 command_resetlag
+0002d950 g     F .text	0000007c menu_return
+00000000         *UND*	00000000 z64_minimap_entrance_x
+000160d0 g     F .text	00000130 guRotateF
+0004800c g     F .text	00000064 bowling_heart_piece_draw
+000490b4 g     F .text	00000068 Save_Open
+0002af34 g     F .text	00000014 input_bind_set_override
+00018524 g     F .text	00000020 set_init
 00006ea4 g     F .text	000001f0 gfx_init
+0002d3bc g     F .text	00000044 menu_get_cell_height
 00005344 g     F .text	0000002c override_flags_init
-00000084 g     O .sdata	00000006 defaultDDHeart
+00000088 g     O .sdata	00000006 defaultDDHeart
+00022454 g     F .text	0000057c gz_file_menu
+0002da04 g     F .text	00000038 menu_enter_top
+0001e808 g     F .text	00000604 gz_cull_view
 0000003c g     O .rodata	00000042 freecam_modes
-00009c00 g     F .text	0000000c full_heal
-00000050 g     O .sdata	00000004 c_note_b
+0002d298 g     F .text	00000040 menu_get_cyoffset
+000459b8 g     F .text	0000000c full_heal
+00000dc4 g     F .text.hook	0000015c ocarina_update_hook
+00000000         *UND*	00000000 z64_entrance_table
+00013a98 g     F .text	00000010 gfx_texldr_init
+00000000         *UND*	00000000 fopen
+00000000         *UND*	00000000 __bss_start
+0003f514 g     F .text	0000009c load_l3dex2
+00000054 g     O .sdata	00000004 c_note_b
+00013dbc g     F .text	00000048 gfx_texture_load
+00012e34 g     F .text	00000038 vec3f_add
+00000000         *UND*	00000000 memset
+0002e47c g     F .text	000000b8 menu_add_button
 00006a68 g     F .text	000000d8 get_skulltula_token
+00000000         *UND*	00000000 z64_AfxCmdW
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED
-00007490 g     F .text	00000018 push_pending_ice_trap
+00000000         *UND*	00000000 z64_afx_cmd_read_pos
+00018c60 g     F .text	00000864 main
+0002ae2c g     F .text	00000020 input_pressed
+000183e4 g     F .text	000000ac do_global_ctors
+000155dc g     F .text	00000068 gfx_printf
+00000000         *UND*	00000000 z64_staff_notes
+00043248 g     F .text	00000018 push_pending_ice_trap
+00000000         *UND*	00000000 z64_cs_message
+000197dc g     F .text	0000002c list_next_in
+00031390 g     F .text	0000002c menu_strinput_get
+0000fbec g     F .text	00000098 fat_remove
+0001d34c g     F .text	00000a80 gz_col_view
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_REWARD_ENABLE
-0000c114 g     F .text	00000140 bowling_bomb_bag_draw
-0000c8dc g     F .text	00000148 ObjKibako2_Draw
+00047ecc g     F .text	00000140 bowling_bomb_bag_draw
+00048694 g     F .text	00000148 ObjKibako2_Draw
 00000000         *UND*	00000000 WORLD_STRING_TXT
-0000d258 g     F .text	00000014 Seeded_Reset
-00000078 g     O .sdata	00000004 beating_dd
+0002dbc8 g     F .text	00000058 menu_item_transfer
+00000000         *UND*	00000000 z_onepointdemo_c_data
+00042db4 g     F .text	00000034 zu_set_lighting_ext
+0002d658 g     F .text	00000034 menu_get_front
+00000000         *UND*	00000000 fclose
+0002a694 g     F .text	0000005c bind_get_bitmask
+0002d538 g     F .text	0000005c menu_cell_screen_x
+00000000         *UND*	00000000 z64_Sram_LoadDebugSave
+00000000         *UND*	00000000 z64_poly_colorfilter_state
+00049010 g     F .text	00000014 Seeded_Reset
+00041898 g     F .text	00000214 zu_vlist_add_dl
+0000007c g     O .sdata	00000004 beating_dd
 000002d8 g     F .text	00000158 draw_agony_graphic
-0000a398 g     F .text	00000024 seeds_to_rupee
-00009f10 g     F .text	0000000c give_fairy_ocarina
-0000bc80 g     F .text	0000004c lookup_model
-0000004d g     O .sbss	00000001 OPEN_KAKARIKO
+0003f45c g     F .text	00000020 time
+00046150 g     F .text	00000024 seeds_to_rupee
+0003ede8 g     F .text	000000e8 opendir
+00045cc8 g     F .text	0000000c give_fairy_ocarina
+000072e0 g     F .text	000007b0 adex_parse
+0002af64 g     F .text	00000014 input_bind_pressed_raw
+00012edc g     F .text	00000030 vec3f_scale
+00047a38 g     F .text	0000004c lookup_model
+00000229 g     O .sbss	00000001 OPEN_KAKARIKO
 0000001c g     O .sbss	00000004 collectible_override_flags
-0000b0ac g     F .text	00000220 draw_illegal_model_text
+00000000         *UND*	00000000 z64_thread_graph
+00000c3c g     O .data	00000028 homeboy_iodev
+00046e64 g     F .text	00000220 draw_illegal_model_text
+00012ea4 g     F .text	00000038 vec3f_mul
 00000000         *UND*	00000000 CHEST_LENS_ONLY
 00000028 g     O .data	000000a9 dungeons
+00013024 g     F .text	00000024 vec3f_angle
+00038f10 g     F .text	000003c8 sd_write
+00037e60 g     F .text	00000070 resource_free
 00000000         *UND*	00000000 CFG_CUSTOM_MESSAGE_2
-00000055 g     O .sbss	00000001 child_safe
+00000231 g     O .sbss	00000001 child_safe
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_ENABLE
+00032080 g     F .text	0000000c menu_watch_set_address
 00000054 g     F .text	00000070 Actor_StoreFlagInRotation
 00000000         *UND*	00000000 CFG_DUNGEON_IS_MQ
-00000054 g     O .sbss	00000001 missing_dlist
+00000230 g     O .sbss	00000001 missing_dlist
+0002b2f0 g     F .text	0000006c fifo_write
 00000044 g     O .sbss	00000004 dummy_actor
-0000a7bc g     F .text	000001a4 update_boomerang_trail_colors
+0002d85c g     F .text	00000090 menu_signal_leave
+00046574 g     F .text	000001a4 update_boomerang_trail_colors
+00000000         *UND*	00000000 z64_temp_day_speed
+00019658 g     F .text	000000d0 set_symmetric_difference
+00013130 g     F .text	0000007c angle_dif
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED
+00000000         *UND*	00000000 gspF3DEX2_NoN_fifoDataStart
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_REWARD_NEED_COMPASS
-0000002c g     O .sdata	00000004 text_cursor_inner_base
-0000df84 g     F .text	00000020 text_print
-0000e2b4 g     F .text	00000024 IsAdultTradeItem
-0000a040 g     F .text	00000018 give_bombchus
-0000cf64 g     F .text	00000068 EnTuboTrap_DropCollectible_Hack
-0000bc24 g     F .text	0000005c lookup_model_by_override
-0000003c g     O .sdata	00000004 c_note_glow_base
+00031af8 g     F .text	00000014 menu_switch_toggle
+00012d6c g     F .text	000000c8 vec3f_pyangles
+00000000         *UND*	00000000 strcmp
+00000000         *UND*	00000000 gz_leave_func
+00018b44 g     F .text	00000020 vector_release
+00000030 g     O .sdata	00000004 text_cursor_inner_base
+00042c14 g     F .text	000000ac zu_save_disp_p
+00042de8 g     F .text	00000064 zu_adjust_joystick
+000002ac g     F .text.hook	00000080 afx_rand_hook
+00000000         *UND*	00000000 z64_ocarina_state
+00000000         *UND*	00000000 __DTOR_LIST__
+00000000         *UND*	00000000 z64_state_ovl_tab
+00018b7c g     F .text	000000e4 vector_erase
+00049d3c g     F .text	00000020 text_print
+0004a06c g     F .text	00000024 IsAdultTradeItem
+00045df8 g     F .text	00000018 give_bombchus
+00048d1c g     F .text	00000068 EnTuboTrap_DropCollectible_Hack
+000479dc g     F .text	0000005c lookup_model_by_override
+0003f30c g     F .text	00000150 getcwd
+00000040 g     O .sdata	00000004 c_note_glow_base
+00019774 g     F .text	00000014 list_init
+00000000         *UND*	00000000 acosf
+00002800 g     O .data	00000534 zu_scene_info
 00005124 g     F .text	00000054 countSetBitsRec
+000005e8 g     O .data	00000238 gz
+0000eba0 g     F .text	0000002c fat_free
+0002d250 g     F .text	00000040 menu_get_cxoffset
+0000ab34 g     F .text	00000044 explorer_room_prev
+00000000         *UND*	00000000 z64_map_mark_data_tab
+00018980 g     F .text	0000005c set_put
+00000000         *UND*	00000000 memalign
 00000012 g     O .sbss	00000002 GANON_BOSS_KEY_CONDITION_COUNT
-00009cc8 g     F .text	00000038 give_tycoon_wallet
-00000024 g     O .sdata	00000004 text_cursor_border_base
+000422e8 g     F .text	0000001c zu_in_game
+00000000         *UND*	00000000 sprintf
+00000000         *UND*	00000000 z64_hazard_state
+00045a80 g     F .text	00000038 give_tycoon_wallet
+00018a9c g     F .text	00000024 vector_push_back
+00000028 g     O .sdata	00000004 text_cursor_border_base
+00000000         *UND*	00000000 z64_StopSfx
+00000000         *UND*	00000000 osStopThread
+00018b64 g     F .text	00000018 vector_clear
 00000048 g     O .sbss	00000004 item_overrides_count
-0000964c g     F .text	0000013c draw_gi_song_notes
+00019788 g     F .text	00000014 list_prev
+00045404 g     F .text	0000013c draw_gi_song_notes
+0004270c g     F .text	0000010c zu_gfx_inject
 00000000         *UND*	00000000 CFG_BOOM_TRAIL_INNER_COLOR
-0000cefc g     F .text	00000068 ObjTsubo_SpawnCollectible_Hack
-000078ec g     F .text	000000f0 draw_gi_various_opa1023
-0000e270 g     F .text	00000018 GetTradeItemMax
-0000e258 g     F .text	00000018 GetTradeItemMin
+0003371c g     F .text	00000054 pi_read
+00048cb4 g     F .text	00000068 ObjTsubo_SpawnCollectible_Hack
+000436a4 g     F .text	000000f0 draw_gi_various_opa1023
+00000000         *UND*	00000000 z64_mtx_stack
+0004a028 g     F .text	00000018 GetTradeItemMax
+0004a010 g     F .text	00000018 GetTradeItemMin
+0000cbfc g     F .text	00000294 fat_advance
 00005d44 g     F .text	00000138 handle_pending_items
-0000a310 g     F .text	00000030 bombchu_upgrade
-0000bb28 g     F .text	0000008c draw_model
-0000dd18 g     F .text	00000088 Save_Init_Write_Hook
-00009f50 g     F .text	00000018 give_bean_pack
-0000e288 g     F .text	0000002c IsTradeItem
-000079dc g     F .text	00000150 draw_gi_wallets
-0000abd4 g     F .text	00000274 get_bombchu_back_color
-0000d51c g     F .text	000005b8 Sram_VerifyAndLoadAllSaves
-00009f1c g     F .text	00000018 give_song
+000460c8 g     F .text	00000030 bombchu_upgrade
+00000000         *UND*	00000000 z64_n_camera_shake
+00030400 g     F .text	0000000c menu_intinput_get
+00041354 g     F .text	00000024 zu_zseg_locate
+00019848 g     F .text	000000f4 list_insert_size
+00000000         *UND*	00000000 z64_light_handlers
+00000000         *UND*	00000000 z64_LoadOverlay
+00042520 g     F .text	00000044 zu_clear_event_flag
+00013e60 g     F .text	00000018 gfx_texture_data
+000478e0 g     F .text	0000008c draw_model
+0002af78 g     F .text	00000014 input_bind_pressed
+0001f534 g     F .text	000000fc command_savestate
+00000000         *UND*	00000000 z64_ocarina_button_state
+00049ad0 g     F .text	00000088 Save_Init_Write_Hook
+00045d08 g     F .text	00000018 give_bean_pack
+00000000         *UND*	00000000 atan2f
+0004a040 g     F .text	0000002c IsTradeItem
+00043794 g     F .text	00000150 draw_gi_wallets
+00030920 g     F .text	00000034 menu_option_set
+00000000         *UND*	00000000 z64_ocarina_song_length
+0004698c g     F .text	00000274 get_bombchu_back_color
+00000820 g     O .data	000001a4 command_info
+000492d4 g     F .text	000005b8 Sram_VerifyAndLoadAllSaves
+00045cd4 g     F .text	00000018 give_song
+0000ef74 g     F .text	00000464 fat_create
 00000004 g     O .sdata	00000004 last_fog_distance
 00000000         *UND*	00000000 FREE_BOMBCHU_DROPS
-0000a460 g     F .text	00000058 bombchus_to_bag
-0000008c g     O .sdata	00000006 defaultHeart
-00000060 g     O .sdata	00000004 a_note_g
-0000a4b8 g     F .text	0000004c c_init
-0000ebd4 g     F .text	00000268 TryPaybackMaskOverride
+00046218 g     F .text	00000058 bombchus_to_bag
+00000090 g     O .sdata	00000006 defaultHeart
+00000000         *UND*	00000000 z64_scarecrow_song
+0000eb84 g     F .text	0000001c fat_path_dir
+00000064 g     O .sdata	00000004 a_note_g
+00046270 g     F .text	0000004c c_init
+0004a98c g     F .text	00000268 TryPaybackMaskOverride
+0002d2d8 g     F .text	00000008 menu_set_cyoffset
+00000000         *UND*	00000000 fputc
+00019808 g     F .text	00000040 list_at
+0002e2b4 g     F .text	00000038 menu_navigate_top
+000005cc g     F .text.hook	00000108 srand_hook
+0002e180 g     F .text	00000134 menu_navigate
 00000000         *UND*	00000000 CFG_RAINBOW_BOOM_TRAIL_OUTER_ENABLED
+000348b0 g     F .text	000000a0 rdb_start
 000001d0 g     O .data	00000010 triforce_sprite
+00041044 g     F .text	00000054 yaz0_begin
 00000000         *UND*	00000000 EXTERN_DAMAGE_MULTIPLYER
-0000004f g     O .sbss	00000001 MAX_RUPEES
-0000c01c g     F .text	000000f8 item_etcetera_draw
+0002d44c g     F .text	00000008 menu_set_font
+00000000         *UND*	00000000 sinf
+0002d008 g     F .text	00000148 mem_open_watch
+0000022b g     O .sbss	00000001 MAX_RUPEES
+0000f548 g     F .text	00000238 fat_resize
+00047dd4 g     F .text	000000f8 item_etcetera_draw
+00019b60 g     F .text	00000024 list_push_back
+000389e4 g     F .text	000003c0 sd_init
 00000000         *UND*	00000000 SPEED_MULTIPLIER
 00004290 g     F .text	00000964 draw_file_icons
-0000e2d8 g     F .text	00000038 SaveFile_SetTradeItemAsOwned
+00000000         *UND*	00000000 z64_AfxRand
+0004a090 g     F .text	00000038 SaveFile_SetTradeItemAsOwned
 00000034 g     O .sbss	00000004 active_item_action_id
+0000ab78 g     F .text	00000040 explorer_room_next
 00005c70 g     F .text	000000d4 try_pending_item
-00007730 g     F .text	00000120 draw_gi_compass
-00002a5c g     O .data	000001f0 texture_table
-00009f68 g     F .text	0000002c fill_wallet_upgrade
-000075cc g     F .text	000000c0 draw_gi_eggs_and_medallions
-00000074 g     O .sbss	00000004 heap_next
+00032098 g     F .text	0000000c menu_watch_set_type
+0000027c g     O .data	00000028 everdrive64_v1
+000434e8 g     F .text	00000120 draw_gi_compass
+00005b70 g     O .data	000001f0 texture_table
+00045d20 g     F .text	0000002c fill_wallet_upgrade
+00043384 g     F .text	000000c0 draw_gi_eggs_and_medallions
+0000fc84 g     F .text	000000d0 fat_attrib
+0003f1ac g     F .text	00000070 stat
+00000000         *UND*	00000000 z64_game
+00000250 g     O .sbss	00000004 heap_next
+00000000         *UND*	00000000 ceilf
+00000000         *UND*	00000000 z64_sfx_read_pos
+0000cb40 g     F .text	00000074 fat_begin
+0002ee84 g     F .text	000000a8 menu_tab_goto
 00000000         *UND*	00000000 TRIFORCE_ICON_TEXTURE
-00009f34 g     F .text	0000001c ice_trap_effect
-0000e52c g     F .text	0000003c SaveFile_MaskIsPaid
-00009444 g     F .text	00000208 draw_gi_poe_bottles
-0000a618 g     F .text	00000100 c_equipment_menu_slot_filled
+00000000         *UND*	00000000 fwrite
+00045cec g     F .text	0000001c ice_trap_effect
+00000000         *UND*	00000000 z64_message_state
+0004a2e4 g     F .text	0000003c SaveFile_MaskIsPaid
+0001ddcc g     F .text	000002d8 gz_hit_view
+000321f8 g     F .text	00000064 gz_noclip_start
+000451fc g     F .text	00000208 draw_gi_poe_bottles
+00001074 g     O .data	0000020c vr4300_reg_mnem
+000463d0 g     F .text	00000100 c_equipment_menu_slot_filled
 0000612c g     F .text	000000cc Get_CollectibleOverrideFlag
 00000000         *UND*	00000000 FAST_CHESTS
+00042304 g     F .text	00000028 zu_audio_cmd
 00000000         *UND*	00000000 CURR_ACTOR_SPAWN_INDEX
-00009d0c g     F .text	00000038 give_bottle
+00045ac4 g     F .text	00000038 give_bottle
+00012c7c g     F .text	000000f0 vec3f_py
+0001f744 g     F .text	00000074 command_savepos
+0001f958 g     F .text	0000005c command_nextpos
+0001efdc g     F .text	00000020 command_hitview
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_REWARD_NEED_ALTAR
 00000180 g     O .data	00000010 heart_sprite
 000004d0 g     F .text	00000190 select_bombchu_bowling_prize
 000053ec g     F .text	000000d0 lookup_override_by_key
-0000b67c g     F .text	00000238 check_model_skeletons
+0002e85c g     F .text	000000bc menu_add_checkbox
+00047434 g     F .text	00000238 check_model_skeletons
 00006030 g     F .text	0000000c reset_collectible_mutex
 00000040 g     O .sbss	00000002 drop_collectible_override_flag
-0000b8b4 g     F .text	0000006c load_object_file
+0004766c g     F .text	0000006c load_object_file
+0001f7b8 g     F .text	0000008c command_loadpos
 000064bc g     F .text	000002c8 get_override_drop_id
-000088c8 g     F .text	00000154 draw_gi_magic_spells
-0000c650 g     F .text	00000108 ObjKibako_Draw
+0000aa64 g     F .text	000000d0 explorer_create
+0002b39c g     F .text	00000048 clock_freq
+0001effc g     F .text	00000020 command_pathview
+00044680 g     F .text	00000154 draw_gi_magic_spells
+00048408 g     F .text	00000108 ObjKibako_Draw
 0000591c g     F .text	0000008c move_outgoing_queue
+00000000         *UND*	00000000 z64_letterbox_time
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_NPC_INNER_ENABLED
-00002864 g     O .data	000000fc childSkeleton
+00005978 g     O .data	000000fc childSkeleton
 00000004 g     O .sbss	00000004 CHEST_SIZE_TEXTURE
-0000ba5c g     F .text	00000078 draw_model_low_level
-00009258 g     F .text	000001ec draw_gi_fairy_lantern
-0000c7bc g     F .text	0000006c ObjKibako2_SpawnCollectible_Hack
-0000ca9c g     F .text	000000ac enitem00_set_link_incoming_item_id
-00008d58 g     F .text	000001a4 draw_gi_mirror_shield
-0000e878 g     F .text	0000012c Inventory_ReplaceItem_Override
+00047814 g     F .text	00000078 draw_model_low_level
+00045010 g     F .text	000001ec draw_gi_fairy_lantern
+00048574 g     F .text	0000006c ObjKibako2_SpawnCollectible_Hack
+00048854 g     F .text	000000ac enitem00_set_link_incoming_item_id
+00044b10 g     F .text	000001a4 draw_gi_mirror_shield
+000183a8 g     F .text	0000003c clear_bss
+0002b1c4 g     F .text	0000006c disk_write
+00000000         *UND*	00000000 z64_fw_state_1
+00000000         *UND*	00000000 z64_UnloadRoom
+0004a630 g     F .text	0000012c Inventory_ReplaceItem_Override
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_MQ_NEED_MAP
-0000dde8 g     F .text	000000c8 get_current_scene_setup_number
-0000c4b0 g     F .text	000000ec ObjComb_Update
-00009bc0 g     F .text	00000038 base_draw_gi_model
+00000000         *UND*	00000000 __osEventStateTab
+0002dd28 g     F .text	00000034 menu_item_screen_y
+00000344 g     O .data	00000028 everdrive64_x
+00000000         *UND*	00000000 z64_afx
+00026a7c g     F .text	00000118 movie_to_z
+00026964 g     F .text	00000118 z_to_movie
+00031ca0 g     F .text	0000000c menu_userwatch_watch
+00000000         *UND*	00000000 z_camera_c_data
+00049ba0 g     F .text	000000c8 get_current_scene_setup_number
+00000000         *UND*	00000000 osCreateThread
+00048268 g     F .text	000000ec ObjComb_Update
+00045978 g     F .text	00000038 base_draw_gi_model
 00000000         *UND*	00000000 OUTGOING_ITEM
-0000c2b8 g     F .text	000000ec get_beehive_override
-0000e384 g     F .text	00000078 SaveFile_UpdateShiftableItem
-0000ea68 g     F .text	00000018 IsCuccoGivenToCuccoLady
-0000004c g     O .sbss	00000001 COMPLETE_MASK_QUEST
-0000bf54 g     F .text	00000064 skull_token_draw
+00048070 g     F .text	000000ec get_beehive_override
+0003040c g     F .text	0000000c menu_intinput_gets
+0004a13c g     F .text	00000078 SaveFile_UpdateShiftableItem
+00031ae0 g     F .text	0000000c menu_switch_set
+0004a820 g     F .text	00000018 IsCuccoGivenToCuccoLady
+0001f0bc g     F .text	00000034 command_stoptimer
+00000228 g     O .sbss	00000001 COMPLETE_MASK_QUEST
+0001fa84 g     F .text	00000018 gz_set_input_mask
+0001e0a4 g     F .text	00000764 gz_path_view
+000136fc g     F .text	00000078 gfx_mode_init
+00047d0c g     F .text	00000064 skull_token_draw
 00006284 g     F .text	00000064 Item_DropCollectible_Room_Hack
-0000e3fc g     F .text	00000038 SaveFile_SetTradeItemAsTraded
+0004a1b4 g     F .text	00000038 SaveFile_SetTradeItemAsTraded
+0001876c g     F .text	00000190 vector_insert
+00000000         *UND*	00000000 z64_message_select_state
+0000fd54 g     F .text	000000d8 fat_atime
+0002dd5c g     F .text	000001d8 menu_draw
+00000000         *UND*	00000000 z64_disp
+00013e34 g     F .text	0000002c gfx_texture_free
 00000000         *UND*	00000000 CFG_TEXT_CURSOR_COLOR
-00009788 g     F .text	0000019c draw_gi_small_keys
+00000000         *UND*	00000000 __RESOURCE_END__
+00037358 g     F .text	0000024c vr4300_print_insn
+00012fd0 g     F .text	00000054 vec3f_cos
+00045540 g     F .text	0000019c draw_gi_small_keys
 00000a18 g     F .text	000000c0 draw_chest_lid
 000000e8 g     O .data	00000040 hash_symbols
+00015008 g     F .text	000005c4 gfx_sprite_draw
+00013584 g     F .text	0000001c gfx_mode_configure
 00003aa8 g     F .text	00000018 extern_scene_init
-0000b9a8 g     F .text	0000004c set_object_segment
+00000000         *UND*	00000000 z64_event_state_1
+00047760 g     F .text	0000004c set_object_segment
+0000f874 g     F .text	00000378 fat_rename
 00000430 g     F .text	000000a0 draw_agony
-0000f3d8 g     F .text	00000014 heap_init
+0001eee8 g     F .text	00000014 command_fall
+0004b190 g     F .text	00000014 heap_init
+00000000         *UND*	00000000 z64_ResetAudio
+0002bf68 g     F .text	00000198 item_option_create
+0002ade0 g     F .text	0000000c input_y
 00000c4c g     F .text	000000d4 draw_forest_hallway_chest_lid
-0000b4b0 g     F .text	000000e0 FindHierarchy
+00000000         *UND*	00000000 z64_play_ovl_tab
+00041db4 g     F .text	00000504 zu_reset
+00000000         *UND*	00000000 strlen
+0002b158 g     F .text	0000006c disk_read
+00047268 g     F .text	000000e0 FindHierarchy
+0002d370 g     F .text	00000044 menu_get_cell_width
+0002d494 g     F .text	0000009c menu_get_alpha_i
+0003e370 g     F .text	0000022c open
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_PROP_INNER_ENABLED
-0000bef0 g     F .text	00000064 heart_container_draw
-00007530 g     F .text	0000009c draw_gi_bombchu_and_masks
-00006524 g     O .bss	000000c0 object_slots
-00009d58 g     F .text	00000094 give_small_key
+00000000         *UND*	00000000 z64_thread_idle
+00047ca8 g     F .text	00000064 heart_container_draw
+00000000         *UND*	00000000 z64_game_arena
+0002d624 g     F .text	00000034 menu_get_top
+000432e8 g     F .text	0000009c draw_gi_bombchu_and_masks
+0000b250 g     O .bss	000000c0 object_slots
+000424e0 g     F .text	00000040 zu_set_event_flag
+00045b10 g     F .text	00000094 give_small_key
+00000000         *UND*	00000000 z64_ftab
+0002d290 g     F .text	00000008 menu_set_cxoffset
+000413ac g     F .text	00000020 zu_zseg_relocate
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_MQ_ENABLE
+00000000         *UND*	00000000 floorf
+00000000         *UND*	00000000 strchr
 00000bc4 g     F .text	00000014 get_dummy_chest
 00000168 g     O .data	00000015 items
-00008b88 g     F .text	000001d0 draw_gi_potions
+00044940 g     F .text	000001d0 draw_gi_potions
 00000000         *UND*	00000000 C_HEAP
 00006830 g     F .text	00000238 item_give_collectible
-0000cfcc g     F .text	0000022c get_rainbow_color
+00048d84 g     F .text	0000022c get_rainbow_color
 00000000         *UND*	00000000 CFG_BOMBCHU_TRAIL_INNER_COLOR
-0000004e g     O .sbss	00000001 KEYRING_BOSSKEY_CONDITION
+00000000         *UND*	00000000 fputs
+0000022a g     O .sbss	00000001 KEYRING_BOSSKEY_CONDITION
 000054fc g     F .text	00000188 get_override_search_key
 00000011 g     O .sbss	00000001 NO_ESCAPE_SEQUENCE
+0002a684 g     F .text	00000010 bind_get_component
 00005818 g     F .text	00000054 clear_override
-0000c828 g     F .text	000000b4 get_crate_override
-00007e30 g     F .text	00000130 draw_gi_coins_and_cuccos
+000156cc g     F .text	00000040 guMtxIdentF
+0002af48 g     F .text	0000001c input_bind_held
+000485e0 g     F .text	000000b4 get_crate_override
+00043be8 g     F .text	00000130 draw_gi_coins_and_cuccos
+0003eed0 g     F .text	00000020 closedir
 00005ae4 g     F .text	00000034 pop_pending_item
-0000d26c g     F .text	00000048 Seeded_Rand_ZeroOne
+00000000         *UND*	00000000 z64_gameover_countdown
+00000000         *UND*	00000000 z64_dins_state_2
+00049024 g     F .text	00000048 Seeded_Rand_ZeroOne
 00000ad8 g     F .text	00000048 draw_chest
+0002daac g     F .text	000000ec menu_item_add
 00000000         *UND*	00000000 CFG_A_BUTTON_COLOR
+000163f8 g     F .text	00000044 guMtxF2L
+00000000         *UND*	00000000 z64_weather_state
+0004232c g     F .text	0000016c zu_execute_game
+0002ebd8 g     F .text	00000024 menu_add_static
 00000000         *UND*	00000000 FIX_BROKEN_DROPS
 00000000         *UND*	00000000 GET_ITEM_SEQ_ID
 00006bb0 g     F .text	0000002c sprite_bytes_per_tile
-0000a074 g     F .text	0000003c get_item_row
+0002a944 g     F .text	0000001c input_z_pad
+0004150c g     F .text	000000b8 zu_sr_header
+00045e2c g     F .text	0000003c get_item_row
 00000000         *UND*	00000000 DISABLE_TIMERS
-0000f428 g     F .text	00000044 file_init
-0000cbfc g     F .text	000000b4 get_flying_pot_override
+0004b1e0 g     F .text	00000044 file_init
+00000000         *UND*	00000000 z64_Io
+0001570c g     F .text	00000198 guPerspectiveF
+000489b4 g     F .text	000000b4 get_flying_pot_override
+00000000         *UND*	00000000 z64_SpawnActorAttachedB
+0003f05c g     F .text	000000a8 mkdir
 00000018 g     O .sbss	00000004 collectible_mutex
-00000224 g     O .rodata	0000000c rupee_colors
-0000a058 g     F .text	0000001c trade_quest_upgrade
+000022d4 g     O .rodata	0000000c rupee_colors
+00016360 g     F .text	0000004c guScaleF
+00045e10 g     F .text	0000001c trade_quest_upgrade
+00019728 g     F .text	00000030 vector_destroy
+000415c4 g     F .text	000000bc zu_scene_rooms
 00000000         *UND*	00000000 EXTENDED_OBJECT_TABLE
-0000ee80 g     F .text	00000544 draw_triforce_count
+0003e77c g     F .text	00000040 close
+00012f8c g     F .text	00000044 vec3f_mag
+0004ac38 g     F .text	00000544 draw_triforce_count
 00000000         *UND*	00000000 PLAYER_NAME_ID
-0000e1b0 g     F .text	00000020 GetTradeItemIndex
+000139e4 g     F .text	0000006c gfx_disp_append
+0002d7cc g     F .text	00000090 menu_signal_enter
+00049f68 g     F .text	00000020 GetTradeItemIndex
+00000000         *UND*	00000000 z64_cs_state
+0001ef80 g     F .text	0000003c command_playmacro
+00042a1c g     F .text	000001f8 zu_reloc_gfx
+0003efa4 g     F .text	00000008 telldir
+00031c94 g     F .text	0000000c menu_userwatch_type
+0003f47c g     F .text	00000084 sys_reset
+00000000         *UND*	00000000 z64_minimap_entrance_y
 00000958 g     F .text	000000c0 draw_chest_base
+00013098 g     F .text	00000054 vec3f_proj
+00014164 g     F .text	00000424 gfx_texture_colortransform
 00000000         *UND*	00000000 TRIFORCE_HUNT_ENABLED
-000087c0 g     F .text	00000108 draw_gi_fish_bottle
-0000bbb4 g     F .text	0000004c models_init
-00001420 g     O .data	0000001c key_counts
+00044578 g     F .text	00000108 draw_gi_fish_bottle
+00000000         *UND*	00000000 free
+0004796c g     F .text	0000004c models_init
+000408c0 g     F .text	00000064 watchlist_show
+00000000         *UND*	00000000 z64_ConfigureAfx
+00000000         *UND*	00000000 z64_zimg
+00000000         *UND*	00000000 z64_light_queue
+000268dc g     F .text	00000088 gz_vcont_get
+00004534 g     O .data	0000001c key_counts
 
 

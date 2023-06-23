@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include "gz_menu.h"
+#include "menu.h"
 
 struct item_data
 {

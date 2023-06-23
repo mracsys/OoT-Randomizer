@@ -3,7 +3,7 @@
 #include <n64.h>
 #include <vector/vector.h>
 #include "gu.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 static const size_t work_length     = 0x0080;

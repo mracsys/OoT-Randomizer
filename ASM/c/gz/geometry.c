@@ -1,5 +1,5 @@
 #include <math.h>
-#include "gz_z64.h"
+#include "z64.h"
 
 z64_xyzf_t *vec3f_py(z64_xyzf_t *r, float p, float y)
 {

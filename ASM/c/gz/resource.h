@@ -1,6 +1,6 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
-#include "gz_gfx.h"
+#include "gfx.h"
 
 enum resource_id
 {

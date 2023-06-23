@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <list/list.h>
-#include "gz_gfx.h"
-#include "gz_menu.h"
+#include "gfx.h"
+#include "menu.h"
 
 void menu_init(struct menu *menu, int cell_width, int cell_height,
                struct gfx_font *font)

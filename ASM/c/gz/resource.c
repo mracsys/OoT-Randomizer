@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <grc.h>
-#include "gz_gfx.h"
+#include "gfx.h"
 #include "gu.h"
 #include "resource.h"
-#include "gz_z64.h"
+#include "z64.h"
 
 /* resource data table */
 static void *res_data[RES_MAX] = {NULL};

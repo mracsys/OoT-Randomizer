@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <n64.h>
-#include "gz_gfx.h"
+#include "gfx.h"
 #include "gu.h"
-#include "gz_menu.h"
+#include "menu.h"
 #include "resource.h"
-#include "gz_z64.h"
+#include "z64.h"
 #include "zu.h"
 
 struct item_data

@@ -1,7 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 #include <stdint.h>
-#include "gz_menu.h"
+#include "menu.h"
 
 #define input_sch_pad_addr    0x8000045E
 #define input_sch_pad         (*(uint16_t *)input_sch_pad_addr)

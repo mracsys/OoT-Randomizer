@@ -5,10 +5,10 @@
 #include <math.h>
 #include <vector/vector.h>
 #include "flags.h"
-#include "gz_gfx.h"
-#include "gz_menu.h"
+#include "gfx.h"
+#include "menu.h"
 #include "resource.h"
-#include "gz_z64.h"
+#include "z64.h"
 
 #define FLAG_LOG_LENGTH   16
 #define FLAG_VIEW_ROWS    16
@@ -241,7 +241,7 @@ void flag_menu_create(struct menu *menu)
   /* initialize data */
   vector_init(&records, sizeof(struct flag_record));
   vector_init(&events, sizeof(struct flag_event));
-  add_record(4, 6, z64_file.gs_flags, "gs");
+  add_record(1, 56, z64_file.gs_flags, "gs");
   add_record(2, 14, z64_file.event_chk_inf, "event_chk_inf");
   add_record(2, 4, z64_file.item_get_inf, "item_get_inf");
   add_record(2, 30, z64_file.inf_table, "inf_table");
