@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "files.h"
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gz.h"
 #include "menu.h"
 #include "resource.h"
 #include "settings.h"
 #include "sys.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 static int byte_mod_proc(struct menu_item *item,

@@ -5,10 +5,10 @@
 #include <math.h>
 #include <vector/vector.h>
 #include "flags.h"
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "menu.h"
 #include "resource.h"
-#include "z64.h"
+#include "../z64.h"
 
 #define FLAG_LOG_LENGTH   16
 #define FLAG_VIEW_ROWS    16

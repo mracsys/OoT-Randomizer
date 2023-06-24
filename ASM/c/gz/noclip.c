@@ -11,9 +11,9 @@ static void noclip_update(z64_link_t *player, z64_game_t *global_ctx)
     float speed = (input_held & BUTTON_R) ? 100.f : 20.f;
 
     if (input_held & BUTTON_B)
-      player->common.pos_2.y += speed;
+      player->common.pos_world.y += speed;
     else if (input_held & BUTTON_A)
-      player->common.pos_2.y -= speed;
+      player->common.pos_world.y -= speed;
 
     if (input_held & (BUTTON_D_UP | BUTTON_D_DOWN | BUTTON_D_LEFT |
                       BUTTON_D_RIGHT))
@@ -29,8 +29,8 @@ static void noclip_update(z64_link_t *player, z64_game_t *global_ctx)
       else if (input_held & BUTTON_D_RIGHT)
         move_angle -= 0x4000;
 
-      player->common.pos_2.x += speed * z64_Math_SinS(move_angle);
-      player->common.pos_2.z += speed * z64_Math_CosS(move_angle);
+      player->common.pos_world.x += speed * z64_Math_SinS(move_angle);
+      player->common.pos_world.z += speed * z64_Math_CosS(move_angle);
     }
 
     player->common.xz_speed = 0.f;
@@ -39,7 +39,7 @@ static void noclip_update(z64_link_t *player, z64_game_t *global_ctx)
     player->common.vel_1.x = 0.f;
     player->common.vel_1.y = 0.f;
     player->common.vel_1.z = 0.f;
-    player->common.pos_1 = player->common.pos_2;
+    player->common.pos_init = player->common.pos_world;
 }
 
 void gz_noclip_start(void)

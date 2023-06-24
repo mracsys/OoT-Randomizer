@@ -6,13 +6,13 @@
 #include <inttypes.h>
 #include <n64.h>
 #include "flags.h"
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gz.h"
 #include "mem.h"
 #include "menu.h"
 #include "rdb.h"
 #include "ucode.h"
-#include "z64.h"
+#include "../z64.h"
 
 
 struct actor_debug_info
@@ -375,7 +375,7 @@ static int actor_draw_proc(struct menu_item *item,
       Mtx m;
       {
         MtxF mf;
-        guTranslateF(&mf, actor->pos_2.x, actor->pos_2.y, actor->pos_2.z);
+        guTranslateF(&mf, actor->pos_world.x, actor->pos_world.y, actor->pos_world.z);
         MtxF mt;
         guRotateRPYF(&mt,
                      actor->rot_2.x * M_PI / 0x8000,
@@ -456,8 +456,8 @@ static void goto_actor_proc(struct menu_item *item, void *data)
     z64_actor_t *actor = z64_game.actor_list[adi->type].first;
     for (int i = 0; i < adi->index; ++i)
       actor = actor->next;
-    z64_link.common.pos_1 = actor->pos_2;
-    z64_link.common.pos_2 = actor->pos_2;
+    z64_link.common.pos_init = actor->pos_world;
+    z64_link.common.pos_world = actor->pos_world;
   }
 }
 
@@ -520,9 +520,9 @@ static void spawn_actor_attached_b_proc(struct menu_item *item, void *data)
 static void fetch_actor_info_proc(struct menu_item *item, void *data)
 {
   struct actor_spawn_info *asi = data;
-  asi->x = floorf(z64_link.common.pos_2.x + 0.5f);
-  asi->y = floorf(z64_link.common.pos_2.y + 0.5f);
-  asi->z = floorf(z64_link.common.pos_2.z + 0.5f);
+  asi->x = floorf(z64_link.common.pos_world.x + 0.5f);
+  asi->y = floorf(z64_link.common.pos_world.y + 0.5f);
+  asi->z = floorf(z64_link.common.pos_world.z + 0.5f);
   asi->rx = z64_link.common.rot_2.x;
   asi->ry = z64_link.common.rot_2.y;
   asi->rz = z64_link.common.rot_2.z;

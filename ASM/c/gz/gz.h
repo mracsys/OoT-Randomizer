@@ -4,7 +4,7 @@
 #include <vector/vector.h>
 #include <n64.h>
 #include "settings.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 enum cmdact

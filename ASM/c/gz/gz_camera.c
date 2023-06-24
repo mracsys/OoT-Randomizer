@@ -14,7 +14,7 @@ static const float  fol_rspeed    = 1.f / 3.f;
 
 static void get_target_point(z64_xyzf_t *v)
 {
-  *v = z64_link.common.pos_2;
+  *v = z64_link.common.pos_world;
   if (z64_file.link_age == 0)
     v->y += 55.f;
   else

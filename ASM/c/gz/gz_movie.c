@@ -1,6 +1,6 @@
 #include <vector/vector.h>
 #include "gz.h"
-#include "z64.h"
+#include "../z64.h"
 
 void z_to_movie(int movie_frame, z64_input_t *zi, _Bool reset)
 {

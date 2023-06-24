@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <list/list.h>
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "menu.h"
 
 void menu_init(struct menu *menu, int cell_width, int cell_height,

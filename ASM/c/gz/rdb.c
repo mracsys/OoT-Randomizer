@@ -12,7 +12,7 @@
 #include "io.h"
 #include "rdb.h"
 #include "util.h"
-#include "z64.h"
+#include "../z64.h"
 
 #define RDB_DEBUG_FAULT 0
 #define RDB_DEBUG_SCHED 1

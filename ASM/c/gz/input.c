@@ -6,7 +6,7 @@
 #include "menu.h"
 #include "resource.h"
 #include "settings.h"
-#include "z64.h"
+#include "../z64.h"
 
 static int8_t     joy_x;
 static int8_t     joy_y;

@@ -3,14 +3,14 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <string.h>
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gz.h"
 #include "menu.h"
 #include "resource.h"
 #include "settings.h"
 #include "state.h"
 #include "watchlist.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 struct command_info command_info[COMMAND_MAX] =
@@ -156,7 +156,7 @@ void command_levitate(void)
 
 void command_fall(void)
 {
-  z64_link.common.pos_1.y = -4096.f;
+  z64_link.common.pos_init.y = -4096.f;
 }
 
 void command_turbo(void)
@@ -257,7 +257,7 @@ void command_loadstate(void)
 void command_savepos(void)
 {
   uint8_t slot = settings->teleport_slot;
-  settings->teleport_pos[slot] = z64_link.common.pos_2;
+  settings->teleport_pos[slot] = z64_link.common.pos_world;
   settings->teleport_rot[slot] = z64_link.common.rot_2.y;
   gz_log("saved position %i", slot);
 }
@@ -265,8 +265,8 @@ void command_savepos(void)
 void command_loadpos(void)
 {
   uint8_t slot = settings->teleport_slot;
-  z64_link.common.pos_1 = settings->teleport_pos[slot];
-  z64_link.common.pos_2 = settings->teleport_pos[slot];
+  z64_link.common.pos_init = settings->teleport_pos[slot];
+  z64_link.common.pos_world = settings->teleport_pos[slot];
   z64_link.common.rot_2.y = settings->teleport_rot[slot];
   z64_link.target_yaw = settings->teleport_rot[slot];
   gz_log("loaded position %i", slot);

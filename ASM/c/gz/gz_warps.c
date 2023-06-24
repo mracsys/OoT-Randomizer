@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <inttypes.h>
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gz.h"
 #include "menu.h"
 #include "settings.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 struct scene_category

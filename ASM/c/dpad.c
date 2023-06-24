@@ -18,7 +18,7 @@ typedef void(*usebutton_t)(z64_game_t *game, z64_link_t *link, uint8_t item, uin
 void handle_dpad() {
 
     pad_t pad_pressed = z64_game.common.input[0].pad_pressed;
-    pad_t pad_held = z64_ctxt.input[0].raw.pad;
+    pad_t pad_held = (pad_t)z64_ctxt.input[0].raw.pad;
 
     if (CAN_USE_TRADE_DPAD) {
         uint8_t current_trade_item = z64_file.items[z64_game.pause_ctxt.item_cursor];
@@ -73,7 +73,7 @@ void draw_dpad() {
         gSPDisplayList(db->p++, &setup_db);
         gDPPipeSync(db->p++);
         gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        uint16_t alpha = z64_game.hud_alpha_channels.rupees_keys_magic;
+        uint16_t alpha = z64_game.if_ctxt.hud_alpha_channels.rupees_keys_magic;
 
         gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
         sprite_load(db, &dpad_sprite, 0, 1);

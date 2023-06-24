@@ -1,11 +1,11 @@
 #include <stdint.h>
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gz.h"
 #include "input.h"
 #include "item_option.h"
 #include "menu.h"
 #include "resource.h"
-#include "z64.h"
+#include "../z64.h"
 
 static int equip_switch_proc(struct menu_item *item,
                              enum menu_callback_reason reason,

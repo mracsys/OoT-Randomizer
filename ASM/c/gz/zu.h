@@ -11,7 +11,7 @@
 #include <vector/vector.h>
 #include <n64.h>
 #include "gu.h"
-#include "z64.h"
+#include "../z64.h"
 
 #define ZU_MAKE_SEG(seg,off)  (((((uint32_t)(seg))&0x0000000F)<<24)|          \
                                ((((uint32_t)(off))&0x00FFFFFF)<<0))

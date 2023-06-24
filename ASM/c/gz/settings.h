@@ -2,7 +2,7 @@
 #define SETTINGS_H
 #include <stdint.h>
 #include "input.h"
-#include "z64.h"
+#include "../z64.h"
 
 #define SETTINGS_ADDRESS            0x7A00
 #define SETTINGS_MAXSIZE            (0x8000-(SETTINGS_ADDRESS))

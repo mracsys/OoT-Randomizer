@@ -3,13 +3,13 @@
 #include <malloc.h>
 #include <mips.h>
 #include <n64.h>
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gu.h"
 #include "input.h"
 #include "menu.h"
 #include "resource.h"
 #include "settings.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 enum state
@@ -449,7 +449,7 @@ static int activate_proc(struct menu_item *item)
     z64_LoadRoom(&z64_game, &z64_game.room_ctxt, data->room_index);
   }
   z64_xyzf_t pos = {data->x, data->y, data->z};
-  z64_link.common.pos_1 = z64_link.common.pos_2 = pos;
+  z64_link.common.pos_init = z64_link.common.pos_world = pos;
   z64_link.common.rot_2.y = z64_link.target_yaw = 0x8000 + data->yaw *
                                                   0x8000 / M_PI;
   z64_link.drop_y = pos.y;

@@ -4,11 +4,11 @@
 #include "gz.h"
 #include "menu.h"
 #include "settings.h"
-#include "z64.h"
+#include "../z64.h"
 
 static void set_entrance_proc(struct menu_item *item, void *data)
 {
-  z64_file.void_pos = z64_link.common.pos_2;
+  z64_file.void_pos = z64_link.common.pos_world;
   z64_file.void_yaw = z64_link.common.rot_2.y;
   z64_file.void_var = z64_link.common.variable;
   z64_file.void_entrance = z64_file.entrance_index;

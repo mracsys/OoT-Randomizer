@@ -5,7 +5,7 @@ int8_t curr_scene_setup; // Global containing the current scene setup.
 // Determine the current scene setup and set it in the curr_scene_setup global.
 // See https://wiki.cloudmodding.com/oot/Scenes_and_Rooms#Alternate_Header_List:
 void get_current_scene_setup_number() {
-    z64_scene_command* cmd = z64_game.scene_segment;
+    z64_scene_command* cmd = z64_game.scene_file;
 
     // If the scene_setup_index is 0 then we don't need to look any further.
     if(z64_file.scene_setup_index == 0) {
@@ -30,7 +30,7 @@ void get_current_scene_setup_number() {
             // Get segment offset from alternate header command
             uint32_t segment_offset = (cmd->data2 & 0x00FFFFFF);
             // Get a pointer to the alternate header list
-            void** alternate_header = (void**)(z64_game.scene_segment + segment_offset);
+            void** alternate_header = (void**)(z64_game.scene_file + segment_offset);
             uint8_t i = z64_file.scene_setup_index;
             // Starting, at scene_setup_index, scan towards the front of list to find the first non-null entry.
             while(i > 0)

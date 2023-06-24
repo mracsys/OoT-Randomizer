@@ -9,7 +9,7 @@
 #include "sys.h"
 #include "yaz0.h"
 #include "zu.h"
-#include "z64.h"
+#include "../z64.h"
 
 static void serial_write(void **p, void *data, uint32_t length)
 {
@@ -1451,8 +1451,8 @@ void load_state(const struct state_meta *state)
                      z64_game.pause_ctxt.icon_item_s);
     }
     else {
-      z64_InitPauseObjects(&z64_game, z64_game.pause_ctxt.p_0x13C,
-                           &z64_game.pause_ctxt.s_0x27C);
+      z64_InitPauseObjects(&z64_game, z64_game.pause_ctxt.p13C,
+                           &z64_game.pause_ctxt.s27C);
       if (dungeon_map) {
         zu_getfile_idx(z64_icon_item_dungeon_static,
                        z64_game.pause_ctxt.icon_item_s);
@@ -1700,8 +1700,8 @@ void load_state(const struct state_meta *state)
   }
   else {
     /* event state */
-    serial_read(&p, z64_event_state_1, 0x0008);
-    serial_read(&p, z64_event_state_2, 0x0004);
+    serial_read(&p, &z64_event_state_1, 0x0008);
+    serial_read(&p, &z64_event_state_2, 0x0004);
     /* event camera parameters */
     for (int i = 0; i < 24; ++i)
       serial_read(&p, &z64_event_camera[0x28 * i + 0x10], 0x0018);
@@ -1820,7 +1820,7 @@ void load_state(const struct state_meta *state)
   }
   if (c_pause_objects && !c_gameover && (!p_pause_objects || p_gameover)) {
     uint16_t (*img)[112][64];
-    img = z64_game.pause_ctxt.p_0x13C;
+    img = z64_game.pause_ctxt.p13C;
     for (int y = 0; y < 112; ++y)
       for (int x = 0; x < 64; ++x)
         (*img)[y][x] = GPACK_RGBA5551(0x00, 0x00, 0x00, 0x00);

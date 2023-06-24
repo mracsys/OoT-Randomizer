@@ -59,7 +59,7 @@ void agony_vibrate_setup() {
 
 void draw_agony_graphic(int hoffset, int voffset, unsigned char alpha) {
     // terminate if alpha level prohibited (changed areas)
-    unsigned char maxalpha = (unsigned char)z64_game.hud_alpha_channels.minimap;
+    unsigned char maxalpha = (unsigned char)z64_game.if_ctxt.hud_alpha_channels.minimap;
     if (maxalpha == 0xAA) maxalpha = 0xFF;
 
     if (alpha > maxalpha) {

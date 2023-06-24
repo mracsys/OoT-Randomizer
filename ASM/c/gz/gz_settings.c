@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gz.h"
 #include "input.h"
 #include "menu.h"
 #include "resource.h"
 #include "settings.h"
 #include "watchlist.h"
-#include "z64.h"
+#include "../z64.h"
 
 static uint16_t font_options[] =
 {

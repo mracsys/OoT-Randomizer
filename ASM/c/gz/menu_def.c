@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "menu.h"
 
 struct static_icon_data

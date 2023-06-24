@@ -119,7 +119,7 @@ float interpolate(float value, float target, float speed) {
 }
 
 void extern_scene_init() {
-    scene_fog_distance = z64_game.fog_distance;
+    scene_fog_distance = z64_game.view.zNear;
 }
 
 void process_extern_ctxt() {
@@ -136,16 +136,16 @@ void process_extern_ctxt() {
 
     /* Fog Distance */
     if (extern_ctxt.fog_distance != 0.0) {
-        if (z64_game.fog_distance != extern_ctxt.fog_distance) {
-            z64_game.fog_distance = interpolate(last_fog_distance, extern_ctxt.fog_distance, -0.1);
+        if (z64_game.view.zNear != extern_ctxt.fog_distance) {
+            z64_game.view.zNear = interpolate(last_fog_distance, extern_ctxt.fog_distance, -0.1);
         }
     }
     else {
-        if (z64_game.fog_distance != scene_fog_distance) {
-            z64_game.fog_distance = interpolate(z64_game.fog_distance, scene_fog_distance, 0.1);
+        if (z64_game.view.zNear != scene_fog_distance) {
+            z64_game.view.zNear = interpolate(z64_game.view.zNear, scene_fog_distance, 0.1);
         }
     }
-    last_fog_distance = z64_game.fog_distance;
+    last_fog_distance = z64_game.view.zNear;
 
     /* Top-Down Camera */
     if (extern_ctxt.topdown_cam == 1) {

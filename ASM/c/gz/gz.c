@@ -8,7 +8,7 @@
 #include <vector/vector.h>
 #include "explorer.h"
 #include "geometry.h"
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gu.h"
 #include "gz.h"
 #include "input.h"
@@ -19,7 +19,7 @@
 #include "start.h"
 #include "util.h"
 #include "watchlist.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 __attribute__((section(".data")))
@@ -166,7 +166,7 @@ static void main_hook(void)
   if (settings->cheats & (1 << CHEAT_QUICKTEXT))
     *(uint8_t *)(&z64_message_state[0x000C]) = 0x01;
   if (settings->cheats & (1 << CHEAT_NOHUD))
-      z64_file.hud_flag = 0x001;
+      z64_file.magic_meter_size = 0x001;
 
   /* handle commands */
   for (int i = 0; i < COMMAND_MAX; ++i) {

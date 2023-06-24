@@ -4,13 +4,13 @@
 #include <vector/vector.h>
 #include <stdint.h>
 #include "geometry.h"
-#include "gfx.h"
+#include "gfx_gz.h"
 #include "gu.h"
 #include "gz.h"
 #include "settings.h"
 #include "ucode.h"
 #include "util.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 /* blend primitive and shading color, output environment alpha */

@@ -8,7 +8,7 @@
 #include "settings.h"
 #include "state.h"
 #include "sys.h"
-#include "z64.h"
+#include "../z64.h"
 #include "zu.h"
 
 static _Bool            vcont_plugged[4];

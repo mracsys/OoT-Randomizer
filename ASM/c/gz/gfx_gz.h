@@ -1,5 +1,5 @@
-#ifndef GFX_H
-#define GFX_H
+#ifndef GFX_GZ_H
+#define GFX_GZ_H
 #include <stddef.h>
 #include <n64.h>
 #include "gu.h"
