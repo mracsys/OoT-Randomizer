@@ -836,8 +836,8 @@ void gz_vcont_set(int port, _Bool plugged, z64_controller_t *cont)
   vcont->y_diff += (vcont->raw.y - vcont->raw_prev.y);
 
   uint16_t pad_changed = (vcont->raw.pad ^ vcont->raw_prev.pad);
-  vcont->pad_pressed |= (pad_changed & vcont->raw.pad);
-  vcont->pad_released |= (pad_changed & vcont->raw_prev.pad);
+  vcont->pad_pressed.pad |= (pad_changed & vcont->raw.pad);
+  vcont->pad_released.pad |= (pad_changed & vcont->raw_prev.pad);
 
   vcont->adjusted_x = zu_adjust_joystick(vcont->raw.x);
   vcont->adjusted_y = zu_adjust_joystick(vcont->raw.y);
@@ -861,6 +861,6 @@ void gz_vcont_get(int port, z64_input_t *input)
 
   vcont->x_diff = 0;
   vcont->y_diff = 0;
-  vcont->pad_pressed = 0;
-  vcont->pad_released = 0;
+  vcont->pad_pressed.pad = 0;
+  vcont->pad_released.pad = 0;
 }

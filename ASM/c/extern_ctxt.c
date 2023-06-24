@@ -174,7 +174,7 @@ void process_extern_ctxt() {
 
     /* No Z */
     if (extern_ctxt.no_z) {
-        z64_game.common.input[0].raw.pad.z = 0;
+        z64_game.common.input[0].raw.full_pad.z = 0;
         z64_game.common.input[0].pad_pressed.z = 0;
     }
 

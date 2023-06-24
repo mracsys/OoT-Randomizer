@@ -269,8 +269,8 @@ static void main_hook(void)
       d_x = zi.raw.x;
       d_y = zi.raw.y;
       d_pad = zi.raw.pad;
-      d_pressed = zi.pad_pressed;
-      d_released = zi.pad_released;
+      d_pressed = zi.pad_pressed.pad;
+      d_released = zi.pad_released.pad;
       if (!settings->bits.input_pressrel)
         d_pad |= d_pressed;
       if (reset_flag)
@@ -293,8 +293,8 @@ static void main_hook(void)
       d_y = input_y();
       d_pad = input_pad();
       if (gz.frames_queued == 0) {
-        d_pressed = z64_input_direct.pad_pressed;
-        d_released = z64_input_direct.pad_released;
+        d_pressed = z64_input_direct.pad_pressed.pad;
+        d_released = z64_input_direct.pad_released.pad;
       }
       else {
         d_pressed = input_pressed_raw();
@@ -569,8 +569,8 @@ HOOK void draw_actors_hook(z64_game_t *game, void *actor_ctxt)
 static void mask_input(z64_input_t *input)
 {
   z64_controller_t *mask = &gz.z_input_mask;
-  input->pad_pressed &= ~mask->pad;
-  input->pad_released |= (input->raw.pad & mask->pad);
+  input->pad_pressed.pad &= ~mask->pad;
+  input->pad_released.pad |= (input->raw.pad & mask->pad);
   input->raw.pad &= ~mask->pad;
   input->raw.x &= ~mask->x;
   input->raw.y &= ~mask->y;
@@ -635,8 +635,8 @@ HOOK void input_hook(void)
             zi[0].adjusted_y = di.adjusted_y;
           }
           zi[0].raw.pad |= di.raw.pad;
-          zi[0].pad_pressed |= di.pad_pressed;
-          zi[0].pad_released |= di.pad_released;
+          zi[0].pad_pressed.pad |= di.pad_pressed.pad;
+          zi[0].pad_released.pad |= di.pad_released.pad;
         }
         else
           gz.reset_flag = reset;

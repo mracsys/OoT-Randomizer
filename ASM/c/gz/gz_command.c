@@ -244,8 +244,8 @@ void command_loadstate(void)
     z64_input_t *zi = &z64_ctxt.input[0];
     di->raw_prev = zi->raw;
     di->status_prev = zi->status;
-    di->pad_pressed = (di->raw.pad ^ zi->raw.pad) & di->raw.pad;
-    di->pad_released = (di->raw.pad ^ zi->raw.pad) & zi->raw.pad;
+    di->pad_pressed.pad = (di->raw.pad ^ zi->raw.pad) & di->raw.pad;
+    di->pad_released.pad = (di->raw.pad ^ zi->raw.pad) & zi->raw.pad;
     di->x_diff = di->raw.x - zi->raw.x;
     di->y_diff = di->raw.y - zi->raw.y;
     gz_log("loaded state %i", gz.state_slot);

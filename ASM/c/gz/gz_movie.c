@@ -11,17 +11,17 @@ void z_to_movie(int movie_frame, z64_input_t *zi, _Bool reset)
     raw_prev->x = zi->raw.x - zi->x_diff;
     raw_prev->y = zi->raw.y - zi->y_diff;
     raw_prev->pad = (zi->raw.pad |
-                     (~zi->pad_pressed & zi->pad_released)) &
-                    ~(zi->pad_pressed & ~zi->pad_released);
+                     (~zi->pad_pressed.pad & zi->pad_released.pad)) &
+                    ~(zi->pad_pressed.pad & ~zi->pad_released.pad);
   }
   else {
     struct movie_input *mi_prev = vector_at(&gz.movie_input, movie_frame - 1);
     raw_prev = &mi_prev->raw;
   }
   mi->raw = zi->raw;
-  mi->pad_delta = (~mi->raw.pad & raw_prev->pad & zi->pad_pressed) |
-                  (mi->raw.pad & ~raw_prev->pad & zi->pad_released) |
-                  (zi->pad_pressed & zi->pad_released);
+  mi->pad_delta = (~mi->raw.pad & raw_prev->pad & zi->pad_pressed.pad) |
+                  (mi->raw.pad & ~raw_prev->pad & zi->pad_released.pad) |
+                  (zi->pad_pressed.pad & zi->pad_released.pad);
   mi->pad_delta |= reset << 7;
 }
 
@@ -41,8 +41,8 @@ void movie_to_z(int movie_frame, z64_input_t *zi, _Bool *reset)
   delta &= ~0x0080;
   zi->raw = mi->raw;
   zi->raw_prev = *raw_prev;
-  zi->pad_pressed = (mi->raw.pad & ~raw_prev->pad) | delta;
-  zi->pad_released = (~mi->raw.pad & raw_prev->pad) | delta;
+  zi->pad_pressed.pad = (mi->raw.pad & ~raw_prev->pad) | delta;
+  zi->pad_released.pad = (~mi->raw.pad & raw_prev->pad) | delta;
   zi->x_diff = mi->raw.x - raw_prev->x;
   zi->y_diff = mi->raw.y - raw_prev->y;
   zi->adjusted_x = zu_adjust_joystick(zi->raw.x);

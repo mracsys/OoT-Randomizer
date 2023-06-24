@@ -1069,6 +1069,7 @@ typedef struct
       uint16_t  cr : 1;
     };
     uint16_t    pad;
+    pad_t       full_pad;
   };
   int8_t        x;
   int8_t        y;
@@ -3009,7 +3010,7 @@ typedef void      (*z64_SeedRandom_proc)              (uint32_t seed);
 #define z64_event_state_1       (*(uint32_t*)         z64_event_state_1_addr)
 
 
-
+/*
 #define  z64_thread_idle                (*(OSThread*) z64_thread_idle_addr)
 #define  z64_thread_main                (*(OSThread*) z64_thread_main_addr)
 #define  z64_thread_dmamgr              (*(OSThread*) z64_thread_dmamgr_addr)
@@ -3094,7 +3095,109 @@ typedef void      (*z64_SeedRandom_proc)              (uint32_t seed);
 #define  z64_disp                       ((char*) z64_disp_addr)
 #define  z64_cimg                       ((char*) z64_cimg_addr)
 #define  z64_item_highlight_vram        ((char*) z64_item_highlight_vram_addr)
+*/
 
+
+#define     z64_extern            extern __attribute__ ((section(".data")))
+z64_extern  OSThread              z64_thread_idle;
+z64_extern  OSThread              z64_thread_main;
+z64_extern  OSThread              z64_thread_dmamgr;
+//z64_extern  OSMesgQueue           z64_file_mq;
+z64_extern  z64_ftab_t            z64_ftab[];
+z64_extern  z64_part_t           *z64_part_space;
+z64_extern  int32_t               z64_part_pos;
+z64_extern  int32_t               z64_part_max;
+z64_extern  z64_part_ovl_t        z64_part_ovl_tab[37];
+z64_extern  z64_actor_ovl_t       z64_actor_ovl_tab[471];
+z64_extern  char                  z_camera_c_data[];
+z64_extern  char                  z64_hud_state[];
+//z64_extern  char                  z64_event_state_1[];
+z64_extern  uint32_t              z64_letterbox_time;
+z64_extern  char                  z64_event_state_2[];
+z64_extern  char                  z64_event_camera[];
+z64_extern  int32_t               z64_oob_timer;
+z64_extern  char                  z64_cs_message[];
+//z64_extern  z64_state_ovl_t       z64_state_ovl_tab[6];
+z64_extern  char                  z64_weather_state[];
+z64_extern  uint32_t              z64_audio_cmd_buf[0x100];
+//z64_extern  z64_scene_table_t     z64_scene_table[];
+//z64_extern  uint16_t              z64_day_speed;
+z64_extern  z64_sky_image_t       z64_sky_images[9];
+//z64_extern  z64_light_handler_t   z64_light_handlers[];
+z64_extern  char                  z_onepointdemo_c_data[];
+z64_extern  z64_map_mark_ovl_t    z64_map_mark_ovl;
+z64_extern  char                  z64_dins_state_1[];
+z64_extern  char                  z64_dins_state_2[];
+z64_extern  int16_t               z64_minimap_entrance_x;
+z64_extern  int16_t               z64_minimap_entrance_y;
+z64_extern  int16_t               z64_minimap_entrance_r;
+z64_extern  char                  z64_hazard_state[];
+z64_extern  uint16_t              z64_temp_day_speed;
+z64_extern  uint16_t              z64_n_camera_shake;
+//z64_extern  z64_vrom_file_t       z64_object_table[];
+//z64_extern  z64_entrance_table_t  z64_entrance_table[];
+//z64_extern  z64_scene_config_t    z64_scene_config_table[];
+z64_extern  int32_t               z64_letterbox_target;
+z64_extern  int32_t               z64_letterbox_current;
+z64_extern  z64_play_ovl_t        z64_play_ovl_tab[2];
+z64_extern  z64_play_ovl_t        z64_play_ovl_ptr;
+z64_extern  char                  z64_sound_state[];
+z64_extern  z64_night_sfx_t       z64_night_sfx[20];
+z64_extern  char                  z64_ocarina_state[];
+z64_extern  uint32_t              z64_ocarina_counter;
+z64_extern  uint8_t               z64_ocarina_song_length;
+z64_extern  char                  z64_scarecrow_song[];
+z64_extern  char                  z64_song_ptr[];
+z64_extern  uint8_t               z64_ocarina_button_state;
+z64_extern  uint8_t               z64_sfx_write_pos;
+z64_extern  uint8_t               z64_sfx_read_pos;
+z64_extern  uint8_t               z64_audio_cmd_write_pos;
+z64_extern  uint8_t               z64_audio_cmd_read_pos;
+z64_extern  uint8_t               z64_afx_cfg;
+z64_extern  uint8_t               z64_afx_config_busy;
+z64_extern  uint32_t              z64_random;
+z64_extern  char                  z64_message_state[];
+z64_extern  char                  z64_staff_notes[];
+z64_extern  int16_t               z64_message_select_state;
+z64_extern  int16_t               z64_gameover_countdown;
+z64_extern  z64_pfx_t             z64_pfx;
+z64_extern  char                  z64_fw_state_1[];
+z64_extern  char                  z64_fw_state_2[];
+z64_extern  char                  z64_camera_state[];
+//z64_extern  z64_file_t            z64_file;
+z64_extern  char                  z64_cs_state[];
+z64_extern  z64_light_queue_t     z64_light_queue;
+z64_extern  z64_arena_t           z64_game_arena;
+z64_extern  void                 *z64_map_mark_data_tab;
+z64_extern  char                  z64_timer_state[];
+z64_extern  char                  z64_camera_shake[];
+z64_extern  char                  z64_poly_colorfilter_state[];
+z64_extern  OSThread              z64_thread_sched;
+z64_extern  OSThread              z64_thread_padmgr;
+//z64_extern  z64_input_t           z64_input_direct;
+z64_extern  OSThread              z64_thread_irqmgr;
+z64_extern  OSThread              z64_thread_graph;
+//z64_extern  z64_stab_t            z64_stab;
+z64_extern  OSThread              z64_thread_audio;
+z64_extern  MtxF                (*z64_mtx_stack)[20];
+z64_extern  MtxF                 *z64_mtx_stack_top;
+z64_extern  OSThread              z64_thread_fault;
+z64_extern  char                  z64_song_state[];
+z64_extern  int32_t               z64_song_counter;
+z64_extern  char                  z64_sfx_mute[];
+z64_extern  z64_seq_ctl_t         z64_seq_ctl[4];
+z64_extern  char                  z64_afx[];
+z64_extern  uint32_t              z64_afx_counter;
+z64_extern  uint8_t               z64_afx_cmd_write_pos;
+z64_extern  uint8_t               z64_afx_cmd_read_pos;
+z64_extern  z64_afx_cmd_t         z64_afx_cmd_buf[0x100];
+z64_extern  char                  z64_zimg[];
+z64_extern  char                  z64_disp[];
+//z64_extern  z64_ctxt_t            z64_ctxt;
+//z64_extern  z64_game_t            z64_game;
+//z64_extern  z64_link_t            z64_link;
+z64_extern  char                  z64_cimg[];
+z64_extern  char                  z64_item_highlight_vram[];
 
 
 /* functions */

@@ -3,7 +3,7 @@ LD = mips64-ld
 OBJDUMP = mips64-objdump
 
 CFLAGS = -O1 -fno-reorder-blocks -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
-	-mexplicit-relocs
+	-mexplicit-relocs -std=gnu11
 CPPFLAGS = -DF3DEX_GBI_2 -DZ64_VERSION=Z64_OOT10
 
 OUTDIR := build
@@ -28,7 +28,7 @@ ifdef RUN_OBJDUMP
 endif
 
 $(OBJDIR): 
-	mkdir -p $@
+	mkdir -p $@/gz
 
 $(OBJECTS): | $(OBJDIR)
 
@@ -43,4 +43,5 @@ ifdef RUN_OBJDUMP
 endif
 
 clean:
-	rm -rf $(OBJDIR)/*.o
+	rm -rf ${OBJDIR}/*.o
+	rm -rf ${OBJDIR}/gz/*.o

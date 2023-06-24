@@ -158,6 +158,181 @@ Gameplay_InitSkybox:
 .org 0x80108CEC
 .word @transition_0_jump
 
+;==================================================================================================
+; gz data
+;==================================================================================================
+
+.org 0x80006850
+z64_thread_idle:
+.org 0x80007220
+z64_thread_main:
+.org 0x80007DD8
+z64_thread_dmamgr:
+.org 0x8000B140
+z64_ftab:
+.org 0x800E7B40
+z64_part_space:
+.org 0x800E7B44
+z64_part_pos:
+.org 0x800E7B48
+z64_part_max:
+.org 0x800E7C40
+z64_part_ovl_tab:
+.org 0x800E8530
+z64_actor_ovl_tab:
+.org 0x800EC170
+z_camera_c_data:
+.org 0x800EF1A8
+z64_hud_state:
+.org 0x800EF1F8
+z64_letterbox_time:
+.org 0x800EF1FC
+z64_event_state_2:
+.org 0x800EF254
+z64_event_camera:
+.org 0x800EF6AC
+z64_oob_timer:
+.org 0x800EFCD0
+z64_cs_message:
+.org 0x800F1640
+z64_weather_state:
+.org 0x800F184C
+z64_sky_images:
+.org 0x800F1BF8
+z64_map_mark_ovl:
+.org 0x800F1C10
+z_onepointdemo_c_data:
+.org 0x800F1C18
+z64_dins_state_1:
+.org 0x800F4C1C
+z64_dins_state_2:
+.org 0x800F5530
+z64_minimap_entrance_x:
+.org 0x800F5534
+z64_minimap_entrance_y:
+.org 0x800F5538
+z64_minimap_entrance_r:
+.org 0x800F7538
+z64_hazard_state:
+.org 0x800F7638
+z64_temp_day_speed:
+.org 0x800F7D24
+z64_n_camera_shake:
+.org 0x800FE474
+z64_letterbox_target:
+.org 0x800FE478
+z64_letterbox_current:
+.org 0x800FE480
+z64_play_ovl_tab:
+.org 0x800FE4BC
+z64_play_ovl_ptr:
+.org 0x80101914
+z64_sound_state:
+.org 0x801019E8
+z64_night_sfx:
+.org 0x80102208
+z64_ocarina_state:
+.org 0x80102264
+z64_ocarina_counter:
+.org 0x80102270
+z64_ocarina_song_length:
+.org 0x801029FC
+z64_scarecrow_song:
+.org 0x80102B3C
+z64_song_ptr:
+.org 0x80102B7C
+z64_ocarina_button_state:
+.org 0x80104360
+z64_sfx_write_pos:
+.org 0x80104364
+z64_sfx_read_pos:
+.org 0x801043B0
+z64_audio_cmd_write_pos:
+.org 0x801043B4
+z64_audio_cmd_read_pos:
+.org 0x801043C0
+z64_afx_cfg:
+.org 0x801043C4
+z64_afx_config_busy:
+.org 0x80105440
+z64_random:
+.org 0x8010A924
+z64_message_state:
+.org 0x80112E8C
+z64_staff_notes:
+.org 0x80112EC4
+z64_message_select_state:
+.org 0x801132B0
+z64_gameover_countdown:
+.org 0x801145C0
+gspF3DEX2_NoN_fifoDataStart:
+.org 0x80114DE0
+z64_pfx:
+.org 0x80118BF8
+z64_fw_state_1:
+.org 0x80118C00
+z64_fw_state_2:
+.org 0x80118E20
+z64_camera_state:
+.org 0x8011BC20
+z64_cs_state:
+.org 0x8011BD60
+z64_light_queue:
+.org 0x8011BEF0
+z64_game_arena:
+.org 0x8011BF00
+z64_map_mark_data_tab:
+.org 0x8011BF20
+z64_timer_state:
+.org 0x8011BF60
+z64_camera_shake:
+.org 0x8011D148
+z64_poly_colorfilter_state:
+.org 0x8011D318
+z64_thread_sched:
+.org 0x8011D580
+z64_thread_padmgr:
+.org 0x8011DA00
+z64_thread_irqmgr:
+.org 0x8011DBE8
+z64_thread_graph:
+.org 0x80120D60
+z64_thread_audio:
+.org 0x80121200
+z64_mtx_stack:
+.org 0x80121204
+z64_mtx_stack_top:
+.org 0x80121290
+z64_thread_fault:
+.org 0x80121F0C
+z64_song_state:
+.org 0x80121F1C
+z64_song_counter:
+.org 0x80124754
+z64_sfx_mute:
+.org 0x80124800
+z64_audio_cmd_buf:
+.org 0x80124C00
+z64_seq_ctl:
+.org 0x80125630
+z64_afx:
+.org 0x80127ECC
+z64_afx_counter:
+.org 0x8012B208
+z64_afx_cmd_write_pos:
+.org 0x8012B209
+z64_afx_cmd_read_pos:
+.org 0x8012B280
+z64_afx_cmd_buf:
+.org 0x8012BE40
+z64_zimg:
+.org 0x8016A640
+z64_disp:
+.org 0x803B5000
+z64_cimg:
+.org 0x80829D9C
+z64_item_highlight_vram:
+
 .headersize 0
 
 ;==================================================================================================

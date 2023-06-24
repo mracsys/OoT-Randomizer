@@ -81,7 +81,7 @@ void draw_background(z64_disp_buf_t *db, int bg_left, int bg_top, int bg_width, 
 }
 
 void draw_dungeon_info(z64_disp_buf_t *db) {
-    pad_t pad_held = z64_ctxt.input[0].raw.pad;
+    pad_t pad_held = z64_ctxt.input[0].raw.full_pad;
     int draw = CAN_DRAW_DUNGEON_INFO && !CAN_DRAW_TRADE_DPAD && (
         ((pad_held.dl || pad_held.dr || pad_held.dd) && CFG_DPAD_DUNGEON_INFO_ENABLE) ||
         ((pad_held.dl || pad_held.dr || pad_held.dd) && !CFG_DPAD_DUNGEON_INFO_ENABLE && pad_held.a) ||

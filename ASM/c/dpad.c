@@ -18,7 +18,7 @@ typedef void(*usebutton_t)(z64_game_t *game, z64_link_t *link, uint8_t item, uin
 void handle_dpad() {
 
     pad_t pad_pressed = z64_game.common.input[0].pad_pressed;
-    pad_t pad_held = (pad_t)z64_ctxt.input[0].raw.pad;
+    pad_t pad_held = z64_ctxt.input[0].raw.full_pad;
 
     if (CAN_USE_TRADE_DPAD) {
         uint8_t current_trade_item = z64_file.items[z64_game.pause_ctxt.item_cursor];
