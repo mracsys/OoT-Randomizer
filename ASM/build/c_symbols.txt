@@ -4,18 +4,18 @@ build/bundle.o:     file format elf32-bigmips
 SYMBOL TABLE:
 80000400 l    d  .text	00000000 .text
 80061b28 l    d  .rodata	00000000 .rodata
-80069398 l    d  .dynamic	00000000 .dynamic
-80069440 l    d  .hash	00000000 .hash
-80069464 l    d  .dynsym	00000000 .dynsym
-800694a4 l    d  .dynstr	00000000 .dynstr
-800694e4 l    d  .ctors	00000000 .ctors
-800694ec l    d  .dtors	00000000 .dtors
-800694f8 l    d  .data	00000000 .data
-8006fa80 l    d  .got	00000000 .got
-8006fa88 l    d  .sdata	00000000 .sdata
-8006fb38 l    d  .sbss	00000000 .sbss
-8006fba0 l    d  .bss	00000000 .bss
-8007b0e0 l    d  .stack	00000000 .stack
+80069390 l    d  .dynamic	00000000 .dynamic
+80069438 l    d  .hash	00000000 .hash
+8006945c l    d  .dynsym	00000000 .dynsym
+8006949c l    d  .dynstr	00000000 .dynstr
+800694dc l    d  .ctors	00000000 .ctors
+800694e4 l    d  .dtors	00000000 .dtors
+800694f0 l    d  .data	00000000 .data
+8008ae50 l    d  .got	00000000 .got
+8008ae58 l    d  .sdata	00000000 .sdata
+8008af08 l    d  .sbss	00000000 .sbss
+8008af70 l    d  .bss	00000000 .bss
+800964b0 l    d  .stack	00000000 .stack
 00000000 l    d  .debug_info	00000000 .debug_info
 00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
 00000000 l    d  .debug_frame	00000000 .debug_frame
@@ -26,55 +26,55 @@ SYMBOL TABLE:
 800181e0 l     F .text	000000a8 mask_input
 80018288 l     F .text	0000001c main_return_proc
 800182a4 l     F .text	00000060 update_cpu_counter
-8007695c l     O .bss	00000004 count.7
+80091d2c l     O .bss	00000004 count.7
 80018304 l     F .text	00001510 main_hook
-80076958 l     O .bss	00000004 input_pos.6
-80062318 l     O .rodata	00000014 input_list.5
-800622dc l     O .rodata	0000003c buttons.4
-80069d10 l     O .data	00000004 splash_time.3
-80076954 l     O .bss	00000004 logo_texture.2
-80076951 l     O .bss	00000001 global_ctors_done.1
-80076950 l     O .bss	00000001 global_dtors_done.0
+80091d28 l     O .bss	00000004 input_pos.6
+80062310 l     O .rodata	00000014 input_list.5
+800622d4 l     O .rodata	0000003c buttons.4
+80084fb0 l     O .data	00000004 splash_time.3
+80091d24 l     O .bss	00000004 logo_texture.2
+80091d21 l     O .bss	00000001 global_ctors_done.1
+80091d20 l     O .bss	00000001 global_dtors_done.0
 800199e8 l     F .text	000000fc set_locate
-80076a00 l     O .bss	00000050 menu.10
-800769b0 l     O .bss	00000050 watches.9
-80076960 l     O .bss	00000050 global.8
-800694f0 l     O .dtors	00000004 dtor_n
-800694ec l     O .dtors	00000004 dtor_i
-800694e8 l     O .ctors	00000004 ctor_n
-800694e4 l     O .ctors	00000004 ctor_i
-8006232c l       .rodata	00000000 $LC0
-80062330 l       .rodata	00000000 $LC1
+80091dd0 l     O .bss	00000050 menu.10
+80091d80 l     O .bss	00000050 watches.9
+80091d30 l     O .bss	00000050 global.8
+800694e8 l     O .dtors	00000004 dtor_n
+800694e4 l     O .dtors	00000004 dtor_i
+800694e0 l     O .ctors	00000004 ctor_n
+800694dc l     O .ctors	00000004 ctor_i
+80062324 l       .rodata	00000000 $LC0
+80062328 l       .rodata	00000000 $LC1
 800621f0 l       .rodata	00000000 $LC2
 800621f8 l       .rodata	00000000 $LC3
-80062334 l       .rodata	00000000 $LC4
-80062338 l       .rodata	00000000 $LC5
+8006232c l       .rodata	00000000 $LC4
+80062330 l       .rodata	00000000 $LC5
 80062200 l       .rodata	00000000 $LC6
-8006233c l       .rodata	00000000 $LC8
+80062334 l       .rodata	00000000 $LC8
 80062204 l       .rodata	00000000 $LC7
 8006220c l       .rodata	00000000 $LC9
 8006221c l       .rodata	00000000 $LC10
 80062228 l       .rodata	00000000 $LC11
 80062230 l       .rodata	00000000 $LC12
-80062240 l       .rodata	00000000 $LC13
-80062250 l       .rodata	00000000 $LC14
-8006225c l       .rodata	00000000 $LC15
-80062264 l       .rodata	00000000 $LC16
-80062268 l       .rodata	00000000 $LC17
-8006227c l       .rodata	00000000 $LC18
-80062284 l       .rodata	00000000 $LC19
-8006228c l       .rodata	00000000 $LC20
-80062294 l       .rodata	00000000 $LC21
-8006229c l       .rodata	00000000 $LC22
-800622a8 l       .rodata	00000000 $LC23
-800622b0 l       .rodata	00000000 $LC24
-800622b8 l       .rodata	00000000 $LC25
-800622c0 l       .rodata	00000000 $LC26
-800622c8 l       .rodata	00000000 $LC27
-800622d0 l       .rodata	00000000 $LC28
+80062234 l       .rodata	00000000 $LC13
+8006223c l       .rodata	00000000 $LC14
+80062254 l       .rodata	00000000 $LC15
+8006225c l       .rodata	00000000 $LC16
+80062260 l       .rodata	00000000 $LC17
+80062274 l       .rodata	00000000 $LC18
+8006227c l       .rodata	00000000 $LC19
+80062284 l       .rodata	00000000 $LC20
+8006228c l       .rodata	00000000 $LC21
+80062294 l       .rodata	00000000 $LC22
+800622a0 l       .rodata	00000000 $LC23
+800622a8 l       .rodata	00000000 $LC24
+800622b0 l       .rodata	00000000 $LC25
+800622b8 l       .rodata	00000000 $LC26
+800622c0 l       .rodata	00000000 $LC27
+800622c8 l       .rodata	00000000 $LC28
 00000000 l    df *ABS*	00000000 actor.c
 00000000 l    df *ABS*	00000000 agony.c
-800694f8 l     O .data	00000004 alpha_frame
+80084798 l     O .data	00000004 alpha_frame
 80061b28 l     O .rodata	00000028 ALPHA_DATA
 00000000 l    df *ABS*	00000000 bombchu_bowling.c
 00000000 l    df *ABS*	00000000 chests.c
@@ -96,12 +96,12 @@ SYMBOL TABLE:
 8000512c l     F .text	000000dc make_digits
 80005208 l     F .text	00000070 draw_square_sprite
 80061c50 l     O .rodata	00000100 fixed_tile_positions
-8006fba4 l     O .bss	0000002c draw_data
+8008af74 l     O .bss	0000002c draw_data
 80061bd0 l     O .rodata	00000010 MASK_LOOKUP
 80061c38 l     O .rodata	00000015 variable_tile_positions
 80061bfc l     O .rodata	0000003c song_note_data
 80061be0 l     O .rodata	00000019 counter_positions
-8006fba0 l     O .bss	00000001 frame_counter.0
+8008af70 l     O .bss	00000001 frame_counter.0
 00000000 l    df *ABS*	00000000 file_message.c
 80005fac l     F .text	00000050 print_msg
 80061d5c l       .rodata	00000000 $LC0
@@ -135,18 +135,18 @@ SYMBOL TABLE:
 80061dc4 l       .rodata	00000000 $LC3
 00000000 l    df *ABS*	00000000 ed64_v1.c
 8000912c l     F .text	0000005c cart_lock_safe
-800760d4 l     O .bss	00000004 cart_irqf
-800760d0 l     O .bss	00000004 cart_lat
-800760cc l     O .bss	00000004 cart_pwd
+800914a4 l     O .bss	00000004 cart_irqf
+800914a0 l     O .bss	00000004 cart_lat
+8009149c l     O .bss	00000004 cart_pwd
 80009188 l     F .text	00000030 cart_lock
 800091b8 l     F .text	00000060 cart_unlock
 80009218 l     F .text	0000006c sd_set_spd
-800760c8 l     O .bss	00000002 spi_cfg
+80091498 l     O .bss	00000002 spi_cfg
 80009284 l     F .text	00000048 sd_spi_ss
 800092cc l     F .text	00000064 sd_spi_io
 80009330 l     F .text	0000012c probe
 8000945c l     F .text	00000028 disk_write
-8006979c l     O .data	0000003c sd_host
+80084a3c l     O .data	0000003c sd_host
 80009484 l     F .text	000000d4 sd_rx_mblk
 80009558 l     F .text	00000028 disk_read
 80009580 l     F .text	00000020 disk_init
@@ -155,20 +155,20 @@ SYMBOL TABLE:
 80009674 l     F .text	00000074 sd_spi_rx_buf
 00000000 l    df *ABS*	00000000 ed64_v2.c
 800096e8 l     F .text	0000005c cart_lock_safe
-800760e4 l     O .bss	00000004 cart_irqf
-800760e0 l     O .bss	00000004 cart_lat
-800760dc l     O .bss	00000004 cart_pwd
+800914b4 l     O .bss	00000004 cart_irqf
+800914b0 l     O .bss	00000004 cart_lat
+800914ac l     O .bss	00000004 cart_pwd
 80009744 l     F .text	00000030 cart_lock
 80009774 l     F .text	00000060 cart_unlock
 800097d4 l     F .text	0000006c sd_set_spd
-800760d8 l     O .bss	00000002 spi_cfg
+800914a8 l     O .bss	00000002 spi_cfg
 80009840 l     F .text	00000128 probe
 80009968 l     F .text	0000004c fifo_poll
 800099b4 l     F .text	00000124 fifo_write
 80009ad8 l     F .text	00000124 fifo_read
 80009bfc l     F .text	00000100 sd_rx_mblk
 80009cfc l     F .text	00000028 disk_write
-80069800 l     O .data	0000003c sd_host
+80084aa0 l     O .data	0000003c sd_host
 80009d24 l     F .text	00000028 disk_read
 80009d4c l     F .text	00000020 disk_init
 80009d6c l     F .text	00000090 sd_dat_rx
@@ -181,20 +181,20 @@ SYMBOL TABLE:
 8000a168 l     F .text	000000a0 sd_dat_rx_buf
 00000000 l    df *ABS*	00000000 ed64_x.c
 8000a208 l     F .text	0000005c cart_lock_safe
-800760f4 l     O .bss	00000004 cart_irqf
-800760f0 l     O .bss	00000004 cart_lat
-800760ec l     O .bss	00000004 cart_pwd
+800914c4 l     O .bss	00000004 cart_irqf
+800914c0 l     O .bss	00000004 cart_lat
+800914bc l     O .bss	00000004 cart_pwd
 8000a264 l     F .text	00000030 cart_lock
 8000a294 l     F .text	00000060 cart_unlock
 8000a2f4 l     F .text	00000050 sd_set_spd
-800760e8 l     O .bss	00000002 spi_cfg
+800914b8 l     O .bss	00000002 spi_cfg
 8000a344 l     F .text	00000098 probe
 8000a3dc l     F .text	0000004c fifo_poll
 8000a428 l     F .text	00000100 fifo_write
 8000a528 l     F .text	00000100 fifo_read
 8000a628 l     F .text	000000c0 sd_rx_mblk
 8000a6e8 l     F .text	00000028 disk_write
-80069864 l     O .data	0000003c sd_host
+80084b04 l     O .data	0000003c sd_host
 8000a710 l     F .text	00000028 disk_read
 8000a738 l     F .text	00000020 disk_init
 8000a758 l     F .text	000000cc sd_dat_rx_buf
@@ -209,12 +209,12 @@ SYMBOL TABLE:
 8000acac l     F .text	00000078 think_proc
 8000ad24 l     F .text	00000188 activate_proc
 8000aeac l     F .text	00000f4c draw_proc
-80069a50 l     O .data	00000008 null_dl.5
-800760f8 l     O .bss	00000004 zbuf.4
-800699a0 l     O .data	000000b0 init_rcp.3
-80069920 l     O .data	00000080 init_xlu.2
-800698e0 l     O .data	00000040 lat_mesh.1
-800698a0 l     O .data	00000040 vert_mesh.0
+80084cf0 l     O .data	00000008 null_dl.5
+800914c8 l     O .bss	00000004 zbuf.4
+80084c40 l     O .data	000000b0 init_rcp.3
+80084bc0 l     O .data	00000080 init_xlu.2
+80084b80 l     O .data	00000040 lat_mesh.1
+80084b40 l     O .data	00000040 vert_mesh.0
 8000bdf8 l     F .text	00000038 leave_proc
 8000be30 l     F .text	00000038 enter_proc
 80061f28 l       .rodata	00000000 $LC0
@@ -270,44 +270,44 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 files.c
 80011884 l     F .text	00000084 stricmp
 80011908 l     F .text	00000064 scroll_down_proc
-8007617c l     O .bss	0000001c gf_dir_state
-8007615c l     O .bss	00000020 gf_dir_entries
+8009154c l     O .bss	0000001c gf_dir_state
+8009152c l     O .bss	00000020 gf_dir_entries
 8001196c l     F .text	0000003c scroll_up_proc
 800119a8 l     F .text	00000148 file_nav_proc
-80076100 l     O .bss	00000038 gf_files
+800914d0 l     O .bss	00000038 gf_files
 80011af0 l     F .text	00000060 file_enter_proc
 80011b50 l     F .text	000002ac dir_entry_comp
 80011dfc l     F .text	00000154 return_path
-800761f0 l     O .bss	00000004 gf_suffix_length
-800761f4 l     O .bss	00000004 gf_suffix
-800761f8 l     O .bss	00000004 gf_mode
-800761ec l     O .bss	00000004 gf_callback_proc
+800915c0 l     O .bss	00000004 gf_suffix_length
+800915c4 l     O .bss	00000004 gf_suffix
+800915c8 l     O .bss	00000004 gf_mode
+800915bc l     O .bss	00000004 gf_callback_proc
 80011f74 l     F .text	00000078 overwrite_prompt_proc
-80076198 l     O .bss	00000050 gf_menu
-800761e8 l     O .bss	00000004 gf_callback_data
+80091568 l     O .bss	00000050 gf_menu
+800915b8 l     O .bss	00000004 gf_callback_data
 80011f50 l     F .text	00000024 accept_proc
-8007614c l     O .bss	00000004 gf_name
+8009151c l     O .bss	00000004 gf_name
 80011fec l     F .text	000001c4 file_draw_proc
 800121b0 l     F .text	00000044 name_activate_proc
-80076159 l     O .bss	00000001 gf_untitled
+80091529 l     O .bss	00000001 gf_untitled
 80012d24 l     F .text	00000050 osk_callback_proc
 800121f4 l     F .text	0000002c mkdir_proc
 80012820 l     F .text	00000094 mkdir_osk_callback_proc
 80012220 l     F .text	00000348 update_list
-80076150 l     O .bss	00000004 gf_location
+80091520 l     O .bss	00000004 gf_location
 80012568 l     F .text	000002b8 update_view
-80076140 l     O .bss	00000004 gf_mkdir
-80076148 l     O .bss	00000004 gf_accept
-80076144 l     O .bss	00000004 gf_clear
-8007613c l     O .bss	00000004 gf_scroll_up
-80076138 l     O .bss	00000004 gf_scroll_down
-80076154 l     O .bss	00000004 gf_reset
+80091510 l     O .bss	00000004 gf_mkdir
+80091518 l     O .bss	00000004 gf_accept
+80091514 l     O .bss	00000004 gf_clear
+8009150c l     O .bss	00000004 gf_scroll_up
+80091508 l     O .bss	00000004 gf_scroll_down
+80091524 l     O .bss	00000004 gf_reset
 800128b4 l     F .text	00000058 reset_proc
 8001290c l     F .text	00000240 set_name
-80076158 l     O .bss	00000001 gf_dirty_name
+80091528 l     O .bss	00000001 gf_dirty_name
 80012b4c l     F .text	000001b8 file_activate_proc
 80012d04 l     F .text	00000020 clear_proc
-800760fc l     O .bss	00000001 ready.0
+800914cc l     O .bss	00000001 ready.0
 80061fa4 l       .rodata	00000000 $LC0
 80061fa8 l       .rodata	00000000 $LC1
 80062038 l       .rodata	00000000 $LC3
@@ -327,26 +327,26 @@ SYMBOL TABLE:
 80013174 l     F .text	0000004c get_flag_word
 800131c0 l     F .text	00000124 modify_flag
 800132e4 l     F .text	000000d4 flag_proc
-800766d4 l     O .bss	00000004 view_record_index
-8007626c l     O .bss	0000001c records
+80091aa4 l     O .bss	00000004 view_record_index
+8009163c l     O .bss	0000001c records
 800133b8 l     F .text	0000015c update_view
-800766d0 l     O .bss	00000004 view_record_name
-800766c8 l     O .bss	00000004 view_pagedown
-800766cc l     O .bss	00000004 view_pageup
-80076688 l     O .bss	00000040 view_rows
-80076288 l     O .bss	00000400 view_cells
+80091aa0 l     O .bss	00000004 view_record_name
+80091a98 l     O .bss	00000004 view_pagedown
+80091a9c l     O .bss	00000004 view_pageup
+80091a58 l     O .bss	00000040 view_rows
+80091658 l     O .bss	00000400 view_cells
 80013514 l     F .text	0000005c page_down_proc
 80013570 l     F .text	00000040 page_up_proc
 800135b0 l     F .text	00000040 next_record_proc
 800135f0 l     F .text	000000fc log_draw_proc
-80076250 l     O .bss	0000001c events
+80091620 l     O .bss	0000001c events
 800136ec l     F .text	00000028 log_clear_proc
 80013714 l     F .text	000000ac log_undo_proc
 800137c0 l     F .text	000000cc add_record
 8001388c l     F .text	00000044 prev_record_proc
-80076200 l     O .bss	00000050 log.1
+800915d0 l     O .bss	00000050 log.1
 80013e80 l     F .text	000001d8 log_think_proc
-800761fc l     O .bss	00000004 t_flag.0
+800915cc l     O .bss	00000004 t_flag.0
 8006203c l       .rodata	00000000 $LC0
 80062044 l       .rodata	00000000 $LC1
 80062048 l       .rodata	00000000 $LC2
@@ -378,17 +378,17 @@ SYMBOL TABLE:
 80062138 l       .rodata	00000000 $LC4
 00000000 l    df *ABS*	00000000 gfx_gz.c
 80014630 l     F .text	000002ac gfx_printf_f_va
-80076918 l     O .bss	00000028 gfx_modes
-800766d8 l     O .bss	000000e0 gfx_chars
-800767b8 l     O .bss	00000004 gfx_char_font
-8007694c l     O .bss	00000004 gfx_disp
-80076948 l     O .bss	00000004 gfx_disp_w
-80076944 l     O .bss	00000004 gfx_disp_p
-80076940 l     O .bss	00000004 gfx_disp_d
-800767bc l     O .bss	00000001 gfx_synced
-80069a58 l     O .data	00000080 mode_init.0
-800767c0 l     O .bss	00000014 gfx_mode_stack_pos
-800767d8 l     O .bss	00000140 gfx_mode_stack
+80091ce8 l     O .bss	00000028 gfx_modes
+80091aa8 l     O .bss	000000e0 gfx_chars
+80091b88 l     O .bss	00000004 gfx_char_font
+80091d1c l     O .bss	00000004 gfx_disp
+80091d18 l     O .bss	00000004 gfx_disp_w
+80091d14 l     O .bss	00000004 gfx_disp_p
+80091d10 l     O .bss	00000004 gfx_disp_d
+80091b8c l     O .bss	00000001 gfx_synced
+80084cf8 l     O .data	00000080 mode_init.0
+80091b90 l     O .bss	00000014 gfx_mode_stack_pos
+80091ba8 l     O .bss	00000140 gfx_mode_stack
 80015fcc l     F .text	00000314 draw_chars
 800162e0 l     F .text	00000110 gfx_printf_n_va
 80062180 l       .rodata	00000000 $LC0
@@ -407,28 +407,28 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 gz_camera.c
 8001b158 l     F .text	00000058 get_target_point
 8001b1b0 l     F .text	00000348 cam_manual
-80062340 l       .rodata	00000000 $LC0
-80062344 l       .rodata	00000000 $LC1
-80062380 l       .rodata	00000000 $LC2
-80062348 l       .rodata	00000000 $LC3
-8006234c l       .rodata	00000000 $LC4
-80062350 l       .rodata	00000000 $LC5
-80062354 l       .rodata	00000000 $LC6
-80062358 l       .rodata	00000000 $LC7
-8006235c l       .rodata	00000000 $LC8
-80062360 l       .rodata	00000000 $LC9
-80062364 l       .rodata	00000000 $LC10
-80062368 l       .rodata	00000000 $LC11
-8006236c l       .rodata	00000000 $LC12
-80062378 l       .rodata	00000000 $LC15
-8006237c l       .rodata	00000000 $LC16
-80062370 l       .rodata	00000000 $LC13
-80062374 l       .rodata	00000000 $LC14
+80062338 l       .rodata	00000000 $LC0
+8006233c l       .rodata	00000000 $LC1
+80062378 l       .rodata	00000000 $LC2
+80062340 l       .rodata	00000000 $LC3
+80062344 l       .rodata	00000000 $LC4
+80062348 l       .rodata	00000000 $LC5
+8006234c l       .rodata	00000000 $LC6
+80062350 l       .rodata	00000000 $LC7
+80062354 l       .rodata	00000000 $LC8
+80062358 l       .rodata	00000000 $LC9
+8006235c l       .rodata	00000000 $LC10
+80062360 l       .rodata	00000000 $LC11
+80062364 l       .rodata	00000000 $LC12
+80062370 l       .rodata	00000000 $LC15
+80062374 l       .rodata	00000000 $LC16
+80062368 l       .rodata	00000000 $LC13
+8006236c l       .rodata	00000000 $LC14
 00000000 l    df *ABS*	00000000 gz_cheats.c
 8001bd18 l     F .text	00000098 cheat_proc
-80076a50 l     O .bss	00000050 menu.0
-8006245c l     O .rodata	0000004c cheat_names
-80062388 l       .rodata	00000000 $LC0
+80091e20 l     O .bss	00000050 menu.0
+80062454 l     O .rodata	0000004c cheat_names
+80062380 l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 gz_col_view.c
 8001bed4 l     F .text	00000038 release_mem
 8001bf0c l     F .text	00000104 poly_writer_flush
@@ -442,61 +442,61 @@ SYMBOL TABLE:
 8001d288 l     F .text	0000016c init_line_gfx
 8001d3f4 l     F .text	00000030 ico_sph_subdivide_edge
 8001d424 l     F .text	00000a14 draw_ico_sphere
-80077160 l     O .bss	00000004 p_sph_gfx.12
-80076ec0 l     O .bss	000002a0 sph_vtx.11
-80076d58 l     O .bss	00000168 sph_gfx.10
+80092530 l     O .bss	00000004 p_sph_gfx.12
+80092290 l     O .bss	000002a0 sph_vtx.11
+80092128 l     O .bss	00000168 sph_gfx.10
 8001de38 l     F .text	0000094c do_hitbox_list
-80076d50 l     O .bss	00000004 p_cyl_gfx.9
-80076c68 l     O .bss	000000e8 cyl_gfx.8
-80076ac8 l     O .bss	000001a0 cyl_vtx.7
-8007719c l     O .bss	00000004 col_view_scene.24
-80077198 l     O .bss	00000004 col_view_water.23
-80077194 l     O .bss	00000004 col_view_wfc.22
-80077190 l     O .bss	00000004 col_view_line.21
-8007718c l     O .bss	00000004 col_view_rd.20
-80077188 l     O .bss	00000004 stc_poly.19
-80077184 l     O .bss	00000004 stc_line.18
-8007717c l     O .bss	00000008 dyn_poly_buf.17
-80077174 l     O .bss	00000008 dyn_line_buf.16
-80077170 l     O .bss	00000004 dyn_gfx_idx.15
-80077168 l     O .bss	00000008 hit_gfx_buf.14
-80077164 l     O .bss	00000004 hit_gfx_idx.13
-80076ac1 l     O .bss	00000001 path_view_points.6
-80076ac0 l     O .bss	00000001 path_view_lines.5
-80076ab8 l     O .bss	00000008 poly_gfx_buf.4
-80076ab0 l     O .bss	00000008 line_gfx_buf.3
-80076aac l     O .bss	00000004 path_gfx_idx.2
-80076aa4 l     O .bss	00000008 cull_gfx_buf.1
-80076aa0 l     O .bss	00000004 cull_gfx_idx.0
-80062508 l       .rodata	00000000 $LC1
-8006250c l       .rodata	00000000 $LC2
-80062510 l       .rodata	00000000 $LC3
-80062514 l       .rodata	00000000 $LC4
-80062518 l       .rodata	00000000 $LC5
-80062538 l       .rodata	00000000 $LC6
-8006251c l       .rodata	00000000 $LC7
-80062520 l       .rodata	00000000 $LC8
-80062524 l       .rodata	00000000 $LC9
-80062528 l       .rodata	00000000 $LC10
-8006252c l       .rodata	00000000 $LC11
-80062540 l       .rodata	00000000 $LC12
-80062548 l       .rodata	00000000 $LC13
-80062530 l       .rodata	00000000 $LC14
+80092120 l     O .bss	00000004 p_cyl_gfx.9
+80092038 l     O .bss	000000e8 cyl_gfx.8
+80091e98 l     O .bss	000001a0 cyl_vtx.7
+8009256c l     O .bss	00000004 col_view_scene.24
+80092568 l     O .bss	00000004 col_view_water.23
+80092564 l     O .bss	00000004 col_view_wfc.22
+80092560 l     O .bss	00000004 col_view_line.21
+8009255c l     O .bss	00000004 col_view_rd.20
+80092558 l     O .bss	00000004 stc_poly.19
+80092554 l     O .bss	00000004 stc_line.18
+8009254c l     O .bss	00000008 dyn_poly_buf.17
+80092544 l     O .bss	00000008 dyn_line_buf.16
+80092540 l     O .bss	00000004 dyn_gfx_idx.15
+80092538 l     O .bss	00000008 hit_gfx_buf.14
+80092534 l     O .bss	00000004 hit_gfx_idx.13
+80091e91 l     O .bss	00000001 path_view_points.6
+80091e90 l     O .bss	00000001 path_view_lines.5
+80091e88 l     O .bss	00000008 poly_gfx_buf.4
+80091e80 l     O .bss	00000008 line_gfx_buf.3
+80091e7c l     O .bss	00000004 path_gfx_idx.2
+80091e74 l     O .bss	00000008 cull_gfx_buf.1
+80091e70 l     O .bss	00000004 cull_gfx_idx.0
+80062500 l       .rodata	00000000 $LC1
+80062504 l       .rodata	00000000 $LC2
+80062508 l       .rodata	00000000 $LC3
+8006250c l       .rodata	00000000 $LC4
+80062510 l       .rodata	00000000 $LC5
+80062530 l       .rodata	00000000 $LC6
+80062514 l       .rodata	00000000 $LC7
+80062518 l       .rodata	00000000 $LC8
+8006251c l       .rodata	00000000 $LC9
+80062520 l       .rodata	00000000 $LC10
+80062524 l       .rodata	00000000 $LC11
+80062538 l       .rodata	00000000 $LC12
+80062540 l       .rodata	00000000 $LC13
+80062528 l       .rodata	00000000 $LC14
 00000000 l    df *ABS*	00000000 gz_command.c
-800627f4 l       .rodata	00000000 $LC0
-800627f8 l       .rodata	00000000 $LC1
-800627fc l       .rodata	00000000 $LC2
-80062550 l       .rodata	00000000 $LC3
-8006255c l       .rodata	00000000 $LC4
-80062568 l       .rodata	00000000 $LC5
-8006257c l       .rodata	00000000 $LC6
-8006258c l       .rodata	00000000 $LC7
-800625a0 l       .rodata	00000000 $LC8
-800625b0 l       .rodata	00000000 $LC9
-800625c4 l       .rodata	00000000 $LC10
-800625d8 l       .rodata	00000000 $LC11
-800625ec l       .rodata	00000000 $LC12
-800625f8 l       .rodata	00000000 $LC13
+800627ec l       .rodata	00000000 $LC0
+800627f0 l       .rodata	00000000 $LC1
+800627f4 l       .rodata	00000000 $LC2
+80062548 l       .rodata	00000000 $LC3
+80062554 l       .rodata	00000000 $LC4
+80062560 l       .rodata	00000000 $LC5
+80062574 l       .rodata	00000000 $LC6
+80062584 l       .rodata	00000000 $LC7
+80062598 l       .rodata	00000000 $LC8
+800625a8 l       .rodata	00000000 $LC9
+800625bc l       .rodata	00000000 $LC10
+800625d0 l       .rodata	00000000 $LC11
+800625e4 l       .rodata	00000000 $LC12
+800625f0 l       .rodata	00000000 $LC13
 00000000 l    df *ABS*	00000000 gz_debug.c
 80020f04 l     F .text	00000054 pop_object_proc
 80020f58 l     F .text	00000090 actor_index_dec_proc
@@ -517,91 +517,91 @@ SYMBOL TABLE:
 8002165c l     F .text	00000080 edit_actor_proc
 800216dc l     F .text	00000220 objects_draw_proc
 800218fc l     F .text	000003a8 actor_draw_proc
-80069f18 l     O .data	00000070 draw_lines.4
+800851b8 l     O .data	00000070 draw_lines.4
 80021ca4 l     F .text	00000074 byte_optionmod_proc
 80021d18 l     F .text	00000348 disp_draw_proc
-800771a4 l     O .bss	00000010 t.2
-80062b3c l     O .rodata	00000010 disp_name.1
+80092574 l     O .bss	00000010 t.2
+80062b34 l     O .rodata	00000010 disp_name.1
 80022060 l     F .text	000005ac heap_draw_proc
-800771a0 l     O .bss	00000004 t.0
-8007740c l     O .bss	00000050 menu.15
-800773bc l     O .bss	00000050 heap.14
-8007736c l     O .bss	00000050 disp.13
-8007731c l     O .bss	00000050 objects.12
-800772cc l     O .bss	00000050 actors.11
-8007727c l     O .bss	00000050 rdb.10
-8007722c l     O .bss	00000050 flags.9
-800771dc l     O .bss	00000050 mem.8
-800771d4 l     O .bss	00000008 adi.7
-800771bc l     O .bss	00000018 asi.6
-800771b4 l     O .bss	00000008 ai.5
-80069eb8 l     O .data	00000060 v.3
-80062b58 l       .rodata	00000000 $LC3
-80062b58 l       .rodata	00000000 $LC14
-80062808 l       .rodata	00000000 $LC1
-80062800 l       .rodata	00000000 $LC0
-80062814 l       .rodata	00000000 $LC2
-80062824 l       .rodata	00000000 $LC4
-80062838 l       .rodata	00000000 $LC5
-80062848 l       .rodata	00000000 $LC6
-80062858 l       .rodata	00000000 $LC7
-80062868 l       .rodata	00000000 $LC8
-80062874 l       .rodata	00000000 $LC9
-8006287c l       .rodata	00000000 $LC10
-80062884 l       .rodata	00000000 $LC11
-8006288c l       .rodata	00000000 $LC12
-80062b50 l       .rodata	00000000 $LC13
-8006289c l       .rodata	00000000 $LC15
-800628a4 l       .rodata	00000000 $LC16
-800628a8 l       .rodata	00000000 $LC17
-800628bc l       .rodata	00000000 $LC18
-80062b60 l       .rodata	00000000 $LC19
-800628c4 l       .rodata	00000000 $LC20
-800628e0 l       .rodata	00000000 $LC21
-800628f8 l       .rodata	00000000 $LC22
-80062910 l       .rodata	00000000 $LC23
-80062928 l       .rodata	00000000 $LC24
-80062940 l       .rodata	00000000 $LC25
-80062958 l       .rodata	00000000 $LC26
-80062970 l       .rodata	00000000 $LC27
-80062988 l       .rodata	00000000 $LC28
-800629a0 l       .rodata	00000000 $LC29
-80062b64 l       .rodata	00000000 $LC30
-800629b8 l       .rodata	00000000 $LC31
-800629c0 l       .rodata	00000000 $LC32
-800629c8 l       .rodata	00000000 $LC33
-800629d8 l       .rodata	00000000 $LC34
-800629e0 l       .rodata	00000000 $LC35
-800629e8 l       .rodata	00000000 $LC36
-800629f0 l       .rodata	00000000 $LC37
-800629f8 l       .rodata	00000000 $LC38
-800629fc l       .rodata	00000000 $LC39
-80062a08 l       .rodata	00000000 $LC40
-80062a10 l       .rodata	00000000 $LC41
-80062a14 l       .rodata	00000000 $LC42
-80062a1c l       .rodata	00000000 $LC44
-80062a24 l       .rodata	00000000 $LC45
-80062a28 l       .rodata	00000000 $LC46
-80062a2c l       .rodata	00000000 $LC47
-80062a34 l       .rodata	00000000 $LC48
-80062a3c l       .rodata	00000000 $LC49
-80062a48 l       .rodata	00000000 $LC50
-80062a54 l       .rodata	00000000 $LC51
-80062a60 l       .rodata	00000000 $LC52
-80062a6c l       .rodata	00000000 $LC53
-80062a78 l       .rodata	00000000 $LC54
-80062a80 l       .rodata	00000000 $LC55
-80062a90 l       .rodata	00000000 $LC56
-80062aa0 l       .rodata	00000000 $LC57
-80062aac l       .rodata	00000000 $LC58
-80062ab8 l       .rodata	00000000 $LC59
+80092570 l     O .bss	00000004 t.0
+800927dc l     O .bss	00000050 menu.15
+8009278c l     O .bss	00000050 heap.14
+8009273c l     O .bss	00000050 disp.13
+800926ec l     O .bss	00000050 objects.12
+8009269c l     O .bss	00000050 actors.11
+8009264c l     O .bss	00000050 rdb.10
+800925fc l     O .bss	00000050 flags.9
+800925ac l     O .bss	00000050 mem.8
+800925a4 l     O .bss	00000008 adi.7
+8009258c l     O .bss	00000018 asi.6
+80092584 l     O .bss	00000008 ai.5
+80085158 l     O .data	00000060 v.3
+80062b50 l       .rodata	00000000 $LC3
+80062b50 l       .rodata	00000000 $LC14
+80062800 l       .rodata	00000000 $LC1
+800627f8 l       .rodata	00000000 $LC0
+8006280c l       .rodata	00000000 $LC2
+8006281c l       .rodata	00000000 $LC4
+80062830 l       .rodata	00000000 $LC5
+80062840 l       .rodata	00000000 $LC6
+80062850 l       .rodata	00000000 $LC7
+80062860 l       .rodata	00000000 $LC8
+8006286c l       .rodata	00000000 $LC9
+80062874 l       .rodata	00000000 $LC10
+8006287c l       .rodata	00000000 $LC11
+80062884 l       .rodata	00000000 $LC12
+80062b48 l       .rodata	00000000 $LC13
+80062894 l       .rodata	00000000 $LC15
+8006289c l       .rodata	00000000 $LC16
+800628a0 l       .rodata	00000000 $LC17
+800628b4 l       .rodata	00000000 $LC18
+80062b58 l       .rodata	00000000 $LC19
+800628bc l       .rodata	00000000 $LC20
+800628d8 l       .rodata	00000000 $LC21
+800628f0 l       .rodata	00000000 $LC22
+80062908 l       .rodata	00000000 $LC23
+80062920 l       .rodata	00000000 $LC24
+80062938 l       .rodata	00000000 $LC25
+80062950 l       .rodata	00000000 $LC26
+80062968 l       .rodata	00000000 $LC27
+80062980 l       .rodata	00000000 $LC28
+80062998 l       .rodata	00000000 $LC29
+80062b5c l       .rodata	00000000 $LC30
+800629b0 l       .rodata	00000000 $LC31
+800629b8 l       .rodata	00000000 $LC32
+800629c0 l       .rodata	00000000 $LC33
+800629d0 l       .rodata	00000000 $LC34
+800629d8 l       .rodata	00000000 $LC35
+800629e0 l       .rodata	00000000 $LC36
+800629e8 l       .rodata	00000000 $LC37
+800629f0 l       .rodata	00000000 $LC38
+800629f4 l       .rodata	00000000 $LC39
+80062a00 l       .rodata	00000000 $LC40
+80062a08 l       .rodata	00000000 $LC41
+80062a0c l       .rodata	00000000 $LC42
+80062a14 l       .rodata	00000000 $LC44
+80062a1c l       .rodata	00000000 $LC45
+80062a20 l       .rodata	00000000 $LC46
+80062a24 l       .rodata	00000000 $LC47
+80062a2c l       .rodata	00000000 $LC48
+80062a34 l       .rodata	00000000 $LC49
+80062a40 l       .rodata	00000000 $LC50
+80062a4c l       .rodata	00000000 $LC51
+80062a58 l       .rodata	00000000 $LC52
+80062a64 l       .rodata	00000000 $LC53
+80062a70 l       .rodata	00000000 $LC54
+80062a78 l       .rodata	00000000 $LC55
+80062a88 l       .rodata	00000000 $LC56
+80062a98 l       .rodata	00000000 $LC57
+80062aa4 l       .rodata	00000000 $LC58
+80062ab0 l       .rodata	00000000 $LC59
 00000000 l    df *ABS*	00000000 gz_equips.c
 80022e50 l     F .text	00000074 button_item_proc
 80022ec4 l     F .text	00000158 equip_switch_proc
-8007745c l     O .bss	00000050 menu.0
-80062b68 l       .rodata	00000000 $LC0
-80062b70 l       .rodata	00000000 $LC1
-80062b74 l       .rodata	00000000 $LC2
+8009282c l     O .bss	00000050 menu.0
+80062b60 l       .rodata	00000000 $LC0
+80062b68 l       .rodata	00000000 $LC1
+80062b6c l       .rodata	00000000 $LC2
 00000000 l    df *ABS*	00000000 gz_file.c
 80023354 l     F .text	00000014 call_navi_proc
 80023368 l     F .text	00000084 load_debug_file_proc
@@ -619,21 +619,21 @@ SYMBOL TABLE:
 8002381c l     F .text	00000034 set_carpenter_flags_proc
 80023850 l     F .text	0000001c set_epona_flag_proc
 8002386c l     F .text	00000044 restore_gs_proc
-800774ac l     O .bss	00000050 menu.0
-80062b78 l       .rodata	00000000 $LC0
-80062b80 l       .rodata	00000000 $LC1
-80062b94 l       .rodata	00000000 $LC2
-80062ba0 l       .rodata	00000000 $LC3
-80062bb0 l       .rodata	00000000 $LC4
-80062bbc l       .rodata	00000000 $LC5
-80062bc8 l       .rodata	00000000 $LC6
-80062bdc l       .rodata	00000000 $LC7
-80062bec l       .rodata	00000000 $LC8
-80062c00 l       .rodata	00000000 $LC9
-80062c08 l       .rodata	00000000 $LC11
-80062c10 l       .rodata	00000000 $LC13
-80062c1c l       .rodata	00000000 $LC14
-80062c28 l       .rodata	00000000 $LC16
+8009287c l     O .bss	00000050 menu.0
+80062b70 l       .rodata	00000000 $LC0
+80062b78 l       .rodata	00000000 $LC1
+80062b8c l       .rodata	00000000 $LC2
+80062b98 l       .rodata	00000000 $LC3
+80062ba8 l       .rodata	00000000 $LC4
+80062bb4 l       .rodata	00000000 $LC5
+80062bc0 l       .rodata	00000000 $LC6
+80062bd4 l       .rodata	00000000 $LC7
+80062be4 l       .rodata	00000000 $LC8
+80062bf8 l       .rodata	00000000 $LC9
+80062c00 l       .rodata	00000000 $LC11
+80062c08 l       .rodata	00000000 $LC13
+80062c14 l       .rodata	00000000 $LC14
+80062c20 l       .rodata	00000000 $LC16
 00000000 l    df *ABS*	00000000 gz_inventory.c
 80023e18 l     F .text	000000c8 equipment_item_proc
 80023ee0 l     F .text	00000080 capacity_item_proc
@@ -650,41 +650,41 @@ SYMBOL TABLE:
 800244b4 l     F .text	00000060 dungeon_option_proc
 80024514 l     F .text	00000078 magic_acquired_proc
 8002458c l     F .text	00000070 double_defense_proc
-800775ec l     O .bss	00000050 menu.6
-8007759c l     O .bss	00000050 equipment.5
-8007754c l     O .bss	00000050 quest.4
-800774fc l     O .bss	00000050 amount.3
-800631a8 l     O .rodata	00000054 equipment_item_list
-80063090 l     O .rodata	00000118 capacity_item_list
-80069fac l     O .data	00000008 multi_options.2
-80069fa4 l     O .data	00000008 options.1
-8006a080 l     O .data	00000034 equipment_list
-80069fe0 l     O .data	000000a0 item_list
-80069fd0 l     O .data	0000000e bottle_options
-80069fc4 l     O .data	0000000c adult_trade_options
-80069fb4 l     O .data	0000000d child_trade_options
-80069f88 l     O .data	0000001c di.0
-80063030 l     O .rodata	00000060 quest_item_list
-80062fa0 l     O .rodata	00000090 song_list
-80062da8 l       .rodata	00000000 $LC0
-80062db0 l       .rodata	00000000 $LC1
-80062dc4 l       .rodata	00000000 $LC2
-80062dd0 l       .rodata	00000000 $LC3
-800631fc l       .rodata	00000000 $LC4
-80063200 l       .rodata	00000000 $LC5
-80062dd8 l       .rodata	00000000 $LC6
-80062de4 l       .rodata	00000000 $LC7
-80062df8 l       .rodata	00000000 $LC8
-80062e0c l       .rodata	00000000 $LC9
-80062e18 l       .rodata	00000000 $LC10
-80062e20 l       .rodata	00000000 $LC11
-80062e28 l       .rodata	00000000 $LC12
-80062e34 l       .rodata	00000000 $LC13
-80062e40 l       .rodata	00000000 $LC14
-80062e50 l       .rodata	00000000 $LC15
-80062e58 l       .rodata	00000000 $LC16
-80063204 l       .rodata	00000000 $LC17
-80063208 l       .rodata	00000000 $LC18
+800929bc l     O .bss	00000050 menu.6
+8009296c l     O .bss	00000050 equipment.5
+8009291c l     O .bss	00000050 quest.4
+800928cc l     O .bss	00000050 amount.3
+800631a0 l     O .rodata	00000054 equipment_item_list
+80063088 l     O .rodata	00000118 capacity_item_list
+8008524c l     O .data	00000008 multi_options.2
+80085244 l     O .data	00000008 options.1
+80085320 l     O .data	00000034 equipment_list
+80085280 l     O .data	000000a0 item_list
+80085270 l     O .data	0000000e bottle_options
+80085264 l     O .data	0000000c adult_trade_options
+80085254 l     O .data	0000000d child_trade_options
+80085228 l     O .data	0000001c di.0
+80063028 l     O .rodata	00000060 quest_item_list
+80062f98 l     O .rodata	00000090 song_list
+80062da0 l       .rodata	00000000 $LC0
+80062da8 l       .rodata	00000000 $LC1
+80062dbc l       .rodata	00000000 $LC2
+80062dc8 l       .rodata	00000000 $LC3
+800631f4 l       .rodata	00000000 $LC4
+800631f8 l       .rodata	00000000 $LC5
+80062dd0 l       .rodata	00000000 $LC6
+80062ddc l       .rodata	00000000 $LC7
+80062df0 l       .rodata	00000000 $LC8
+80062e04 l       .rodata	00000000 $LC9
+80062e10 l       .rodata	00000000 $LC10
+80062e18 l       .rodata	00000000 $LC11
+80062e20 l       .rodata	00000000 $LC12
+80062e2c l       .rodata	00000000 $LC13
+80062e38 l       .rodata	00000000 $LC14
+80062e48 l       .rodata	00000000 $LC15
+80062e50 l       .rodata	00000000 $LC16
+800631fc l       .rodata	00000000 $LC17
+80063200 l       .rodata	00000000 $LC18
 00000000 l    df *ABS*	00000000 gz_macro.c
 80025890 l     F .text	0000003c prev_state_proc
 800258cc l     F .text	0000003c next_state_proc
@@ -714,62 +714,62 @@ SYMBOL TABLE:
 80026dcc l     F .text	0000004c record_switch_proc
 80026e18 l     F .text	00000034 advance_switch_proc
 80026e4c l     F .text	0000004c pause_switch_proc
-800776dc l     O .bss	00000050 menu.3
-8007768c l     O .bss	00000050 menu_settings.2
-8007763c l     O .bss	00000050 menu_vcont.1
+80092aac l     O .bss	00000050 menu.3
+80092a5c l     O .bss	00000050 menu_settings.2
+80092a0c l     O .bss	00000050 menu_vcont.1
 80027c74 l     F .text	000000b0 vcont_enable_proc
 80027af0 l     F .text	000000e0 vcont_joy_proc
 800279dc l     F .text	00000114 vcont_button_proc
 80027bd0 l     F .text	000000a4 vcont_plugged_proc
-800634a4 l     O .rodata	00000038 buttons.0
-8007772c l     O .bss	00000010 vcont_raw
-8007773c l     O .bss	00000004 vcont_plugged
-8006320c l       .rodata	00000000 $LC0
-80063220 l       .rodata	00000000 $LC1
-80063234 l       .rodata	00000000 $LC2
-80063248 l       .rodata	00000000 $LC3
-80063250 l       .rodata	00000000 $LC4
-80063258 l       .rodata	00000000 $LC5
-80063260 l       .rodata	00000000 $LC6
-80063270 l       .rodata	00000000 $LC8
-80063288 l       .rodata	00000000 $LC9
-8006329c l       .rodata	00000000 $LC10
-800632ac l       .rodata	00000000 $LC11
-800632b0 l       .rodata	00000000 $LC12
-800632b4 l       .rodata	00000000 $LC13
-800634dc l       .rodata	00000000 $LC14
-800632bc l       .rodata	00000000 $LC15
-800632c8 l       .rodata	00000000 $LC16
-800632e0 l       .rodata	00000000 $LC17
-800632e8 l       .rodata	00000000 $LC18
-800632f0 l       .rodata	00000000 $LC19
-80063300 l       .rodata	00000000 $LC20
-80063310 l       .rodata	00000000 $LC21
-8006331c l       .rodata	00000000 $LC22
-8006332c l       .rodata	00000000 $LC23
-80063338 l       .rodata	00000000 $LC24
-80063344 l       .rodata	00000000 $LC25
-80063354 l       .rodata	00000000 $LC26
-80063364 l       .rodata	00000000 $LC27
-80063370 l       .rodata	00000000 $LC28
-8006337c l       .rodata	00000000 $LC29
-80063388 l       .rodata	00000000 $LC30
-80063398 l       .rodata	00000000 $LC31
-800633a8 l       .rodata	00000000 $LC32
-800633bc l       .rodata	00000000 $LC33
-800633d0 l       .rodata	00000000 $LC34
-800633dc l       .rodata	00000000 $LC35
-800633f0 l       .rodata	00000000 $LC36
-80063404 l       .rodata	00000000 $LC37
-80063418 l       .rodata	00000000 $LC38
-8006342c l       .rodata	00000000 $LC39
-8006343c l       .rodata	00000000 $LC40
-8006344c l       .rodata	00000000 $LC41
-8006345c l       .rodata	00000000 $LC42
-80063474 l       .rodata	00000000 $LC43
-80063484 l       .rodata	00000000 $LC44
-80063490 l       .rodata	00000000 $LC45
-8006349c l       .rodata	00000000 $LC46
+8006349c l     O .rodata	00000038 buttons.0
+80092afc l     O .bss	00000010 vcont_raw
+80092b0c l     O .bss	00000004 vcont_plugged
+80063204 l       .rodata	00000000 $LC0
+80063218 l       .rodata	00000000 $LC1
+8006322c l       .rodata	00000000 $LC2
+80063240 l       .rodata	00000000 $LC3
+80063248 l       .rodata	00000000 $LC4
+80063250 l       .rodata	00000000 $LC5
+80063258 l       .rodata	00000000 $LC6
+80063268 l       .rodata	00000000 $LC8
+80063280 l       .rodata	00000000 $LC9
+80063294 l       .rodata	00000000 $LC10
+800632a4 l       .rodata	00000000 $LC11
+800632a8 l       .rodata	00000000 $LC12
+800632ac l       .rodata	00000000 $LC13
+800634d4 l       .rodata	00000000 $LC14
+800632b4 l       .rodata	00000000 $LC15
+800632c0 l       .rodata	00000000 $LC16
+800632d8 l       .rodata	00000000 $LC17
+800632e0 l       .rodata	00000000 $LC18
+800632e8 l       .rodata	00000000 $LC19
+800632f8 l       .rodata	00000000 $LC20
+80063308 l       .rodata	00000000 $LC21
+80063314 l       .rodata	00000000 $LC22
+80063324 l       .rodata	00000000 $LC23
+80063330 l       .rodata	00000000 $LC24
+8006333c l       .rodata	00000000 $LC25
+8006334c l       .rodata	00000000 $LC26
+8006335c l       .rodata	00000000 $LC27
+80063368 l       .rodata	00000000 $LC28
+80063374 l       .rodata	00000000 $LC29
+80063380 l       .rodata	00000000 $LC30
+80063390 l       .rodata	00000000 $LC31
+800633a0 l       .rodata	00000000 $LC32
+800633b4 l       .rodata	00000000 $LC33
+800633c8 l       .rodata	00000000 $LC34
+800633d4 l       .rodata	00000000 $LC35
+800633e8 l       .rodata	00000000 $LC36
+800633fc l       .rodata	00000000 $LC37
+80063410 l       .rodata	00000000 $LC38
+80063424 l       .rodata	00000000 $LC39
+80063434 l       .rodata	00000000 $LC40
+80063444 l       .rodata	00000000 $LC41
+80063454 l       .rodata	00000000 $LC42
+8006346c l       .rodata	00000000 $LC43
+8006347c l       .rodata	00000000 $LC44
+80063488 l       .rodata	00000000 $LC45
+80063494 l       .rodata	00000000 $LC46
 00000000 l    df *ABS*	00000000 gz_movie.c
 00000000 l    df *ABS*	00000000 gz_scene.c
 800281d4 l     F .text	00000054 set_entrance_proc
@@ -807,48 +807,48 @@ SYMBOL TABLE:
 80028ffc l     F .text	000000b0 hit_view_proc
 800290ac l     F .text	000000b8 col_view_proc
 80029164 l     F .text	00000108 load_room_proc
-80077830 l     O .bss	00000050 menu.3
-800777e0 l     O .bss	00000050 collision.2
-80077790 l     O .bss	00000050 camera.1
-80077740 l     O .bss	00000050 explorer.0
-800634e0 l       .rodata	00000000 $LC0
-800634e8 l       .rodata	00000000 $LC1
-800634f4 l       .rodata	00000000 $LC2
-80063508 l       .rodata	00000000 $LC3
-80063514 l       .rodata	00000000 $LC4
-80063520 l       .rodata	00000000 $LC5
-8006352c l       .rodata	00000000 $LC6
-80063538 l       .rodata	00000000 $LC7
-80063544 l       .rodata	00000000 $LC8
-80063550 l       .rodata	00000000 $LC9
-8006355c l       .rodata	00000000 $LC10
-8006356c l       .rodata	00000000 $LC11
-80063570 l       .rodata	00000000 $LC12
-80063574 l       .rodata	00000000 $LC13
-80063584 l       .rodata	00000000 $LC14
-80063594 l       .rodata	00000000 $LC15
-800635a0 l       .rodata	00000000 $LC16
-800635b0 l       .rodata	00000000 $LC17
-800635b8 l       .rodata	00000000 $LC19
-800635c4 l       .rodata	00000000 $LC20
-800635d0 l       .rodata	00000000 $LC21
-800635e0 l       .rodata	00000000 $LC22
-800635ec l       .rodata	00000000 $LC23
-800635f4 l       .rodata	00000000 $LC24
-800635fc l       .rodata	00000000 $LC25
-80063608 l       .rodata	00000000 $LC26
-80063618 l       .rodata	00000000 $LC27
-8006361c l       .rodata	00000000 $LC28
-80063624 l       .rodata	00000000 $LC29
-8006362c l       .rodata	00000000 $LC30
-80063638 l       .rodata	00000000 $LC31
-80063640 l       .rodata	00000000 $LC32
-80063648 l       .rodata	00000000 $LC33
-80063650 l       .rodata	00000000 $LC34
-80063658 l       .rodata	00000000 $LC36
-80063664 l       .rodata	00000000 $LC38
-80063674 l       .rodata	00000000 $LC39
-80063684 l       .rodata	00000000 $LC40
+80092c00 l     O .bss	00000050 menu.3
+80092bb0 l     O .bss	00000050 collision.2
+80092b60 l     O .bss	00000050 camera.1
+80092b10 l     O .bss	00000050 explorer.0
+800634d8 l       .rodata	00000000 $LC0
+800634e0 l       .rodata	00000000 $LC1
+800634ec l       .rodata	00000000 $LC2
+80063500 l       .rodata	00000000 $LC3
+8006350c l       .rodata	00000000 $LC4
+80063518 l       .rodata	00000000 $LC5
+80063524 l       .rodata	00000000 $LC6
+80063530 l       .rodata	00000000 $LC7
+8006353c l       .rodata	00000000 $LC8
+80063548 l       .rodata	00000000 $LC9
+80063554 l       .rodata	00000000 $LC10
+80063564 l       .rodata	00000000 $LC11
+80063568 l       .rodata	00000000 $LC12
+8006356c l       .rodata	00000000 $LC13
+8006357c l       .rodata	00000000 $LC14
+8006358c l       .rodata	00000000 $LC15
+80063598 l       .rodata	00000000 $LC16
+800635a8 l       .rodata	00000000 $LC17
+800635b0 l       .rodata	00000000 $LC19
+800635bc l       .rodata	00000000 $LC20
+800635c8 l       .rodata	00000000 $LC21
+800635d8 l       .rodata	00000000 $LC22
+800635e4 l       .rodata	00000000 $LC23
+800635ec l       .rodata	00000000 $LC24
+800635f4 l       .rodata	00000000 $LC25
+80063600 l       .rodata	00000000 $LC26
+80063610 l       .rodata	00000000 $LC27
+80063614 l       .rodata	00000000 $LC28
+8006361c l       .rodata	00000000 $LC29
+80063624 l       .rodata	00000000 $LC30
+80063630 l       .rodata	00000000 $LC31
+80063638 l       .rodata	00000000 $LC32
+80063640 l       .rodata	00000000 $LC33
+80063648 l       .rodata	00000000 $LC34
+80063650 l       .rodata	00000000 $LC36
+8006365c l       .rodata	00000000 $LC38
+8006366c l       .rodata	00000000 $LC39
+8006367c l       .rodata	00000000 $LC40
 00000000 l    df *ABS*	00000000 gz_settings.c
 80029c38 l     F .text	0000003c profile_dec_proc
 80029c74 l     F .text	0000003c profile_inc_proc
@@ -872,67 +872,67 @@ SYMBOL TABLE:
 8002a414 l     F .text	0000006c menu_position_proc
 8002a480 l     F .text	000000a0 drop_shadow_proc
 8002a520 l     F .text	0000017c font_proc
-800638c0 l     O .rodata	00000012 font_options
-800778d0 l     O .bss	00000050 menu.1
-80077880 l     O .bss	00000050 commands.0
-800636d4 l       .rodata	00000000 $LC0
-800636e4 l       .rodata	00000000 $LC1
-800636f8 l       .rodata	00000000 $LC2
-80063708 l       .rodata	00000000 $LC3
-8006373c l       .rodata	00000000 $LC4
-80063750 l       .rodata	00000000 $LC5
-80063758 l       .rodata	00000000 $LC6
-80063760 l       .rodata	00000000 $LC7
-80063764 l       .rodata	00000000 $LC8
-80063768 l       .rodata	00000000 $LC9
-80063770 l       .rodata	00000000 $LC11
-8006377c l       .rodata	00000000 $LC12
-8006378c l       .rodata	00000000 $LC13
-8006379c l       .rodata	00000000 $LC14
-800637ac l       .rodata	00000000 $LC15
-800637b0 l       .rodata	00000000 $LC16
-800637bc l       .rodata	00000000 $LC18
-800637c4 l       .rodata	00000000 $LC19
-800637d4 l       .rodata	00000000 $LC20
-800637e0 l       .rodata	00000000 $LC21
-800637ec l       .rodata	00000000 $LC23
-800637f8 l       .rodata	00000000 $LC24
-80063808 l       .rodata	00000000 $LC25
-80063818 l       .rodata	00000000 $LC26
-8006382c l       .rodata	00000000 $LC27
-80063830 l       .rodata	00000000 $LC28
+800638b8 l     O .rodata	00000012 font_options
+80092ca0 l     O .bss	00000050 menu.1
+80092c50 l     O .bss	00000050 commands.0
+800636cc l       .rodata	00000000 $LC0
+800636dc l       .rodata	00000000 $LC1
+800636f0 l       .rodata	00000000 $LC2
+80063700 l       .rodata	00000000 $LC3
+80063734 l       .rodata	00000000 $LC4
+80063748 l       .rodata	00000000 $LC5
+80063750 l       .rodata	00000000 $LC6
+80063758 l       .rodata	00000000 $LC7
+8006375c l       .rodata	00000000 $LC8
+80063760 l       .rodata	00000000 $LC9
+80063768 l       .rodata	00000000 $LC11
+80063774 l       .rodata	00000000 $LC12
+80063784 l       .rodata	00000000 $LC13
+80063794 l       .rodata	00000000 $LC14
+800637a4 l       .rodata	00000000 $LC15
+800637a8 l       .rodata	00000000 $LC16
+800637b4 l       .rodata	00000000 $LC18
+800637bc l       .rodata	00000000 $LC19
+800637cc l       .rodata	00000000 $LC20
+800637d8 l       .rodata	00000000 $LC21
+800637e4 l       .rodata	00000000 $LC23
+800637f0 l       .rodata	00000000 $LC24
+80063800 l       .rodata	00000000 $LC25
+80063810 l       .rodata	00000000 $LC26
+80063824 l       .rodata	00000000 $LC27
+80063828 l       .rodata	00000000 $LC28
 00000000 l    df *ABS*	00000000 gz_warps.c
 8002ad38 l     F .text	00000018 clear_csp_proc
-80077920 l     O .bss	00000008 null_cs.0
+80092cf0 l     O .bss	00000008 null_cs.0
 8002ad50 l     F .text	00000054 warp_proc
 8002ada4 l     F .text	000000f0 places_proc
 8002ae94 l     F .text	00000154 warp_info_draw_proc
 8002afe8 l     F .text	00000098 cutscene_option_proc
 8002b080 l     F .text	00000098 age_option_proc
 8002b118 l     F .text	00000074 halfword_mod_proc
-80077978 l     O .bss	00000050 menu.2
-80077928 l     O .bss	00000050 places.1
-80063a24 l     O .rodata	00000060 scene_categories
-8006a118 l     O .data	00000011 __compound_literal.0
-8006a10c l     O .data	0000000a __compound_literal.1
-8006a0fc l     O .data	00000010 __compound_literal.2
-8006a0ec l     O .data	0000000f __compound_literal.3
-8006a0e0 l     O .data	0000000c __compound_literal.4
-8006a0d0 l     O .data	0000000f __compound_literal.5
-8006a0c0 l     O .data	00000010 __compound_literal.6
-8006a0b4 l     O .data	00000009 __compound_literal.7
-800638d4 l       .rodata	00000000 $LC0
-800638ec l       .rodata	00000000 $LC1
-80063904 l       .rodata	00000000 $LC2
-8006391c l       .rodata	00000000 $LC3
-80063934 l       .rodata	00000000 $LC4
-8006394c l       .rodata	00000000 $LC5
-80063954 l       .rodata	00000000 $LC6
-8006395c l       .rodata	00000000 $LC7
-80063960 l       .rodata	00000000 $LC9
-8006396c l       .rodata	00000000 $LC10
-80063978 l       .rodata	00000000 $LC12
-80063980 l       .rodata	00000000 $LC13
+80092d48 l     O .bss	00000050 menu.2
+80092cf8 l     O .bss	00000050 places.1
+80063a1c l     O .rodata	00000060 scene_categories
+800853b8 l     O .data	00000011 __compound_literal.0
+800853ac l     O .data	0000000a __compound_literal.1
+8008539c l     O .data	00000010 __compound_literal.2
+8008538c l     O .data	0000000f __compound_literal.3
+80085380 l     O .data	0000000c __compound_literal.4
+80085370 l     O .data	0000000f __compound_literal.5
+80085360 l     O .data	00000010 __compound_literal.6
+80085354 l     O .data	00000009 __compound_literal.7
+800638cc l       .rodata	00000000 $LC0
+800638e4 l       .rodata	00000000 $LC1
+800638fc l       .rodata	00000000 $LC2
+80063914 l       .rodata	00000000 $LC3
+8006392c l       .rodata	00000000 $LC4
+80063944 l       .rodata	00000000 $LC5
+8006394c l       .rodata	00000000 $LC6
+80063954 l       .rodata	00000000 $LC7
+80063958 l       .rodata	00000000 $LC9
+80063964 l       .rodata	00000000 $LC10
+80063970 l       .rodata	00000000 $LC12
+80063978 l       .rodata	00000000 $LC13
 00000000 l    df *ABS*	00000000 hb_io.c
 8002b5f0 l     F .text	00000018 hb_check
 8002b608 l     F .text	00000038 hb_sd_init
@@ -944,28 +944,28 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 input.c
 8002b7d4 l     F .text	00000040 bitmask_button_index
 8002b814 l     F .text	0000002c activate_proc
-8006a154 l     O .data	00000001 input_enabled
+800853f4 l     O .data	00000001 input_enabled
 8002b840 l     F .text	000001dc draw_proc
 8002bb3c l     F .text	00000254 think_proc
-80077bf8 l     O .bss	00000002 pad
-80077bb8 l     O .bss	00000040 button_time
-80077bb6 l     O .bss	00000002 pad_pressed_raw
-80077bfb l     O .bss	00000001 joy_x
-80077bfa l     O .bss	00000001 joy_y
-80077bb2 l     O .bss	00000002 pad_released
-80077bb4 l     O .bss	00000002 pad_pressed
-80077bb0 l     O .bss	00000002 pad_reserved
-80077ae4 l     O .bss	0000008c bind_component_state
-800779ec l     O .bss	00000023 bind_disable
-800779c8 l     O .bss	00000023 bind_override
-80077a10 l     O .bss	00000023 bind_pressed
-80077a58 l     O .bss	0000008c bind_time
-80077a34 l     O .bss	00000023 bind_pressed_raw
-80077b70 l     O .bss	00000040 button_reserve_count
-80063a84 l       .rodata	00000000 $LC0
-80063acc l       .rodata	00000000 $LC1
+80092fc8 l     O .bss	00000002 pad
+80092f88 l     O .bss	00000040 button_time
+80092f86 l     O .bss	00000002 pad_pressed_raw
+80092fcb l     O .bss	00000001 joy_x
+80092fca l     O .bss	00000001 joy_y
+80092f82 l     O .bss	00000002 pad_released
+80092f84 l     O .bss	00000002 pad_pressed
+80092f80 l     O .bss	00000002 pad_reserved
+80092eb4 l     O .bss	0000008c bind_component_state
+80092dbc l     O .bss	00000023 bind_disable
+80092d98 l     O .bss	00000023 bind_override
+80092de0 l     O .bss	00000023 bind_pressed
+80092e28 l     O .bss	0000008c bind_time
+80092e04 l     O .bss	00000023 bind_pressed_raw
+80092f40 l     O .bss	00000040 button_reserve_count
+80063a7c l       .rodata	00000000 $LC0
+80063ac4 l       .rodata	00000000 $LC1
 00000000 l    df *ABS*	00000000 io.c
-80077bfc l     O .bss	00000004 current_dev
+80092fcc l     O .bss	00000004 current_dev
 00000000 l    df *ABS*	00000000 item_option.c
 8002c880 l     F .text	00000064 find_item_index
 8002c8e4 l     F .text	00000098 animate_wheel
@@ -978,32 +978,32 @@ SYMBOL TABLE:
 8002cb08 l     F .text	000000fc activate_proc
 8002cef0 l     F .text	000004c8 wheel_draw_proc
 8002cc04 l     F .text	000002ec draw_proc
-8006a198 l     O .data	00000098 init_rcp.1
-8006a158 l     O .data	00000040 mesh.0
-80063ad0 l       .rodata	00000000 $LC0
-80063af0 l       .rodata	00000000 $LC1
-80063af4 l       .rodata	00000000 $LC2
-80063b00 l       .rodata	00000000 $LC5
-80063af8 l       .rodata	00000000 $LC3
-80063afc l       .rodata	00000000 $LC4
-80063ad8 l       .rodata	00000000 $LC6
-80063ae0 l       .rodata	00000000 $LC7
-80063ae8 l       .rodata	00000000 $LC8
-80063b04 l       .rodata	00000000 $LC9
+80085438 l     O .data	00000098 init_rcp.1
+800853f8 l     O .data	00000040 mesh.0
+80063ac8 l       .rodata	00000000 $LC0
+80063ae8 l       .rodata	00000000 $LC1
+80063aec l       .rodata	00000000 $LC2
+80063af8 l       .rodata	00000000 $LC5
+80063af0 l       .rodata	00000000 $LC3
+80063af4 l       .rodata	00000000 $LC4
+80063ad0 l       .rodata	00000000 $LC6
+80063ad8 l       .rodata	00000000 $LC7
+80063ae0 l       .rodata	00000000 $LC8
+80063afc l       .rodata	00000000 $LC9
 00000000 l    df *ABS*	00000000 mem.c
 8002d550 l     F .text	000000b4 add_watch_proc
-80077e7c l     O .bss	00000004 view_domain_index
-80077c00 l     O .bss	0000001c domains
-80077e78 l     O .bss	00000004 view_data_size
-80077e74 l     O .bss	00000001 view_float
+8009324c l     O .bss	00000004 view_domain_index
+80092fd0 l     O .bss	0000001c domains
+80093248 l     O .bss	00000004 view_data_size
+80093244 l     O .bss	00000001 view_float
 8002d604 l     F .text	00000278 update_view
-80077e70 l     O .bss	00000004 view_address
-80077e68 l     O .bss	00000004 view_domain_name
-80077e60 l     O .bss	00000004 view_pagedown
-80077e64 l     O .bss	00000004 view_pageup
-80077e1c l     O .bss	00000040 view_rows
-80077c1c l     O .bss	00000200 view_cells
-80077e5c l     O .bss	00000004 view_cell_header
+80093240 l     O .bss	00000004 view_address
+80093238 l     O .bss	00000004 view_domain_name
+80093230 l     O .bss	00000004 view_pagedown
+80093234 l     O .bss	00000004 view_pageup
+800931ec l     O .bss	00000040 view_rows
+80092fec l     O .bss	00000200 view_cells
+8009322c l     O .bss	00000004 view_cell_header
 8002d87c l     F .text	00000058 page_down_proc
 8002d8d4 l     F .text	00000058 page_up_proc
 8002d92c l     F .text	00000040 next_domain_proc
@@ -1014,51 +1014,51 @@ SYMBOL TABLE:
 8002de2c l     F .text	00000044 prev_domain_proc
 8002e41c l     F .text	0000003c address_proc
 8002e324 l     F .text	000000f8 data_type_proc
-80077e6c l     O .bss	00000004 view_type
-80063b08 l       .rodata	00000000 $LC0
-80063b10 l       .rodata	00000000 $LC1
-80063be0 l       .rodata	00000000 $LC2
-80063be4 l       .rodata	00000000 $LC3
-80063b18 l       .rodata	00000000 $LC4
-80063b24 l       .rodata	00000000 $LC5
-80063b30 l       .rodata	00000000 $LC6
-80063b3c l       .rodata	00000000 $LC7
-80063b44 l       .rodata	00000000 $LC8
-80063b4c l       .rodata	00000000 $LC9
-80063b54 l       .rodata	00000000 $LC10
-80063b5c l       .rodata	00000000 $LC11
-80063b64 l       .rodata	00000000 $LC12
-80063b6c l       .rodata	00000000 $LC13
-80063b74 l       .rodata	00000000 $LC14
-80063b7c l       .rodata	00000000 $LC15
-80063b84 l       .rodata	00000000 $LC16
-80063b8c l       .rodata	00000000 $LC17
-80063b98 l       .rodata	00000000 $LC18
-80063ba4 l       .rodata	00000000 $LC19
-80063bac l       .rodata	00000000 $LC20
-80063bb4 l       .rodata	00000000 $LC21
-80063bbc l       .rodata	00000000 $LC23
-80063bc0 l       .rodata	00000000 $LC24
+8009323c l     O .bss	00000004 view_type
+80063b00 l       .rodata	00000000 $LC0
+80063b08 l       .rodata	00000000 $LC1
+80063bd8 l       .rodata	00000000 $LC2
+80063bdc l       .rodata	00000000 $LC3
+80063b10 l       .rodata	00000000 $LC4
+80063b1c l       .rodata	00000000 $LC5
+80063b28 l       .rodata	00000000 $LC6
+80063b34 l       .rodata	00000000 $LC7
+80063b3c l       .rodata	00000000 $LC8
+80063b44 l       .rodata	00000000 $LC9
+80063b4c l       .rodata	00000000 $LC10
+80063b54 l       .rodata	00000000 $LC11
+80063b5c l       .rodata	00000000 $LC12
+80063b64 l       .rodata	00000000 $LC13
+80063b6c l       .rodata	00000000 $LC14
+80063b74 l       .rodata	00000000 $LC15
+80063b7c l       .rodata	00000000 $LC16
+80063b84 l       .rodata	00000000 $LC17
+80063b90 l       .rodata	00000000 $LC18
+80063b9c l       .rodata	00000000 $LC19
+80063ba4 l       .rodata	00000000 $LC20
+80063bac l       .rodata	00000000 $LC21
+80063bb4 l       .rodata	00000000 $LC23
+80063bb8 l       .rodata	00000000 $LC24
 00000000 l    df *ABS*	00000000 menu.c
 8002e5a0 l     F .text	0000004c menu_deselect
 8002f384 l     F .text	0000024c menu_nav_compare
-80063bec l       .rodata	00000000 $LC0
-80063bf0 l       .rodata	00000000 $LC1
-80063bf4 l       .rodata	00000000 $LC2
-80063be8 l       .rodata	00000000 $LC3
+80063be4 l       .rodata	00000000 $LC0
+80063be8 l       .rodata	00000000 $LC1
+80063bec l       .rodata	00000000 $LC2
+80063be0 l       .rodata	00000000 $LC3
 00000000 l    df *ABS*	00000000 menu_button.c
 8002f73c l     F .text	00000010 enter_proc
 8002f74c l     F .text	00000034 activate_proc
 8002f780 l     F .text	0000014c draw_proc
-80063bf8 l       .rodata	00000000 $LC0
+80063bf0 l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 menu_checkbox.c
 8002fa50 l     F .text	00000010 enter_proc
 8002fa60 l     F .text	00000038 think_proc
 8002fa98 l     F .text	0000007c activate_proc
 8002fb14 l     F .text	00000198 draw_proc
-80077e80 l     O .bss	00000004 texture.0
-80063bfc l       .rodata	00000000 $LC0
-80063c08 l       .rodata	00000000 $LC1
+80093250 l     O .bss	00000004 texture.0
+80063bf4 l       .rodata	00000000 $LC0
+80063c00 l       .rodata	00000000 $LC1
 00000000 l    df *ABS*	00000000 menu_def.c
 8002fd80 l     F .text	0000000c tooltip_destroy_proc
 8002fd8c l     F .text	00000040 imenu_think_proc
@@ -1067,7 +1067,7 @@ SYMBOL TABLE:
 8002ff2c l     F .text	00000094 tooltip_draw_proc
 8002ffc0 l     F .text	00000034 imenu_activate_proc
 8002fff4 l     F .text	00000034 imenu_navigate_proc
-80063c0c l       .rodata	00000000 $LC0
+80063c04 l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 menu_floatinput.c
 80030418 l     F .text	0000002c sign_navigate_proc
 80030444 l     F .text	0000009c digit_navigate_proc
@@ -1076,12 +1076,12 @@ SYMBOL TABLE:
 800308d8 l     F .text	00000038 navigate_proc
 80030910 l     F .text	00000050 draw_proc
 80030960 l     F .text	000000a4 think_proc
-80063c18 l       .rodata	00000000 $LC0
-80063c10 l       .rodata	00000000 $LC1
-80063c14 l       .rodata	00000000 $LC2
-80063c20 l       .rodata	00000000 $LC3
-80063c28 l       .rodata	00000000 $LC4
-80063c2c l       .rodata	00000000 $LC5
+80063c10 l       .rodata	00000000 $LC0
+80063c08 l       .rodata	00000000 $LC1
+80063c0c l       .rodata	00000000 $LC2
+80063c18 l       .rodata	00000000 $LC3
+80063c20 l       .rodata	00000000 $LC4
+80063c24 l       .rodata	00000000 $LC5
 00000000 l    df *ABS*	00000000 menu_intinput.c
 80031148 l     F .text	00000254 activate_proc
 8003139c l     F .text	0000002c sign_navigate_proc
@@ -1099,22 +1099,22 @@ SYMBOL TABLE:
 80031da4 l     F .text	00000048 navigate_proc
 80031dec l     F .text	00000060 activate_proc
 80031e4c l     F .text	00000110 draw_proc
-80077e84 l     O .bss	00000004 texture.0
-80063c30 l       .rodata	00000000 $LC0
-80063c3c l       .rodata	00000000 $LC1
+80093254 l     O .bss	00000004 texture.0
+80063c28 l       .rodata	00000000 $LC0
+80063c34 l       .rodata	00000000 $LC1
 00000000 l    df *ABS*	00000000 menu_prompt.c
 8003200c l     F .text	0000003c do_callback
-80077e90 l     O .bss	00000004 prompt_callback_proc
-80077e8c l     O .bss	00000004 prompt_callback_data
+80093260 l     O .bss	00000004 prompt_callback_proc
+8009325c l     O .bss	00000004 prompt_callback_data
 80032048 l     F .text	00000034 leave_proc
 8003207c l     F .text	0000000c destroy_proc
 80032088 l     F .text	00000034 activate_proc
-80077e94 l     O .bss	00000050 prompt_menu
-80077e88 l     O .bss	00000001 ready.0
+80093264 l     O .bss	00000050 prompt_menu
+80093258 l     O .bss	00000001 ready.0
 00000000 l    df *ABS*	00000000 menu_strinput.c
 80032284 l     F .text	0000012c activate_proc
 800323b0 l     F .text	000000c4 char_navigate_proc
-80063c40 l     O .rodata	00000042 charset
+80063c38 l     O .rodata	00000042 charset
 80032474 l     F .text	00000068 destroy_proc
 800324dc l     F .text	00000038 navigate_proc
 80032514 l     F .text	00000050 draw_proc
@@ -1126,104 +1126,104 @@ SYMBOL TABLE:
 800329f4 l     F .text	00000038 think_proc
 80032a2c l     F .text	0000007c activate_proc
 80032aa8 l     F .text	000003b4 draw_proc
-80063c84 l       .rodata	00000000 $LC0
+80063c7c l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 menu_userwatch.c
 80032f5c l     F .text	00000048 type_proc
 80032fa4 l     F .text	00000048 address_proc
 00000000 l    df *ABS*	00000000 menu_watch.c
 800330fc l     F .text	0000031c draw_proc
-80063d24 l     O .rodata	00000028 watch_type_size
-80063cb0 l       .rodata	00000000 $LC0
-80063cb8 l       .rodata	00000000 $LC1
-80063cc0 l       .rodata	00000000 $LC2
-80063cc8 l       .rodata	00000000 $LC3
-80063ccc l       .rodata	00000000 $LC4
-80063cd0 l       .rodata	00000000 $LC5
-80063cd8 l       .rodata	00000000 $LC6
-80063cdc l       .rodata	00000000 $LC7
-80063ce0 l       .rodata	00000000 $LC8
-80063ce8 l       .rodata	00000000 $LC9
-80063d4c l       .rodata	00000000 $LC10
-80063cec l       .rodata	00000000 $LC11
-80063d50 l       .rodata	00000000 $LC12
-80063d54 l       .rodata	00000000 $LC13
-80063cf4 l       .rodata	00000000 $LC14
-80063cf8 l       .rodata	00000000 $LC15
-80063d58 l       .rodata	00000000 $LC16
+80063d1c l     O .rodata	00000028 watch_type_size
+80063ca8 l       .rodata	00000000 $LC0
+80063cb0 l       .rodata	00000000 $LC1
+80063cb8 l       .rodata	00000000 $LC2
+80063cc0 l       .rodata	00000000 $LC3
+80063cc4 l       .rodata	00000000 $LC4
+80063cc8 l       .rodata	00000000 $LC5
+80063cd0 l       .rodata	00000000 $LC6
+80063cd4 l       .rodata	00000000 $LC7
+80063cd8 l       .rodata	00000000 $LC8
+80063ce0 l       .rodata	00000000 $LC9
+80063d44 l       .rodata	00000000 $LC10
+80063ce4 l       .rodata	00000000 $LC11
+80063d48 l       .rodata	00000000 $LC12
+80063d4c l       .rodata	00000000 $LC13
+80063cec l       .rodata	00000000 $LC14
+80063cf0 l       .rodata	00000000 $LC15
+80063d50 l       .rodata	00000000 $LC16
 00000000 l    df *ABS*	00000000 noclip.c
 800334f4 l     F .text	00000168 noclip_update
-80077ee4 l     O .bss	00000004 saved_player_update_func
-80063d60 l       .rodata	00000000 $LC1
-80063d5c l       .rodata	00000000 $LC0
+800932b4 l     O .bss	00000004 saved_player_update_func
+80063d58 l       .rodata	00000000 $LC1
+80063d54 l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 osk.c
 8003370c l     F .text	000000ac draw_text_proc
-80077fb8 l     O .bss	00000020 osk_buf
-80077eec l     O .bss	00000004 osk_cursor_pos
+80093388 l     O .bss	00000020 osk_buf
+800932bc l     O .bss	00000004 osk_cursor_pos
 800337b8 l     F .text	000001b0 draw_shortcut
 80033968 l     F .text	000001c0 draw_tooltip_proc
-80077f5c l     O .bss	00000004 osk_text
+8009332c l     O .bss	00000004 osk_text
 80033b28 l     F .text	00000080 insert_char
 80033ba8 l     F .text	0000001c space_proc
 80033bc4 l     F .text	00000020 key_proc
 80033be4 l     F .text	0000014c navigate_proc
-80077ee9 l     O .bss	00000001 osk_shift_state
-80077ef4 l     O .bss	00000068 osk_letters
-80077ef0 l     O .bss	00000004 osk_minus
+800932b9 l     O .bss	00000001 osk_shift_state
+800932c4 l     O .bss	00000068 osk_letters
+800932c0 l     O .bss	00000004 osk_minus
 80033d30 l     F .text	0000009c navigate_text_proc
 80033dcc l     F .text	0000004c activate_text_proc
-80077fb4 l     O .bss	00000004 osk_callback_proc
-80077fb0 l     O .bss	00000004 osk_callback_data
-80077f60 l     O .bss	00000050 osk_menu
-80077ee8 l     O .bss	00000001 ready.0
-80063d64 l       .rodata	00000000 $LC0
-80063d68 l       .rodata	00000000 $LC1
-80063e5c l       .rodata	00000000 $LC2
-80063d6c l       .rodata	00000000 $LC3
-80063d74 l       .rodata	00000000 $LC4
-80063d80 l       .rodata	00000000 $LC5
-80063d88 l       .rodata	00000000 $LC6
-80063d90 l       .rodata	00000000 $LC7
-80063d9c l       .rodata	00000000 $LC8
-80063dac l       .rodata	00000000 $LC9
-80063dc0 l       .rodata	00000000 $LC10
-80063dc4 l       .rodata	00000000 $LC11
-80063dc8 l       .rodata	00000000 $LC12
-80063dcc l       .rodata	00000000 $LC13
-80063dd0 l       .rodata	00000000 $LC14
-80063dd4 l       .rodata	00000000 $LC15
-80063dd8 l       .rodata	00000000 $LC16
-80063ddc l       .rodata	00000000 $LC17
-80063de0 l       .rodata	00000000 $LC18
-80063de4 l       .rodata	00000000 $LC19
-80063de8 l       .rodata	00000000 $LC20
-80063dec l       .rodata	00000000 $LC21
-80063df0 l       .rodata	00000000 $LC22
-80063df4 l       .rodata	00000000 $LC23
-80063df8 l       .rodata	00000000 $LC24
-80063dfc l       .rodata	00000000 $LC25
-80063e00 l       .rodata	00000000 $LC26
-80063e04 l       .rodata	00000000 $LC27
-80063e08 l       .rodata	00000000 $LC28
-80063e0c l       .rodata	00000000 $LC29
-80063e10 l       .rodata	00000000 $LC30
-80063e14 l       .rodata	00000000 $LC31
-80063e18 l       .rodata	00000000 $LC32
-80063e1c l       .rodata	00000000 $LC33
-80063e20 l       .rodata	00000000 $LC34
-80063e24 l       .rodata	00000000 $LC35
-80063e28 l       .rodata	00000000 $LC36
-80063e2c l       .rodata	00000000 $LC37
-80063e30 l       .rodata	00000000 $LC38
-80063e34 l       .rodata	00000000 $LC39
-80063e38 l       .rodata	00000000 $LC40
-80063e3c l       .rodata	00000000 $LC41
-80063e40 l       .rodata	00000000 $LC42
-80063e44 l       .rodata	00000000 $LC43
-80063e48 l       .rodata	00000000 $LC44
-80063e4c l       .rodata	00000000 $LC45
-80063e50 l       .rodata	00000000 $LC46
-80063e54 l       .rodata	00000000 $LC47
-80063e58 l       .rodata	00000000 $LC48
+80093384 l     O .bss	00000004 osk_callback_proc
+80093380 l     O .bss	00000004 osk_callback_data
+80093330 l     O .bss	00000050 osk_menu
+800932b8 l     O .bss	00000001 ready.0
+80063d5c l       .rodata	00000000 $LC0
+80063d60 l       .rodata	00000000 $LC1
+80063e54 l       .rodata	00000000 $LC2
+80063d64 l       .rodata	00000000 $LC3
+80063d6c l       .rodata	00000000 $LC4
+80063d78 l       .rodata	00000000 $LC5
+80063d80 l       .rodata	00000000 $LC6
+80063d88 l       .rodata	00000000 $LC7
+80063d94 l       .rodata	00000000 $LC8
+80063da4 l       .rodata	00000000 $LC9
+80063db8 l       .rodata	00000000 $LC10
+80063dbc l       .rodata	00000000 $LC11
+80063dc0 l       .rodata	00000000 $LC12
+80063dc4 l       .rodata	00000000 $LC13
+80063dc8 l       .rodata	00000000 $LC14
+80063dcc l       .rodata	00000000 $LC15
+80063dd0 l       .rodata	00000000 $LC16
+80063dd4 l       .rodata	00000000 $LC17
+80063dd8 l       .rodata	00000000 $LC18
+80063ddc l       .rodata	00000000 $LC19
+80063de0 l       .rodata	00000000 $LC20
+80063de4 l       .rodata	00000000 $LC21
+80063de8 l       .rodata	00000000 $LC22
+80063dec l       .rodata	00000000 $LC23
+80063df0 l       .rodata	00000000 $LC24
+80063df4 l       .rodata	00000000 $LC25
+80063df8 l       .rodata	00000000 $LC26
+80063dfc l       .rodata	00000000 $LC27
+80063e00 l       .rodata	00000000 $LC28
+80063e04 l       .rodata	00000000 $LC29
+80063e08 l       .rodata	00000000 $LC30
+80063e0c l       .rodata	00000000 $LC31
+80063e10 l       .rodata	00000000 $LC32
+80063e14 l       .rodata	00000000 $LC33
+80063e18 l       .rodata	00000000 $LC34
+80063e1c l       .rodata	00000000 $LC35
+80063e20 l       .rodata	00000000 $LC36
+80063e24 l       .rodata	00000000 $LC37
+80063e28 l       .rodata	00000000 $LC38
+80063e2c l       .rodata	00000000 $LC39
+80063e30 l       .rodata	00000000 $LC40
+80063e34 l       .rodata	00000000 $LC41
+80063e38 l       .rodata	00000000 $LC42
+80063e3c l       .rodata	00000000 $LC43
+80063e40 l       .rodata	00000000 $LC44
+80063e44 l       .rodata	00000000 $LC45
+80063e48 l       .rodata	00000000 $LC46
+80063e4c l       .rodata	00000000 $LC47
+80063e50 l       .rodata	00000000 $LC48
 00000000 l    df *ABS*	00000000 pi.c
 8003457c l     F .text	000000a4 pio_write
 80034620 l     F .text	00000090 pio_read
@@ -1234,7 +1234,7 @@ SYMBOL TABLE:
 80034c14 l     F .text	00000078 rdb_continue
 800352ec l     F .text	0000003c rdb_enable_watch
 80035914 l     F .text	00000050 rdb_startall
-800781b0 l     O .bss	00000018 rdb_fault_mq
+80093580 l     O .bss	00000018 rdb_fault_mq
 800358c4 l     F .text	00000050 rdb_stopall
 80035328 l     F .text	00000008 rdb_disable_watch
 80034c8c l     F .text	00000058 hex_char
@@ -1243,7 +1243,7 @@ SYMBOL TABLE:
 80034fb0 l     F .text	00000284 rdb_set_reg
 80035234 l     F .text	0000007c rdb_set_bkp
 800352b0 l     F .text	0000003c rdb_clear_bkp
-800781d0 l     O .bss	00000530 rdb
+800935a0 l     O .bss	00000530 rdb
 80035330 l     F .text	0000001c sx_imm
 8003534c l     F .text	00000058 decode_i_so
 800353a4 l     F .text	00000054 decode_i_si
@@ -1262,16 +1262,16 @@ SYMBOL TABLE:
 8003579c l     F .text	00000084 rdb_getc
 80035820 l     F .text	00000050 rdb_flush
 80035870 l     F .text	00000054 rdb_putc
-800651d0 l     O .rodata	00000020 rdb_threads
+800651c8 l     O .rodata	00000020 rdb_threads
 80035964 l     F .text	00000208 rdb_putpkt
 80035b6c l     F .text	00000218 rdb_stop_reply
-800781c8 l     O .bss	00000001 rdb_active
-8007b0e0 l     O .stack	00001000 rdb_stack.2
+80093598 l     O .bss	00000001 rdb_active
+800964b0 l     O .stack	00001000 rdb_stack.2
 800376d0 l     F .text	00001198 rdb_main
-80077fe0 l     O .bss	000001b0 rdb_thread.1
-80077fd8 l     O .bss	00000001 fault_event_set.0
-80078190 l     O .bss	00000020 rdb_fault_mesg
-800651b0 l     O .rodata	00000020 rdb_thread_name
+800933b0 l     O .bss	000001b0 rdb_thread.1
+800933a8 l     O .bss	00000001 fault_event_set.0
+80093560 l     O .bss	00000020 rdb_fault_mesg
+800651a8 l     O .rodata	00000020 rdb_thread_name
 00000000 l    df *ABS*	00000000 resource.c
 80038ab4 l     F .text	00000070 rc_zicon_action_buttons
 80038b24 l     F .text	0000006c rc_zicon_rupee
@@ -1292,9 +1292,9 @@ SYMBOL TABLE:
 80039220 l     F .text	0000004c rc_font_notalot35
 8003926c l     F .text	00000054 rc_font_fipps
 800392c0 l     F .text	00000030 rd_font_generic
-80078700 l     O .bss	00000070 res_data
-800653b0 l     O .rodata	00000070 res_ctor
-80065340 l     O .rodata	00000070 res_dtor
+80093ad0 l     O .bss	00000070 res_data
+800653a8 l     O .rodata	00000070 res_ctor
+80065338 l     O .rodata	00000070 res_dtor
 80039458 l     F .text	00000020 rc_texture_crosshair
 80039478 l     F .text	00000020 rc_icon_osk
 80039498 l     F .text	00000020 rc_icon_save
@@ -1307,27 +1307,27 @@ SYMBOL TABLE:
 80039578 l     F .text	00000020 rc_icon_amount
 80039598 l     F .text	00000020 rc_icon_daytime
 800395b8 l     F .text	00000020 rc_icon_check
-80065230 l       .rodata	00000000 $LC1
-8006523c l       .rodata	00000000 $LC2
-8006524c l       .rodata	00000000 $LC3
-80065258 l       .rodata	00000000 $LC4
-80065268 l       .rodata	00000000 $LC5
-80065274 l       .rodata	00000000 $LC6
-80065280 l       .rodata	00000000 $LC7
-80065290 l       .rodata	00000000 $LC8
-8006529c l       .rodata	00000000 $LC9
-800652a4 l       .rodata	00000000 $LC10
-800652b0 l       .rodata	00000000 $LC11
-800652bc l       .rodata	00000000 $LC12
-800652c8 l       .rodata	00000000 $LC13
-800652d4 l       .rodata	00000000 $LC14
-800652e0 l       .rodata	00000000 $LC15
-800652ec l       .rodata	00000000 $LC16
-800652f8 l       .rodata	00000000 $LC17
-80065304 l       .rodata	00000000 $LC18
-80065314 l       .rodata	00000000 $LC19
-80065324 l       .rodata	00000000 $LC20
-80065334 l       .rodata	00000000 $LC21
+80065228 l       .rodata	00000000 $LC1
+80065234 l       .rodata	00000000 $LC2
+80065244 l       .rodata	00000000 $LC3
+80065250 l       .rodata	00000000 $LC4
+80065260 l       .rodata	00000000 $LC5
+8006526c l       .rodata	00000000 $LC6
+80065278 l       .rodata	00000000 $LC7
+80065288 l       .rodata	00000000 $LC8
+80065294 l       .rodata	00000000 $LC9
+8006529c l       .rodata	00000000 $LC10
+800652a8 l       .rodata	00000000 $LC11
+800652b4 l       .rodata	00000000 $LC12
+800652c0 l       .rodata	00000000 $LC13
+800652cc l       .rodata	00000000 $LC14
+800652d8 l       .rodata	00000000 $LC15
+800652e4 l       .rodata	00000000 $LC16
+800652f0 l       .rodata	00000000 $LC17
+800652fc l       .rodata	00000000 $LC18
+8006530c l       .rodata	00000000 $LC19
+8006531c l       .rodata	00000000 $LC20
+8006532c l       .rodata	00000000 $LC21
 00000000 l    df *ABS*	00000000 sd_host.c
 800395d8 l     F .text	00000068 crc7
 80039640 l     F .text	00000064 crc16_wide
@@ -1337,7 +1337,7 @@ SYMBOL TABLE:
 80039c18 l     F .text	00000110 rx_blk_sd
 80039d28 l     F .text	000001cc stop_wr
 00000000 l    df *ABS*	00000000 settings.c
-80078770 l     O .bss	00000194 settings_store
+80093b40 l     O .bss	00000194 settings_store
 00000000 l    df *ABS*	00000000 state.c
 8003ad54 l     F .text	00000010 addr_comp
 8003ad64 l     F .text	00000048 serial_write
@@ -1345,33 +1345,33 @@ SYMBOL TABLE:
 8003af78 l     F .text	0000004c serial_read
 8003afc4 l     F .text	000001a8 load_ovl
 8003b16c l     F .text	0000004c reloc_col_hdr
-80065554 l       .rodata	00000000 $LC0
+8006554c l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 sys.c
 8003ee44 l     F .text	00000048 get_origin
-80078904 l     O .bss	00000004 wd
+80093cd4 l     O .bss	00000004 wd
 8003ee8c l     F .text	00000064 make_sn
-80078a10 l     O .bss	00001090 fat
+80093de0 l     O .bss	00001090 fat
 8003eef0 l     F .text	00000034 ent_mode
 8003ef24 l     F .text	000000b8 ent_stat
 8003efdc l     F .text	00000068 get_desc
-80078908 l     O .bss	00000100 desc_list
+80093cd8 l     O .bss	00000100 desc_list
 8003f044 l     F .text	00000034 wd_path
 8003f078 l     F .text	000000b4 init_fat
-80079aa0 l     O .bss	00000001 fat_ready
+80094e70 l     O .bss	00000001 fat_ready
 8003f12c l     F .text	00000074 check_path
 8003f1a0 l     F .text	000000e4 ent_access
 8003f284 l     F .text	000000d0 new_desc
 8003f354 l     F .text	00000048 wd_find
 8003f39c l     F .text	0000004c delete_desc
 8003f3e8 l     F .text	000000a8 seek_file
-80065558 l       .rodata	00000000 $LC0
+80065550 l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 ucode.c
 00000000 l    df *ABS*	00000000 watchlist.c
 80040760 l     F .text	00000010 anchor_button_enter_proc
 80040770 l     F .text	00000028 scroll_up_proc
-80079aac l     O .bss	00000004 watchfile_scroll
+80094e7c l     O .bss	00000004 watchfile_scroll
 80040798 l     F .text	0000004c scroll_down_proc
-80079b44 l     O .bss	0000001c watchfile_entries
+80094f14 l     O .bss	0000001c watchfile_entries
 800407e4 l     F .text	00000048 get_member
 8004082c l     F .text	00000050 entry_enter_proc
 8004087c l     F .text	00000024 destroy_proc
@@ -1379,12 +1379,12 @@ SYMBOL TABLE:
 800409a8 l     F .text	0000055c import_callback
 800408f0 l     F .text	00000084 watchfile_destroy
 80040974 l     F .text	00000034 watchfile_leave_proc
-80079b60 l     O .bss	00000004 watchfile_list_data
-80065620 l     O .rodata	00000028 watch_type_name
-80079aa8 l     O .bss	00000001 ready.1
-80079af4 l     O .bss	00000050 watchfile_menu
-80079af0 l     O .bss	00000004 watchfile_return
-80079ab0 l     O .bss	00000040 watchfile_items
+80094f30 l     O .bss	00000004 watchfile_list_data
+80065618 l     O .rodata	00000028 watch_type_name
+80094e78 l     O .bss	00000001 ready.1
+80094ec4 l     O .bss	00000050 watchfile_menu
+80094ec0 l     O .bss	00000004 watchfile_return
+80094e80 l     O .bss	00000040 watchfile_items
 800418f8 l     F .text	000000dc entry_draw_proc
 800416cc l     F .text	00000120 entry_activate_proc
 80040f04 l     F .text	00000078 edit_watch_in_memory_proc
@@ -1392,161 +1392,161 @@ SYMBOL TABLE:
 8004109c l     F .text	00000024 remove_button_proc
 800410c0 l     F .text	00000110 position_proc
 800411d0 l     F .text	00000188 anchor_button_draw_proc
-80079aa4 l     O .bss	00000004 texture.0
+80094e74 l     O .bss	00000004 texture.0
 80041358 l     F .text	000000a0 release_member
 800413f8 l     F .text	000002d4 add_member
 8004187c l     F .text	0000007c anchor_button_activate_proc
-80079b68 l     O .bss	00000004 list_icons
-80079b64 l     O .bss	00000004 wrench
-800655d0 l     O .rodata	00000028 watch_type_size
+80094f38 l     O .bss	00000004 list_icons
+80094f34 l     O .bss	00000004 wrench
+800655c8 l     O .rodata	00000028 watch_type_size
 800417ec l     F .text	00000090 add_button_proc
 80041a9c l     F .text	000000c0 toggle_visibility_proc
-8006555c l       .rodata	00000000 $LC0
-80065574 l       .rodata	00000000 $LC2
-80065564 l       .rodata	00000000 $LC1
-80065578 l       .rodata	00000000 $LC4
-800655a8 l       .rodata	00000000 $LC5
-80065648 l       .rodata	00000000 $LC6
-800655b0 l       .rodata	00000000 $LC7
-800655b4 l       .rodata	00000000 $LC8
-800655bc l       .rodata	00000000 $LC9
-800655c8 l       .rodata	00000000 $LC10
+80065554 l       .rodata	00000000 $LC0
+8006556c l       .rodata	00000000 $LC2
+8006555c l       .rodata	00000000 $LC1
+80065570 l       .rodata	00000000 $LC4
+800655a0 l       .rodata	00000000 $LC5
+80065640 l       .rodata	00000000 $LC6
+800655a8 l       .rodata	00000000 $LC7
+800655ac l       .rodata	00000000 $LC8
+800655b4 l       .rodata	00000000 $LC9
+800655c0 l       .rodata	00000000 $LC10
 00000000 l    df *ABS*	00000000 yaz0.c
 80041f70 l     F .text	00000090 yaz0_get_code
-8007af80 l     O .bss	00000004 yaz0_cp
-8007af84 l     O .bss	00000004 yaz0
-8007ab70 l     O .bss	00000400 yaz0_code_buf
+80096350 l     O .bss	00000004 yaz0_cp
+80096354 l     O .bss	00000004 yaz0
+80095f40 l     O .bss	00000400 yaz0_code_buf
 80042000 l     F .text	00000158 yaz0_continue
-8007af7c l     O .bss	00000004 yaz0_op
-8007af70 l     O .bss	00000004 yaz0_chunk_end
-8007af74 l     O .bss	00000004 yaz0_group_pos
-8007af78 l     O .bss	00000001 yaz0_group_header
-80079b6c l     O .bss	00001000 yaz0_buf
+8009634c l     O .bss	00000004 yaz0_op
+80096340 l     O .bss	00000004 yaz0_chunk_end
+80096344 l     O .bss	00000004 yaz0_group_pos
+80096348 l     O .bss	00000001 yaz0_group_header
+80094f3c l     O .bss	00001000 yaz0_buf
 00000000 l    df *ABS*	00000000 zu.c
 800422cc l     F .text	000000a8 gen_lighting
 80042374 l     F .text	000000b4 set_lighting
-8007af8c l     O .bss	00000040 t_stab.1
-8007af88 l     O .bss	00000004 rdphalf_1.0
+8009635c l     O .bss	00000040 t_stab.1
+80096358 l     O .bss	00000004 rdphalf_1.0
 00000000 l    df *ABS*	00000000 zu_scenes.c
-8006c864 l     O .data	00000008 __compound_literal.0
-8006c85c l     O .data	00000008 __compound_literal.1
-8006c854 l     O .data	00000008 __compound_literal.2
-8006c848 l     O .data	0000000c __compound_literal.3
-8006c840 l     O .data	00000008 __compound_literal.4
-8006c838 l     O .data	00000008 __compound_literal.5
-8006c824 l     O .data	00000014 __compound_literal.6
-8006c814 l     O .data	00000010 __compound_literal.7
-8006c80c l     O .data	00000008 __compound_literal.8
-8006c804 l     O .data	00000008 __compound_literal.9
-8006c7f8 l     O .data	0000000c __compound_literal.10
-8006c7f4 l     O .data	00000004 __compound_literal.11
-8006c7c0 l     O .data	00000034 __compound_literal.12
-8006c7a0 l     O .data	00000020 __compound_literal.13
-8006c780 l     O .data	00000020 __compound_literal.14
-8006c77c l     O .data	00000004 __compound_literal.15
-8006c778 l     O .data	00000004 __compound_literal.16
-8006c774 l     O .data	00000004 __compound_literal.17
-8006c770 l     O .data	00000004 __compound_literal.18
-8006c76c l     O .data	00000004 __compound_literal.19
-8006c768 l     O .data	00000004 __compound_literal.20
-8006c764 l     O .data	00000004 __compound_literal.21
-8006c760 l     O .data	00000004 __compound_literal.22
-8006c754 l     O .data	0000000c __compound_literal.23
-8006c750 l     O .data	00000004 __compound_literal.24
-8006c74c l     O .data	00000004 __compound_literal.25
-8006c72c l     O .data	00000020 __compound_literal.26
-8006c720 l     O .data	0000000c __compound_literal.27
-8006c714 l     O .data	0000000c __compound_literal.28
-8006c708 l     O .data	0000000c __compound_literal.29
-8006c6f4 l     O .data	00000014 __compound_literal.30
-8006c6e0 l     O .data	00000014 __compound_literal.31
-8006c6b4 l     O .data	0000002c __compound_literal.32
-8006c688 l     O .data	0000002c __compound_literal.33
-8006c65c l     O .data	0000002c __compound_literal.34
-8006c654 l     O .data	00000008 __compound_literal.35
-8006c64c l     O .data	00000008 __compound_literal.36
-8006c644 l     O .data	00000008 __compound_literal.37
-8006c640 l     O .data	00000004 __compound_literal.38
-8006c63c l     O .data	00000004 __compound_literal.39
-8006c638 l     O .data	00000004 __compound_literal.40
-8006c634 l     O .data	00000004 __compound_literal.41
-8006c630 l     O .data	00000004 __compound_literal.42
-8006c62c l     O .data	00000004 __compound_literal.43
-8006c624 l     O .data	00000008 __compound_literal.44
-8006c620 l     O .data	00000004 __compound_literal.45
-8006c61c l     O .data	00000004 __compound_literal.46
-8006c618 l     O .data	00000004 __compound_literal.47
-8006c60c l     O .data	0000000c __compound_literal.48
-8006c608 l     O .data	00000004 __compound_literal.49
-8006c600 l     O .data	00000008 __compound_literal.50
-8006c5fc l     O .data	00000004 __compound_literal.51
-8006c5f4 l     O .data	00000008 __compound_literal.52
-8006c5f0 l     O .data	00000004 __compound_literal.53
-8006c5ec l     O .data	00000004 __compound_literal.54
-8006c5e4 l     O .data	00000008 __compound_literal.55
-8006c5dc l     O .data	00000008 __compound_literal.56
-8006c5d8 l     O .data	00000004 __compound_literal.57
-8006c5d4 l     O .data	00000004 __compound_literal.58
-8006c5c4 l     O .data	00000010 __compound_literal.59
-8006c5c0 l     O .data	00000004 __compound_literal.60
-8006c5b4 l     O .data	0000000c __compound_literal.61
-8006c57c l     O .data	00000038 __compound_literal.62
-8006c578 l     O .data	00000004 __compound_literal.63
-8006c574 l     O .data	00000004 __compound_literal.64
-8006c56c l     O .data	00000008 __compound_literal.65
-8006c564 l     O .data	00000008 __compound_literal.66
-8006c544 l     O .data	00000020 __compound_literal.67
-8006c53c l     O .data	00000008 __compound_literal.68
-8006c534 l     O .data	00000008 __compound_literal.69
-8006c52c l     O .data	00000008 __compound_literal.70
-8006c528 l     O .data	00000004 __compound_literal.71
-8006c51c l     O .data	0000000c __compound_literal.72
-8006c518 l     O .data	00000004 __compound_literal.73
-8006c510 l     O .data	00000008 __compound_literal.74
-8006c50c l     O .data	00000004 __compound_literal.75
-8006c500 l     O .data	0000000c __compound_literal.76
-8006c4fc l     O .data	00000004 __compound_literal.77
-8006c4f8 l     O .data	00000004 __compound_literal.78
-8006c4f4 l     O .data	00000004 __compound_literal.79
-8006c4f0 l     O .data	00000004 __compound_literal.80
-8006c4a8 l     O .data	00000048 __compound_literal.81
-8006c468 l     O .data	00000040 __compound_literal.82
-8006c444 l     O .data	00000024 __compound_literal.83
-8006c430 l     O .data	00000014 __compound_literal.84
-8006c3fc l     O .data	00000034 __compound_literal.85
-8006c3ec l     O .data	00000010 __compound_literal.86
-8006c3c4 l     O .data	00000028 __compound_literal.87
-8006c3b0 l     O .data	00000014 __compound_literal.88
-8006c398 l     O .data	00000018 __compound_literal.89
-8006c384 l     O .data	00000014 __compound_literal.90
-8006c35c l     O .data	00000028 __compound_literal.91
-8006c338 l     O .data	00000024 __compound_literal.92
-8006c2ec l     O .data	0000004c __compound_literal.93
-8006c2e0 l     O .data	0000000c __compound_literal.94
-8006c2cc l     O .data	00000014 __compound_literal.95
-8006c2b4 l     O .data	00000018 __compound_literal.96
-8006c29c l     O .data	00000018 __compound_literal.97
-8006c28c l     O .data	00000010 __compound_literal.98
-8006c260 l     O .data	0000002c __compound_literal.99
-8006c24c l     O .data	00000014 __compound_literal.100
-8006c248 l     O .data	00000004 __compound_literal.101
-8006c244 l     O .data	00000004 __compound_literal.102
-8006c240 l     O .data	00000004 __compound_literal.103
-8006c23c l     O .data	00000004 __compound_literal.104
-8006c238 l     O .data	00000004 __compound_literal.105
-8006c234 l     O .data	00000004 __compound_literal.106
-8006c230 l     O .data	00000004 __compound_literal.107
-8006c22c l     O .data	00000004 __compound_literal.108
-8006c228 l     O .data	00000004 __compound_literal.109
-8006c224 l     O .data	00000004 __compound_literal.110
+80087b04 l     O .data	00000008 __compound_literal.0
+80087afc l     O .data	00000008 __compound_literal.1
+80087af4 l     O .data	00000008 __compound_literal.2
+80087ae8 l     O .data	0000000c __compound_literal.3
+80087ae0 l     O .data	00000008 __compound_literal.4
+80087ad8 l     O .data	00000008 __compound_literal.5
+80087ac4 l     O .data	00000014 __compound_literal.6
+80087ab4 l     O .data	00000010 __compound_literal.7
+80087aac l     O .data	00000008 __compound_literal.8
+80087aa4 l     O .data	00000008 __compound_literal.9
+80087a98 l     O .data	0000000c __compound_literal.10
+80087a94 l     O .data	00000004 __compound_literal.11
+80087a60 l     O .data	00000034 __compound_literal.12
+80087a40 l     O .data	00000020 __compound_literal.13
+80087a20 l     O .data	00000020 __compound_literal.14
+80087a1c l     O .data	00000004 __compound_literal.15
+80087a18 l     O .data	00000004 __compound_literal.16
+80087a14 l     O .data	00000004 __compound_literal.17
+80087a10 l     O .data	00000004 __compound_literal.18
+80087a0c l     O .data	00000004 __compound_literal.19
+80087a08 l     O .data	00000004 __compound_literal.20
+80087a04 l     O .data	00000004 __compound_literal.21
+80087a00 l     O .data	00000004 __compound_literal.22
+800879f4 l     O .data	0000000c __compound_literal.23
+800879f0 l     O .data	00000004 __compound_literal.24
+800879ec l     O .data	00000004 __compound_literal.25
+800879cc l     O .data	00000020 __compound_literal.26
+800879c0 l     O .data	0000000c __compound_literal.27
+800879b4 l     O .data	0000000c __compound_literal.28
+800879a8 l     O .data	0000000c __compound_literal.29
+80087994 l     O .data	00000014 __compound_literal.30
+80087980 l     O .data	00000014 __compound_literal.31
+80087954 l     O .data	0000002c __compound_literal.32
+80087928 l     O .data	0000002c __compound_literal.33
+800878fc l     O .data	0000002c __compound_literal.34
+800878f4 l     O .data	00000008 __compound_literal.35
+800878ec l     O .data	00000008 __compound_literal.36
+800878e4 l     O .data	00000008 __compound_literal.37
+800878e0 l     O .data	00000004 __compound_literal.38
+800878dc l     O .data	00000004 __compound_literal.39
+800878d8 l     O .data	00000004 __compound_literal.40
+800878d4 l     O .data	00000004 __compound_literal.41
+800878d0 l     O .data	00000004 __compound_literal.42
+800878cc l     O .data	00000004 __compound_literal.43
+800878c4 l     O .data	00000008 __compound_literal.44
+800878c0 l     O .data	00000004 __compound_literal.45
+800878bc l     O .data	00000004 __compound_literal.46
+800878b8 l     O .data	00000004 __compound_literal.47
+800878ac l     O .data	0000000c __compound_literal.48
+800878a8 l     O .data	00000004 __compound_literal.49
+800878a0 l     O .data	00000008 __compound_literal.50
+8008789c l     O .data	00000004 __compound_literal.51
+80087894 l     O .data	00000008 __compound_literal.52
+80087890 l     O .data	00000004 __compound_literal.53
+8008788c l     O .data	00000004 __compound_literal.54
+80087884 l     O .data	00000008 __compound_literal.55
+8008787c l     O .data	00000008 __compound_literal.56
+80087878 l     O .data	00000004 __compound_literal.57
+80087874 l     O .data	00000004 __compound_literal.58
+80087864 l     O .data	00000010 __compound_literal.59
+80087860 l     O .data	00000004 __compound_literal.60
+80087854 l     O .data	0000000c __compound_literal.61
+8008781c l     O .data	00000038 __compound_literal.62
+80087818 l     O .data	00000004 __compound_literal.63
+80087814 l     O .data	00000004 __compound_literal.64
+8008780c l     O .data	00000008 __compound_literal.65
+80087804 l     O .data	00000008 __compound_literal.66
+800877e4 l     O .data	00000020 __compound_literal.67
+800877dc l     O .data	00000008 __compound_literal.68
+800877d4 l     O .data	00000008 __compound_literal.69
+800877cc l     O .data	00000008 __compound_literal.70
+800877c8 l     O .data	00000004 __compound_literal.71
+800877bc l     O .data	0000000c __compound_literal.72
+800877b8 l     O .data	00000004 __compound_literal.73
+800877b0 l     O .data	00000008 __compound_literal.74
+800877ac l     O .data	00000004 __compound_literal.75
+800877a0 l     O .data	0000000c __compound_literal.76
+8008779c l     O .data	00000004 __compound_literal.77
+80087798 l     O .data	00000004 __compound_literal.78
+80087794 l     O .data	00000004 __compound_literal.79
+80087790 l     O .data	00000004 __compound_literal.80
+80087748 l     O .data	00000048 __compound_literal.81
+80087708 l     O .data	00000040 __compound_literal.82
+800876e4 l     O .data	00000024 __compound_literal.83
+800876d0 l     O .data	00000014 __compound_literal.84
+8008769c l     O .data	00000034 __compound_literal.85
+8008768c l     O .data	00000010 __compound_literal.86
+80087664 l     O .data	00000028 __compound_literal.87
+80087650 l     O .data	00000014 __compound_literal.88
+80087638 l     O .data	00000018 __compound_literal.89
+80087624 l     O .data	00000014 __compound_literal.90
+800875fc l     O .data	00000028 __compound_literal.91
+800875d8 l     O .data	00000024 __compound_literal.92
+8008758c l     O .data	0000004c __compound_literal.93
+80087580 l     O .data	0000000c __compound_literal.94
+8008756c l     O .data	00000014 __compound_literal.95
+80087554 l     O .data	00000018 __compound_literal.96
+8008753c l     O .data	00000018 __compound_literal.97
+8008752c l     O .data	00000010 __compound_literal.98
+80087500 l     O .data	0000002c __compound_literal.99
+800874ec l     O .data	00000014 __compound_literal.100
+800874e8 l     O .data	00000004 __compound_literal.101
+800874e4 l     O .data	00000004 __compound_literal.102
+800874e0 l     O .data	00000004 __compound_literal.103
+800874dc l     O .data	00000004 __compound_literal.104
+800874d8 l     O .data	00000004 __compound_literal.105
+800874d4 l     O .data	00000004 __compound_literal.106
+800874d0 l     O .data	00000004 __compound_literal.107
+800874cc l     O .data	00000004 __compound_literal.108
+800874c8 l     O .data	00000004 __compound_literal.109
+800874c4 l     O .data	00000004 __compound_literal.110
 00000000 l    df *ABS*	00000000 hud_colors.c
 00000000 l    df *ABS*	00000000 icetrap.c
 00000000 l    df *ABS*	00000000 item_draw_functions.c
-80066a68 l       .rodata	00000000 $LC0
-80066a6c l       .rodata	00000000 $LC1
-80066a70 l       .rodata	00000000 $LC2
-80066a74 l       .rodata	00000000 $LC3
-80066a78 l       .rodata	00000000 $LC4
+80066a60 l       .rodata	00000000 $LC0
+80066a64 l       .rodata	00000000 $LC1
+80066a68 l       .rodata	00000000 $LC2
+80066a6c l       .rodata	00000000 $LC3
+80066a70 l       .rodata	00000000 $LC4
 00000000 l    df *ABS*	00000000 item_draw_table.c
 00000000 l    df *ABS*	00000000 item_effects.c
 00000000 l    df *ABS*	00000000 item_table.c
@@ -1554,455 +1554,539 @@ SYMBOL TABLE:
 00000000 l    df *ABS*	00000000 main.c
 00000000 l    df *ABS*	00000000 menu.c
 00000000 l    df *ABS*	00000000 misc_colors.c
-8007afcc l     O .bss	00000004 frames
-80066a7c l       .rodata	00000000 $LC0
-80066a80 l       .rodata	00000000 $LC1
-80066a84 l       .rodata	00000000 $LC2
-80066a88 l       .rodata	00000000 $LC3
-80066a8c l       .rodata	00000000 $LC4
-80066a90 l       .rodata	00000000 $LC5
+8009639c l     O .bss	00000004 frames
+80066a74 l       .rodata	00000000 $LC0
+80066a78 l       .rodata	00000000 $LC1
+80066a7c l       .rodata	00000000 $LC2
+80066a80 l       .rodata	00000000 $LC3
+80066a84 l       .rodata	00000000 $LC4
+80066a88 l       .rodata	00000000 $LC5
 00000000 l    df *ABS*	00000000 model_text.c
-80066af0 l       .rodata	00000000 $LC2
+80066ae8 l       .rodata	00000000 $LC2
 00000000 l    df *ABS*	00000000 models.c
-80066b40 l       .rodata	00000000 $LC5
-80066b3c l       .rodata	00000000 $LC4
-80066b44 l       .rodata	00000000 $LC6
-80066b48 l       .rodata	00000000 $LC7
-80066b4c l       .rodata	00000000 $LC8
-80066b50 l       .rodata	00000000 $LC9
-80066b54 l       .rodata	00000000 $LC10
+80066b38 l       .rodata	00000000 $LC5
+80066b34 l       .rodata	00000000 $LC4
+80066b3c l       .rodata	00000000 $LC6
+80066b40 l       .rodata	00000000 $LC7
+80066b44 l       .rodata	00000000 $LC8
+80066b48 l       .rodata	00000000 $LC9
+80066b4c l       .rodata	00000000 $LC10
 00000000 l    df *ABS*	00000000 obj_comb.c
-80066b58 l       .rodata	00000000 $LC0
-80066b5c l       .rodata	00000000 $LC1
+80066b50 l       .rodata	00000000 $LC0
+80066b54 l       .rodata	00000000 $LC1
 00000000 l    df *ABS*	00000000 obj_kibako.c
 00000000 l    df *ABS*	00000000 obj_kibako2.c
 00000000 l    df *ABS*	00000000 objects.c
-80066bf4 l       .rodata	00000000 $LC1
-80066bf0 l       .rodata	00000000 $LC0
+80066bec l       .rodata	00000000 $LC1
+80066be8 l       .rodata	00000000 $LC0
 00000000 l    df *ABS*	00000000 pots.c
 00000000 l    df *ABS*	00000000 rainbow.c
-80066c40 l     O .rodata	00000015 cycle_colors
-80066c58 l       .rodata	00000000 $LC0
-80066c60 l       .rodata	00000000 $LC1
-80066c64 l       .rodata	00000000 $LC2
+80066c38 l     O .rodata	00000015 cycle_colors
+80066c50 l       .rodata	00000000 $LC0
+80066c58 l       .rodata	00000000 $LC1
+80066c5c l       .rodata	00000000 $LC2
 00000000 l    df *ABS*	00000000 refill.c
 00000000 l    df *ABS*	00000000 rng.c
-80066c68 l       .rodata	00000000 $LC0
-80066c6c l       .rodata	00000000 $LC1
+80066c60 l       .rodata	00000000 $LC0
+80066c64 l       .rodata	00000000 $LC1
 00000000 l    df *ABS*	00000000 save.c
 00000000 l    df *ABS*	00000000 scarecrow.c
 00000000 l    df *ABS*	00000000 scene.c
 00000000 l    df *ABS*	00000000 text.c
-8007b090 l     O .bss	00000004 text_buf
-8007b094 l     O .bss	00000004 text_end
+80096460 l     O .bss	00000004 text_buf
+80096464 l     O .bss	00000004 text_end
 00000000 l    df *ABS*	00000000 textures.c
 00000000 l    df *ABS*	00000000 trade_quests.c
-80066c70 l     O .rodata	00000008 sMaskPaymentPrice
+80066c68 l     O .rodata	00000008 sMaskPaymentPrice
 00000000 l    df *ABS*	00000000 triforce.c
-8007b098 l     O .bss	00000004 render_triforce_flag
-8007b09c l     O .bss	00000004 frames
-80066ee0 l       .rodata	00000000 $LC0
-80066ee8 l       .rodata	00000000 $LC1
-80066ef0 l       .rodata	00000000 $LC2
-80066ef8 l       .rodata	00000000 $LC3
+80096468 l     O .bss	00000004 render_triforce_flag
+8009646c l     O .bss	00000004 frames
+80066ed8 l       .rodata	00000000 $LC0
+80066ee0 l       .rodata	00000000 $LC1
+80066ee8 l       .rodata	00000000 $LC2
+80066ef0 l       .rodata	00000000 $LC3
 00000000 l    df *ABS*	00000000 twinrova.c
 00000000 l    df *ABS*	00000000 util.c
 00000000 l    df *ABS*	00000000 weather.c
+00000000 l    df *ABS*	00000000 amount_icons.png.o
+8008a4f0 l       .data	00000000 resource_name
+80069640 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 anchor.png.o
+8008a4fd l       .data	00000000 resource_name
+80077650 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 arrow_icons.png.o
+8008a504 l       .data	00000000 resource_name
+80077730 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 button_icons.png.o
+8008a510 l       .data	00000000 resource_name
+80077840 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 check_icons.png.o
+8008a51d l       .data	00000000 resource_name
+80077c90 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 checkbox.png.o
+8008a529 l       .data	00000000 resource_name
+80077da0 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 crosshair.png.o
+8008a532 l       .data	00000000 resource_name
+80078260 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 day_time_icons.png.o
+8008a53c l       .data	00000000 resource_name
+80078870 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 file_icons.png.o
+8008a54b l       .data	00000000 resource_name
+800788c0 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 fipps.png.o
+8008a556 l       .data	00000000 resource_name
+80078df0 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 flag_icons.png.o
+8008a55c l       .data	00000000 resource_name
+8007a840 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 list_icons.png.o
+8008a567 l       .data	00000000 resource_name
+8007aa50 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 logo.png.o
+8008a572 l       .data	00000000 resource_name
+8007ab60 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 macro_icons.png.o
+8008a577 l       .data	00000000 resource_name
+8007bbf0 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 move_icon.png.o
+8008a583 l       .data	00000000 resource_name
+8007bd80 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 movie_icons.png.o
+8008a58d l       .data	00000000 resource_name
+8007bdd8 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 notalot35.png.o
+8008a599 l       .data	00000000 resource_name
+8007c178 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 origamimommy.png.o
+8008a5a3 l       .data	00000000 resource_name
+8007d340 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 osk_icons.png.o
+8008a5b0 l       .data	00000000 resource_name
+8007e250 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 pause_icons.png.o
+8008a5ba l       .data	00000000 resource_name
+8007e280 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 pcsenior.png.o
+8008a5c6 l       .data	00000000 resource_name
+8007ec50 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 pixelintv.png.o
+8008a5cf l       .data	00000000 resource_name
+8007f860 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 pixelzim.png.o
+8008a5d9 l       .data	00000000 resource_name
+80080a70 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 pressstart2p.png.o
+8008a5e2 l       .data	00000000 resource_name
+80080de0 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 save_icons.png.o
+8008a5ef l       .data	00000000 resource_name
+800819f0 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 smwtextnc.png.o
+8008a5fa l       .data	00000000 resource_name
+800822e8 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 werdnasreturn.png.o
+8008a604 l       .data	00000000 resource_name
+800834f8 l       .data	00000000 resource_data
+00000000 l    df *ABS*	00000000 wrench.png.o
+8008a612 l       .data	00000000 resource_name
+80084708 l       .data	00000000 resource_data
 8004cd0c l     F .text	00000008 __fp_lock
 8004cd14 l     F .text	00000088 std
 8004cda8 l     F .text	00000008 __fp_unlock
 00000000 l    df *ABS*	00000000 /tmp/tmp.eEhlv6bjMv/src/debian/n64-ultra/usr/lib/gcc/mips64-ultra-elf/11.2.0/include/stddef.h
-8006f250 l     O .data	00000290 impure_data
+8008a620 l     O .data	00000290 impure_data
 8004f170 l     F .text	00000024 lflush
-80066f14 l       .rodata	00000000 $LC2
-80066f30 l       .rodata	00000000 $LC3
-80066f40 l       .rodata	00000000 $LC4
-80066f58 l       .rodata	00000000 $LC5
-80066f64 l       .rodata	00000000 $LC6
-80066f80 l       .rodata	00000000 $LC7
-80066f94 l       .rodata	00000000 $LC8
-80066fa8 l       .rodata	00000000 $LC9
-80066fc4 l       .rodata	00000000 $LC10
-80066fd4 l       .rodata	00000000 $LC11
-80066fe0 l       .rodata	00000000 $LC12
-80067000 l       .rodata	00000000 $LC13
-80067014 l       .rodata	00000000 $LC14
-80067028 l       .rodata	00000000 $LC15
-8006703c l       .rodata	00000000 $LC16
-80067048 l       .rodata	00000000 $LC17
-80067060 l       .rodata	00000000 $LC18
-8006706c l       .rodata	00000000 $LC19
-80067080 l       .rodata	00000000 $LC20
-80067090 l       .rodata	00000000 $LC21
-800670a0 l       .rodata	00000000 $LC22
-800670b0 l       .rodata	00000000 $LC23
-800670d0 l       .rodata	00000000 $LC24
-800670e0 l       .rodata	00000000 $LC25
-800670f4 l       .rodata	00000000 $LC26
-80067118 l       .rodata	00000000 $LC27
-80067138 l       .rodata	00000000 $LC28
-80067158 l       .rodata	00000000 $LC29
-80067178 l       .rodata	00000000 $LC30
-80067190 l       .rodata	00000000 $LC31
-800671a0 l       .rodata	00000000 $LC32
-800671b0 l       .rodata	00000000 $LC33
-800671c4 l       .rodata	00000000 $LC34
-800671dc l       .rodata	00000000 $LC35
-800671ec l       .rodata	00000000 $LC36
-800671fc l       .rodata	00000000 $LC37
-80067214 l       .rodata	00000000 $LC38
-80067224 l       .rodata	00000000 $LC39
-80067230 l       .rodata	00000000 $LC40
-80067260 l       .rodata	00000000 $LC41
-80067274 l       .rodata	00000000 $LC42
-80067290 l       .rodata	00000000 $LC43
-800672a4 l       .rodata	00000000 $LC44
-800672bc l       .rodata	00000000 $LC45
-800672c8 l       .rodata	00000000 $LC46
-800672e0 l       .rodata	00000000 $LC47
-800672e8 l       .rodata	00000000 $LC48
-800672f8 l       .rodata	00000000 $LC49
-80067310 l       .rodata	00000000 $LC50
-80067324 l       .rodata	00000000 $LC51
-8006733c l       .rodata	00000000 $LC52
-8006734c l       .rodata	00000000 $LC53
-80067360 l       .rodata	00000000 $LC54
-80067374 l       .rodata	00000000 $LC55
-80067380 l       .rodata	00000000 $LC56
-8006739c l       .rodata	00000000 $LC57
-800673b0 l       .rodata	00000000 $LC58
-800673cc l       .rodata	00000000 $LC59
-800673e4 l       .rodata	00000000 $LC60
-80067400 l       .rodata	00000000 $LC61
-80067408 l       .rodata	00000000 $LC62
-80067438 l       .rodata	00000000 $LC63
-80067458 l       .rodata	00000000 $LC64
-80067478 l       .rodata	00000000 $LC65
-80067490 l       .rodata	00000000 $LC66
-800674a4 l       .rodata	00000000 $LC67
-800674c0 l       .rodata	00000000 $LC68
-800674d8 l       .rodata	00000000 $LC69
-800674f0 l       .rodata	00000000 $LC70
-80067514 l       .rodata	00000000 $LC71
-8006752c l       .rodata	00000000 $LC72
-80067548 l       .rodata	00000000 $LC73
-8006755c l       .rodata	00000000 $LC74
-80067574 l       .rodata	00000000 $LC75
-80067588 l       .rodata	00000000 $LC76
-800675ac l       .rodata	00000000 $LC77
-800675d4 l       .rodata	00000000 $LC78
-800675e8 l       .rodata	00000000 $LC79
-80066f08 l       .rodata	00000000 $LC1
-80067600 l       .rodata	00000000 $LC80
-80066f00 l       .rodata	00000000 $LC0
-800679e0 l     O .rodata	00000010 zeroes.0
-800679f0 l     O .rodata	00000010 blanks.1
-80067878 l       .rodata	00000000 $LC7
-80067864 l       .rodata	00000000 $LC5
-80067a00 l       .rodata	00000000 $LC6
-80067844 l       .rodata	00000000 $LC1
-8006784c l       .rodata	00000000 $LC3
-80067840 l       .rodata	00000000 $LC0
-80067848 l       .rodata	00000000 $LC2
-80067850 l       .rodata	00000000 $LC4
-80067c60 l     O .rodata	00000022 basefix.0
-80067a08 l       .rodata	00000000 $LC0
-80067a10 l       .rodata	00000000 $LC1
-80067e24 l     O .rodata	00000010 zeroes.0
-80067e34 l     O .rodata	00000010 blanks.1
-80067cbc l       .rodata	00000000 $LC7
-80067ca8 l       .rodata	00000000 $LC5
-80067e48 l       .rodata	00000000 $LC6
-80067c88 l       .rodata	00000000 $LC1
-80067c90 l       .rodata	00000000 $LC3
-80067c84 l       .rodata	00000000 $LC0
-80067c8c l       .rodata	00000000 $LC2
-80067c94 l       .rodata	00000000 $LC4
+80066f0c l       .rodata	00000000 $LC2
+80066f28 l       .rodata	00000000 $LC3
+80066f38 l       .rodata	00000000 $LC4
+80066f50 l       .rodata	00000000 $LC5
+80066f5c l       .rodata	00000000 $LC6
+80066f78 l       .rodata	00000000 $LC7
+80066f8c l       .rodata	00000000 $LC8
+80066fa0 l       .rodata	00000000 $LC9
+80066fbc l       .rodata	00000000 $LC10
+80066fcc l       .rodata	00000000 $LC11
+80066fd8 l       .rodata	00000000 $LC12
+80066ff8 l       .rodata	00000000 $LC13
+8006700c l       .rodata	00000000 $LC14
+80067020 l       .rodata	00000000 $LC15
+80067034 l       .rodata	00000000 $LC16
+80067040 l       .rodata	00000000 $LC17
+80067058 l       .rodata	00000000 $LC18
+80067064 l       .rodata	00000000 $LC19
+80067078 l       .rodata	00000000 $LC20
+80067088 l       .rodata	00000000 $LC21
+80067098 l       .rodata	00000000 $LC22
+800670a8 l       .rodata	00000000 $LC23
+800670c8 l       .rodata	00000000 $LC24
+800670d8 l       .rodata	00000000 $LC25
+800670ec l       .rodata	00000000 $LC26
+80067110 l       .rodata	00000000 $LC27
+80067130 l       .rodata	00000000 $LC28
+80067150 l       .rodata	00000000 $LC29
+80067170 l       .rodata	00000000 $LC30
+80067188 l       .rodata	00000000 $LC31
+80067198 l       .rodata	00000000 $LC32
+800671a8 l       .rodata	00000000 $LC33
+800671bc l       .rodata	00000000 $LC34
+800671d4 l       .rodata	00000000 $LC35
+800671e4 l       .rodata	00000000 $LC36
+800671f4 l       .rodata	00000000 $LC37
+8006720c l       .rodata	00000000 $LC38
+8006721c l       .rodata	00000000 $LC39
+80067228 l       .rodata	00000000 $LC40
+80067258 l       .rodata	00000000 $LC41
+8006726c l       .rodata	00000000 $LC42
+80067288 l       .rodata	00000000 $LC43
+8006729c l       .rodata	00000000 $LC44
+800672b4 l       .rodata	00000000 $LC45
+800672c0 l       .rodata	00000000 $LC46
+800672d8 l       .rodata	00000000 $LC47
+800672e0 l       .rodata	00000000 $LC48
+800672f0 l       .rodata	00000000 $LC49
+80067308 l       .rodata	00000000 $LC50
+8006731c l       .rodata	00000000 $LC51
+80067334 l       .rodata	00000000 $LC52
+80067344 l       .rodata	00000000 $LC53
+80067358 l       .rodata	00000000 $LC54
+8006736c l       .rodata	00000000 $LC55
+80067378 l       .rodata	00000000 $LC56
+80067394 l       .rodata	00000000 $LC57
+800673a8 l       .rodata	00000000 $LC58
+800673c4 l       .rodata	00000000 $LC59
+800673dc l       .rodata	00000000 $LC60
+800673f8 l       .rodata	00000000 $LC61
+80067400 l       .rodata	00000000 $LC62
+80067430 l       .rodata	00000000 $LC63
+80067450 l       .rodata	00000000 $LC64
+80067470 l       .rodata	00000000 $LC65
+80067488 l       .rodata	00000000 $LC66
+8006749c l       .rodata	00000000 $LC67
+800674b8 l       .rodata	00000000 $LC68
+800674d0 l       .rodata	00000000 $LC69
+800674e8 l       .rodata	00000000 $LC70
+8006750c l       .rodata	00000000 $LC71
+80067524 l       .rodata	00000000 $LC72
+80067540 l       .rodata	00000000 $LC73
+80067554 l       .rodata	00000000 $LC74
+8006756c l       .rodata	00000000 $LC75
+80067580 l       .rodata	00000000 $LC76
+800675a4 l       .rodata	00000000 $LC77
+800675cc l       .rodata	00000000 $LC78
+800675e0 l       .rodata	00000000 $LC79
+80066f00 l       .rodata	00000000 $LC1
+800675f8 l       .rodata	00000000 $LC80
+80066ef8 l       .rodata	00000000 $LC0
+800679d8 l     O .rodata	00000010 zeroes.0
+800679e8 l     O .rodata	00000010 blanks.1
+80067870 l       .rodata	00000000 $LC7
+8006785c l       .rodata	00000000 $LC5
+800679f8 l       .rodata	00000000 $LC6
+8006783c l       .rodata	00000000 $LC1
+80067844 l       .rodata	00000000 $LC3
+80067838 l       .rodata	00000000 $LC0
+80067840 l       .rodata	00000000 $LC2
+80067848 l       .rodata	00000000 $LC4
+80067c58 l     O .rodata	00000022 basefix.0
+80067a00 l       .rodata	00000000 $LC0
+80067a08 l       .rodata	00000000 $LC1
+80067e1c l     O .rodata	00000010 zeroes.0
+80067e2c l     O .rodata	00000010 blanks.1
+80067cb4 l       .rodata	00000000 $LC7
+80067ca0 l       .rodata	00000000 $LC5
+80067e40 l       .rodata	00000000 $LC6
+80067c80 l       .rodata	00000000 $LC1
+80067c88 l       .rodata	00000000 $LC3
+80067c7c l       .rodata	00000000 $LC0
+80067c84 l       .rodata	00000000 $LC2
+80067c8c l       .rodata	00000000 $LC4
 00000000 l    df *ABS*	00000000 /tmp/tmp.eEhlv6bjMv/src/newlib/newlib/libc/include/ctype.h
 80053ae8 l     F .text	000001fc quorem
-800680fc l       .rodata	00000000 $LC9
-800680e0 l       .rodata	00000000 $LC1
-800680e4 l       .rodata	00000000 $LC2
-800680d4 l       .rodata	00000000 $LC0
-80068138 l       .rodata	00000000 $LC4
-80068140 l       .rodata	00000000 $LC5
-80068148 l       .rodata	00000000 $LC6
-80068150 l       .rodata	00000000 $LC7
-80068130 l       .rodata	00000000 $LC3
-800680e8 l       .rodata	00000000 $LC8
-80068158 l       .rodata	00000000 $LC10
-80068160 l       .rodata	00000000 $LC11
-80068168 l       .rodata	00000000 $LC12
-80068170 l       .rodata	00000000 $LC13
-80068178 l       .rodata	00000000 $LC14
-8006818c l       .rodata	00000000 $LC2
-80068184 l       .rodata	00000000 $LC1
-80068180 l       .rodata	00000000 $LC0
-80068194 l       .rodata	00000000 $LC0
-800681e0 l     O .rodata	0000000c p05.0
-800681ac l       .rodata	00000000 $LC1
-80068198 l       .rodata	00000000 $LC0
-80068308 l       .rodata	00000000 $LC2
-80068310 l       .rodata	00000000 $LC3
-80068318 l       .rodata	00000000 $LC0
+800680f4 l       .rodata	00000000 $LC9
+800680d8 l       .rodata	00000000 $LC1
+800680dc l       .rodata	00000000 $LC2
+800680cc l       .rodata	00000000 $LC0
+80068130 l       .rodata	00000000 $LC4
+80068138 l       .rodata	00000000 $LC5
+80068140 l       .rodata	00000000 $LC6
+80068148 l       .rodata	00000000 $LC7
+80068128 l       .rodata	00000000 $LC3
+800680e0 l       .rodata	00000000 $LC8
+80068150 l       .rodata	00000000 $LC10
+80068158 l       .rodata	00000000 $LC11
+80068160 l       .rodata	00000000 $LC12
+80068168 l       .rodata	00000000 $LC13
+80068170 l       .rodata	00000000 $LC14
+80068184 l       .rodata	00000000 $LC2
+8006817c l       .rodata	00000000 $LC1
+80068178 l       .rodata	00000000 $LC0
+8006818c l       .rodata	00000000 $LC0
+800681d8 l     O .rodata	0000000c p05.0
+800681a4 l       .rodata	00000000 $LC1
+80068190 l       .rodata	00000000 $LC0
+80068300 l       .rodata	00000000 $LC2
+80068308 l       .rodata	00000000 $LC3
+80068310 l       .rodata	00000000 $LC0
 80056268 l     F .text	00000078 sulp
-8006835c l     O .rodata	00000014 fpi.1
-80068348 l     O .rodata	00000014 fpinan.0
-80068370 l     O .rodata	00000028 tinytens
-80068330 l       .rodata	00000000 $LC7
-8006831c l       .rodata	00000000 $LC3
-8006832c l       .rodata	00000000 $LC6
-80068320 l       .rodata	00000000 $LC4
-80068324 l       .rodata	00000000 $LC5
-800683b0 l       .rodata	00000000 $LC8
-800683b8 l       .rodata	00000000 $LC9
-80068398 l       .rodata	00000000 $LC0
-800683a8 l       .rodata	00000000 $LC2
-800683e8 l       .rodata	00000000 $LC15
-800683a0 l       .rodata	00000000 $LC1
-800683d0 l       .rodata	00000000 $LC12
-800683d8 l       .rodata	00000000 $LC13
-800683c0 l       .rodata	00000000 $LC10
-800683c8 l       .rodata	00000000 $LC11
-800683e0 l       .rodata	00000000 $LC14
-800683f8 l       .rodata	00000000 $LC16
-800683f0 l       .rodata	00000000 $LC17
+80068354 l     O .rodata	00000014 fpi.1
+80068340 l     O .rodata	00000014 fpinan.0
+80068368 l     O .rodata	00000028 tinytens
+80068328 l       .rodata	00000000 $LC7
+80068314 l       .rodata	00000000 $LC3
+80068324 l       .rodata	00000000 $LC6
+80068318 l       .rodata	00000000 $LC4
+8006831c l       .rodata	00000000 $LC5
+800683a8 l       .rodata	00000000 $LC8
+800683b0 l       .rodata	00000000 $LC9
+80068390 l       .rodata	00000000 $LC0
+800683a0 l       .rodata	00000000 $LC2
+800683e0 l       .rodata	00000000 $LC15
+80068398 l       .rodata	00000000 $LC1
+800683c8 l       .rodata	00000000 $LC12
+800683d0 l       .rodata	00000000 $LC13
+800683b8 l       .rodata	00000000 $LC10
+800683c0 l       .rodata	00000000 $LC11
+800683d8 l       .rodata	00000000 $LC14
+800683f0 l       .rodata	00000000 $LC16
+800683e8 l       .rodata	00000000 $LC17
 8005787c l     F .text	000002a0 _strtoll_l.constprop.0
 80057b54 l     F .text	000001e0 _strtol_l.constprop.0
 80057d6c l     F .text	00000294 _strtoull_l.constprop.0
 80058038 l     F .text	000001a0 _strtoul_l.constprop.0
-80068534 l     O .rodata	00000010 zeroes.0
-80068544 l     O .rodata	00000010 blanks.1
-80068410 l       .rodata	00000000 $LC1
-800683fc l       .rodata	00000000 $LC0
-80068644 l     O .rodata	00000022 basefix.0
-800687a0 l     O .rodata	00000010 zeroes.0
-800687b0 l     O .rodata	00000010 blanks.1
-8006867c l       .rodata	00000000 $LC1
-80068668 l       .rodata	00000000 $LC0
-800687d4 l       .rodata	00000000 $LC2
-800687c0 l       .rodata	00000000 $LC0
-800687d0 l       .rodata	00000000 $LC1
+8006852c l     O .rodata	00000010 zeroes.0
+8006853c l     O .rodata	00000010 blanks.1
+80068408 l       .rodata	00000000 $LC1
+800683f4 l       .rodata	00000000 $LC0
+8006863c l     O .rodata	00000022 basefix.0
+80068798 l     O .rodata	00000010 zeroes.0
+800687a8 l     O .rodata	00000010 blanks.1
+80068674 l       .rodata	00000000 $LC1
+80068660 l       .rodata	00000000 $LC0
+800687cc l       .rodata	00000000 $LC2
+800687b8 l       .rodata	00000000 $LC0
+800687c8 l       .rodata	00000000 $LC1
 8005b4ac l     F .text	00000100 rshift
-80068804 l       .rodata	00000000 $LC0
-8006881c l       .rodata	00000000 $LC2
-80068808 l       .rodata	00000000 $LC1
+800687fc l       .rodata	00000000 $LC0
+80068814 l       .rodata	00000000 $LC2
+80068800 l       .rodata	00000000 $LC1
 8005bd08 l     F .text	00000048 L_shift
+80068850 l       .rodata	00000000 $LC0
 80068858 l       .rodata	00000000 $LC0
-80068860 l       .rodata	00000000 $LC0
+8006885c l       .rodata	00000000 $LC0
+80068860 l       .rodata	00000000 $LC1
 80068864 l       .rodata	00000000 $LC0
 80068868 l       .rodata	00000000 $LC1
 8006886c l       .rodata	00000000 $LC0
-80068870 l       .rodata	00000000 $LC1
-80068874 l       .rodata	00000000 $LC0
+80068870 l       .rodata	00000000 $LC0
+80068874 l       .rodata	00000000 $LC1
 80068878 l       .rodata	00000000 $LC0
-8006887c l       .rodata	00000000 $LC1
 80068880 l       .rodata	00000000 $LC0
 80068888 l       .rodata	00000000 $LC0
-80068890 l       .rodata	00000000 $LC0
-80068898 l       .rodata	00000000 $LC2
-8006889c l       .rodata	00000000 $LC3
-800688a0 l       .rodata	00000000 $LC4
-800688a4 l       .rodata	00000000 $LC5
-800688a8 l       .rodata	00000000 $LC6
-800688ac l       .rodata	00000000 $LC7
-800688b0 l       .rodata	00000000 $LC8
-800688b4 l       .rodata	00000000 $LC9
-800688b8 l       .rodata	00000000 $LC10
-800688bc l       .rodata	00000000 $LC11
-800688c0 l       .rodata	00000000 $LC12
-800688c4 l       .rodata	00000000 $LC13
-800688c8 l       .rodata	00000000 $LC14
-800688cc l       .rodata	00000000 $LC15
-800688d0 l       .rodata	00000000 $LC16
-80068894 l       .rodata	00000000 $LC1
-800688e0 l     O .rodata	0000000c CSWTCH.8
-800688d4 l     O .rodata	0000000c CSWTCH.9
-800688f4 l       .rodata	00000000 $LC2
-800688fc l       .rodata	00000000 $LC4
-80068900 l       .rodata	00000000 $LC5
-800688ec l       .rodata	00000000 $LC0
-800688f0 l       .rodata	00000000 $LC1
-800688f8 l       .rodata	00000000 $LC3
-80068904 l     O .rodata	00000008 Zero
-8006890c l       .rodata	00000000 $LC0
-80068910 l       .rodata	00000000 $LC1
-80068914 l       .rodata	00000000 $LC2
-80068918 l       .rodata	00000000 $LC3
-8006891c l       .rodata	00000000 $LC4
-80068920 l       .rodata	00000000 $LC0
-80068924 l       .rodata	00000000 $LC1
-80068928 l       .rodata	00000000 $LC2
-8006892c l       .rodata	00000000 $LC3
-80068930 l       .rodata	00000000 $LC4
-80068934 l       .rodata	00000000 $LC5
-80068938 l       .rodata	00000000 $LC6
-8006893c l       .rodata	00000000 $LC7
-80068940 l       .rodata	00000000 $LC8
-80068944 l       .rodata	00000000 $LC9
-80068948 l       .rodata	00000000 $LC10
-8006894c l       .rodata	00000000 $LC11
-80068950 l       .rodata	00000000 $LC12
-80068954 l       .rodata	00000000 $LC13
-80068958 l       .rodata	00000000 $LC14
-8006895c l     O .rodata	00000080 npio2_hw
-800689dc l     O .rodata	00000318 two_over_pi
-80068cf4 l       .rodata	00000000 $LC0
-80068cf8 l       .rodata	00000000 $LC1
-80068cfc l       .rodata	00000000 $LC2
-80068d00 l       .rodata	00000000 $LC3
-80068d04 l       .rodata	00000000 $LC4
-80068d08 l       .rodata	00000000 $LC5
-80068d0c l       .rodata	00000000 $LC6
-80068d10 l       .rodata	00000000 $LC7
-80068d14 l       .rodata	00000000 $LC8
-8006fa60 l     O .data	00000004 one
-8006fa5c l     O .data	00000004 tiny
-80068d38 l     O .rodata	00000010 bp
-80068d18 l     O .rodata	00000010 dp_l
-80068d28 l     O .rodata	00000010 dp_h
-80068d48 l       .rodata	00000000 $LC0
-80068d58 l       .rodata	00000000 $LC2
-80068d60 l       .rodata	00000000 $LC3
-80068d68 l       .rodata	00000000 $LC4
-80068d70 l       .rodata	00000000 $LC5
-80068d78 l       .rodata	00000000 $LC6
-80068d80 l       .rodata	00000000 $LC7
-80068d50 l       .rodata	00000000 $LC1
-80068d88 l       .rodata	00000000 $LC8
-80068d90 l       .rodata	00000000 $LC9
-80068d98 l       .rodata	00000000 $LC10
-80068da0 l       .rodata	00000000 $LC11
-80068da8 l       .rodata	00000000 $LC12
-80068db0 l       .rodata	00000000 $LC13
-80068db8 l       .rodata	00000000 $LC14
-80068dc0 l       .rodata	00000000 $LC15
-80068dc8 l       .rodata	00000000 $LC16
-80068dd0 l       .rodata	00000000 $LC17
-80068dd8 l       .rodata	00000000 $LC18
-80068de0 l       .rodata	00000000 $LC19
-80068de8 l       .rodata	00000000 $LC20
-80068df0 l       .rodata	00000000 $LC21
-80068df8 l       .rodata	00000000 $LC22
-80068e00 l       .rodata	00000000 $LC23
-80068e08 l       .rodata	00000000 $LC24
-80068e10 l       .rodata	00000000 $LC25
-80068e18 l       .rodata	00000000 $LC26
-80068e20 l       .rodata	00000000 $LC27
-80068e28 l       .rodata	00000000 $LC28
-80068e30 l     O .rodata	00000080 npio2_hw
-80068eb0 l     O .rodata	00000108 two_over_pi
-80068fb8 l       .rodata	00000000 $LC0
-80068fc0 l       .rodata	00000000 $LC1
-80068fc8 l       .rodata	00000000 $LC2
-80068fd0 l       .rodata	00000000 $LC3
-80068fd8 l       .rodata	00000000 $LC4
-80068fe0 l       .rodata	00000000 $LC5
-80068fe8 l       .rodata	00000000 $LC6
-80068ff0 l       .rodata	00000000 $LC7
-80068ff8 l       .rodata	00000000 $LC8
-8006fa70 l     O .data	00000008 one
-8006fa68 l     O .data	00000008 tiny
-80069010 l       .rodata	00000000 $LC2
-80069018 l       .rodata	00000000 $LC3
-80069020 l       .rodata	00000000 $LC4
-80069028 l       .rodata	00000000 $LC5
-80069030 l       .rodata	00000000 $LC6
-80069038 l       .rodata	00000000 $LC7
-80069040 l       .rodata	00000000 $LC8
-80069008 l       .rodata	00000000 $LC1
-80069000 l       .rodata	00000000 $LC0
-80069050 l       .rodata	00000000 $LC2
-80069054 l       .rodata	00000000 $LC3
-80069058 l       .rodata	00000000 $LC4
-8006905c l       .rodata	00000000 $LC5
-80069060 l       .rodata	00000000 $LC6
-80069064 l       .rodata	00000000 $LC7
-80069068 l       .rodata	00000000 $LC8
-8006904c l       .rodata	00000000 $LC1
-80069048 l       .rodata	00000000 $LC0
-80069098 l     O .rodata	0000000c init_jk
-8006906c l     O .rodata	0000002c PIo2
-800690a4 l       .rodata	00000000 $LC0
-800690a8 l       .rodata	00000000 $LC1
-800690ac l       .rodata	00000000 $LC2
-800690b0 l       .rodata	00000000 $LC3
-800690b8 l       .rodata	00000000 $LC5
-800690b4 l       .rodata	00000000 $LC4
-800690bc l       .rodata	00000000 $LC0
-800690c0 l       .rodata	00000000 $LC1
-800690c4 l       .rodata	00000000 $LC2
-800690c8 l       .rodata	00000000 $LC3
-800690cc l       .rodata	00000000 $LC4
-800690d0 l       .rodata	00000000 $LC5
-800690d4 l       .rodata	00000000 $LC6
-80069118 l     O .rodata	00000010 init_jk
-800690d8 l     O .rodata	00000040 PIo2
-80069128 l       .rodata	00000000 $LC0
-80069130 l       .rodata	00000000 $LC1
-80069138 l       .rodata	00000000 $LC2
-80069140 l       .rodata	00000000 $LC3
-80069150 l       .rodata	00000000 $LC5
-80069148 l       .rodata	00000000 $LC4
-80069158 l       .rodata	00000000 $LC0
-80069160 l       .rodata	00000000 $LC1
-80069168 l       .rodata	00000000 $LC2
-80069170 l       .rodata	00000000 $LC3
-80069178 l       .rodata	00000000 $LC4
-80069180 l       .rodata	00000000 $LC5
-80069188 l       .rodata	00000000 $LC6
+80068890 l       .rodata	00000000 $LC2
+80068894 l       .rodata	00000000 $LC3
+80068898 l       .rodata	00000000 $LC4
+8006889c l       .rodata	00000000 $LC5
+800688a0 l       .rodata	00000000 $LC6
+800688a4 l       .rodata	00000000 $LC7
+800688a8 l       .rodata	00000000 $LC8
+800688ac l       .rodata	00000000 $LC9
+800688b0 l       .rodata	00000000 $LC10
+800688b4 l       .rodata	00000000 $LC11
+800688b8 l       .rodata	00000000 $LC12
+800688bc l       .rodata	00000000 $LC13
+800688c0 l       .rodata	00000000 $LC14
+800688c4 l       .rodata	00000000 $LC15
+800688c8 l       .rodata	00000000 $LC16
+8006888c l       .rodata	00000000 $LC1
+800688d8 l     O .rodata	0000000c CSWTCH.8
+800688cc l     O .rodata	0000000c CSWTCH.9
+800688ec l       .rodata	00000000 $LC2
+800688f4 l       .rodata	00000000 $LC4
+800688f8 l       .rodata	00000000 $LC5
+800688e4 l       .rodata	00000000 $LC0
+800688e8 l       .rodata	00000000 $LC1
+800688f0 l       .rodata	00000000 $LC3
+800688fc l     O .rodata	00000008 Zero
+80068904 l       .rodata	00000000 $LC0
+80068908 l       .rodata	00000000 $LC1
+8006890c l       .rodata	00000000 $LC2
+80068910 l       .rodata	00000000 $LC3
+80068914 l       .rodata	00000000 $LC4
+80068918 l       .rodata	00000000 $LC0
+8006891c l       .rodata	00000000 $LC1
+80068920 l       .rodata	00000000 $LC2
+80068924 l       .rodata	00000000 $LC3
+80068928 l       .rodata	00000000 $LC4
+8006892c l       .rodata	00000000 $LC5
+80068930 l       .rodata	00000000 $LC6
+80068934 l       .rodata	00000000 $LC7
+80068938 l       .rodata	00000000 $LC8
+8006893c l       .rodata	00000000 $LC9
+80068940 l       .rodata	00000000 $LC10
+80068944 l       .rodata	00000000 $LC11
+80068948 l       .rodata	00000000 $LC12
+8006894c l       .rodata	00000000 $LC13
+80068950 l       .rodata	00000000 $LC14
+80068954 l     O .rodata	00000080 npio2_hw
+800689d4 l     O .rodata	00000318 two_over_pi
+80068cec l       .rodata	00000000 $LC0
+80068cf0 l       .rodata	00000000 $LC1
+80068cf4 l       .rodata	00000000 $LC2
+80068cf8 l       .rodata	00000000 $LC3
+80068cfc l       .rodata	00000000 $LC4
+80068d00 l       .rodata	00000000 $LC5
+80068d04 l       .rodata	00000000 $LC6
+80068d08 l       .rodata	00000000 $LC7
+80068d0c l       .rodata	00000000 $LC8
+8008ae30 l     O .data	00000004 one
+8008ae2c l     O .data	00000004 tiny
+80068d30 l     O .rodata	00000010 bp
+80068d10 l     O .rodata	00000010 dp_l
+80068d20 l     O .rodata	00000010 dp_h
+80068d40 l       .rodata	00000000 $LC0
+80068d50 l       .rodata	00000000 $LC2
+80068d58 l       .rodata	00000000 $LC3
+80068d60 l       .rodata	00000000 $LC4
+80068d68 l       .rodata	00000000 $LC5
+80068d70 l       .rodata	00000000 $LC6
+80068d78 l       .rodata	00000000 $LC7
+80068d48 l       .rodata	00000000 $LC1
+80068d80 l       .rodata	00000000 $LC8
+80068d88 l       .rodata	00000000 $LC9
+80068d90 l       .rodata	00000000 $LC10
+80068d98 l       .rodata	00000000 $LC11
+80068da0 l       .rodata	00000000 $LC12
+80068da8 l       .rodata	00000000 $LC13
+80068db0 l       .rodata	00000000 $LC14
+80068db8 l       .rodata	00000000 $LC15
+80068dc0 l       .rodata	00000000 $LC16
+80068dc8 l       .rodata	00000000 $LC17
+80068dd0 l       .rodata	00000000 $LC18
+80068dd8 l       .rodata	00000000 $LC19
+80068de0 l       .rodata	00000000 $LC20
+80068de8 l       .rodata	00000000 $LC21
+80068df0 l       .rodata	00000000 $LC22
+80068df8 l       .rodata	00000000 $LC23
+80068e00 l       .rodata	00000000 $LC24
+80068e08 l       .rodata	00000000 $LC25
+80068e10 l       .rodata	00000000 $LC26
+80068e18 l       .rodata	00000000 $LC27
+80068e20 l       .rodata	00000000 $LC28
+80068e28 l     O .rodata	00000080 npio2_hw
+80068ea8 l     O .rodata	00000108 two_over_pi
+80068fb0 l       .rodata	00000000 $LC0
+80068fb8 l       .rodata	00000000 $LC1
+80068fc0 l       .rodata	00000000 $LC2
+80068fc8 l       .rodata	00000000 $LC3
+80068fd0 l       .rodata	00000000 $LC4
+80068fd8 l       .rodata	00000000 $LC5
+80068fe0 l       .rodata	00000000 $LC6
+80068fe8 l       .rodata	00000000 $LC7
+80068ff0 l       .rodata	00000000 $LC8
+8008ae40 l     O .data	00000008 one
+8008ae38 l     O .data	00000008 tiny
+80069008 l       .rodata	00000000 $LC2
+80069010 l       .rodata	00000000 $LC3
+80069018 l       .rodata	00000000 $LC4
+80069020 l       .rodata	00000000 $LC5
+80069028 l       .rodata	00000000 $LC6
+80069030 l       .rodata	00000000 $LC7
+80069038 l       .rodata	00000000 $LC8
+80069000 l       .rodata	00000000 $LC1
+80068ff8 l       .rodata	00000000 $LC0
+80069048 l       .rodata	00000000 $LC2
+8006904c l       .rodata	00000000 $LC3
+80069050 l       .rodata	00000000 $LC4
+80069054 l       .rodata	00000000 $LC5
+80069058 l       .rodata	00000000 $LC6
+8006905c l       .rodata	00000000 $LC7
+80069060 l       .rodata	00000000 $LC8
+80069044 l       .rodata	00000000 $LC1
+80069040 l       .rodata	00000000 $LC0
+80069090 l     O .rodata	0000000c init_jk
+80069064 l     O .rodata	0000002c PIo2
+8006909c l       .rodata	00000000 $LC0
+800690a0 l       .rodata	00000000 $LC1
+800690a4 l       .rodata	00000000 $LC2
+800690a8 l       .rodata	00000000 $LC3
+800690b0 l       .rodata	00000000 $LC5
+800690ac l       .rodata	00000000 $LC4
+800690b4 l       .rodata	00000000 $LC0
+800690b8 l       .rodata	00000000 $LC1
+800690bc l       .rodata	00000000 $LC2
+800690c0 l       .rodata	00000000 $LC3
+800690c4 l       .rodata	00000000 $LC4
+800690c8 l       .rodata	00000000 $LC5
+800690cc l       .rodata	00000000 $LC6
+80069110 l     O .rodata	00000010 init_jk
+800690d0 l     O .rodata	00000040 PIo2
+80069120 l       .rodata	00000000 $LC0
+80069128 l       .rodata	00000000 $LC1
+80069130 l       .rodata	00000000 $LC2
+80069138 l       .rodata	00000000 $LC3
+80069148 l       .rodata	00000000 $LC5
+80069140 l       .rodata	00000000 $LC4
+80069150 l       .rodata	00000000 $LC0
+80069158 l       .rodata	00000000 $LC1
+80069160 l       .rodata	00000000 $LC2
+80069168 l       .rodata	00000000 $LC3
+80069170 l       .rodata	00000000 $LC4
+80069178 l       .rodata	00000000 $LC5
+80069180 l       .rodata	00000000 $LC6
 80060254 l     F .text	00000030 with_errno
 80060284 l     F .text	0000004c xflow
-80069190 l       .rodata	00000000 $LC0
-80069198 l       .rodata	00000000 $LC1
-800691a0 l       .rodata	00000000 $LC2
-800691b0 l       .rodata	00000000 $LC4
-800691a8 l       .rodata	00000000 $LC3
-800691b8 l       .rodata	00000000 $LC5
-800691d0 l     O .rodata	00000010 atanhi
-800691c0 l     O .rodata	00000010 atanlo
-800691e4 l       .rodata	00000000 $LC1
-800691e8 l       .rodata	00000000 $LC2
-800691ec l       .rodata	00000000 $LC3
-800691f0 l       .rodata	00000000 $LC4
-800691fc l       .rodata	00000000 $LC7
-80069200 l       .rodata	00000000 $LC8
-80069204 l       .rodata	00000000 $LC9
-80069208 l       .rodata	00000000 $LC10
-8006920c l       .rodata	00000000 $LC11
-80069210 l       .rodata	00000000 $LC12
-80069214 l       .rodata	00000000 $LC13
-80069218 l       .rodata	00000000 $LC14
-8006921c l       .rodata	00000000 $LC15
-80069220 l       .rodata	00000000 $LC16
-80069224 l       .rodata	00000000 $LC17
-800691f4 l       .rodata	00000000 $LC5
-800691f8 l       .rodata	00000000 $LC6
-800691e0 l       .rodata	00000000 $LC0
+80069188 l       .rodata	00000000 $LC0
+80069190 l       .rodata	00000000 $LC1
+80069198 l       .rodata	00000000 $LC2
+800691a8 l       .rodata	00000000 $LC4
+800691a0 l       .rodata	00000000 $LC3
+800691b0 l       .rodata	00000000 $LC5
+800691c8 l     O .rodata	00000010 atanhi
+800691b8 l     O .rodata	00000010 atanlo
+800691dc l       .rodata	00000000 $LC1
+800691e0 l       .rodata	00000000 $LC2
+800691e4 l       .rodata	00000000 $LC3
+800691e8 l       .rodata	00000000 $LC4
+800691f4 l       .rodata	00000000 $LC7
+800691f8 l       .rodata	00000000 $LC8
+800691fc l       .rodata	00000000 $LC9
+80069200 l       .rodata	00000000 $LC10
+80069204 l       .rodata	00000000 $LC11
+80069208 l       .rodata	00000000 $LC12
+8006920c l       .rodata	00000000 $LC13
+80069210 l       .rodata	00000000 $LC14
+80069214 l       .rodata	00000000 $LC15
+80069218 l       .rodata	00000000 $LC16
+8006921c l       .rodata	00000000 $LC17
+800691ec l       .rodata	00000000 $LC5
+800691f0 l       .rodata	00000000 $LC6
+800691d8 l       .rodata	00000000 $LC0
+80069220 l       .rodata	00000000 $LC0
 80069228 l       .rodata	00000000 $LC0
-80069230 l       .rodata	00000000 $LC0
-80069238 l       .rodata	00000000 $LC2
-8006923c l       .rodata	00000000 $LC3
-80069234 l       .rodata	00000000 $LC1
-80069240 l       .rodata	00000000 $LC4
-80069244 l       .rodata	00000000 $LC5
-80069248 l       .rodata	00000000 $LC0
-80069250 l       .rodata	00000000 $LC1
-80069258 l       .rodata	00000000 $LC2
-80069260 l       .rodata	00000000 $LC3
-80069268 l       .rodata	00000000 $LC4
-80069270 l       .rodata	00000000 $LC5
-80069278 l       .rodata	00000000 $LC0
-80069280 l       .rodata	00000000 $LC1
-80069288 l       .rodata	00000000 $LC2
-80069290 l       .rodata	00000000 $LC0
-8007b0dc l     O .bss	00000004 heap_end.0
+80069230 l       .rodata	00000000 $LC2
+80069234 l       .rodata	00000000 $LC3
+8006922c l       .rodata	00000000 $LC1
+80069238 l       .rodata	00000000 $LC4
+8006923c l       .rodata	00000000 $LC5
+80069240 l       .rodata	00000000 $LC0
+80069248 l       .rodata	00000000 $LC1
+80069250 l       .rodata	00000000 $LC2
+80069258 l       .rodata	00000000 $LC3
+80069260 l       .rodata	00000000 $LC4
+80069268 l       .rodata	00000000 $LC5
+80069270 l       .rodata	00000000 $LC0
+80069278 l       .rodata	00000000 $LC1
+80069280 l       .rodata	00000000 $LC2
+80069288 l       .rodata	00000000 $LC0
+800964ac l     O .bss	00000004 heap_end.0
 00000000 l    df *ABS*	00000000 
-80069398 l     O .dynamic	00000000 _DYNAMIC
-80077a70 l       .data	00000000 _gp
+80069390 l     O .dynamic	00000000 _DYNAMIC
+80092e40 l       .data	00000000 _gp
 800199b0 g     F .text	00000038 vector_at
 800454dc g     F .text	00000114 draw_gi_deku_nut
-8006fb28 g     O .sdata	00000004 RNG_SEED_INT
+8008aef8 g     O .sdata	00000004 RNG_SEED_INT
 80055fd4 g     F .text	00000044 _mprec_log10
 80048b14 g     F .text	00000054 scale_factor
 80014424 g     F .text	00000050 vec3f_norm
@@ -2012,13 +2096,13 @@ SYMBOL TABLE:
 80005278 g     F .text	000003d0 read_file_data
 8005609c g     F .text	0000007c __any_on
 80054e70 g     F .text	00000050 _isatty_r
-800681f0 g     O .rodata	00000028 __mprec_tinytens
+800681e8 g     O .rodata	00000028 __mprec_tinytens
 8004f818 g     F .text	00000024 strcpy
 8004f02c g     F .text	00000044 cleanup_glue
 00000000         *UND*	00000000 PLAYER_ID
 80046fd4 g     F .text	0000001c clear_excess_hearts
 8001abcc g     F .text	00000014 list_next
-8006a770  w    O .data	000003f0 gspL3DEX2_fifoDataStart
+80085a10  w    O .data	000003f0 gspL3DEX2_fifoDataStart
 8001b4f8 g     F .text	00000678 gz_update_cam
 8005c998 g     F .text	0000006c fmodf
 80049a64 g     F .text	00000078 object_index_or_spawn
@@ -2053,7 +2137,7 @@ SYMBOL TABLE:
 8003f720 g     F .text	000000b8 fstatat
 80060c30 g     F .text	0000002c .hidden __floatdidf
 8004c404 g     F .text	00000014 clear_twinrova_vars
-8006fad4 g     O .sdata	00000004 a_note_glow_max
+8008aea4 g     O .sdata	00000004 a_note_glow_max
 800427b0 g     F .text	000001b4 zu_room_mesh
 8005c2ac g     F .text	00000054 _kill_r
 8005379c g     F .text	00000018 vsprintf
@@ -2062,7 +2146,7 @@ SYMBOL TABLE:
 8005c0a4 g     F .text	00000084 _signal_r
 8004f760 g     F .text	00000050 __sseek
 8004ce2c g     F .text	00000088 __sinit
-8006fb44 g     O .sbss	00000004 CHEST_TEXTURE_MATCH_CONTENTS
+8008af14 g     O .sbss	00000004 CHEST_TEXTURE_MATCH_CONTENTS
 800537b4 g     F .text	00000128 __swbuf_r
 80044798 g     F .text	0000009c draw_gi_various_opa0
 8002c304 g     F .text	0000006c input_free
@@ -2081,7 +2165,7 @@ SYMBOL TABLE:
 8004b82c g     F .text	0000001c IsClaimCheckTraded
 00000000         *UND*	00000000 gz_leave
 80057634 g     F .text	0000000c _strtod_r
-800694f8 g       .data	00000000 __RESOURCE_LIST__
+800694f0 g       .data	00000000 __RESOURCE_LIST__
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED
 80044378 g     F .text	0000004c rupee_hud_color
 8004fc60 g     F .text	00000018 strerror
@@ -2104,23 +2188,23 @@ SYMBOL TABLE:
 80042244 g     F .text	00000088 yaz0_advance
 80041d50 g     F .text	0000013c watchlist_store
 8004e888 g     F .text	00000068 memmove
-8006fb20 g     O .sdata	00000004 text_height
+8008aef0 g     O .sdata	00000004 text_height
 80047324 g     F .text	0000001c stick_upgrade
 800169b4 g     F .text	00000010 gfx_font_xheight
 8004ce20 g     F .text	0000000c _cleanup
 8001a9e0 g     F .text	000000a8 set_difference
 8004f438 g     F .text	000000a8 snprintf
-8006ef64 g     O .data	000000fc adultSkeleton
-80069508 g     O .data	00000018 medals
+8008a204 g     O .data	000000fc adultSkeleton
+800847a8 g     O .data	00000018 medals
 8004aef0 g     F .text	0000002c text_init
 8002eb80 g     F .text	00000050 menu_activate
 800550bc g     F .text	000000ac _Balloc
 8002c3dc g     F .text	000000bc binder_create
 00000000         *UND*	00000000 INCOMING_PLAYER
 80015c2c g     F .text	000003a0 gfx_flush
-8006fb0c g     O .sdata	00000004 beating_no_dd
+8008aedc g     O .sdata	00000004 beating_no_dd
 00000000         *UND*	00000000 TRIFORCE_PIECES_REQUIRED
-8006fabc g     O .sdata	00000004 c_note_font_glow_max
+8008ae8c g     O .sdata	00000004 c_note_font_glow_max
 8002093c g     F .text	00000054 command_noclip
 80004e78 g     F .text	00000290 process_extern_ctxt
 8002eadc g     F .text	000000a4 menu_think
@@ -2138,9 +2222,9 @@ SYMBOL TABLE:
 80054ec8 g     F .text	00000008 __localeconv_l
 8004847c g     F .text	00000074 FindSize
 8005d810 g     F .text	00000374 __ieee754_rem_pio2f
-8006fb74 g     O .sbss	00000004 active_override_is_outgoing
+8008af44 g     O .sbss	00000004 active_override_is_outgoing
 80046f2c g     F .text	00000024 give_double_magic
-8006fb00 g     O .sdata	00000004 normal_dd
+8008aed0 g     O .sdata	00000004 normal_dd
 8005cac8 g     F .text	0000009c logf
 80043fdc g     F .text	0000039c update_hud_colors
 8001b090 g     F .text	000000c8 grc_resource_get
@@ -2149,14 +2233,14 @@ SYMBOL TABLE:
 80017aac g     F .text	00000734 guMtxInvertF
 80044a74 g     F .text	000000c0 draw_gi_various_xlu01
 00000000         *UND*	00000000 CFG_DUNGEON_REWARDS
-8007b0d4 g     O .bss	00000004 errno
+800964a4 g     O .bss	00000004 errno
 8003037c g     F .text	00000050 menu_tab_previous
 800606ec g     F .text	000001a4 floor
-8006faa8 g     O .sdata	00000004 settings
+8008ae78 g     O .sdata	00000004 settings
 80019970 g     F .text	00000020 vector_init
 8004be7c g     F .text	0000001c CanBuy_RightSideMask
 8004f6dc g     F .text	00000008 __seofread
-8006fb8a g     O .sbss	00000001 adult_safe
+8008af5a g     O .sbss	00000001 adult_safe
 800473fc g     F .text	00000070 letter_to_bottle
 00000000         *UND*	00000000 CFG_B_BUTTON_COLOR
 80042bdc g     F .text	0000014c zu_vlist_bbox
@@ -2176,7 +2260,7 @@ SYMBOL TABLE:
 80019f2c g     F .text	00000084 vector_shrink_to_fit
 80048ff8 g     F .text	00000064 ocarina_of_time_draw
 80006494 g     F .text	00000048 check_ganon_entry
-80069708 g     O .data	00000010 items_sprite
+800849a8 g     O .data	00000010 items_sprite
 80061acc g     F .text	00000014 getpid
 80041e8c g     F .text	000000e4 watchlist_fetch
 800204e0 g     F .text	00000020 command_colview
@@ -2202,17 +2286,17 @@ SYMBOL TABLE:
 8005e728 g     F .text	00000398 __ieee754_rem_pio2
 80032fec g     F .text	000000ec menu_add_userwatch
 80020574 g     F .text	00000034 command_resettimer
-8006fb8c g     O .sbss	00000002 illegal_model
+8008af5c g     O .sbss	00000002 illegal_model
 80000400 g     F .text	000000ac entrance_offset_hook
 8002f108 g     F .text	0000003c menu_destroy
 80000898 g     F .text	0000018c room_load_sync_hook
-8006fb60 g     O .sbss	00000004 active_item_graphic_id
-800696d8 g     O .data	00000010 dpad_sprite
-8006fafc g     O .sdata	00000004 a_button
+8008af30 g     O .sbss	00000004 active_item_graphic_id
+80084978 g     O .data	00000010 dpad_sprite
+8008aecc g     O .sdata	00000004 a_button
 8004e85c g     F .text	0000002c memcpy
 00000000         *UND*	00000000 CFG_SHOW_SETTING_INFO
 8005bd98 g     F .text	0000025c __hexnan
-8006fa94 g     O .sdata	00000008 hash_sprites
+8008ae64 g     O .sdata	00000008 hash_sprites
 800207f8 g     F .text	00000040 gz_show_menu
 80006a90 g     F .text	00000140 activate_override
 8002e980 g     F .text	00000008 menu_set_alpha
@@ -2239,11 +2323,11 @@ SYMBOL TABLE:
 80049798 g     F .text	00000064 ObjKibako_SpawnCollectible_Hack
 8001505c g     F .text	00000030 gfx_texldr_destroy
 8005d560 g     F .text	000002b0 __ieee754_logf
-8006faf0 g     O .sdata	00000004 a_note_r
+8008aec0 g     O .sdata	00000004 a_note_r
 80030d50 g     F .text	0000000c menu_floatinput_get
 800205a8 g     F .text	00000034 command_starttimer
 80030170 g     F .text	000000a8 menu_add_imenu
-80069760 g     O .data	00000014 adex_error_name
+80084a00 g     O .data	00000014 adex_error_name
 8005503c g     F .text	00000034 mbrtowc
 80020244 g     F .text	000000d4 command_break
 8004f83c g     F .text	00000424 _strerror_r
@@ -2252,7 +2336,7 @@ SYMBOL TABLE:
 00000000         *UND*	00000000 OUTGOING_PLAYER
 80020ca4 g     F .text	0000005c command_prevstate
 8000ffd0 g     F .text	000003a8 fat_path
-8006fe60 g     O .bss	00000258 collectible_scene_flags_table
+8008b230 g     O .bss	00000258 collectible_scene_flags_table
 8002063c g     F .text	00000038 command_void
 800198fc g     F .text	00000074 do_global_dtors
 80055f38 g     F .text	0000009c __ratio
@@ -2268,8 +2352,8 @@ SYMBOL TABLE:
 8005c128 g     F .text	000000a8 _raise_r
 80054ec0 g     F .text	00000008 iswspace
 8005af14 g     F .text	00000060 __assert_func
-8006c86c g     O .data	000011b8 item_draw_table
-80068240 g     O .rodata	000000c8 __mprec_tens
+80087b0c g     O .data	000011b8 item_draw_table
+80068238 g     O .rodata	000000c8 __mprec_tens
 8004a238 g     F .text	00000028 health_and_magic_refill
 80043e48 g     F .text	000000a0 zu_load_disp_p
 8004a2f4 g     F .text	00000048 Seeded_Rand_Centered
@@ -2283,7 +2367,7 @@ SYMBOL TABLE:
 8001ab88 g     F .text	0000001c set_destroy
 8004b5a8 g     F .text	000000ac SaveFile_NextOwnedTradeItem
 80020e14 g     F .text	00000078 gz_warp
-8007b0d0 g     O .bss	00000004 __malloc_top_pad
+800964a0 g     O .bss	00000004 __malloc_top_pad
 8001a8f4 g     F .text	00000044 set_erase
 80046c38 g     F .text	00000008 no_effect
 8002c7ac g     F .text	00000040 clock_ticks
@@ -2298,8 +2382,8 @@ SYMBOL TABLE:
 8004af1c g     F .text	000000a8 text_print_size
 80054ed0 g     F .text	0000000c _localeconv_r
 80058000 g     F .text	00000008 _strtoull_r
-8006fb94 g     O .sbss	00000001 curr_scene_setup
-8006fc60 g     O .bss	00000200 alt_overrides
+8008af64 g     O .sbss	00000001 curr_scene_setup
+8008b030 g     O .bss	00000200 alt_overrides
 80035e38 g     F .text	00000050 rdb_stop
 8002eec4 g     F .text	00000038 menu_select_top
 8005afe4 g     F .text	000004c8 __sfvwrite_r
@@ -2307,14 +2391,14 @@ SYMBOL TABLE:
 80014248 g     F .text	00000038 vec3f_sub
 8005c1d0 g     F .text	0000009c __sigtramp_r
 8004bac0 g     F .text	00000154 SetupMaskShopHelloDialogOverride
-80069718 g     O .data	00000010 medals_sprite
+800849b8 g     O .data	00000010 medals_sprite
 80020610 g     F .text	00000010 command_reset
 80004dfc g     F .text	00000064 interpolate
 80047268 g     F .text	00000028 bow_upgrade
 00000000         *UND*	00000000 VERSION_STRING_TXT
 8004f344 g     F .text	00000050 _sbrk_r
 8000165c g     F .text	00000034 agony_vibrate_setup
-80069698 g     O .data	00000010 item_digit_sprite
+80084938 g     O .data	00000010 item_digit_sprite
 80040224 g     F .text	000000a8 rmdir
 80020620 g     F .text	0000001c command_fileselect
 80035e88 g     F .text	00000010 rdb_check
@@ -2338,41 +2422,41 @@ SYMBOL TABLE:
 8004cb80 g     F .text	00000028 fflush
 80047e88 g     F .text	00000224 update_navi_colors
 8002e804 g     F .text	00000008 menu_set_cell_width
-8007b0cc g     O .bss	00000004 __malloc_max_sbrked_mem
+8009649c g     O .bss	00000004 __malloc_max_sbrked_mem
 80006530 g     F .text	00000158 give_ganon_boss_key
 8000ff70 g     F .text	00000018 fat_path_target
 8004a28c g     F .text	0000000c Seeded_Rand_Seed
 800473a0 g     F .text	0000001c arrows_to_rupee
 8002926c g     F .text	000009cc gz_scene_menu
-8006facc g     O .sdata	00000004 a_note_font_glow_max
+8008ae9c g     O .sdata	00000004 a_note_font_glow_max
 8003280c g     F .text	00000158 menu_strinput_set
 8002e7b8 g     F .text	00000008 menu_set_pyoffset
 80060164 g     F .text	000000f0 __kernel_sin
 80000ce4 g     F .text	000001a8 ocarina_sync_hook
 80050fbc g     F .text	00001424 __ssvfscanf_r
-80066c78 g     O .rodata	00000268 trade_quest_items
+80066c70 g     O .rodata	00000268 trade_quest_items
 80044b34 g     F .text	00000118 draw_gi_various_opa0_xlu1
 800435e0 g     F .text	00000048 zu_void
 8001bb70 g     F .text	000001a8 gz_free_view
 8002c680 g     F .text	00000054 fifo_poll
-800700b8 g     O .bss	00000010 active_override
-8006faa0 g     O .sdata	00000008 empty_dlist
+8008b488 g     O .bss	00000010 active_override
+8008ae70 g     O .sdata	00000008 empty_dlist
 80055d1c g     F .text	000000e4 __b2d
 8000076c g     F .text	00000084 guPerspectiveF_hook
 80061610 g     F .text	000004bc .hidden __umoddi3
 8003f810 g     F .text	0000008c lseek
 8002a69c g     F .text	0000069c gz_settings_menu
-8006fb90 g     O .sbss	00000004 RANDOMIZER_RNG_SEED
-8006fb30 g     O .sdata	00000004 _global_impure_ptr
+8008af60 g     O .sbss	00000004 RANDOMIZER_RNG_SEED
+8008af00 g     O .sdata	00000004 _global_impure_ptr
 8004b848 g     F .text	00000070 IsTradeItemTraded
 00000000         *UND*	00000000 INCOMING_ITEM
 80040620 g     F .text	00000014 have_l3dex2
 8004ea5c g     F .text	000005d0 _realloc_r
 8005f7b4 g     F .text	000000ec __kernel_sinf
-8007b0e0 g       .bss	00000000 __bss_end
+800964b0 g       .bss	00000000 __bss_end
 80062140 g     O .rodata	00000040 gfx_cm_desaturate
-8006faf4 g     O .sdata	00000004 c_button
-8006fa88 g     O .sdata	00000004 dungeon_count
+8008aec4 g     O .sdata	00000004 c_button
+8008ae58 g     O .sdata	00000004 dungeon_count
 80057d3c g     F .text	00000018 strtol_l
 80046d84 g     F .text	00000014 give_dungeon_item
 80003558 g     F .text	00000128 draw_background
@@ -2386,11 +2470,11 @@ SYMBOL TABLE:
 8002e674 g     F .text	0000002c menu_imitate
 8001ae58 g     F .text	00000060 list_splice
 80006df0 g     F .text	00000068 push_coop_item
-80068218 g     O .rodata	00000028 __mprec_bigtens
+80068210 g     O .rodata	00000028 __mprec_bigtens
 800552c8 g     F .text	00000138 __s2b
 800330d8 g     F .text	0000000c menu_userwatch_address
 8005c028 g     F .text	00000018 abort
-8006fa90 g     O .sdata	00000004 scene_fog_distance
+8008ae60 g     O .sdata	00000004 scene_fog_distance
 8002c53c g     F .text	0000006c disk_init
 80055a50 g     F .text	00000060 __mcmp
 80049cf0 g     F .text	000001e4 draw_pot
@@ -2411,22 +2495,22 @@ SYMBOL TABLE:
 80020360 g     F .text	000000d4 command_age
 80001f90 g     F .text	00000074 draw_forest_hallway_chest_base
 800144c8 g     F .text	00000044 vec3f_rej
-800696f8 g     O .data	00000010 quest_items_sprite
+80084998 g     O .data	00000010 quest_items_sprite
 80006ed0 g     F .text	00000070 after_key_received
 80057d54 g     F .text	00000018 strtol
-8006a230 g     O .data	00000334 vr4300_op_mnem
-80063a8c g     O .rodata	00000040 input_button_color
+800854d0 g     O .data	00000334 vr4300_op_mnem
+80063a84 g     O .rodata	00000040 input_button_color
 80031f5c g     F .text	000000b0 menu_add_positioning
 00000000         *UND*	00000000 PLANDOMIZER_USED
-8006fb9c g     O .sbss	00000001 KAKARIKO_WEATHER_FORECAST
+8008af6c g     O .sbss	00000001 KAKARIKO_WEATHER_FORECAST
 8005c4d0 g     F .text	000000e0 cosf
 8004c42c g     F .text	0000003c heap_alloc
-8006fb70 g     O .sbss	00000004 active_item_row
+8008af40 g     O .sbss	00000004 active_item_row
 8004d67c g     F .text	00000438 _fseeko_r
 80047580 g     F .text	00000050 after_game_state_update
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE
 800151e0 g     F .text	00000030 gfx_texture_destroy
-8006fbe0 g     O .bss	00000080 outgoing_queue
+8008afb0 g     O .bss	00000080 outgoing_queue
 8005d454 g     F .text	0000010c __ieee754_log10f
 80049f20 g     F .text	0000001c draw_flying_pot_hack
 80001b60 g     F .text	00000024 get_chest_type
@@ -2450,12 +2534,12 @@ SYMBOL TABLE:
 80007234 g     F .text	000001b4 get_item
 80044fd4 g     F .text	00000144 draw_gi_various_opa10_xlu32
 80031868 g     F .text	00000150 menu_intinput_set
-8006fad8 g     O .sdata	00000004 a_note_glow_base
-8006fb40 g     O .sbss	00000004 CHEST_SIZE_MATCH_CONTENTS
+8008aea8 g     O .sdata	00000004 a_note_glow_base
+8008af10 g     O .sbss	00000004 CHEST_SIZE_MATCH_CONTENTS
 8004f070 g     F .text	00000100 _reclaim_reent
 00000000         *UND*	00000000 CFG_ADULT_TRADE_SHUFFLE
 8002eff4 g     F .text	00000024 menu_item_disable
-8006fad0 g     O .sdata	00000004 a_note_font_glow_base
+8008aea0 g     O .sdata	00000004 a_note_font_glow_base
 80055400 g     F .text	00000078 __hi0bits
 8002e778 g     F .text	00000040 menu_get_pyoffset
 00000000         *UND*	00000000 CFG_RAINBOW_BOMBCHU_TRAIL_OUTER_ENABLED
@@ -2465,16 +2549,16 @@ SYMBOL TABLE:
 8002301c g     F .text	00000338 gz_equips_menu
 80020488 g     F .text	0000001c command_recordmacro
 80046f10 g     F .text	0000001c give_magic
-800697d8 g     O .data	00000028 everdrive64_v2
-80069688 g     O .data	00000010 linkhead_skull_sprite
-8006fb68 g     O .sbss	00000004 active_item_text_id
+80084a78 g     O .data	00000028 everdrive64_v2
+80084928 g     O .data	00000010 linkhead_skull_sprite
+8008af38 g     O .sbss	00000004 active_item_text_id
 800206e0 g     F .text	00000118 gz_apply_settings
 8005ee60 g     F .text	00000120 __kernel_cosf
 8002de70 g     F .text	00000404 mem_menu_create
 80057658 g     F .text	0000001c strtod
 800443c4 g     F .text	00000014 ice_trap_is_pending
-800700c8 g     O .bss	00006000 cfg_item_overrides
-8006faac g     O .sdata	00000004 text_cursor_border_max
+8008b498 g     O .bss	00006000 cfg_item_overrides
+8008ae7c g     O .sdata	00000004 text_cursor_border_max
 80042e70 g     F .text	0000001c zu_vlist_destroy
 8001aeb8 g     F .text	00000020 list_insert
 8001b054 g     F .text	0000003c list_destroy
@@ -2509,15 +2593,15 @@ SYMBOL TABLE:
 80011230 g     F .text	000000ec fat_mtime
 80030120 g     F .text	00000050 menu_add_tooltip
 8002ed3c g     F .text	00000064 menu_enter
-8006ab60  w    O .data	00001190 gspL3DEX2_fifoTextStart
+80085e00  w    O .data	00001190 gspL3DEX2_fifoTextStart
 8002e858 g     F .text	00000044 menu_get_font
 80019ae4 g     F .text	00000048 set_get
 80020d00 g     F .text	0000005c command_nextstate
-8007c0e0 g       .stack	00000000 end
+800974b0 g       .stack	00000000 end
 80020318 g     F .text	00000018 command_levitate
 80040358 g     F .text	000000d4 chdir
 8004ba4c g     F .text	0000005c ShouldSkullKidSpawn
-8006fb64 g     O .sbss	00000004 active_item_object_id
+8008af34 g     O .sbss	00000004 active_item_object_id
 8004dab4 g     F .text	00000018 fseeko
 00000000         *UND*	00000000 CFG_RAINBOW_BOOM_TRAIL_INNER_ENABLED
 80020d5c g     F .text	0000005c command_prevpos
@@ -2526,23 +2610,23 @@ SYMBOL TABLE:
 800485d0 g     F .text	000000ec check_skeleton
 80015380 g     F .text	000001c0 gfx_texture_copy_tile
 8002c834 g     F .text	0000004c cpu_reset
-8006fb5c g     O .sbss	00000004 active_item_fast_chest
+8008af2c g     O .sbss	00000004 active_item_fast_chest
 80058210 g     F .text	0000017c __ssputs_r
 80014e2c g     F .text	00000048 gfx_data_append
 8004d664 g     F .text	00000018 fseek
-8006fb58 g     O .sbss	00000002 num_override_flags
-8006fae0 g     O .sdata	00000004 c_note_g
+8008af28 g     O .sbss	00000002 num_override_flags
+8008aeb0 g     O .sdata	00000004 c_note_g
 80006258 g     F .text	0000023c draw_file_select_hash
 80060394 g     F .text	00000054 .hidden __math_check_oflow
 800303cc g     F .text	0000004c menu_tab_next
-800694e4 g       .ctors	00000000 __CTOR_LIST__
+800694dc g       .ctors	00000000 __CTOR_LIST__
 800602e0 g     F .text	00000010 .hidden __math_may_uflow
 8004f394 g     F .text	000000a4 _snprintf_r
 800004ac g     F .text	000000a4 draw_room_hook
 8002f984 g     F .text	000000bc menu_add_button_icon
 8005a3fc g     F .text	0000006c __sfputs_r
 8004830c g     F .text	00000170 FindModelData
-8006fac0 g     O .sdata	00000004 c_note_font_glow_base
+8008ae90 g     O .sdata	00000004 c_note_font_glow_base
 8005c308 g     F .text	000000ec cos
 80020434 g     F .text	0000001c command_pause
 80001a18 g     F .text	0000002c set_bombchu_bowling_prize_flag
@@ -2553,7 +2637,7 @@ SYMBOL TABLE:
 80001a44 g     F .text	0000011c get_chest_override
 00000000         *UND*	00000000 POTCRATE_TEXTURES_MATCH_CONTENTS
 8004d3d4 g     F .text	00000288 _free_r
-80067f54 g     O .rodata	00000180 _ctype_b
+80067f4c g     O .rodata	00000180 _ctype_b
 800424dc g     F .text	000000ac zu_getfile
 80054f58 g     F .text	0000000c __locale_mb_cur_max
 800020d8 g     F .text	000006dc handle_dpad
@@ -2569,10 +2653,10 @@ SYMBOL TABLE:
 80009110 g     F .text	0000001c adex_destroy
 80020a90 g     F .text	00000114 command_loadstate
 80058f78 g     F .text	0000010c _sungetc_r
-800696a8 g     O .data	00000010 key_rupee_clock_sprite
+80084948 g     O .data	00000010 key_rupee_clock_sprite
 80046d40 g     F .text	0000000c give_biggoron_sword
 8004a260 g     F .text	0000002c Seeded_Rand_Next
-8006f4e0 g     O .data	00000004 __malloc_sbrk_base
+8008a8b0 g     O .data	00000004 __malloc_sbrk_base
 80006c24 g     F .text	000000b0 push_outgoing_override
 8004033c g     F .text	0000001c lstat
 80007ef8 g     F .text	00000070 give_sarias_gift
@@ -2588,7 +2672,7 @@ SYMBOL TABLE:
 800558c4 g     F .text	0000018c __lshift
 8001afb4 g     F .text	000000a0 list_erase
 8002f144 g     F .text	00000034 menu_item_screen_x
-8006fac4 g     O .sdata	00000004 c_note_glow_max
+8008ae94 g     O .sdata	00000004 c_note_glow_max
 8005c27c g     F .text	00000014 signal
 8003f8dc g     F .text	000000b4 read
 8001bdb0 g     F .text	00000124 gz_cheats_menu
@@ -2608,39 +2692,39 @@ SYMBOL TABLE:
 800076a0 g     F .text	00000054 Item_DropCollectible_Actor_Spawn_Override
 80042588 g     F .text	000000b4 zu_getfile_idx
 8000147c g     F .text	0000015c Actor_StoreChestType
-80069728 g     O .data	00000010 stones_sprite
+800849c8 g     O .data	00000010 stones_sprite
 00000000         *UND*	00000000 NO_COLLECTIBLE_HEARTS
 00000000         *UND*	00000000 OUTGOING_KEY
 80016c8c g     F .text	00000318 guLookAtF
 8004fca8 g     F .text	0000004c strncmp
 80042e8c g     F .text	00000034 zu_sram_read
-8006fb24 g     O .sdata	00000004 text_width
+8008aef4 g     O .sdata	00000004 text_width
 80034b44 g     F .text	00000068 pi_write
-800695cc g     O .data	00000014 extern_ctxt
+8008486c g     O .data	00000014 extern_ctxt
 8004b700 g     F .text	000000e8 UpdateTradeEquips
 800473bc g     F .text	0000001c bombs_to_rupee
-8006fab4 g     O .sdata	00000004 text_cursor_inner_max
+8008ae84 g     O .sdata	00000004 text_cursor_inner_max
 80055588 g     F .text	00000238 __multiply
-8006fae8 g     O .sdata	00000004 a_note_b
+8008aeb8 g     O .sdata	00000004 a_note_b
 8005dcec g     F .text	00000a3c __ieee754_pow
-8006fb38 g     O .sbss	00000004 EXTRA_BOWLING_SHUFFLE
+8008af08 g     O .sbss	00000004 EXTRA_BOWLING_SHUFFLE
 8005cbcc g     F .text	00000140 pow
 00000000         *UND*	00000000 Gameplay_InitSkybox
-80069620 g     O .data	00000040 num_to_bits
+800848c0 g     O .data	00000040 num_to_bits
 8004fcf4 g     F .text	00000044 strncpy
-8007b0a0 g     O .bss	00000028 __malloc_current_mallinfo
+80096470 g     O .bss	00000028 __malloc_current_mallinfo
 8003fe60 g     F .text	000000a8 unlink
-80069738 g     O .data	00000028 setup_db
+800849d8 g     O .data	00000028 setup_db
 80055e00 g     F .text	00000138 __d2b
 80048988 g     F .text	00000060 get_object
 80046c4c g     F .text	000000bc give_triforce_piece
 80032e5c g     F .text	000000d4 menu_add_switch
-8006da40 g     O .data	00001428 item_table
+80088ce0 g     O .data	00001428 item_table
 80030d5c g     F .text	000003ec menu_floatinput_set
 8003ac78 g     F .text	000000dc settings_load
 80027894 g     F .text	00000148 gz_vcont_set
 80027fdc g     F .text	00000020 gz_movie_rewind
-800696e8 g     O .data	00000010 font_sprite
+80084988 g     O .data	00000010 font_sprite
 80031d64 g     F .text	0000000c menu_option_get
 8004ea48 g     F .text	00000014 realloc
 800015d8 g     F .text	00000050 Actor_After_UpdateAll_Hack
@@ -2648,33 +2732,33 @@ SYMBOL TABLE:
 80034aec g     F .text	0000002c pi_write_locked
 800495dc g     F .text	000000b4 get_smallcrate_override
 800581d8 g     F .text	00000008 _strtoul_r
-8006fb5a g     O .sbss	00000001 satisified_pending_frames
+8008af2a g     O .sbss	00000001 satisified_pending_frames
 80048a34 g     F .text	00000068 scale_top_matrix
 80006f40 g     F .text	0000006c pop_ice_trap
 800455f0 g     F .text	00000118 draw_gi_recovery_heart
-800694fc g     O .data	00000009 reward_rows
+8008479c g     O .data	00000009 reward_rows
 8002260c g     F .text	00000844 gz_debug_menu
 800433f8 g     F .text	00000034 zu_execute_filemenu
 800138d0 g     F .text	0000052c flag_menu_create
 80053a98 g     F .text	00000050 _close_r
 8000e3fc g     F .text	00000528 fat_rw
-8006fbd0 g     O .bss	00000010 collectible_override
+8008afa0 g     O .bss	00000010 collectible_override
 00000000         *UND*	00000000 TWINROVA_ACTION_TIMER
 8002ea40 g     F .text	00000034 menu_get_selector
 8001131c g     F .text	00000524 fat_init
 8005caa0 g     F .text	00000028 log2f
 80014b50 g     F .text	00000030 gfx_mode_set
 800480ac g     F .text	00000040 update_misc_colors
-8006fb4c g     O .sbss	00000001 GANON_BOSS_KEY_CONDITION
+8008af1c g     O .sbss	00000001 GANON_BOSS_KEY_CONDITION
 800421ac g     F .text	0000004c yaz0_get_byte
 80007f94 g     F .text	00000030 sprite_bytes
 8004b654 g     F .text	000000ac SaveFile_PrevOwnedTradeItem
-8006fae4 g     O .sdata	00000004 c_note_r
+8008aeb4 g     O .sdata	00000004 c_note_r
 00000000         *UND*	00000000 CFG_C_BUTTON_COLOR
 8004dc74 g     F .text	00000128 _fwrite_r
 8004723c g     F .text	0000002c bomb_bag_upgrade
 8004f598 g     F .text	0000007c sscanf
-8006fb2c g     O .sdata	00000004 Sram_InitNewSave
+8008aefc g     O .sdata	00000004 Sram_InitNewSave
 80013dfc g     F .text	00000084 update_flag_records
 80053948 g     F .text	00000150 __swsetup_r
 80047340 g     F .text	00000010 magic_upgrade
@@ -2690,7 +2774,7 @@ SYMBOL TABLE:
 80047210 g     F .text	0000002c strength_upgrade
 8002fd68 g     F .text	0000000c menu_checkbox_get
 8003a7e8 g     F .text	0000041c settings_load_default
-8006f4e8 g     O .data	00000408 __malloc_av_
+8008a8b8 g     O .data	00000408 __malloc_av_
 80041a38 g     F .text	00000064 watchlist_hide
 80046ff0 g     F .text	00000090 open_mask_shop
 8004cfb8 g     F .text	00000008 __sinit_lock_release
@@ -2702,12 +2786,12 @@ SYMBOL TABLE:
 80047168 g     F .text	00000060 resolve_upgrades
 8004f690 g     F .text	0000004c __sread
 80001b84 g     F .text	0000018c set_chest_texture
-800696b8 g     O .data	00000010 song_note_sprite
+80084958 g     O .data	00000010 song_note_sprite
 00000000         *UND*	00000000 CFG_A_NOTE_COLOR
 8002b18c g     F .text	00000464 gz_warps_menu
-8006fb08 g     O .sdata	00000004 normal_no_dd
+8008aed8 g     O .sdata	00000004 normal_no_dd
 80001ed8 g     F .text	000000a4 should_draw_forest_hallway_chest
-8006faf8 g     O .sdata	00000004 b_button
+8008aec8 g     O .sdata	00000004 b_button
 80019b48 g     F .text	00000090 vector_reserve
 800142e8 g     F .text	00000050 vec3f_cross
 80020540 g     F .text	0000001c command_resetlag
@@ -2726,7 +2810,7 @@ SYMBOL TABLE:
 8002e80c g     F .text	00000044 menu_get_cell_height
 800066fc g     F .text	0000002c override_flags_init
 8004cb18 g     F .text	00000068 _fflush_r
-8006fb10 g     O .sdata	00000006 defaultDDHeart
+8008aee0 g     O .sdata	00000006 defaultDDHeart
 800238b0 g     F .text	00000568 gz_file_menu
 8002ee54 g     F .text	00000038 menu_enter_top
 8004c700 g     F .text	000000d4 _calloc_r
@@ -2738,9 +2822,9 @@ SYMBOL TABLE:
 8000124c g     F .text	0000016c ocarina_update_hook
 80014e74 g     F .text	00000010 gfx_texldr_init
 8004d0e0 g     F .text	00000014 fopen
-8006fb38 g       .sdata	00000000 __bss_start
+8008af08 g       .sdata	00000000 __bss_start
 80040634 g     F .text	0000009c load_l3dex2
-8006fadc g     O .sdata	00000004 c_note_b
+8008aeac g     O .sdata	00000004 c_note_b
 80015198 g     F .text	00000048 gfx_texture_load
 80014210 g     F .text	00000038 vec3f_add
 8004e8f0 g     F .text	00000024 memset
@@ -2753,7 +2837,7 @@ SYMBOL TABLE:
 8002c27c g     F .text	00000020 input_pressed
 80019850 g     F .text	000000ac do_global_ctors
 800169c4 g     F .text	00000068 gfx_printf
-8007b0c8 g     O .bss	00000004 __malloc_max_total_mem
+80096498 g     O .bss	00000004 __malloc_max_total_mem
 800443d8 g     F .text	00000018 push_pending_ice_trap
 8001ac0c g     F .text	0000002c list_next_in
 800327e0 g     F .text	0000002c menu_strinput_get
@@ -2774,7 +2858,7 @@ SYMBOL TABLE:
 80057d34 g     F .text	00000008 _strtol_r
 8004a298 g     F .text	00000014 Seeded_Reset
 800429c8 g     F .text	00000214 zu_vlist_add_dl
-8006fb04 g     O .sdata	00000004 beating_dd
+8008aed4 g     O .sdata	00000004 beating_dd
 80053ce4 g     F .text	000010e8 _dtoa_r
 8004e140 g     F .text	000006ec _malloc_r
 80001690 g     F .text	00000158 draw_agony_graphic
@@ -2787,34 +2871,34 @@ SYMBOL TABLE:
 8002c3b4 g     F .text	00000014 input_bind_pressed_raw
 800142b8 g     F .text	00000030 vec3f_scale
 80048cc0 g     F .text	0000004c lookup_model
-8006fb85 g     O .sbss	00000001 OPEN_KAKARIKO
+8008af55 g     O .sbss	00000001 OPEN_KAKARIKO
 8005af88 g     F .text	00000024 _fiprintf_r
 8005a188 g     F .text	000000cc __submore
-8006fb54 g     O .sbss	00000004 collectible_override_flags
+8008af24 g     O .sbss	00000004 collectible_override_flags
 8005c290 g     F .text	0000000c _init_signal
 00000000 g    d  .data	00000000 .protected _procedure_string_table
 8004db20 g     F .text	000000a4 _fwalk
-8006a12c g     O .data	00000028 homeboy_iodev
+800853cc g     O .data	00000028 homeboy_iodev
 800480ec g     F .text	00000220 draw_illegal_model_text
 80014280 g     F .text	00000038 vec3f_mul
 00000000         *UND*	00000000 CHEST_LENS_ONLY
-80069520 g     O .data	000000a9 dungeons
+800847c0 g     O .data	000000a9 dungeons
 8004cba8 g     F .text	0000014c _fgets_r
 80055070 g     F .text	00000010 _mbtowc_r
 80014400 g     F .text	00000024 vec3f_angle
 8003a420 g     F .text	000003c8 sd_write
 80039370 g     F .text	00000070 resource_free
 00000000         *UND*	00000000 CFG_CUSTOM_MESSAGE_2
-8006fb89 g     O .sbss	00000001 child_safe
+8008af59 g     O .sbss	00000001 child_safe
 8004ea34 g     F .text	00000014 putc
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_ENABLE
 800334d0 g     F .text	0000000c menu_watch_set_address
 8000140c g     F .text	00000070 Actor_StoreFlagInRotation
 8004d2bc g     F .text	00000118 _malloc_trim_r
 00000000         *UND*	00000000 CFG_DUNGEON_IS_MQ
-8006fb88 g     O .sbss	00000001 missing_dlist
+8008af58 g     O .sbss	00000001 missing_dlist
 8002c740 g     F .text	0000006c fifo_write
-8006fb7c g     O .sbss	00000004 dummy_actor
+8008af4c g     O .sbss	00000004 dummy_actor
 800606cc g     F .text	00000020 finite
 8002ecac g     F .text	00000090 menu_signal_leave
 800477fc g     F .text	000001a4 update_boomerang_trail_colors
@@ -2828,11 +2912,11 @@ SYMBOL TABLE:
 8004f7ec g     F .text	0000002c strcmp
 00000000         *UND*	00000000 gz_leave_func
 80019fb0 g     F .text	00000020 vector_release
-8006fab8 g     O .sdata	00000004 text_cursor_inner_base
+8008ae88 g     O .sdata	00000004 text_cursor_inner_base
 80043d98 g     F .text	000000b0 zu_save_disp_p
 80043f78 g     F .text	00000064 zu_adjust_joystick
 800006e8 g     F .text	00000084 afx_rand_hook
-800694ec g       .dtors	00000000 __DTOR_LIST__
+800694e4 g       .dtors	00000000 __DTOR_LIST__
 8005aebc g     F .text	00000018 vfiprintf
 80019fe8 g     F .text	000000e4 vector_erase
 8004afc4 g     F .text	00000020 text_print
@@ -2843,27 +2927,27 @@ SYMBOL TABLE:
 80048c64 g     F .text	0000005c lookup_model_by_override
 8004042c g     F .text	00000150 getcwd
 80060b90 g     F .text	000000a0 .hidden __fixunsdfdi
-8006fac8 g     O .sdata	00000004 c_note_glow_base
+8008ae98 g     O .sdata	00000004 c_note_glow_base
 8001aba4 g     F .text	00000014 list_init
 8005c904 g     F .text	0000008c acosf
-8006bcf0 g     O .data	00000534 zu_scene_info
+80086f90 g     O .data	00000534 zu_scene_info
 800064dc g     F .text	00000054 countSetBitsRec
-80069ad8 g     O .data	00000238 gz
+80084d78 g     O .data	00000238 gz
 8000ffa4 g     F .text	0000002c fat_free
 8002e6a0 g     F .text	00000040 menu_get_cxoffset
 8000bf38 g     F .text	00000044 explorer_room_prev
 80019dec g     F .text	0000005c set_put
 8004df54 g     F .text	00000014 memalign
-8006fb4a g     O .sbss	00000002 GANON_BOSS_KEY_CONDITION_COUNT
+8008af1a g     O .sbss	00000002 GANON_BOSS_KEY_CONDITION_COUNT
 8004342c g     F .text	00000020 zu_in_game
 8004f534 g     F .text	00000064 sprintf
-80069298 g     O .rodata	00000100 .hidden __clz_tab
+80069290 g     O .rodata	00000100 .hidden __clz_tab
 80046d08 g     F .text	00000038 give_tycoon_wallet
 80019f08 g     F .text	00000024 vector_push_back
-8007b0d8 g     O .bss	00000004 _PathLocale
-8006fab0 g     O .sdata	00000004 text_cursor_border_base
+800964a8 g     O .bss	00000004 _PathLocale
+8008ae80 g     O .sdata	00000004 text_cursor_border_base
 80019fd0 g     F .text	00000018 vector_clear
-8006fb80 g     O .sbss	00000004 item_overrides_count
+8008af50 g     O .sbss	00000004 item_overrides_count
 80060b20 g     F .text	00000070 .hidden __fixdfdi
 8001abb8 g     F .text	00000014 list_prev
 8004668c g     F .text	0000013c draw_gi_song_notes
@@ -2888,7 +2972,7 @@ SYMBOL TABLE:
 8001ac78 g     F .text	000000f4 list_insert_size
 8005625c g     F .text	0000000c nanf
 80043664 g     F .text	00000040 zu_clear_event_flag
-8006fb34 g     O .sdata	00000004 _impure_ptr
+8008af04 g     O .sdata	00000004 _impure_ptr
 8001523c g     F .text	00000018 gfx_texture_data
 80048b68 g     F .text	0000008c draw_model
 8002c3c8 g     F .text	00000014 input_bind_pressed
@@ -2905,19 +2989,19 @@ SYMBOL TABLE:
 80031d70 g     F .text	00000034 menu_option_set
 80058568 g     F .text	00000a10 _svfiprintf_r
 80047c14 g     F .text	00000274 get_bombchu_back_color
-80069d14 g     O .data	000001a4 command_info
+80084fb4 g     O .data	000001a4 command_info
 8004f194 g     F .text	000001b0 __srefill_r
 8004a55c g     F .text	000005b8 Sram_VerifyAndLoadAllSaves
 80046f5c g     F .text	00000018 give_song
 80010378 g     F .text	00000464 fat_create
-8006fa8c g     O .sdata	00000004 last_fog_distance
+8008ae5c g     O .sdata	00000004 last_fog_distance
 00000000         *UND*	00000000 FREE_BOMBCHU_DROPS
 800474a0 g     F .text	00000058 bombchus_to_bag
-8006fb18 g     O .sdata	00000006 defaultHeart
+8008aee8 g     O .sdata	00000006 defaultHeart
 80055080 g     F .text	0000003c __ascii_mbtowc
 8000ff88 g     F .text	0000001c fat_path_dir
 80055cac g     F .text	00000070 __ulp
-8006faec g     O .sdata	00000004 a_note_g
+8008aebc g     O .sdata	00000004 a_note_g
 800474f8 g     F .text	0000004c c_init
 8004cfd4 g     F .text	00000014 __fp_unlock_all
 8004bc14 g     F .text	00000268 TryPaybackMaskOverride
@@ -2929,13 +3013,13 @@ SYMBOL TABLE:
 8002f5d0 g     F .text	00000134 menu_navigate
 00000000         *UND*	00000000 CFG_RAINBOW_BOOM_TRAIL_OUTER_ENABLED
 80035d84 g     F .text	000000b4 rdb_start
-800696c8 g     O .data	00000010 triforce_sprite
+80084968 g     O .data	00000010 triforce_sprite
 80042158 g     F .text	00000054 yaz0_begin
 00000000         *UND*	00000000 EXTERN_DAMAGE_MULTIPLYER
 8002e89c g     F .text	00000008 menu_set_font
 8005c738 g     F .text	000000e0 sinf
 8002e458 g     F .text	00000148 mem_open_watch
-8006fb87 g     O .sbss	00000001 MAX_RUPEES
+8008af57 g     O .sbss	00000001 MAX_RUPEES
 8001094c g     F .text	00000238 fat_resize
 8004905c g     F .text	000000f8 item_etcetera_draw
 8001af90 g     F .text	00000024 list_push_back
@@ -2944,22 +3028,22 @@ SYMBOL TABLE:
 80005648 g     F .text	00000964 draw_file_icons
 8004b318 g     F .text	00000038 SaveFile_SetTradeItemAsOwned
 8005c01c g     F .text	0000000c nan
-8006fb6c g     O .sbss	00000004 active_item_action_id
+8008af3c g     O .sbss	00000004 active_item_action_id
 8000bf7c g     F .text	00000040 explorer_room_next
 80059204 g     F .text	00000f84 __ssvfiscanf_r
 80007028 g     F .text	000000d4 try_pending_item
 800334e8 g     F .text	0000000c menu_watch_set_type
-80069774 g     O .data	00000028 everdrive64_v1
+80084a14 g     O .data	00000028 everdrive64_v1
 80044678 g     F .text	00000120 draw_gi_compass
 80054edc g     F .text	0000000c localeconv
-8006f060 g     O .data	000001f0 texture_table
+8008a300 g     O .data	000001f0 texture_table
 8005eac0 g     F .text	00000274 __ieee754_sqrt
 80046fa8 g     F .text	0000002c fill_wallet_upgrade
 8004ddd0 g     F .text	0000008c __swhatbuf_r
 80044514 g     F .text	000000c0 draw_gi_eggs_and_medallions
 80011088 g     F .text	000000d0 fat_attrib
 800402cc g     F .text	00000070 stat
-8006fb98 g     O .sbss	00000004 heap_next
+8008af68 g     O .sbss	00000004 heap_next
 8005c3f4 g     F .text	000000dc ceilf
 8000df44 g     F .text	00000074 fat_begin
 800302d4 g     F .text	000000a8 menu_tab_goto
@@ -2971,11 +3055,11 @@ SYMBOL TABLE:
 8001f200 g     F .text	000002d4 gz_hit_view
 8003365c g     F .text	00000068 gz_noclip_start
 80046424 g     F .text	00000268 draw_gi_poe_bottles
-8006a564 g     O .data	0000020c vr4300_reg_mnem
+80085804 g     O .data	0000020c vr4300_reg_mnem
 80047658 g     F .text	00000100 c_equipment_menu_slot_filled
 800074e4 g     F .text	000000cc Get_CollectibleOverrideFlag
 00000000         *UND*	00000000 FAST_CHESTS
-8006fa80 g     O .got	00000000 .hidden _GLOBAL_OFFSET_TABLE_
+8008ae50 g     O .got	00000000 .hidden _GLOBAL_OFFSET_TABLE_
 8004344c g     F .text	00000024 zu_audio_cmd
 00000000         *UND*	00000000 CURR_ACTOR_SPAWN_INDEX
 80046d4c g     F .text	00000038 give_bottle
@@ -2985,13 +3069,13 @@ SYMBOL TABLE:
 80020500 g     F .text	00000020 command_hitview
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_REWARD_NEED_ALTAR
 8004d1ac g     F .text	000000fc _fputs_r
-80069678 g     O .data	00000010 heart_sprite
+80084918 g     O .data	00000010 heart_sprite
 80001888 g     F .text	00000190 select_bombchu_bowling_prize
 800067a4 g     F .text	000000d0 lookup_override_by_key
 8002fcac g     F .text	000000bc menu_add_checkbox
 800486bc g     F .text	00000238 check_model_skeletons
 800073e8 g     F .text	0000000c reset_collectible_mutex
-8006fb78 g     O .sbss	00000002 drop_collectible_override_flag
+8008af48 g     O .sbss	00000002 drop_collectible_override_flag
 800488f4 g     F .text	0000006c load_object_file
 80020c18 g     F .text	0000008c command_loadpos
 80007874 g     F .text	000002c8 get_override_drop_id
@@ -3002,11 +3086,11 @@ SYMBOL TABLE:
 80049690 g     F .text	00000108 ObjKibako_Draw
 80006cd4 g     F .text	0000008c move_outgoing_queue
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_NPC_INNER_ENABLED
-8006ee68 g     O .data	000000fc childSkeleton
-8006fb3c g     O .sbss	00000004 CHEST_SIZE_TEXTURE
+8008a108 g     O .data	000000fc childSkeleton
+8008af0c g     O .sbss	00000004 CHEST_SIZE_TEXTURE
 8004f6e4 g     F .text	0000007c __swrite
 80048a9c g     F .text	00000078 draw_model_low_level
-8006f4e4 g     O .data	00000004 __malloc_trim_threshold
+8008a8b4 g     O .data	00000004 __malloc_trim_threshold
 800461e4 g     F .text	00000240 draw_gi_fairy_lantern
 800497fc g     F .text	0000006c ObjKibako2_SpawnCollectible_Hack
 80049adc g     F .text	000000ac enitem00_set_link_incoming_item_id
@@ -3020,7 +3104,7 @@ SYMBOL TABLE:
 00000000         *UND*	00000000 CFG_DUNGEON_INFO_MQ_NEED_MAP
 80055ab0 g     F .text	000001fc __mdiff
 8002f178 g     F .text	00000034 menu_item_screen_y
-8006983c g     O .data	00000028 everdrive64_x
+80084adc g     O .data	00000028 everdrive64_x
 800602d0 g     F .text	00000010 .hidden __math_uflow
 80027ec4 g     F .text	00000118 movie_to_z
 80027dac g     F .text	00000118 z_to_movie
@@ -3039,26 +3123,26 @@ SYMBOL TABLE:
 80032f30 g     F .text	0000000c menu_switch_set
 8004baa8 g     F .text	00000018 IsCuccoGivenToCuccoLady
 800205dc g     F .text	00000034 command_stoptimer
-8006fb84 g     O .sbss	00000001 COMPLETE_MASK_QUEST
+8008af54 g     O .sbss	00000001 COMPLETE_MASK_QUEST
 80020eec g     F .text	00000018 gz_set_input_mask
 80056170 g     F .text	000000ec __sccl
 8001f4d4 g     F .text	0000076c gz_path_view
 80014ad8 g     F .text	00000078 gfx_mode_init
 80048f94 g     F .text	00000064 skull_token_draw
 8000763c g     F .text	00000064 Item_DropCollectible_Room_Hack
-80067e50 g     O .rodata	00000101 _ctype_
+80067e48 g     O .rodata	00000101 _ctype_
 8004b43c g     F .text	00000038 SaveFile_SetTradeItemAsTraded
 80019bd8 g     F .text	00000190 vector_insert
 80011158 g     F .text	000000d8 fat_atime
 8002f1ac g     F .text	000001d8 menu_draw
 80015210 g     F .text	0000002c gfx_texture_free
 00000000         *UND*	00000000 CFG_TEXT_CURSOR_COLOR
-800694f8 g       .data	00000000 __RESOURCE_END__
+80069640 g       .data	00000000 __RESOURCE_END__
 80038868 g     F .text	0000024c vr4300_print_insn
 800143ac g     F .text	00000054 vec3f_cos
 800467c8 g     F .text	0000019c draw_gi_small_keys
 80001dd0 g     F .text	000000c0 draw_chest_lid
-800695e0 g     O .data	00000040 hash_symbols
+80084880 g     O .data	00000040 hash_symbols
 800163f0 g     F .text	000005c4 gfx_sprite_draw
 80014960 g     F .text	0000001c gfx_mode_configure
 80004e60 g     F .text	00000018 extern_scene_init
@@ -3087,7 +3171,7 @@ SYMBOL TABLE:
 8005b5f4 g     F .text	00000714 __gethex
 8002ea74 g     F .text	00000034 menu_get_top
 80044478 g     F .text	0000009c draw_gi_bombchu_and_masks
-8007afd0 g     O .bss	000000c0 object_slots
+800963a0 g     O .bss	000000c0 object_slots
 80043628 g     F .text	0000003c zu_set_event_flag
 80046d98 g     F .text	00000094 give_small_key
 8005af74 g     F .text	00000014 __assert
@@ -3098,16 +3182,16 @@ SYMBOL TABLE:
 8005c5b0 g     F .text	000000dc floorf
 8004f7b8 g     F .text	00000034 strchr
 80001f7c g     F .text	00000014 get_dummy_chest
-80069660 g     O .data	00000015 items
+80084900 g     O .data	00000015 items
 80045ad0 g     F .text	000001d0 draw_gi_potions
 00000000         *UND*	00000000 C_HEAP
 80007be8 g     F .text	00000238 item_give_collectible
 8004a00c g     F .text	0000022c get_rainbow_color
 00000000         *UND*	00000000 CFG_BOMBCHU_TRAIL_INNER_COLOR
 8004d2a8 g     F .text	00000014 fputs
-8006fb86 g     O .sbss	00000001 KEYRING_BOSSKEY_CONDITION
+8008af56 g     O .sbss	00000001 KEYRING_BOSSKEY_CONDITION
 800068b4 g     F .text	00000188 get_override_search_key
-8006fb48 g     O .sbss	00000001 NO_ESCAPE_SEQUENCE
+8008af18 g     O .sbss	00000001 NO_ESCAPE_SEQUENCE
 8002bad0 g     F .text	00000010 bind_get_component
 80006bd0 g     F .text	00000054 clear_override
 80016ab4 g     F .text	00000040 guMtxIdentF
@@ -3140,8 +3224,8 @@ SYMBOL TABLE:
 80016af4 g     F .text	00000198 guPerspectiveF
 80049c3c g     F .text	000000b4 get_flying_pot_override
 8004017c g     F .text	000000a8 mkdir
-8006fb50 g     O .sbss	00000004 collectible_mutex
-80066a5c g     O .rodata	0000000c rupee_colors
+8008af20 g     O .sbss	00000004 collectible_mutex
+80066a54 g     O .rodata	0000000c rupee_colors
 80017748 g     F .text	0000004c guScaleF
 80047098 g     F .text	0000001c trade_quest_upgrade
 8001ab58 g     F .text	00000030 vector_destroy
@@ -3151,7 +3235,7 @@ SYMBOL TABLE:
 80014368 g     F .text	00000044 vec3f_mag
 8004bec0 g     F .text	00000544 draw_triforce_count
 00000000         *UND*	00000000 PLAYER_NAME_ID
-8006f8f0 g     O .data	0000016c __global_locale
+8008acc0 g     O .data	0000016c __global_locale
 80014dc0 g     F .text	0000006c gfx_disp_append
 8002ec1c g     F .text	00000090 menu_signal_enter
 8004b1f0 g     F .text	00000020 GetTradeItemIndex
@@ -3175,6 +3259,6 @@ SYMBOL TABLE:
 80055168 g     F .text	0000002c _Bfree
 8005d0a0 g     F .text	000001f0 __ieee754_atan2f
 80027d24 g     F .text	00000088 gz_vcont_get
-8006da24 g     O .data	0000001c key_counts
+80088cc4 g     O .data	0000001c key_counts
 
 

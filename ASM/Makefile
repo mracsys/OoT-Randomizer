@@ -4,17 +4,19 @@ OBJDUMP = mips64-objdump
 
 CFLAGS = -O1 -fno-reorder-blocks -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
 	-mexplicit-relocs -std=gnu11 -ffunction-sections -fdata-sections
-CPPFLAGS = -DF3DEX_GBI_2 -DZ64_VERSION=Z64_OOT10
+CPPFLAGS = -DF3DEX_GBI_2 -DZ64_VERSION=Z64_OOT10 -DPACKAGE_TARNAME='gz' -DPACKAGE_URL='mracsys.com/gz-rando' -DPACKAGE_VERSION='0.3.6.0'
 
 OUTDIR := build
 OBJDIR := build/bin
 SRCDIR := c
+PNGDIR := resources/gz
 vpath %.c c
 vpath %.h c
 vpath %.c c/gz
 vpath %.h c/gz
 
 OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(sort $(wildcard $(SRCDIR)/*.c $(SRCDIR)/*/*.c)))
+RES = $(patsubst $(PNGDIR)/%.o,$(PNGDIR)/%.o,$(sort $(wildcard $(PNGDIR)/*.o)))
 
 .PHONY: all clean bundle symbols
 
@@ -33,7 +35,7 @@ $(OBJDIR):
 $(OBJECTS): | $(OBJDIR)
 
 bundle: $(OBJECTS)
-	$(LD) -T /usr/mips64-ultra-elf/n64-sysroot/usr/lib/gl-n64.ld -o $(OUTDIR)/bundle.o -i --force-dynamic -L. -L/usr/lib/gcc/mips64-ultra-elf/11.2.0/dynamic -L/usr/mips64-ultra-elf/lib/dynamic $(patsubst %.o,-l:%.o,$(OBJECTS)) -lc -lm -lg -lgcc -lnosys
+	$(LD) -T /usr/mips64-ultra-elf/n64-sysroot/usr/lib/gl-n64.ld -o $(OUTDIR)/bundle.o -i --force-dynamic -L. -L/usr/lib/gcc/mips64-ultra-elf/11.2.0/dynamic -L/usr/mips64-ultra-elf/lib/dynamic $(patsubst %.o,-l:%.o,$(OBJECTS) $(RES)) -lc -lm -lg -lgcc -lnosys
 #	$(LD) -o $(OUTDIR)/bundle.o -i -L. -static -lc $(patsubst %.o,-l:%.o,$(OBJECTS))
 
 symbols: bundle

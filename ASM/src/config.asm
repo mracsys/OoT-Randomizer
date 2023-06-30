@@ -117,17 +117,17 @@ EXTENDED_OBJECT_TABLE:
 .endarea
 
 ; gz stack
-.area 0x2000
+.area 0x2000, 0
 _stack:
 .endarea
 
 ; gz temp storage for original stack pointer and return address
-.area 0x08
+.area 0x08, 0
 _startup_data:
 .endarea
 
 ; gz game state update address
-.area 0x04
+.area 0x04, 0
 gz_leave_func:
 .endarea
 
