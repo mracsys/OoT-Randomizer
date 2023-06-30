@@ -675,7 +675,7 @@ static void rdb_main(void *arg)
       ;
   }
   else {
-    osCreateMesgQueue(&rdb_fault_mq, rdb_fault_mesg,
+    z64_osCreateMesgQueue(&rdb_fault_mq, rdb_fault_mesg,
                       sizeof(rdb_fault_mesg) / sizeof(*rdb_fault_mesg));
     osSetEventMesg(OS_EVENT_CPU_BREAK, &rdb_fault_mq,
                    (OSMesg)OS_EVENT_CPU_BREAK);

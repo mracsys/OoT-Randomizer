@@ -2751,7 +2751,7 @@ typedef struct EnGSwitch
 #define z64_thread_dmamgr_addr                  0x80007DD8
 #define piThread_addr                           0x80008A60
 #define __osEventStateTab_addr                  0x80009DE0
-#define __osViIntrCount_addr                    0x80009E8C
+#define __osViIntrCount                         0x80009E8C
 #define viThread_addr                           0x80009F20
 #define z64_ftab_addr                           0x8000B140
 #define z64_SpawnActorAttachedB_addr            0x800253F0
@@ -2981,7 +2981,9 @@ typedef uint32_t  (*z64_LoadOverlay_proc)             (uint32_t vrom_start, uint
                                        uint32_t vram_start, uint32_t vram_end,
                                        void *dst);
 typedef void      (*z64_SeedRandom_proc)              (uint32_t seed);
-
+typedef void      (*osCreateMesgQueue_t)              (OSMesgQueue* mq, OSMesg* msg, int32_t count);
+typedef int32_t   (*osRecvMesg_t)                     (OSMesgQueue* mq, OSMesg* msg, int32_t flag);
+typedef void      (*__osPiRelAccess_proc)             (void);
 
 
 /* data */
@@ -3284,6 +3286,7 @@ z64_extern  char                  z64_item_highlight_vram[];
 #define  z64_CheckAfxConfigBusy      ((z64_CheckAfxConfigBusy_proc)z64_CheckAfxConfigBusy_addr)
 #define  z64_LoadOverlay             ((z64_LoadOverlay_proc)z64_LoadOverlay_addr)
 #define  z64_SeedRandom              ((z64_SeedRandom_proc)z64_SeedRandom_addr)
+#define  __osPiRelAccess             ((__osPiRelAccess_proc)__osPiRelAccess_addr)
 
 
 

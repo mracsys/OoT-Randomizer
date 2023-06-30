@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <vector/vector.h>
 #include "adex.h"
+#include "malloc.h"
 #include "../z64.h"
 
 const char *adex_error_name[] =

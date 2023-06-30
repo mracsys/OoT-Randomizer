@@ -71,7 +71,7 @@ static void dma_write(uint32_t dev_addr, uint32_t ram_addr, size_t size)
 
   int irqf = get_irqf();
   if (irqf) {
-    osCreateMesgQueue(&mq, &m, 1);
+    z64_osCreateMesgQueue(&mq, &m, 1);
 
     pi_event = __osEventStateTab[OS_EVENT_PI];
     __osEventStateTab[OS_EVENT_PI].messageQueue = &mq;
@@ -104,7 +104,7 @@ static void dma_read(uint32_t dev_addr, uint32_t ram_addr, size_t size)
 
   int irqf = get_irqf();
   if (irqf) {
-    osCreateMesgQueue(&mq, &m, 1);
+    z64_osCreateMesgQueue(&mq, &m, 1);
 
     pi_event = __osEventStateTab[OS_EVENT_PI];
     __osEventStateTab[OS_EVENT_PI].messageQueue = &mq;

@@ -45,7 +45,7 @@ void zu_getfile(uint32_t vrom_addr, void *dram_addr, size_t size)
 {
   OSMesgQueue notify_mq;
   OSMesg notify_m;
-  osCreateMesgQueue(&notify_mq, &notify_m, 1);
+  z64_osCreateMesgQueue(&notify_mq, &notify_m, 1);
   z64_getfile_t f =
   {
     vrom_addr,
@@ -63,7 +63,7 @@ void zu_getfile_idx(int file_idx, void *dram_addr)
   z64_ftab_t *file = &z64_ftab[file_idx];
   OSMesgQueue notify_mq;
   OSMesg notify_m;
-  osCreateMesgQueue(&notify_mq, &notify_m, 1);
+  z64_osCreateMesgQueue(&notify_mq, &notify_m, 1);
   z64_getfile_t f =
   {
     file->vrom_start,
