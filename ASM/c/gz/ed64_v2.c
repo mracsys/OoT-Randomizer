@@ -6,6 +6,7 @@
 #include "pi.h"
 #include "sd_host.h"
 #include "util.h"
+#include "../z64.h"
 
 static int      cart_irqf;
 static uint32_t cart_lat;

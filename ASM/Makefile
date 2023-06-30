@@ -1,9 +1,9 @@
 CC = mips64-gcc
-LD = mips64-g++
+LD = mips64-ld
 OBJDUMP = mips64-objdump
 
 CFLAGS = -O1 -fno-reorder-blocks -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
-	-mexplicit-relocs -std=gnu11
+	-mexplicit-relocs -std=gnu11 -ffunction-sections -fdata-sections
 CPPFLAGS = -DF3DEX_GBI_2 -DZ64_VERSION=Z64_OOT10
 
 OUTDIR := build
@@ -33,7 +33,8 @@ $(OBJDIR):
 $(OBJECTS): | $(OBJDIR)
 
 bundle: $(OBJECTS)
-	$(LD) -o $(OUTDIR)/bundle.o -T gl-n64.ld -r -L. -nostartfiles -specs=nosys.specs $(patsubst %.o,-l:%.o,$(OBJECTS))
+	$(LD) -T /usr/mips64-ultra-elf/n64-sysroot/usr/lib/gl-n64.ld -o $(OUTDIR)/bundle.o -i --force-dynamic -L. -L/usr/lib/gcc/mips64-ultra-elf/11.2.0/dynamic -L/usr/mips64-ultra-elf/lib/dynamic $(patsubst %.o,-l:%.o,$(OBJECTS)) -lc -lm -lg -lgcc -lnosys
+#	$(LD) -o $(OUTDIR)/bundle.o -i -L. -static -lc $(patsubst %.o,-l:%.o,$(OBJECTS))
 
 symbols: bundle
 	$(OBJDUMP) -t $(OUTDIR)/bundle.o | tr -d '\015' > $(OUTDIR)/c_symbols.txt
