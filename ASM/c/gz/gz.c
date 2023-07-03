@@ -1124,31 +1124,31 @@ static void init(void)
     menu.selector = menu_add_button(&menu, 0, 0, "return",
                                     main_return_proc, NULL);
     menu_add_submenu(&menu, 0, 1, gz_warps_menu(), "warps");
-//    menu_add_submenu(&menu, 0, 2, gz_scene_menu(), "scene");
-//    menu_add_submenu(&menu, 0, 3, gz_cheats_menu(), "cheats");
-//    menu_add_submenu(&menu, 0, 4, gz_inventory_menu(), "inventory");
-//    menu_add_submenu(&menu, 0, 5, gz_equips_menu(), "equips");
-//    menu_add_submenu(&menu, 0, 6, gz_file_menu(), "file");
-//    menu_add_submenu(&menu, 0, 7, gz_macro_menu(), "macro");
-//    menu_add_submenu(&menu, 0, 8, &watches, "watches");
-//    menu_add_submenu(&menu, 0, 9, gz_debug_menu(), "debug");
-//    menu_add_submenu(&menu, 0, 10, gz_settings_menu(), "settings");
-//
-//    /* populate watches menu */
-//    watches.selector = menu_add_submenu(&watches, 0, 0, NULL, "return");
-//    gz.menu_watchlist = watchlist_create(&watches, &global, 0, 1);
-//
-//    /* configure menu related commands */
-//    input_bind_set_override(COMMAND_MENU, 1);
-//    input_bind_set_override(COMMAND_RETURN, 1);
-//    input_bind_set_override(COMMAND_PREVROOM, 1);
-//    input_bind_set_override(COMMAND_NEXTROOM, 1);
-//    input_bind_set_disable(COMMAND_PREVROOM, 1);
-//    input_bind_set_disable(COMMAND_NEXTROOM, 1);
+    menu_add_submenu(&menu, 0, 2, gz_scene_menu(), "scene");
+    menu_add_submenu(&menu, 0, 3, gz_cheats_menu(), "cheats");
+    menu_add_submenu(&menu, 0, 4, gz_inventory_menu(), "inventory");
+    menu_add_submenu(&menu, 0, 5, gz_equips_menu(), "equips");
+    menu_add_submenu(&menu, 0, 6, gz_file_menu(), "file");
+    menu_add_submenu(&menu, 0, 7, gz_macro_menu(), "macro");
+    menu_add_submenu(&menu, 0, 8, &watches, "watches");
+    menu_add_submenu(&menu, 0, 9, gz_debug_menu(), "debug");
+    menu_add_submenu(&menu, 0, 10, gz_settings_menu(), "settings");
+
+    /* populate watches menu */
+    watches.selector = menu_add_submenu(&watches, 0, 0, NULL, "return");
+    gz.menu_watchlist = watchlist_create(&watches, &global, 0, 1);
+
+    /* configure menu related commands */
+    input_bind_set_override(COMMAND_MENU, 1);
+    input_bind_set_override(COMMAND_RETURN, 1);
+    input_bind_set_override(COMMAND_PREVROOM, 1);
+    input_bind_set_override(COMMAND_NEXTROOM, 1);
+    input_bind_set_disable(COMMAND_PREVROOM, 1);
+    input_bind_set_disable(COMMAND_NEXTROOM, 1);
   }
 
   /* reflect loaded settings */
-//  gz_apply_settings();
+  gz_apply_settings();
 
   gz.ready = 1;
 }
@@ -1158,7 +1158,7 @@ int main()
   if (!gz.ready)
     init();
   state_main_hook();
-  //main_hook();
+  main_hook();
 }
 
 /* support libraries */
