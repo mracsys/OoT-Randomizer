@@ -14,7 +14,4 @@ struct state_meta
 uint32_t      save_state(struct state_meta *state);
 void          load_state(const struct state_meta *state);
 
-extern char* z64_afx_cmd_write_pos;
-extern char* z64_afx_cmd_read_pos;
-
 #endif

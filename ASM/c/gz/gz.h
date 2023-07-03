@@ -291,8 +291,5 @@ struct menu  *gz_settings_menu(void);
 
 extern struct gz            gz;
 extern struct command_info  command_info[COMMAND_MAX];
-extern uint32_t z64_afx_counter;
-extern int32_t z64_song_counter;
-extern uint32_t z64_ocarina_counter;
 
 #endif

@@ -1,0 +1,2 @@
+mips64-objdump -t bin/gz/oot-1.0/gz.elf | tr -d '\015' > gz-symbols-0.3.6.0.txt
+mips64-objdump -D bin/gz/oot-1.0/gz.elf > gz-disassembly.asm

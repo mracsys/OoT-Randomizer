@@ -2739,128 +2739,128 @@ typedef struct EnGSwitch
 
 
 
-#define __osPiGetAccess_addr                    0x80001DB0
-#define __osPiRelAccess_addr                    0x80001DF4
-#define osStopThread_addr                       0x80001F70
-#define osDestroyThread_addr                    0x80002D70
-#define osCreateThread_addr                     0x80002F20
-#define osSetEventMesg_addr                     0x80003FB0
-#define osStartThread_addr                      0x80005EC0
-#define z64_thread_idle_addr                    0x80006850
-#define z64_thread_main_addr                    0x80007220
-#define z64_thread_dmamgr_addr                  0x80007DD8
-#define piThread_addr                           0x80008A60
-#define __osEventStateTab_addr                  0x80009DE0
-#define __osViIntrCount                         0x80009E8C
-#define viThread_addr                           0x80009F20
-#define z64_ftab_addr                           0x8000B140
-#define z64_SpawnActorAttachedB_addr            0x800253F0
-#define z64_CreateStaticCollision_addr          0x8002E70C
-#define z64_Camera_ChangeMode_addr              0x80049330
-#define z64_Math_CosS_addr                      0x80063684
-#define z64_LoadMinimap_addr                    0x8006BF04
-#define z64_LoadActionLabel_addr                0x80071D24
-#define z64_InitPauseObjects_addr               0x8007C09C
-#define z64_DrawRoom_addr                       0x80080C48
-#define z64_Sram_LoadDebugSave_addr             0x800900EC
-#define z64_CreateSkyGfx_addr                   0x80095A9C
-#define z64_CreateSkyVtx_addr                   0x80095C4C
-#define z64_StopSfx_addr                        0x800A0290
-#define z64_UpdateCtxtInput_addr                0x800A0BA0
-#define z64_GetInput_addr                       0x800A279C
-#define z64_AfxCmdF_addr                        0x800BB098
-#define z64_AfxCmdW_addr                        0x800BB0BC
-#define z64_FlushAfxCmd_addr                    0x800BB140
-#define z64_ConfigureAfx_addr                   0x800BB548
-#define z64_AfxRand_addr                        0x800BBD80
-#define z64_OcarinaUpdate_addr                  0x800C3DC8
-#define z64_ResetAudio_addr                     0x800C7E98
-#define z64_CheckAfxConfigBusy_addr             0x800CB798
-#define z64_LoadOverlay_addr                    0x800CCBB8
-#define z64_SeedRandom_addr                     0x800CDCC0
-#define osGetCurrFaultedThread_addr             0x800D5AD0
-#define gspF3DEX2_NoN_fifoTextStart_addr        0x800E3F70
-#define z64_part_space_addr                     0x800E7B40
-#define z64_part_pos_addr                       0x800E7B44
-#define z64_part_max_addr                       0x800E7B48
-#define z64_part_ovl_tab_addr                   0x800E7C40
-#define z64_actor_ovl_tab_addr                  0x800E8530
-#define z_camera_c_data_addr                    0x800EC170
-#define z64_hud_state_addr                      0x800EF1A8
-#define z64_letterbox_time_addr                 0x800EF1F8
-#define z64_event_state_2_addr                  0x800EF1FC
-#define z64_event_camera_addr                   0x800EF254
-#define z64_oob_timer_addr                      0x800EF6AC
-#define z64_cs_message_addr                     0x800EFCD0
-#define z64_weather_state_addr                  0x800F1640
-#define z64_sky_images_addr                     0x800F184C
-#define z64_map_mark_ovl_addr                   0x800F1BF8
-#define z_onepointdemo_c_data_addr              0x800F1C10
-#define z64_dins_state_1_addr                   0x800F1C18
-#define z64_dins_state_2_addr                   0x800F4C1C
-#define z64_minimap_entrance_x_addr             0x800F5530
-#define z64_minimap_entrance_y_addr             0x800F5534
-#define z64_minimap_entrance_r_addr             0x800F5538
-#define z64_hazard_state_addr                   0x800F7538
-#define z64_temp_day_speed_addr                 0x800F7638
-#define z64_n_camera_shake_addr                 0x800F7D24
-#define z64_letterbox_target_addr               0x800FE474
-#define z64_letterbox_current_addr              0x800FE478
-#define z64_play_ovl_tab_addr                   0x800FE480
-#define z64_play_ovl_ptr_addr                   0x800FE4BC
-#define z64_sound_state_addr                    0x80101914
-#define z64_night_sfx_addr                      0x801019E8
-#define z64_ocarina_state_addr                  0x80102208
-#define z64_ocarina_counter_addr                z64_ocarina_state_addr + 0x005C
-#define z64_ocarina_song_length_addr            z64_ocarina_state_addr + 0x0068
-#define z64_scarecrow_song_addr                 0x801029FC
-#define z64_song_ptr_addr                       0x80102B3C
-#define z64_ocarina_button_state_addr           0x80102B7C
-#define z64_sfx_write_pos_addr                  0x80104360
-#define z64_sfx_read_pos_addr                   0x80104364
-#define z64_audio_cmd_write_pos_addr            0x801043B0
-#define z64_audio_cmd_read_pos_addr             0x801043B4
-#define z64_afx_cfg_addr                        0x801043C0
-#define z64_afx_config_busy_addr                0x801043C4
-#define z64_random_addr                         0x80105440
-#define z64_message_state_addr                  0x8010A924
-#define z64_staff_notes_addr                    0x80112E8C
-#define z64_message_select_state_addr           0x80112EC4
-#define z64_gameover_countdown_addr             0x801132B0
-#define gspF3DEX2_NoN_fifoDataStart_addr        0x801145C0
-#define z64_pfx_addr                            0x80114DE0
-#define z64_fw_state_1_addr                     0x80118BF8
-#define z64_fw_state_2_addr                     0x80118C00
-#define z64_camera_state_addr                   0x80118E20
-#define z64_cs_state_addr                       0x8011BC20
-#define z64_light_queue_addr                    0x8011BD60
-#define z64_game_arena_addr                     0x8011BEF0
-#define z64_map_mark_data_tab_addr              0x8011BF00
-#define z64_timer_state_addr                    0x8011BF20
-#define z64_camera_shake_addr                   0x8011BF60
-#define z64_poly_colorfilter_state_addr         0x8011D148
-#define z64_thread_sched_addr                   0x8011D318
-#define z64_thread_padmgr_addr                  0x8011D580
-#define z64_thread_irqmgr_addr                  0x8011DA00
-#define z64_thread_graph_addr                   0x8011DBE8
-#define z64_thread_audio_addr                   0x80120D60
-#define z64_mtx_stack_addr                      0x80121200
-#define z64_mtx_stack_top_addr                  0x80121204
-#define z64_thread_fault_addr                   0x80121290
-#define z64_song_state_addr                     0x80121F0C
-#define z64_song_counter_addr                   z64_song_state_addr + 0x0010
-#define z64_sfx_mute_addr                       0x80124754
-#define z64_audio_cmd_buf_addr                  0x80124800
-#define z64_seq_ctl_addr                        0x80124C00
-#define z64_afx_addr                            0x80125630
-#define z64_afx_counter_addr                    z64_afx_addr + 0x289C
-#define z64_afx_cmd_write_pos_addr              z64_afx_addr + 0x5BD8
-#define z64_afx_cmd_read_pos_addr               z64_afx_addr + 0x5BD9
-#define z64_afx_cmd_buf_addr                    z64_afx_addr + 0x5C50
-#define z64_zimg_addr                           0x8012BE40
-#define z64_disp_addr                           0x8016A640
-#define z64_cimg_addr                           0x803B5000
-#define z64_item_highlight_vram_addr            0x80829D9C
+//#define __osPiGetAccess_addr                    0x80001DB0
+//#define __osPiRelAccess_addr                    0x80001DF4
+//#define osStopThread_addr                       0x80001F70
+//#define osDestroyThread_addr                    0x80002D70
+//#define osCreateThread_addr                     0x80002F20
+//#define osSetEventMesg_addr                     0x80003FB0
+//#define osStartThread_addr                      0x80005EC0
+//#define z64_thread_idle_addr                    0x80006850
+//#define z64_thread_main_addr                    0x80007220
+//#define z64_thread_dmamgr_addr                  0x80007DD8
+//#define piThread_addr                           0x80008A60
+//#define __osEventStateTab_addr                  0x80009DE0
+//#define __osViIntrCount_addr                    0x80009E8C
+//#define viThread_addr                           0x80009F20
+//#define z64_ftab_addr                           0x8000B140
+//#define z64_SpawnActorAttachedB_addr            0x800253F0
+//#define z64_CreateStaticCollision_addr          0x8002E70C
+//#define z64_Camera_ChangeMode_addr              0x80049330
+//#define z64_Math_CosS_addr                      0x80063684
+//#define z64_LoadMinimap_addr                    0x8006BF04
+//#define z64_LoadActionLabel_addr                0x80071D24
+//#define z64_InitPauseObjects_addr               0x8007C09C
+//#define z64_DrawRoom_addr                       0x80080C48
+//#define z64_Sram_LoadDebugSave_addr             0x800900EC
+//#define z64_CreateSkyGfx_addr                   0x80095A9C
+//#define z64_CreateSkyVtx_addr                   0x80095C4C
+//#define z64_StopSfx_addr                        0x800A0290
+//#define z64_UpdateCtxtInput_addr                0x800A0BA0
+//#define z64_GetInput_addr                       0x800A279C
+//#define z64_AfxCmdF_addr                        0x800BB098
+//#define z64_AfxCmdW_addr                        0x800BB0BC
+//#define z64_FlushAfxCmd_addr                    0x800BB140
+//#define z64_ConfigureAfx_addr                   0x800BB548
+//#define z64_AfxRand_addr                        0x800BBD80
+//#define z64_OcarinaUpdate_addr                  0x800C3DC8
+//#define z64_ResetAudio_addr                     0x800C7E98
+//#define z64_CheckAfxConfigBusy_addr             0x800CB798
+//#define z64_LoadOverlay_addr                    0x800CCBB8
+//#define z64_SeedRandom_addr                     0x800CDCC0
+//#define osGetCurrFaultedThread_addr             0x800D5AD0
+//#define gspF3DEX2_NoN_fifoTextStart_addr        0x800E3F70
+//#define z64_part_space_addr                     0x800E7B40
+//#define z64_part_pos_addr                       0x800E7B44
+//#define z64_part_max_addr                       0x800E7B48
+//#define z64_part_ovl_tab_addr                   0x800E7C40
+//#define z64_actor_ovl_tab_addr                  0x800E8530
+//#define z_camera_c_data_addr                    0x800EC170
+//#define z64_hud_state_addr                      0x800EF1A8
+//#define z64_letterbox_time_addr                 0x800EF1F8
+//#define z64_event_state_2_addr                  0x800EF1FC
+//#define z64_event_camera_addr                   0x800EF254
+//#define z64_oob_timer_addr                      0x800EF6AC
+//#define z64_cs_message_addr                     0x800EFCD0
+//#define z64_weather_state_addr                  0x800F1640
+//#define z64_sky_images_addr                     0x800F184C
+//#define z64_map_mark_ovl_addr                   0x800F1BF8
+//#define z_onepointdemo_c_data_addr              0x800F1C10
+//#define z64_dins_state_1_addr                   0x800F1C18
+//#define z64_dins_state_2_addr                   0x800F4C1C
+//#define z64_minimap_entrance_x_addr             0x800F5530
+//#define z64_minimap_entrance_y_addr             0x800F5534
+//#define z64_minimap_entrance_r_addr             0x800F5538
+//#define z64_hazard_state_addr                   0x800F7538
+//#define z64_temp_day_speed_addr                 0x800F7638
+//#define z64_n_camera_shake_addr                 0x800F7D24
+//#define z64_letterbox_target_addr               0x800FE474
+//#define z64_letterbox_current_addr              0x800FE478
+//#define z64_play_ovl_tab_addr                   0x800FE480
+//#define z64_play_ovl_ptr_addr                   0x800FE4BC
+//#define z64_sound_state_addr                    0x80101914
+//#define z64_night_sfx_addr                      0x801019E8
+//#define z64_ocarina_state_addr                  0x80102208
+//#define z64_ocarina_counter_addr                z64_ocarina_state_addr + 0x005C
+//#define z64_ocarina_song_length_addr            z64_ocarina_state_addr + 0x0068
+//#define z64_scarecrow_song_addr                 0x801029FC
+//#define z64_song_ptr_addr                       0x80102B3C
+//#define z64_ocarina_button_state_addr           0x80102B7C
+//#define z64_sfx_write_pos_addr                  0x80104360
+//#define z64_sfx_read_pos_addr                   0x80104364
+//#define z64_audio_cmd_write_pos_addr            0x801043B0
+//#define z64_audio_cmd_read_pos_addr             0x801043B4
+//#define z64_afx_cfg_addr                        0x801043C0
+//#define z64_afx_config_busy_addr                0x801043C4
+//#define z64_random_addr                         0x80105440
+//#define z64_message_state_addr                  0x8010A924
+//#define z64_staff_notes_addr                    0x80112E8C
+//#define z64_message_select_state_addr           0x80112EC4
+//#define z64_gameover_countdown_addr             0x801132B0
+//#define gspF3DEX2_NoN_fifoDataStart_addr        0x801145C0
+//#define z64_pfx_addr                            0x80114DE0
+//#define z64_fw_state_1_addr                     0x80118BF8
+//#define z64_fw_state_2_addr                     0x80118C00
+//#define z64_camera_state_addr                   0x80118E20
+//#define z64_cs_state_addr                       0x8011BC20
+//#define z64_light_queue_addr                    0x8011BD60
+//#define z64_game_arena_addr                     0x8011BEF0
+//#define z64_map_mark_data_tab_addr              0x8011BF00
+//#define z64_timer_state_addr                    0x8011BF20
+//#define z64_camera_shake_addr                   0x8011BF60
+//#define z64_poly_colorfilter_state_addr         0x8011D148
+//#define z64_thread_sched_addr                   0x8011D318
+//#define z64_thread_padmgr_addr                  0x8011D580
+//#define z64_thread_irqmgr_addr                  0x8011DA00
+//#define z64_thread_graph_addr                   0x8011DBE8
+//#define z64_thread_audio_addr                   0x80120D60
+//#define z64_mtx_stack_addr                      0x80121200
+//#define z64_mtx_stack_top_addr                  0x80121204
+//#define z64_thread_fault_addr                   0x80121290
+//#define z64_song_state_addr                     0x80121F0C
+//#define z64_song_counter_addr                   z64_song_state_addr + 0x0010
+//#define z64_sfx_mute_addr                       0x80124754
+//#define z64_audio_cmd_buf_addr                  0x80124800
+//#define z64_seq_ctl_addr                        0x80124C00
+//#define z64_afx_addr                            0x80125630
+//#define z64_afx_counter_addr                    z64_afx_addr + 0x289C
+//#define z64_afx_cmd_write_pos_addr              z64_afx_addr + 0x5BD8
+//#define z64_afx_cmd_read_pos_addr               z64_afx_addr + 0x5BD9
+//#define z64_afx_cmd_buf_addr                    z64_afx_addr + 0x5C50
+//#define z64_zimg_addr                           0x8012BE40
+//#define z64_disp_addr                           0x8016A640
+//#define z64_cimg_addr                           0x803B5000
+//#define z64_item_highlight_vram_addr            0x80829D9C
 
 
 
@@ -3016,198 +3016,197 @@ typedef void      (*osCreateThread_proc)              (OSThread* thread, OSId id
 #define z64_state_ovl_tab       (*(z64_state_ovl_t(*)[6])                     \
                                                       z64_state_ovl_tab_addr)
 #define z64_event_state_1       (*(uint32_t*)         z64_event_state_1_addr)
-#define __osEventStateTab       ((__OSEventState*)    __osEventStateTab_addr)
 
 
 
-#define  z64_thread_idle                (*(OSThread*) z64_thread_idle_addr)
-#define  z64_thread_main                (*(OSThread*) z64_thread_main_addr)
-#define  z64_thread_dmamgr              (*(OSThread*) z64_thread_dmamgr_addr)
-#define  z64_ftab                       ((z64_ftab_t*) z64_ftab_addr)
-#define  z64_part_space                 (*(z64_part_t**) z64_part_space_addr)
-#define  z64_part_pos                   (*(int32_t*) z64_part_pos_addr)
-#define  z64_part_max                   (*(int32_t*) z64_part_max_addr)
-#define  z64_part_ovl_tab               (*(z64_part_ovl_t(*)[37]) z64_part_ovl_tab_addr)
-#define  z64_actor_ovl_tab              (*(z64_actor_ovl_t(*)[471]) z64_actor_ovl_tab_addr)
-#define  z_camera_c_data                ((char*) z_camera_c_data_addr)
-#define  z64_hud_state                  ((char*) z64_hud_state_addr)
-#define  z64_letterbox_time             (*(uint32_t*) z64_letterbox_time_addr)
-#define  z64_event_state_2              (*(uint32_t*)         z64_event_state_2_addr)
-#define  z64_event_camera               ((char*) z64_event_camera_addr)
-#define  z64_oob_timer                  (*(int32_t*) z64_oob_timer_addr)
-#define  z64_cs_message                 ((char*) z64_cs_message_addr)
-#define  z64_weather_state              ((char*) z64_weather_state_addr)
-#define  z64_audio_cmd_buf              (*(uint32_t(*)[0x100]) z64_audio_cmd_buf_addr)
-#define  z64_sky_images                 (*(z64_sky_image_t(*)[9]) z64_sky_images_addr)
-#define  z_onepointdemo_c_data          ((char*) z_onepointdemo_c_data_addr)
-#define  z64_map_mark_ovl               (*(z64_map_mark_ovl_t*) z64_map_mark_ovl_addr)
-#define  z64_dins_state_1               ((char*) z64_dins_state_1_addr)
-#define  z64_dins_state_2               ((char*) z64_dins_state_2_addr)
-#define  z64_minimap_entrance_x         (*(int16_t*) z64_minimap_entrance_x_addr)
-#define  z64_minimap_entrance_y         (*(int16_t*) z64_minimap_entrance_y_addr)
-#define  z64_minimap_entrance_r         (*(int16_t*) z64_minimap_entrance_r_addr)
-#define  z64_hazard_state               ((char*) z64_hazard_state_addr)
-#define  z64_temp_day_speed             (*(uint16_t*) z64_temp_day_speed_addr)
-#define  z64_n_camera_shake             (*(uint16_t*) z64_n_camera_shake_addr)
-#define  z64_letterbox_target           (*(int32_t*) z64_letterbox_target_addr)
-#define  z64_letterbox_current          (*(int32_t*) z64_letterbox_current_addr)
-#define  z64_play_ovl_tab               (*(z64_play_ovl_t(*)[2]) z64_play_ovl_tab_addr)
-#define  z64_play_ovl_ptr               (*(z64_play_ovl_t*) z64_play_ovl_ptr_addr)
-#define  z64_sound_state                ((char*) z64_sound_state_addr)
-#define  z64_night_sfx                  (*(z64_night_sfx_t(*)[20]) z64_night_sfx_addr)
-#define  z64_ocarina_state              ((char*) z64_ocarina_state_addr)
-//#define  z64_ocarina_counter            (*(uint32_t*) z64_ocarina_counter_addr)
-#define  z64_ocarina_song_length        (*(uint8_t*) z64_ocarina_song_length_addr)
-#define  z64_scarecrow_song             ((char*) z64_scarecrow_song_addr)
-#define  z64_song_ptr                   ((char*) z64_song_ptr_addr)
-#define  z64_ocarina_button_state       (*(uint8_t*) z64_ocarina_button_state_addr)
-#define  z64_sfx_write_pos              (*(uint8_t*) z64_sfx_write_pos_addr)
-#define  z64_sfx_read_pos               (*(uint8_t*) z64_sfx_read_pos_addr)
-#define  z64_audio_cmd_write_pos        (*(uint8_t*) z64_audio_cmd_write_pos_addr)
-#define  z64_audio_cmd_read_pos         (*(uint8_t*) z64_audio_cmd_read_pos_addr)
-#define  z64_afx_cfg                    (*(uint8_t*) z64_afx_cfg_addr)
-#define  z64_afx_config_busy            (*(uint8_t*) z64_afx_config_busy_addr)
-#define  z64_random                     (*(uint32_t*) z64_random_addr)
-#define  z64_message_state              ((char*) z64_message_state_addr)
-#define  z64_staff_notes                ((char*) z64_staff_notes_addr)
-#define  z64_message_select_state       (*(int16_t*) z64_message_select_state_addr)
-#define  z64_gameover_countdown         (*(int16_t*) z64_gameover_countdown_addr)
-#define  z64_pfx                        (*(z64_pfx_t*) z64_pfx_addr)
-#define  z64_fw_state_1                 ((char*) z64_fw_state_1_addr)
-#define  z64_fw_state_2                 ((char*) z64_fw_state_2_addr)
-#define  z64_camera_state               ((char*) z64_camera_state_addr)
-#define  z64_cs_state                   ((char*) z64_cs_state_addr)
-#define  z64_light_queue                (*(z64_light_queue_t*) z64_light_queue_addr)
-#define  z64_game_arena                 (*(z64_arena_t*) z64_game_arena_addr)
-#define  z64_map_mark_data_tab          (*(void**) z64_map_mark_data_tab_addr)
-#define  z64_timer_state                ((char*) z64_timer_state_addr)
-#define  z64_camera_shake               ((char*) z64_camera_shake_addr)
-#define  z64_poly_colorfilter_state     ((char*) z64_poly_colorfilter_state_addr)
-#define  z64_thread_sched               (*(OSThread*) z64_thread_sched_addr)
-#define  z64_thread_padmgr              (*(OSThread*) z64_thread_padmgr_addr)
-#define  z64_thread_irqmgr              (*(OSThread*) z64_thread_irqmgr_addr)
-#define  z64_thread_graph               (*(OSThread*) z64_thread_graph_addr)
-#define  z64_thread_audio               (*(OSThread*) z64_thread_audio_addr)
-#define  z64_mtx_stack                  (*(MtxF(*)[20]) z64_mtx_stack_addr)
-#define  z64_mtx_stack_top              (*(MtxF**) z64_mtx_stack_top_addr)
-#define  z64_thread_fault               (*(OSThread*) z64_thread_fault_addr)
-#define  z64_song_state                 ((char*) z64_song_state_addr)
-//#define  z64_song_counter               (*(int32_t*) z64_song_counter_addr)
-#define  z64_sfx_mute                   ((char*) z64_sfx_mute_addr)
-#define  z64_seq_ctl                    (*(z64_seq_ctl_t(*)[4]) z64_seq_ctl_addr)
-#define  z64_afx                        ((char*) z64_afx_addr)
-//#define  z64_afx_counter                (*(uint32_t*) z64_afx_counter_addr)
-//#define  z64_afx_cmd_write_pos          (*(uint8_t*) z64_afx_cmd_write_pos_addr)
-//#define  z64_afx_cmd_read_pos           (*(uint8_t*) z64_afx_cmd_read_pos_addr)
-#define  z64_afx_cmd_buf                (*(z64_afx_cmd_t(*)[0x100]) z64_afx_cmd_buf_addr)
-#define  z64_zimg                       (*(char*) z64_zimg_addr)
-#define  z64_disp                       ((char*) z64_disp_addr)
-#define  z64_cimg                       ((char*) z64_cimg_addr)
-#define  z64_item_highlight_vram        (*(char*) z64_item_highlight_vram_addr)
+//#define  __osViIntrCount                (*(uint32_t*)__osViIntrCount_addr)
+//#define  z64_thread_idle                (*(OSThread*) z64_thread_idle_addr)
+//#define  z64_thread_main                (*(OSThread*) z64_thread_main_addr)
+//#define  z64_thread_dmamgr              (*(OSThread*) z64_thread_dmamgr_addr)
+//#define  z64_ftab                       ((z64_ftab_t*) z64_ftab_addr)
+//#define  z64_part_space                 (*(z64_part_t**) z64_part_space_addr)
+//#define  z64_part_pos                   (*(int32_t*) z64_part_pos_addr)
+//#define  z64_part_max                   (*(int32_t*) z64_part_max_addr)
+//#define  z64_part_ovl_tab               (*(z64_part_ovl_t(*)[37]) z64_part_ovl_tab_addr)
+//#define  z64_actor_ovl_tab              (*(z64_actor_ovl_t(*)[471]) z64_actor_ovl_tab_addr)
+//#define  z_camera_c_data                ((char*) z_camera_c_data_addr)
+//#define  z64_hud_state                  ((char*) z64_hud_state_addr)
+//#define  z64_letterbox_time             (*(uint32_t*) z64_letterbox_time_addr)
+//#define  z64_event_state_2              (*(uint32_t*)         z64_event_state_2_addr)
+//#define  z64_event_camera               ((char*) z64_event_camera_addr)
+//#define  z64_oob_timer                  (*(int32_t*) z64_oob_timer_addr)
+//#define  z64_cs_message                 ((char*) z64_cs_message_addr)
+//#define  z64_weather_state              ((char*) z64_weather_state_addr)
+//#define  z64_audio_cmd_buf              (*(uint32_t(*)[0x100]) z64_audio_cmd_buf_addr)
+//#define  z64_sky_images                 (*(z64_sky_image_t(*)[9]) z64_sky_images_addr)
+//#define  z_onepointdemo_c_data          ((char*) z_onepointdemo_c_data_addr)
+//#define  z64_map_mark_ovl               (*(z64_map_mark_ovl_t*) z64_map_mark_ovl_addr)
+//#define  z64_dins_state_1               ((char*) z64_dins_state_1_addr)
+//#define  z64_dins_state_2               ((char*) z64_dins_state_2_addr)
+//#define  z64_minimap_entrance_x         (*(int16_t*) z64_minimap_entrance_x_addr)
+//#define  z64_minimap_entrance_y         (*(int16_t*) z64_minimap_entrance_y_addr)
+//#define  z64_minimap_entrance_r         (*(int16_t*) z64_minimap_entrance_r_addr)
+//#define  z64_hazard_state               ((char*) z64_hazard_state_addr)
+//#define  z64_temp_day_speed             (*(uint16_t*) z64_temp_day_speed_addr)
+//#define  z64_n_camera_shake             (*(uint16_t*) z64_n_camera_shake_addr)
+//#define  z64_letterbox_target           (*(int32_t*) z64_letterbox_target_addr)
+//#define  z64_letterbox_current          (*(int32_t*) z64_letterbox_current_addr)
+//#define  z64_play_ovl_tab               (*(z64_play_ovl_t(*)[2]) z64_play_ovl_tab_addr)
+//#define  z64_play_ovl_ptr               (*(z64_play_ovl_t*) z64_play_ovl_ptr_addr)
+//#define  z64_sound_state                ((char*) z64_sound_state_addr)
+//#define  z64_night_sfx                  (*(z64_night_sfx_t(*)[20]) z64_night_sfx_addr)
+//#define  z64_ocarina_state              ((char*) z64_ocarina_state_addr)
+////#define  z64_ocarina_counter            (*(uint32_t*) z64_ocarina_counter_addr)
+//#define  z64_ocarina_song_length        (*(uint8_t*) z64_ocarina_song_length_addr)
+//#define  z64_scarecrow_song             ((char*) z64_scarecrow_song_addr)
+//#define  z64_song_ptr                   ((char*) z64_song_ptr_addr)
+//#define  z64_ocarina_button_state       (*(uint8_t*) z64_ocarina_button_state_addr)
+//#define  z64_sfx_write_pos              (*(uint8_t*) z64_sfx_write_pos_addr)
+//#define  z64_sfx_read_pos               (*(uint8_t*) z64_sfx_read_pos_addr)
+//#define  z64_audio_cmd_write_pos        (*(uint8_t*) z64_audio_cmd_write_pos_addr)
+//#define  z64_audio_cmd_read_pos         (*(uint8_t*) z64_audio_cmd_read_pos_addr)
+//#define  z64_afx_cfg                    (*(uint8_t*) z64_afx_cfg_addr)
+//#define  z64_afx_config_busy            (*(uint8_t*) z64_afx_config_busy_addr)
+//#define  z64_random                     (*(uint32_t*) z64_random_addr)
+//#define  z64_message_state              ((char*) z64_message_state_addr)
+//#define  z64_staff_notes                ((char*) z64_staff_notes_addr)
+//#define  z64_message_select_state       (*(int16_t*) z64_message_select_state_addr)
+//#define  z64_gameover_countdown         (*(int16_t*) z64_gameover_countdown_addr)
+//#define  z64_pfx                        (*(z64_pfx_t*) z64_pfx_addr)
+//#define  z64_fw_state_1                 ((char*) z64_fw_state_1_addr)
+//#define  z64_fw_state_2                 ((char*) z64_fw_state_2_addr)
+//#define  z64_camera_state               ((char*) z64_camera_state_addr)
+//#define  z64_cs_state                   ((char*) z64_cs_state_addr)
+//#define  z64_light_queue                (*(z64_light_queue_t*) z64_light_queue_addr)
+//#define  z64_game_arena                 (*(z64_arena_t*) z64_game_arena_addr)
+//#define  z64_map_mark_data_tab          (*(void**) z64_map_mark_data_tab_addr)
+//#define  z64_timer_state                ((char*) z64_timer_state_addr)
+//#define  z64_camera_shake               ((char*) z64_camera_shake_addr)
+//#define  z64_poly_colorfilter_state     ((char*) z64_poly_colorfilter_state_addr)
+//#define  z64_thread_sched               (*(OSThread*) z64_thread_sched_addr)
+//#define  z64_thread_padmgr              (*(OSThread*) z64_thread_padmgr_addr)
+//#define  z64_thread_irqmgr              (*(OSThread*) z64_thread_irqmgr_addr)
+//#define  z64_thread_graph               (*(OSThread*) z64_thread_graph_addr)
+//#define  z64_thread_audio               (*(OSThread*) z64_thread_audio_addr)
+//#define  z64_mtx_stack                  (*(MtxF(*)[20]) z64_mtx_stack_addr)
+//#define  z64_mtx_stack_top              (*(MtxF**) z64_mtx_stack_top_addr)
+//#define  z64_thread_fault               (*(OSThread*) z64_thread_fault_addr)
+//#define  z64_song_state                 ((char*) z64_song_state_addr)
+////#define  z64_song_counter               (*(int32_t*) z64_song_counter_addr)
+//#define  z64_sfx_mute                   ((char*) z64_sfx_mute_addr)
+//#define  z64_seq_ctl                    (*(z64_seq_ctl_t(*)[4]) z64_seq_ctl_addr)
+//#define  z64_afx                        ((char*) z64_afx_addr)
+////#define  z64_afx_counter                (*(uint32_t*) z64_afx_counter_addr)
+////#define  z64_afx_cmd_write_pos          (*(uint8_t*) z64_afx_cmd_write_pos_addr)
+////#define  z64_afx_cmd_read_pos           (*(uint8_t*) z64_afx_cmd_read_pos_addr)
+//#define  z64_afx_cmd_buf                (*(z64_afx_cmd_t(*)[0x100]) z64_afx_cmd_buf_addr)
+//#define  z64_zimg                       (*(char*) z64_zimg_addr)
+//#define  z64_disp                       ((char*) z64_disp_addr)
+//#define  z64_cimg                       ((char*) z64_cimg_addr)
+//#define  z64_item_highlight_vram        (*(char*) z64_item_highlight_vram_addr)
 
 
 
-//#define     z64_extern            extern __attribute__ ((section(".data")))
-//z64_extern  OSThread              z64_thread_idle;
-//z64_extern  OSThread              z64_thread_main;
-//z64_extern  OSThread              z64_thread_dmamgr;
-////z64_extern  OSMesgQueue           z64_file_mq;
-//z64_extern  z64_ftab_t            z64_ftab[];
-//z64_extern  z64_part_t           *z64_part_space;
-//z64_extern  int32_t               z64_part_pos;
-//z64_extern  int32_t               z64_part_max;
-//z64_extern  z64_part_ovl_t        z64_part_ovl_tab[37];
-//z64_extern  z64_actor_ovl_t       z64_actor_ovl_tab[471];
-//z64_extern  char                  z_camera_c_data[];
-//z64_extern  char                  z64_hud_state[];
-////z64_extern  char                  z64_event_state_1[];
-//z64_extern  uint32_t              z64_letterbox_time;
-//z64_extern  char                  z64_event_state_2[];
-//z64_extern  char                  z64_event_camera[];
-//z64_extern  int32_t               z64_oob_timer;
-//z64_extern  char                  z64_cs_message[];
-////z64_extern  z64_state_ovl_t       z64_state_ovl_tab[6];
-//z64_extern  char                  z64_weather_state[];
-//z64_extern  uint32_t              z64_audio_cmd_buf[0x100];
-////z64_extern  z64_scene_table_t     z64_scene_table[];
-////z64_extern  uint16_t              z64_day_speed;
-//z64_extern  z64_sky_image_t       z64_sky_images[9];
-////z64_extern  z64_light_handler_t   z64_light_handlers[];
-//z64_extern  char                  z_onepointdemo_c_data[];
-//z64_extern  z64_map_mark_ovl_t    z64_map_mark_ovl;
-//z64_extern  char                  z64_dins_state_1[];
-//z64_extern  char                  z64_dins_state_2[];
-//z64_extern  int16_t               z64_minimap_entrance_x;
-//z64_extern  int16_t               z64_minimap_entrance_y;
-//z64_extern  int16_t               z64_minimap_entrance_r;
-//z64_extern  char                  z64_hazard_state[];
-//z64_extern  uint16_t              z64_temp_day_speed;
-//z64_extern  uint16_t              z64_n_camera_shake;
-////z64_extern  z64_vrom_file_t       z64_object_table[];
-////z64_extern  z64_entrance_table_t  z64_entrance_table[];
-////z64_extern  z64_scene_config_t    z64_scene_config_table[];
-//z64_extern  int32_t               z64_letterbox_target;
-//z64_extern  int32_t               z64_letterbox_current;
-//z64_extern  z64_play_ovl_t        z64_play_ovl_tab[2];
-//z64_extern  z64_play_ovl_t        z64_play_ovl_ptr;
-//z64_extern  char                  z64_sound_state[];
-//z64_extern  z64_night_sfx_t       z64_night_sfx[20];
-//z64_extern  char                  z64_ocarina_state[];
-//z64_extern  uint32_t              z64_ocarina_counter;
-//z64_extern  uint8_t               z64_ocarina_song_length;
-//z64_extern  char                  z64_scarecrow_song[];
-//z64_extern  char                  z64_song_ptr[];
-//z64_extern  uint8_t               z64_ocarina_button_state;
-//z64_extern  uint8_t               z64_sfx_write_pos;
-//z64_extern  uint8_t               z64_sfx_read_pos;
-//z64_extern  uint8_t               z64_audio_cmd_write_pos;
-//z64_extern  uint8_t               z64_audio_cmd_read_pos;
-//z64_extern  uint8_t               z64_afx_cfg;
-//z64_extern  uint8_t               z64_afx_config_busy;
-//z64_extern  uint32_t              z64_random;
-//z64_extern  char                  z64_message_state[];
-//z64_extern  char                  z64_staff_notes[];
-//z64_extern  int16_t               z64_message_select_state;
-//z64_extern  int16_t               z64_gameover_countdown;
-//z64_extern  z64_pfx_t             z64_pfx;
-//z64_extern  char                  z64_fw_state_1[];
-//z64_extern  char                  z64_fw_state_2[];
-//z64_extern  char                  z64_camera_state[];
-////z64_extern  z64_file_t            z64_file;
-//z64_extern  char                  z64_cs_state[];
-//z64_extern  z64_light_queue_t     z64_light_queue;
-//z64_extern  z64_arena_t           z64_game_arena;
-//z64_extern  void                 *z64_map_mark_data_tab;
-//z64_extern  char                  z64_timer_state[];
-//z64_extern  char                  z64_camera_shake[];
-//z64_extern  char                  z64_poly_colorfilter_state[];
-//z64_extern  OSThread              z64_thread_sched;
-//z64_extern  OSThread              z64_thread_padmgr;
-////z64_extern  z64_input_t           z64_input_direct;
-//z64_extern  OSThread              z64_thread_irqmgr;
-//z64_extern  OSThread              z64_thread_graph;
-////z64_extern  z64_stab_t            z64_stab;
-//z64_extern  OSThread              z64_thread_audio;
-//z64_extern  MtxF                (*z64_mtx_stack)[20];
-//z64_extern  MtxF                 *z64_mtx_stack_top;
-//z64_extern  OSThread              z64_thread_fault;
-//z64_extern  char                  z64_song_state[];
-//z64_extern  int32_t               z64_song_counter;
-//z64_extern  char                  z64_sfx_mute[];
-//z64_extern  z64_seq_ctl_t         z64_seq_ctl[4];
-//z64_extern  char                  z64_afx[];
-//z64_extern  uint32_t              z64_afx_counter;
-//z64_extern  uint8_t               z64_afx_cmd_write_pos;
-//z64_extern  uint8_t               z64_afx_cmd_read_pos;
-//z64_extern  z64_afx_cmd_t         z64_afx_cmd_buf[0x100];
-//z64_extern  char                  z64_zimg[];
-//z64_extern  char                  z64_disp[];
-////z64_extern  z64_ctxt_t            z64_ctxt;
-////z64_extern  z64_game_t            z64_game;
-////z64_extern  z64_link_t            z64_link;
-//z64_extern  char                  z64_cimg[];
-//z64_extern  char                  z64_item_highlight_vram[];
-
+#define     z64_extern            extern __attribute__ ((section(".data")))
+z64_extern  OSThread              z64_thread_idle;
+z64_extern  OSThread              z64_thread_main;
+z64_extern  OSThread              z64_thread_dmamgr;
+//z64_extern  OSMesgQueue           z64_file_mq;
+z64_extern  z64_ftab_t            z64_ftab[];
+z64_extern  z64_part_t           *z64_part_space;
+z64_extern  int32_t               z64_part_pos;
+z64_extern  int32_t               z64_part_max;
+z64_extern  z64_part_ovl_t        z64_part_ovl_tab[37];
+z64_extern  z64_actor_ovl_t       z64_actor_ovl_tab[471];
+z64_extern  char                  z_camera_c_data[];
+z64_extern  char                  z64_hud_state[];
+//z64_extern  char                  z64_event_state_1[];
+z64_extern  uint32_t              z64_letterbox_time;
+z64_extern  char                  z64_event_state_2[];
+z64_extern  char                  z64_event_camera[];
+z64_extern  int32_t               z64_oob_timer;
+z64_extern  char                  z64_cs_message[];
+//z64_extern  z64_state_ovl_t       z64_state_ovl_tab[6];
+z64_extern  char                  z64_weather_state[];
+z64_extern  uint32_t              z64_audio_cmd_buf[0x100];
+//z64_extern  z64_scene_table_t     z64_scene_table[];
+//z64_extern  uint16_t              z64_day_speed;
+z64_extern  z64_sky_image_t       z64_sky_images[9];
+//z64_extern  z64_light_handler_t   z64_light_handlers[];
+z64_extern  char                  z_onepointdemo_c_data[];
+z64_extern  z64_map_mark_ovl_t    z64_map_mark_ovl;
+z64_extern  char                  z64_dins_state_1[];
+z64_extern  char                  z64_dins_state_2[];
+z64_extern  int16_t               z64_minimap_entrance_x;
+z64_extern  int16_t               z64_minimap_entrance_y;
+z64_extern  int16_t               z64_minimap_entrance_r;
+z64_extern  char                  z64_hazard_state[];
+z64_extern  uint16_t              z64_temp_day_speed;
+z64_extern  uint16_t              z64_n_camera_shake;
+//z64_extern  z64_vrom_file_t       z64_object_table[];
+//z64_extern  z64_entrance_table_t  z64_entrance_table[];
+//z64_extern  z64_scene_config_t    z64_scene_config_table[];
+z64_extern  int32_t               z64_letterbox_target;
+z64_extern  int32_t               z64_letterbox_current;
+z64_extern  z64_play_ovl_t        z64_play_ovl_tab[2];
+z64_extern  z64_play_ovl_t        z64_play_ovl_ptr;
+z64_extern  char                  z64_sound_state[];
+z64_extern  z64_night_sfx_t       z64_night_sfx[20];
+z64_extern  char                  z64_ocarina_state[];
+z64_extern  uint32_t              z64_ocarina_counter;
+z64_extern  uint8_t               z64_ocarina_song_length;
+z64_extern  char                  z64_scarecrow_song[];
+z64_extern  char                  z64_song_ptr[];
+z64_extern  uint8_t               z64_ocarina_button_state;
+z64_extern  uint8_t               z64_sfx_write_pos;
+z64_extern  uint8_t               z64_sfx_read_pos;
+z64_extern  uint8_t               z64_audio_cmd_write_pos;
+z64_extern  uint8_t               z64_audio_cmd_read_pos;
+z64_extern  uint8_t               z64_afx_cfg;
+z64_extern  uint8_t               z64_afx_config_busy;
+z64_extern  uint32_t              z64_random;
+z64_extern  char                  z64_message_state[];
+z64_extern  char                  z64_staff_notes[];
+z64_extern  int16_t               z64_message_select_state;
+z64_extern  int16_t               z64_gameover_countdown;
+z64_extern  z64_pfx_t             z64_pfx;
+z64_extern  char                  z64_fw_state_1[];
+z64_extern  char                  z64_fw_state_2[];
+z64_extern  char                  z64_camera_state[];
+//z64_extern  z64_file_t            z64_file;
+z64_extern  char                  z64_cs_state[];
+z64_extern  z64_light_queue_t     z64_light_queue;
+z64_extern  z64_arena_t           z64_game_arena;
+z64_extern  void                 *z64_map_mark_data_tab;
+z64_extern  char                  z64_timer_state[];
+z64_extern  char                  z64_camera_shake[];
+z64_extern  char                  z64_poly_colorfilter_state[];
+z64_extern  OSThread              z64_thread_sched;
+z64_extern  OSThread              z64_thread_padmgr;
+//z64_extern  z64_input_t           z64_input_direct;
+z64_extern  OSThread              z64_thread_irqmgr;
+z64_extern  OSThread              z64_thread_graph;
+//z64_extern  z64_stab_t            z64_stab;
+z64_extern  OSThread              z64_thread_audio;
+z64_extern  MtxF                (*z64_mtx_stack)[20];
+z64_extern  MtxF                 *z64_mtx_stack_top;
+z64_extern  OSThread              z64_thread_fault;
+z64_extern  char                  z64_song_state[];
+z64_extern  int32_t               z64_song_counter;
+z64_extern  char                  z64_sfx_mute[];
+z64_extern  z64_seq_ctl_t         z64_seq_ctl[4];
+z64_extern  char                  z64_afx[];
+z64_extern  uint32_t              z64_afx_counter;
+z64_extern  uint8_t               z64_afx_cmd_write_pos;
+z64_extern  uint8_t               z64_afx_cmd_read_pos;
+z64_extern  z64_afx_cmd_t         z64_afx_cmd_buf[0x100];
+z64_extern  char                  z64_zimg[];
+z64_extern  char                  z64_disp[];
+//z64_extern  z64_ctxt_t            z64_ctxt;
+//z64_extern  z64_game_t            z64_game;
+//z64_extern  z64_link_t            z64_link;
+z64_extern  char                  z64_cimg[];
+z64_extern  char                  z64_item_highlight_vram[];
 
 /* functions */
 #define z64_ActorKill               ((z64_ActorKillFunc)    z64_ActorKill_addr)
@@ -3269,37 +3268,75 @@ typedef void      (*osCreateThread_proc)              (OSThread* thread, OSId id
 #define PlaySFX ((PlaySFX_proc)PlaySFX_addr)
 
 
-#define  z64_SpawnActorAttachedB     ((z64_SpawnActorAttachedB_proc)z64_SpawnActorAttachedB_addr)
-#define  z64_CreateStaticCollision   ((z64_CreateStaticCollision_proc)z64_CreateStaticCollision_addr)
-#define  z64_Camera_ChangeMode       ((z64_Camera_ChangeMode_proc)z64_Camera_ChangeMode_addr)
-#define  z64_Math_CosS               ((z64_Math_CosS_proc)z64_Math_CosS_addr)
-#define  z64_LoadMinimap             ((z64_LoadMinimap_proc)z64_LoadMinimap_addr)
-#define  z64_LoadActionLabel         ((z64_LoadActionLabel_proc)z64_LoadActionLabel_addr)
-#define  z64_InitPauseObjects        ((z64_InitPauseObjects_proc)z64_InitPauseObjects_addr)
-#define  z64_DrawRoom                ((z64_DrawRoom_proc)z64_DrawRoom_addr)
-#define  z64_Sram_LoadDebugSave      ((z64_Sram_LoadDebugSave_proc)z64_Sram_LoadDebugSave_addr)
-#define  z64_CreateSkyGfx            ((z64_CreateSkyGfx_proc)z64_CreateSkyGfx_addr)
-#define  z64_CreateSkyVtx            ((z64_CreateSkyVtx_proc)z64_CreateSkyVtx_addr)
-#define  z64_StopSfx                 ((z64_StopSfx_proc)z64_StopSfx_addr)
-#define  z64_UpdateCtxtInput         ((z64_UpdateCtxtInput_proc)z64_UpdateCtxtInput_addr)
-#define  z64_GetInput                ((z64_GetInput_proc)z64_GetInput_addr)
-#define  z64_AfxCmdF                 ((z64_AfxCmdF_proc)z64_AfxCmdF_addr)
-#define  z64_AfxCmdW                 ((z64_AfxCmdW_proc)z64_AfxCmdW_addr)
-#define  z64_FlushAfxCmd             ((z64_FlushAfxCmd_proc)z64_FlushAfxCmd_addr)
-#define  z64_ConfigureAfx            ((z64_ConfigureAfx_proc)z64_ConfigureAfx_addr)
-#define  z64_AfxRand                 ((z64_AfxRand_proc)z64_AfxRand_addr)
-#define  z64_OcarinaUpdate           ((z64_OcarinaUpdate_proc)z64_OcarinaUpdate_addr)
-#define  z64_ResetAudio              ((z64_ResetAudio_proc)z64_ResetAudio_addr)
-#define  z64_CheckAfxConfigBusy      ((z64_CheckAfxConfigBusy_proc)z64_CheckAfxConfigBusy_addr)
-#define  z64_LoadOverlay             ((z64_LoadOverlay_proc)z64_LoadOverlay_addr)
-#define  z64_SeedRandom              ((z64_SeedRandom_proc)z64_SeedRandom_addr)
-#define  __osPiRelAccess             ((__osPiRelAccess_proc)__osPiRelAccess_addr)
-#define  __osPiGetAccess             ((__osPiGetAccess_proc)__osPiGetAccess_addr)
-#define  osGetCurrFaultedThread      ((osGetCurrFaultedThread_proc)osGetCurrFaultedThread_addr)
-#define  osStopThread                ((osStopThread_proc)osStopThread_addr)
-#define  osStartThread               ((osStartThread_proc)osStartThread_addr)
-#define  osSetEventMesg              ((osSetEventMesg_proc)osSetEventMesg_addr)
-#define  osCreateThread              ((osCreateThread_proc)osCreateThread_addr)
+z64_actor_t *
+          z64_SpawnActorAttachedB     (void *actor_ctxt, z64_actor_t *actor,
+                                       z64_game_t *game, uint16_t actor_id,
+                                       float x, float y, float z, uint16_t rx,
+                                       uint16_t ry, uint16_t rz,
+                                       uint16_t variable);
+void      z64_CreateStaticCollision   (z64_col_ctxt_t *col_ctxt,
+                                       z64_game_t *game,
+                                       z64_col_lut_t *col_lut);
+void      z64_Camera_ChangeMode       (z64_camera_t *camera, int16_t mode);
+float     z64_Math_CosS               (int16_t angle);
+void      z64_LoadMinimap             (z64_game_t *game, int room_idx);
+void      z64_LoadActionLabel         (z64_if_ctxt_t *if_ctxt,
+                                       uint16_t action_idx, int button_idx);
+void      z64_InitPauseObjects        (z64_game_t *game, void *addr,
+                                       void *s72C);
+void      z64_DrawRoom                (z64_game_t *game, z64_room_t *room,
+                                       int unk_a2);
+void      z64_Sram_LoadDebugSave      (void);
+void      z64_CreateSkyGfx            (z64_sky_ctxt_t *sky_ctxt,
+                                       int skybox_type);
+void      z64_CreateSkyVtx            (z64_sky_ctxt_t *sky_ctxt, int a1);
+void      z64_StopSfx                 (void);
+void      z64_UpdateCtxtInput         (z64_ctxt_t *ctxt);
+void      z64_GetInput                (void *input_ctxt, z64_input_t *input,
+                                       int a2);
+void      z64_AfxCmdF                 (uint32_t hi, float lo);
+void      z64_AfxCmdW                 (uint32_t hi, uint32_t lo);
+void      z64_FlushAfxCmd             (void);
+void      z64_ConfigureAfx            (uint8_t cfg);
+uint32_t  z64_AfxRand                 (void);
+void      z64_OcarinaUpdate           (void);
+void      z64_ResetAudio              (uint8_t cfg);
+int       z64_CheckAfxConfigBusy      (void);
+uint32_t  z64_LoadOverlay             (uint32_t vrom_start, uint32_t vrom_end,
+                                       uint32_t vram_start, uint32_t vram_end,
+                                       void *dst);
+void      z64_SeedRandom              (uint32_t seed);
+//#define  z64_SpawnActorAttachedB     ((z64_SpawnActorAttachedB_proc)z64_SpawnActorAttachedB_addr)
+//#define  z64_CreateStaticCollision   ((z64_CreateStaticCollision_proc)z64_CreateStaticCollision_addr)
+//#define  z64_Camera_ChangeMode       ((z64_Camera_ChangeMode_proc)z64_Camera_ChangeMode_addr)
+//#define  z64_Math_CosS               ((z64_Math_CosS_proc)z64_Math_CosS_addr)
+//#define  z64_LoadMinimap             ((z64_LoadMinimap_proc)z64_LoadMinimap_addr)
+//#define  z64_LoadActionLabel         ((z64_LoadActionLabel_proc)z64_LoadActionLabel_addr)
+//#define  z64_InitPauseObjects        ((z64_InitPauseObjects_proc)z64_InitPauseObjects_addr)
+//#define  z64_DrawRoom                ((z64_DrawRoom_proc)z64_DrawRoom_addr)
+//#define  z64_Sram_LoadDebugSave      ((z64_Sram_LoadDebugSave_proc)z64_Sram_LoadDebugSave_addr)
+//#define  z64_CreateSkyGfx            ((z64_CreateSkyGfx_proc)z64_CreateSkyGfx_addr)
+//#define  z64_CreateSkyVtx            ((z64_CreateSkyVtx_proc)z64_CreateSkyVtx_addr)
+//#define  z64_StopSfx                 ((z64_StopSfx_proc)z64_StopSfx_addr)
+//#define  z64_UpdateCtxtInput         ((z64_UpdateCtxtInput_proc)z64_UpdateCtxtInput_addr)
+//#define  z64_GetInput                ((z64_GetInput_proc)z64_GetInput_addr)
+//#define  z64_AfxCmdF                 ((z64_AfxCmdF_proc)z64_AfxCmdF_addr)
+//#define  z64_AfxCmdW                 ((z64_AfxCmdW_proc)z64_AfxCmdW_addr)
+//#define  z64_FlushAfxCmd             ((z64_FlushAfxCmd_proc)z64_FlushAfxCmd_addr)
+//#define  z64_ConfigureAfx            ((z64_ConfigureAfx_proc)z64_ConfigureAfx_addr)
+//#define  z64_AfxRand                 ((z64_AfxRand_proc)z64_AfxRand_addr)
+//#define  z64_OcarinaUpdate           ((z64_OcarinaUpdate_proc)z64_OcarinaUpdate_addr)
+//#define  z64_ResetAudio              ((z64_ResetAudio_proc)z64_ResetAudio_addr)
+//#define  z64_CheckAfxConfigBusy      ((z64_CheckAfxConfigBusy_proc)z64_CheckAfxConfigBusy_addr)
+//#define  z64_LoadOverlay             ((z64_LoadOverlay_proc)z64_LoadOverlay_addr)
+//#define  z64_SeedRandom              ((z64_SeedRandom_proc)z64_SeedRandom_addr)
+//#define  __osPiRelAccess             ((__osPiRelAccess_proc)__osPiRelAccess_addr)
+//#define  __osPiGetAccess             ((__osPiGetAccess_proc)__osPiGetAccess_addr)
+//#define  osGetCurrFaultedThread      ((osGetCurrFaultedThread_proc)osGetCurrFaultedThread_addr)
+//#define  osStopThread                ((osStopThread_proc)osStopThread_addr)
+//#define  osStartThread               ((osStartThread_proc)osStartThread_addr)
+//#define  osSetEventMesg              ((osSetEventMesg_proc)osSetEventMesg_addr)
+//#define  osCreateThread              ((osCreateThread_proc)osCreateThread_addr)
 
 /* macros */
 #define GET_ITEMGETINF(flag) (z64_file.item_get_inf[(flag) >> 4] & (1 << ((flag) & 0xF)))

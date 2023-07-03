@@ -3,6 +3,7 @@
 
 #include "dungeon_info.h"
 #include "z64.h"
+#include "gz/gz.h"
 
 // PLAYER_STATE1_0 : Scene transition
 // PLAYER_STATE1_SWINGING_BOTTLE
@@ -35,7 +36,7 @@ extern uint16_t CFG_CHILD_TRADE_SHUFFLE;
                             ((z64_game.pause_ctxt.item_cursor == Z64_SLOT_ADULT_TRADE && CFG_ADULT_TRADE_SHUFFLE) || \
                             (z64_game.pause_ctxt.item_cursor == Z64_SLOT_CHILD_TRADE && CFG_CHILD_TRADE_SHUFFLE)))
 
-#define CAN_USE_TRADE_DPAD  (CAN_DRAW_TRADE_DPAD && z64_game.pause_ctxt.changing != 3)
+#define CAN_USE_TRADE_DPAD  (CAN_DRAW_TRADE_DPAD && z64_game.pause_ctxt.changing != 3 && !gz.menu_active)
 
 #define DISPLAY_DPAD        ((((z64_file.iron_boots || z64_file.hover_boots) && z64_file.link_age == 0) || \
                             ((z64_file.items[Z64_SLOT_CHILD_TRADE] >= Z64_ITEM_WEIRD_EGG && z64_file.items[Z64_SLOT_CHILD_TRADE] <= Z64_ITEM_MASK_OF_TRUTH) && z64_file.link_age == 1) || \
@@ -46,7 +47,8 @@ extern uint16_t CFG_CHILD_TRADE_SHUFFLE;
                             ((uint32_t)z64_ctxt.state_dtor==z64_state_ovl_tab[3].vram_dtor) && \
                             (z64_file.game_mode == 0) && \
                             ((z64_event_state_1 & 0x20) == 0) && \
-                            (!CAN_DRAW_DUNGEON_INFO || !CFG_DPAD_DUNGEON_INFO_ENABLE))
+                            (!CAN_DRAW_DUNGEON_INFO || !CFG_DPAD_DUNGEON_INFO_ENABLE) && \
+                            !gz.menu_active)
 // Not in pause menu
 // Ocarina in inventory
 // Scenes ocarina restrictions, specific to each scene
