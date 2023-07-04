@@ -2,12 +2,14 @@ import json
 import random
 import time
 import sys
+import select
 
 from Main import build_world_graphs, place_items
 from Settings import Settings
 from SettingsList import logic_tricks
 from Search import Search
 from Goals import replace_goal_names
+from Utils import local_path
 
 def read_settings(settings_base: dict) -> Settings:
 
@@ -61,12 +63,30 @@ def benchmark_rules_time(worlds, s):
 
 
 if __name__ == "__main__":
-    # Read plando json from stdin.
-    # This also includes a ":collect" key to control
-    # whether or not to collect location items or just
-    # visit them, useful for keeping some logic rules
-    # false in ALR for testing.
-    world_conf = json.loads(sys.stdin.read())
+    # Unix-only stdin detection
+    use_stdin = False
+    if select.select([sys.stdin, ], [], [], 0.0)[0]:
+        use_stdin = True
+
+    if use_stdin:
+        # Read plando json from stdin.
+        # This also includes a ":collect" key to control
+        # whether or not to collect location items or just
+        # visit them, useful for keeping some logic rules
+        # false in ALR for testing.
+        world_conf = json.loads(sys.stdin.read())
+    else:
+        # Use plando from settings.sav if stdin not used.
+        # Otherwise tell the user to specify a plando.
+        settingsFile = local_path('settings.sav')
+        with open(settingsFile, encoding='utf-8') as f:
+            settings = json.load(f)
+        try:
+            with open(settings['distribution_file'], encoding='utf-8') as f:
+                world_conf = json.load(f)
+        except Exception as ex:
+            print('Specify a plando file to load using the OOTR GUI')
+            raise ex
 
     # Minimum randomizer functions to build a traversable
     # world graph. This will randomly shuffle items that
