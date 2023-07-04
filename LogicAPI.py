@@ -61,11 +61,32 @@ def benchmark_rules_time(worlds, s):
 
 
 if __name__ == "__main__":
+    # Read plando json from stdin.
+    # This also includes a ":collect" key to control
+    # whether or not to collect location items or just
+    # visit them, useful for keeping some logic rules
+    # false in ALR for testing.
     world_conf = json.loads(sys.stdin.read())
+
+    # Minimum randomizer functions to build a traversable
+    # world graph. This will randomly shuffle items that
+    # aren't plando'd! For checking logic, use full spoiler
+    # logs minus the item pool section as input to prevent
+    # random variance.
     worlds = get_reachable_entities(world_conf['settings'])
     s = Search([world.state for world in worlds])
+
+    # Collect some starting items that are left uncollected for
+    # spoiler log readability since we don't care about the log
+    s.collect_pseudo_starting_items()
+
+    # Get list of all locations instead of just advancement locations
+    # to allow auditing logic independent of shuffle settings and
+    # item fill
     locs = worlds[0].get_locations()
     s.visit_locations(locs)
+
+    # Send location rule metadata to stdout as a JSON-formatted string
     logic_output = '{\n'
     for loc in worlds[0].get_locations():
         logic_output += (
