@@ -121,17 +121,19 @@ if __name__ == "__main__":
 
     # Send location rule metadata to stdout as a JSON-formatted string
     logic_output = '{\n'
-    for loc in worlds[0].get_locations():
-        logic_output += (
-            f'"{loc.name}": {{\n'
-            f'"name": "{loc.name}",\n'
-            f'"rule_string": "{loc.rule_string}",\n'
-            f'"transformed_rule": "{loc.transformed_rule}",\n'
-            f'"visited": {str(s.visited(loc)).lower()},\n'
-            f'"child_access_rule": {str(loc.access_rule(s.state_list[0], age="child", spot=loc)).lower()},\n'
-            f'"adult_access_rule": {str(loc.access_rule(s.state_list[0], age="adult", spot=loc)).lower()}\n'
-            f'}},\n'
-        )
+    for world in worlds:
+        for loc in world.get_locations():
+            logic_output += (
+                f'"{loc.name}": {{\n'
+                f'"name": "{loc.name}",\n'
+                f'"world": "{world.id}",\n'
+                f'"rule_string": "{loc.rule_string}",\n'
+                f'"transformed_rule": "{loc.transformed_rule}",\n'
+                f'"visited": {str(s.visited(loc)).lower()},\n'
+                f'"child_access_rule": {str(loc.access_rule(s.state_list[0], age="child", spot=loc)).lower()},\n'
+                f'"adult_access_rule": {str(loc.access_rule(s.state_list[0], age="adult", spot=loc)).lower()}\n'
+                f'}},\n'
+            )
     logic_output = logic_output[:-2] + '\n}'
     print(logic_output)
     sys.stdout.flush()
