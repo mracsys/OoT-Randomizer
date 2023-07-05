@@ -3,6 +3,7 @@ import random
 import time
 import sys
 import select
+import os
 
 from Main import build_world_graphs, place_items
 from Settings import Settings
@@ -10,6 +11,7 @@ from SettingsList import logic_tricks
 from Search import Search
 from Goals import replace_goal_names
 from Utils import local_path
+from Item import ItemInfo
 
 def read_settings(settings_base: dict) -> Settings:
 
@@ -75,6 +77,10 @@ if __name__ == "__main__":
         # visit them, useful for keeping some logic rules
         # false in ALR for testing.
         world_conf = json.loads(sys.stdin.read())
+        world_conf['settings']['enable_distribution_file'] = True
+        world_conf['settings']['distribution_file'] = local_path('stdin_plando.json')
+        with open(local_path('stdin_plando.json'), 'w', encoding='utf-8') as f:
+            json.dump(world_conf, f)
     else:
         # Use plando from settings.sav if stdin not used.
         # Otherwise tell the user to specify a plando.
@@ -84,6 +90,8 @@ if __name__ == "__main__":
         try:
             with open(settings['distribution_file'], encoding='utf-8') as f:
                 world_conf = json.load(f)
+                world_conf['settings']['enable_distribution_file'] = True
+                world_conf['settings']['distribution_file'] = settings['distribution_file']
         except Exception as ex:
             print('Specify a plando file to load using the OOTR GUI')
             raise ex
@@ -94,6 +102,8 @@ if __name__ == "__main__":
     # logs minus the item pool section as input to prevent
     # random variance.
     worlds = get_reachable_entities(world_conf['settings'])
+    if use_stdin:
+        os.remove(local_path('stdin_plando.json'))
     s = Search([world.state for world in worlds])
 
     # Collect some starting items that are left uncollected for
@@ -104,7 +114,10 @@ if __name__ == "__main__":
     # to allow auditing logic independent of shuffle settings and
     # item fill
     locs = worlds[0].get_locations()
-    s.visit_locations(locs)
+    if ':collect' not in world_conf or world_conf[':collect'] == 'all':
+        s.collect_locations()
+    else:
+        s.visit_locations(locs)
 
     # Send location rule metadata to stdout as a JSON-formatted string
     logic_output = '{\n'
