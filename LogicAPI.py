@@ -22,7 +22,7 @@ def read_settings(settings_base: dict) -> Settings:
     settings.load_distribution()
 
     for trick in logic_tricks.values():
-        settings.__dict__[trick['name']] = trick['name'] in settings.allowed_tricks
+        settings.settings_dict[trick['name']] = trick['name'] in settings.allowed_tricks
 
     if not settings.world_count:
         settings.world_count = 1
@@ -44,7 +44,7 @@ def read_settings(settings_base: dict) -> Settings:
 def get_reachable_entities(settings_base):
     settings = read_settings(settings_base)
     worlds = build_world_graphs(settings)
-    place_items(settings, worlds)
+    place_items(worlds)
     for world in worlds:
         world.distribution.configure_effective_starting_items(worlds, world)
     if worlds[0].enable_goal_hints:
