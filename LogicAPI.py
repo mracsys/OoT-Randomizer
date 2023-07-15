@@ -135,12 +135,13 @@ if __name__ == "__main__":
                 # Collect the item for the state world it is for
                 s.state_list[location.item.world.id].collect(location.item)
                 location.maybe_set_misc_hints()
-        spheres = dict((location.name, i + 1) for i, sphere in enumerate(collection_spheres) for location in sphere)
+        spheres = dict((location.name, i) for i, sphere in enumerate(collection_spheres) for location in sphere)
     else:
         s.visit_locations(locs)
 
     # Send location rule metadata to stdout as a JSON-formatted string
     logic_output = '{\n'
+    logic_output += '"locations": {\n'
     for world in worlds:
         for loc in world.get_locations():
             item_name = f'Player {str(loc.item.world.id + 1)} {loc.item.name}' if loc.item else 'empty'
@@ -158,5 +159,17 @@ if __name__ == "__main__":
                 f'}},\n'
             )
     logic_output = logic_output[:-2] + '\n}'
+    if spheres != {}:
+        logic_output += ',\n"spheres": {\n'
+        for i, sphere in enumerate(collection_spheres):
+            logic_output += f'"{str(i)}": {{\n'
+            for loc in sphere:
+                item_name = f'Player {str(loc.item.world.id + 1)} {loc.item.name}' if loc.item else 'empty'
+                logic_output += (
+                    f'"{loc.name}": "{item_name}",\n'
+                )
+            logic_output = logic_output[:-2] + '\n},\n'
+        logic_output = logic_output[:-2] + '\n}'
+    logic_output += '\n}'
     print(logic_output)
     sys.stdout.flush()
