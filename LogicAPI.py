@@ -114,8 +114,28 @@ if __name__ == "__main__":
     # to allow auditing logic independent of shuffle settings and
     # item fill
     locs = worlds[0].get_locations()
+    spheres = {}
     if ':collect' not in world_conf or world_conf[':collect'] == 'all':
         s.collect_locations()
+    elif world_conf[':collect'] == 'spheres':
+        item_locations = s.progression_locations()
+        collection_spheres = []
+        entrance_spheres = []
+        remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
+        while True:
+            collected = list(s.iter_reachable_locations(item_locations))
+            if not collected:
+                break
+            # Gather the new entrances before collecting items.
+            collection_spheres.append(collected)
+            accessed_entrances = set(filter(s.spot_access, remaining_entrances))
+            entrance_spheres.append(list(accessed_entrances))
+            remaining_entrances -= accessed_entrances
+            for location in collected:
+                # Collect the item for the state world it is for
+                s.state_list[location.item.world.id].collect(location.item)
+                location.maybe_set_misc_hints()
+        spheres = dict((location.name, i + 1) for i, sphere in enumerate(collection_spheres) for location in sphere)
     else:
         s.visit_locations(locs)
 
@@ -123,6 +143,7 @@ if __name__ == "__main__":
     logic_output = '{\n'
     for world in worlds:
         for loc in world.get_locations():
+            item_name = f'Player {str(loc.item.world.id + 1)} {loc.item.name}' if loc.item else 'empty'
             logic_output += (
                 f'"{loc.name}": {{\n'
                 f'"name": "{loc.name}",\n'
@@ -130,6 +151,8 @@ if __name__ == "__main__":
                 f'"rule_string": "{loc.rule_string}",\n'
                 f'"transformed_rule": "{loc.transformed_rule}",\n'
                 f'"visited": {str(s.visited(loc)).lower()},\n'
+                f'"sphere": {str(spheres.get(loc.name, -1))},\n'
+                f'"item_name": "{item_name}",\n'
                 f'"child_access_rule": {str(loc.access_rule(s.state_list[0], age="child", spot=loc)).lower()},\n'
                 f'"adult_access_rule": {str(loc.access_rule(s.state_list[0], age="adult", spot=loc)).lower()}\n'
                 f'}},\n'
