@@ -171,5 +171,6 @@ if __name__ == "__main__":
             logic_output = logic_output[:-2] + '\n},\n'
         logic_output = logic_output[:-2] + '\n}'
     logic_output += '\n}'
+    debug_output = json.loads(logic_output)
     print(logic_output)
     sys.stdout.flush()
