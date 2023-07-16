@@ -25,6 +25,7 @@ Ocarina_C_right_Button: int = ItemInfo.solver_ids['Ocarina_C_right_Button']
 class State:
     def __init__(self, parent: World) -> None:
         self.solv_items: list[int] = [0] * len(ItemInfo.solver_ids)
+        self.ItemInfo = ItemInfo
         self.world: World = parent
         self.search: Optional[Search] = None
 
