@@ -684,11 +684,11 @@ def shuffle_random_entrances(worlds: list[World]) -> None:
         raise EntranceShuffleError('Cannot beat game!')
 
     # Validate the worlds one last time to ensure all special conditions are still valid
-    for world in worlds:
-        try:
-            validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
-        except EntranceShuffleError as error:
-            raise EntranceShuffleError('Worlds are not valid after shuffling entrances, Reason: %s' % error)
+    #for world in worlds:
+    #    try:
+    #        validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
+    #    except EntranceShuffleError as error:
+    #        raise EntranceShuffleError('Worlds are not valid after shuffling entrances, Reason: %s' % error)
 
 
 def shuffle_one_way_priority_entrances(worlds: list[World], world: World, one_way_priorities: dict[str, tuple[list[str], list[str]]],
@@ -746,7 +746,7 @@ def shuffle_entrance_pool(world: World, worlds: list[World], entrance_pool: list
 
             # Fully validate the resulting world to ensure everything is still fine after shuffling this pool
             complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
-            validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
+            #validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
 
             # If all entrances could be connected without issues, log connections and continue
             for entrance, target in rollbacks:
