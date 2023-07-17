@@ -813,6 +813,12 @@ def get_pool_core(world: World) -> tuple[list[str], dict[str, Item]]:
                     shuffle_item = True
                 elif shuffle_item is None:
                     dungeon_collection.append(ItemFactory(item, world))
+                # dumb hack to make keyrings behave, why is this setting so difficult
+            if shuffle_setting is None:
+                if (location.vanilla_item == dungeon.item_name("Boss Key")
+                    and (world.settings.shuffle_bosskeys if dungeon.name != 'Ganons Castle' else world.settings.shuffle_ganon_bosskey) == 'remove'):
+                    world.state.collect(ItemFactory(location.vanilla_item, world))
+
 
         # The rest of the overworld items.
         elif location.type in ["Chest", "NPC", "Song", "Collectable", "Cutscene", "BossHeart"]:
