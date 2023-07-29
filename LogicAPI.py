@@ -162,15 +162,18 @@ if __name__ == "__main__":
     logic_output = logic_output[:-2] + '\n}'
     if spheres != {}:
         logic_output += ',\n"spheres": {\n'
+        sphere_logic_output = ',\n"sphere_logic_rules": {\n'
         for i, sphere in enumerate(collection_spheres):
             logic_output += f'"{str(i)}": {{\n'
+            sphere_logic_output += f'"{str(i)}": {{\n'
             for loc in sphere:
                 item_name = f'Player {str(loc.item.world.id + 1)} {loc.item.name}' if loc.item else 'empty'
-                logic_output += (
-                    f'"{loc.name}": "{item_name}",\n'
-                )
+                logic_output += f'"{loc.name}": "{item_name}",\n'
+                sphere_logic_output += f'"{loc.name}": "{loc.transformed_rule}",\n'
             logic_output = logic_output[:-2] + '\n},\n'
+            sphere_logic_output = sphere_logic_output[:-2] + '\n},\n'
         logic_output = logic_output[:-2] + '\n}'
+        logic_output += sphere_logic_output[:-2] + '\n}'
     logic_output += '\n}'
     debug_output = json.loads(logic_output)
     print(logic_output)
