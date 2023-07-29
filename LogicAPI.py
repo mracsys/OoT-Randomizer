@@ -148,6 +148,7 @@ if __name__ == "__main__":
             logic_output += (
                 f'"{loc.name}": {{\n'
                 f'"name": "{loc.name}",\n'
+                f'"type": "{loc.type}",\n'
                 f'"world": "{world.id}",\n'
                 f'"rule_string": "{loc.rule_string}",\n'
                 f'"transformed_rule": "{loc.transformed_rule}",\n'
