@@ -121,7 +121,7 @@ if __name__ == "__main__":
         item_locations = s.progression_locations()
         collection_spheres = []
         entrance_spheres = []
-        remaining_entrances = set(entrance for world in worlds for entrance in world.get_shuffled_entrances())
+        remaining_entrances = set(entrance for world in worlds for entrance in world.get_entrances())
         while True:
             collected = list(s.iter_reachable_locations(item_locations))
             if not collected:
@@ -174,6 +174,13 @@ if __name__ == "__main__":
             sphere_logic_output = sphere_logic_output[:-2] + '\n},\n'
         logic_output = logic_output[:-2] + '\n}'
         logic_output += sphere_logic_output[:-2] + '\n}'
+        logic_output += ',\n"entrance_spheres": {\n'
+        for i, sphere in enumerate(entrance_spheres):
+            logic_output += f'"{str(i)}": {{\n'
+            for entrance in sphere:
+                logic_output += f'"{entrance.name}": "{entrance.transformed_rule}",\n'
+            logic_output = logic_output[:-2] + '\n},\n'
+        logic_output = logic_output[:-2] + '\n}'
     logic_output += '\n}'
     debug_output = json.loads(logic_output)
     print(logic_output)

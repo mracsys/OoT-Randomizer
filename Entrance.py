@@ -24,7 +24,8 @@ class Entrance:
         self.primary: bool = False
         self.always: bool = False
         self.never: bool = False
-        self.rule_string: Optional[str] = None
+        self.rule_string: Optional[str] = "True"
+        self.transformed_rule: Optional[str] = "True"
 
     def copy(self, *, copy_dict: Optional[dict[int, Any]] = None) -> Entrance:
         copy_dict = {} if copy_dict is None else copy_dict
