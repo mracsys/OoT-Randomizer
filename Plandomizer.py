@@ -699,7 +699,7 @@ class WorldDistribution:
                 try:
                     check_entrances_compatibility(matched_entrance, matched_target)
                     change_connections(matched_entrance, matched_target)
-                    #validate_world(matched_entrance.world, worlds, None, locations_to_ensure_reachable, itempool)
+                    validate_world(matched_entrance.world, worlds, None, locations_to_ensure_reachable, itempool)
                 except EntranceShuffleError as error:
                     raise RuntimeError('Cannot connect %s To %s in world %d (Reason: %s)' %
                                             (matched_entrance, matched_entrance.connected_region or matched_target.connected_region, self.id + 1, error))
@@ -921,8 +921,8 @@ class WorldDistribution:
 
             if item.advancement:
                 search = Search.max_explore([world.state for world in worlds], itertools.chain.from_iterable(item_pools))
-                #if not search.can_beat_game(False):
-                #    raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_id + 1))
+                if not search.can_beat_game(False):
+                    raise FillError('%s in world %d is not reachable without %s in world %d!' % (location.name, self.id + 1, item.name, player_id + 1))
 
     def get_item(self, ignore_pools: list[int], item_pools: list[list[Item]], location: Location, player_id: int,
                  record: LocationRecord, worlds: list[World]) -> Item:

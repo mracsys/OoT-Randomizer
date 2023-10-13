@@ -684,11 +684,11 @@ def shuffle_random_entrances(worlds: list[World]) -> None:
         raise EntranceShuffleError('Cannot beat game!')
 
     # Validate the worlds one last time to ensure all special conditions are still valid
-    #for world in worlds:
-    #    try:
-    #        validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
-    #    except EntranceShuffleError as error:
-    #        raise EntranceShuffleError('Worlds are not valid after shuffling entrances, Reason: %s' % error)
+    for world in worlds:
+        try:
+            validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
+        except EntranceShuffleError as error:
+            raise EntranceShuffleError('Worlds are not valid after shuffling entrances, Reason: %s' % error)
 
 
 def shuffle_one_way_priority_entrances(worlds: list[World], world: World, one_way_priorities: dict[str, tuple[list[str], list[str]]],
