@@ -746,7 +746,7 @@ def shuffle_entrance_pool(world: World, worlds: list[World], entrance_pool: list
 
             # Fully validate the resulting world to ensure everything is still fine after shuffling this pool
             complete_itempool = [item for world in worlds for item in world.get_itempool_with_dungeon_items()]
-            #validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
+            validate_world(world, worlds, None, locations_to_ensure_reachable, complete_itempool, placed_one_way_entrances=placed_one_way_entrances)
 
             # If all entrances could be connected without issues, log connections and continue
             for entrance, target in rollbacks:
