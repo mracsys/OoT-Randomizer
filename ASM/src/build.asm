@@ -134,6 +134,7 @@ RANDO_CONTEXT:
 .include "en_dns.asm"
 
 .align 0x10
+C_BUNDLE_START:
 .importobj "../build/bundle.o"
 
 .align 0x10

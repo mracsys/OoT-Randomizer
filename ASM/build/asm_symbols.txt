@@ -1171,6 +1171,7 @@
 80406FF8 @@return
 80407014 fairy_ocarina_getitem_override
 80407038 EnDns_TakePayment
+80407070 C_BUNDLE_START,00000018
 80407070 after_spawn_override_silver_rupee,00000018
 80407088 Actor_SetWorldToHome_End,00000060
 804070E8 Actor_StoreFlagInRotation,00000080

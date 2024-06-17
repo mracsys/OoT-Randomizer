@@ -17,12 +17,14 @@ parser.add_argument('--compile-c', action='store_true', help="Recompile C module
 parser.add_argument('--no-compile-c', action='store_true', help="Do not recompile C modules")
 parser.add_argument('--dump-obj', action='store_true', help="Dumps extra object info for debugging purposes. Does nothing with --no-compile-c")
 parser.add_argument('--diff-only', action='store_true', help="Creates diff output without running armips")
+parser.add_argument('--gdb-bundle', action='store_true', help="Creates gdb-compatible bundle for debugging added C code")
 
 args = parser.parse_args()
 pj64_sym_path = args.pj64sym
 compile_c = not args.no_compile_c
 dump_obj = args.dump_obj
 diff_only = args.diff_only
+gdb_bundle = args.gdb_bundle
 
 root_dir = os.path.dirname(os.path.realpath(__file__))
 tools_dir = os.path.join(root_dir, 'tools')
@@ -44,6 +46,8 @@ if base_rom_size != 0x400_0000:
 
 if compile_c:
     clist = ['make']
+    if gdb_bundle:
+        clist.append('GDB_BUNDLE=1')
     if dump_obj:
         clist.append('RUN_OBJDUMP=1')
     call(clist)
@@ -96,11 +100,27 @@ with open('build/asm_symbols.txt', 'r') as f:
             continue
         if sym_name[0] in ['.', '@']:
             continue
+        if sym_name.split(',')[0] == 'C_BUNDLE_START':
+            sym_name = sym_name.split(',')[0]
         sym_type = c_sym_types.get(sym_name) or ('data' if sym_name.isupper() else 'code')
         symbols[sym_name] = {
             'type': sym_type,
             'address': address,
         }
+
+# Make second bundle for use with gdb
+
+if gdb_bundle:
+    C_PAYLOAD_START = symbols['C_BUNDLE_START']['address']
+    os.chdir(run_dir + '/build')
+    call([
+        'mips64-objcopy',
+        '--adjust-section-vma', f'.text=0x{C_PAYLOAD_START}',
+        '--adjust-section-vma', f'.data=0x{C_PAYLOAD_START}',
+        '--adjust-section-vma', f'.rodata=0x{C_PAYLOAD_START}',
+        'bundle.o', 'gdb_bundle.o'
+    ])
+
 
 # Output symbols
 

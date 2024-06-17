@@ -10,41 +10,49 @@ SYMBOL TABLE:
 0002a605 l    d  .gnu.attributes	00000000 .gnu.attributes
 0002a605 l    d  .mdebug.abi32	00000000 .mdebug.abi32
 00000000 l    d  .comment	00000000 .comment
-00000000 l    df *ABS*	00000000 actor.c
-00000000 l    df *ABS*	00000000 agony.c
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_loclists	00000000 .debug_loclists
+00000000 l    d  .debug_aranges	00000000 .debug_aranges
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 l    d  .debug_rnglists	00000000 .debug_rnglists
+00000000 l    df *ABS*	00000000 c/actor.c
+00000000 l    df *ABS*	00000000 c/agony.c
 0001c620 l     O .data	00000004 alpha_frame
 000191d8 l     O .rodata	00000028 ALPHA_DATA
-00000000 l    df *ABS*	00000000 blue_warp.c
+00000000 l    df *ABS*	00000000 c/blue_warp.c
 00019200 l       .rodata	00000000 $LC0
 00019204 l       .rodata	00000000 $LC1
-00000000 l    df *ABS*	00000000 bombchu_bowling.c
-00000000 l    df *ABS*	00000000 chests.c
+00000000 l    df *ABS*	00000000 c/bombchu_bowling.c
+00000000 l    df *ABS*	00000000 c/chests.c
 800ab900 l       *ABS*	00000000 write_matrix_stack_top
 0001921c l       .rodata	00000000 $LC0
 00019220 l       .rodata	00000000 $LC1
 00019224 l       .rodata	00000000 $LC2
 00019228 l       .rodata	00000000 $LC3
 0001922c l       .rodata	00000000 $LC4
-00000000 l    df *ABS*	00000000 debug.c
+00000000 l    df *ABS*	00000000 c/debug.c
 00021388 l     O .data	0000000a debugNumberIsInUsage
 00021360 l     O .data	00000028 debugNumbers
 00021338 l     O .data	00000028 debugNumbersFloat
 0002132c l     O .data	00000004 show_warp_menu
 00021330 l     O .data	00000006 current_menu_indexes
+00019234 l       .rodata	00000000 $LC4
 00019230 l       .rodata	00000000 $LC0
 00019238 l       .rodata	00000000 $LC1
 00019240 l       .rodata	00000000 $LC2
 00019248 l       .rodata	00000000 $LC3
-00019234 l       .rodata	00000000 $LC4
-00000000 l    df *ABS*	00000000 demo_effect.c
+00000000 l    df *ABS*	00000000 c/demo_effect.c
 0001924c l       .rodata	00000000 $LC0
 00019250 l       .rodata	00000000 $LC1
-00000000 l    df *ABS*	00000000 dpad.c
-00000000 l    df *ABS*	00000000 dungeon_info.c
+00000000 l    df *ABS*	00000000 c/dpad.c
+00000000 l    df *ABS*	00000000 c/dungeon_info.c
 00021398 l     O .data	00000004 show_dungeon_info
 00019254 l       .rodata	00000000 $LC0
 00019258 l       .rodata	00000000 $LC1
-00000000 l    df *ABS*	00000000 en_item00.c
+00000000 l    df *ABS*	00000000 c/en_item00.c
 00019260 l       .rodata	00000000 $LC0
 00019268 l       .rodata	00000000 $LC1
 00019270 l       .rodata	00000000 $LC2
@@ -52,7 +60,7 @@ SYMBOL TABLE:
 00019278 l       .rodata	00000000 $LC4
 0001927c l       .rodata	00000000 $LC5
 00019280 l       .rodata	00000000 $LC6
-00000000 l    df *ABS*	00000000 en_wonderitem.c
+00000000 l    df *ABS*	00000000 c/en_wonderitem.c
 0001d180 l     O .data	00000004 sEffectPrimColorBlue
 0001d178 l     O .data	00000004 sEffectPrimColorCyan
 0001d174 l     O .data	00000004 sEffectEnvColor
@@ -61,10 +69,10 @@ SYMBOL TABLE:
 00019284 l     O .rodata	00000018 dropTable.0
 0001d17c l     O .data	00000004 sEffectPrimColorYellow
 0001d184 l     O .data	00000004 sEffectPrimColorRed
-00000000 l    df *ABS*	00000000 extern_ctxt.c
+00000000 l    df *ABS*	00000000 c/extern_ctxt.c
 000192e0 l       .rodata	00000000 $LC0
 000192e4 l       .rodata	00000000 $LC1
-00000000 l    df *ABS*	00000000 file_icons.c
+00000000 l    df *ABS*	00000000 c/file_icons.c
 00007874 l     F .text	00000024 color_product
 00007898 l     F .text	000000dc make_digits
 00007974 l     F .text	00000070 draw_square_sprite
@@ -78,23 +86,23 @@ SYMBOL TABLE:
 000192fc l     O .rodata	00000019 button_note_data
 0002139c l     O .data	00000001 frame_counter.0
 000192e8 l       .rodata	00000000 $LC0
-00000000 l    df *ABS*	00000000 file_message.c
+00000000 l    df *ABS*	00000000 c/file_message.c
 00008dd4 l     F .text	00000050 print_msg
+000193b0 l       .rodata	00000000 $LC4
 00019378 l       .rodata	00000000 $LC0
 0001937c l       .rodata	00000000 $LC1
 00019390 l       .rodata	00000000 $LC2
 000193a4 l       .rodata	00000000 $LC3
-000193b0 l       .rodata	00000000 $LC4
-00000000 l    df *ABS*	00000000 file_select.c
-00000000 l    df *ABS*	00000000 ganon.c
-00000000 l    df *ABS*	00000000 get_items.c
+00000000 l    df *ABS*	00000000 c/file_select.c
+00000000 l    df *ABS*	00000000 c/ganon.c
+00000000 l    df *ABS*	00000000 c/get_items.c
 000193b8 l       .rodata	00000000 $LC0
-00000000 l    df *ABS*	00000000 gfx.c
-00000000 l    df *ABS*	00000000 hud_colors.c
-00000000 l    df *ABS*	00000000 icetrap.c
-00000000 l    df *ABS*	00000000 inputviewer.c
+00000000 l    df *ABS*	00000000 c/gfx.c
+00000000 l    df *ABS*	00000000 c/hud_colors.c
+00000000 l    df *ABS*	00000000 c/icetrap.c
+00000000 l    df *ABS*	00000000 c/inputviewer.c
 000193e4 l       .rodata	00000000 $LC1
-00000000 l    df *ABS*	00000000 item_draw_functions.c
+00000000 l    df *ABS*	00000000 c/item_draw_functions.c
 00019428 l     O .rodata	00000030 kInitListMedallion
 000193e8 l     O .rodata	00000040 kMatrixRot.0
 00019458 l       .rodata	00000000 $LC0
@@ -108,15 +116,15 @@ SYMBOL TABLE:
 00019478 l       .rodata	00000000 $LC8
 00019480 l       .rodata	00000000 $LC9
 0001947c l       .rodata	00000000 $LC10
-00000000 l    df *ABS*	00000000 item_draw_table.c
-00000000 l    df *ABS*	00000000 item_effects.c
-00000000 l    df *ABS*	00000000 item_table.c
-00000000 l    df *ABS*	00000000 item_upgrades.c
-00000000 l    df *ABS*	00000000 kaleido_item.c
-00000000 l    df *ABS*	00000000 main.c
-00000000 l    df *ABS*	00000000 menu.c
-00000000 l    df *ABS*	00000000 message.c
-00000000 l    df *ABS*	00000000 misc_colors.c
+00000000 l    df *ABS*	00000000 c/item_draw_table.c
+00000000 l    df *ABS*	00000000 c/item_effects.c
+00000000 l    df *ABS*	00000000 c/item_table.c
+00000000 l    df *ABS*	00000000 c/item_upgrades.c
+00000000 l    df *ABS*	00000000 c/kaleido_item.c
+00000000 l    df *ABS*	00000000 c/main.c
+00000000 l    df *ABS*	00000000 c/menu.c
+00000000 l    df *ABS*	00000000 c/message.c
+00000000 l    df *ABS*	00000000 c/misc_colors.c
 0002a4ec l     O .data	00000004 frames
 0001949c l       .rodata	00000000 $LC0
 000194a0 l       .rodata	00000000 $LC1
@@ -124,9 +132,9 @@ SYMBOL TABLE:
 000194a8 l       .rodata	00000000 $LC3
 000194ac l       .rodata	00000000 $LC4
 000194b0 l       .rodata	00000000 $LC5
-00000000 l    df *ABS*	00000000 model_text.c
+00000000 l    df *ABS*	00000000 c/model_text.c
 00019518 l       .rodata	00000000 $LC2
-00000000 l    df *ABS*	00000000 models.c
+00000000 l    df *ABS*	00000000 c/models.c
 00019568 l       .rodata	00000000 $LC5
 00019564 l       .rodata	00000000 $LC4
 0001956c l       .rodata	00000000 $LC6
@@ -134,7 +142,7 @@ SYMBOL TABLE:
 00019574 l       .rodata	00000000 $LC8
 00019578 l       .rodata	00000000 $LC9
 0001957c l       .rodata	00000000 $LC10
-00000000 l    df *ABS*	00000000 music.c
+00000000 l    df *ABS*	00000000 c/music.c
 0002a5c5 l     O .data	00000001 isSlowedDown
 0002a5c6 l     O .data	00000002 previousSeqIndexChange
 0002a5c4 l     O .data	00000001 isSpeedup
@@ -144,47 +152,47 @@ SYMBOL TABLE:
 00019580 l       .rodata	00000000 $LC0
 00019584 l       .rodata	00000000 $LC1
 00019588 l       .rodata	00000000 $LC2
-00000000 l    df *ABS*	00000000 obj_comb.c
+00000000 l    df *ABS*	00000000 c/obj_comb.c
 0001958c l       .rodata	00000000 $LC0
 00019590 l       .rodata	00000000 $LC1
-00000000 l    df *ABS*	00000000 obj_kibako.c
-00000000 l    df *ABS*	00000000 obj_kibako2.c
-00000000 l    df *ABS*	00000000 objects.c
+00000000 l    df *ABS*	00000000 c/obj_kibako.c
+00000000 l    df *ABS*	00000000 c/obj_kibako2.c
+00000000 l    df *ABS*	00000000 c/objects.c
 00019628 l       .rodata	00000000 $LC1
 00019624 l       .rodata	00000000 $LC0
-00000000 l    df *ABS*	00000000 ocarina_buttons.c
-00000000 l    df *ABS*	00000000 pots.c
-00000000 l    df *ABS*	00000000 rainbow.c
+00000000 l    df *ABS*	00000000 c/ocarina_buttons.c
+00000000 l    df *ABS*	00000000 c/pots.c
+00000000 l    df *ABS*	00000000 c/rainbow.c
 00019674 l     O .rodata	00000015 cycle_colors
 00019690 l       .rodata	00000000 $LC0
 00019698 l       .rodata	00000000 $LC1
 0001969c l       .rodata	00000000 $LC2
-00000000 l    df *ABS*	00000000 refill.c
-00000000 l    df *ABS*	00000000 rng.c
+00000000 l    df *ABS*	00000000 c/refill.c
+00000000 l    df *ABS*	00000000 c/rng.c
 000196a0 l       .rodata	00000000 $LC0
 000196a4 l       .rodata	00000000 $LC1
-00000000 l    df *ABS*	00000000 sage_gifts.c
-00000000 l    df *ABS*	00000000 save.c
-00000000 l    df *ABS*	00000000 scarecrow.c
-00000000 l    df *ABS*	00000000 scene.c
-00000000 l    df *ABS*	00000000 text.c
+00000000 l    df *ABS*	00000000 c/sage_gifts.c
+00000000 l    df *ABS*	00000000 c/save.c
+00000000 l    df *ABS*	00000000 c/scarecrow.c
+00000000 l    df *ABS*	00000000 c/scene.c
+00000000 l    df *ABS*	00000000 c/text.c
 0002a5f0 l     O .data	00000004 text_buf
 0002a5f4 l     O .data	00000004 text_end
 000196c0 l       .rodata	00000000 $LC0
-00000000 l    df *ABS*	00000000 textures.c
-00000000 l    df *ABS*	00000000 trade_quests.c
+00000000 l    df *ABS*	00000000 c/textures.c
+00000000 l    df *ABS*	00000000 c/trade_quests.c
 000196c4 l     O .rodata	00000008 sMaskPaymentPrice
-00000000 l    df *ABS*	00000000 triforce.c
+00000000 l    df *ABS*	00000000 c/triforce.c
 0002a5f8 l     O .data	00000004 render_triforce_flag
 0002a5fc l     O .data	00000004 frames
 00019938 l       .rodata	00000000 $LC0
 00019940 l       .rodata	00000000 $LC1
 00019948 l       .rodata	00000000 $LC2
 00019950 l       .rodata	00000000 $LC3
-00000000 l    df *ABS*	00000000 twinrova.c
-00000000 l    df *ABS*	00000000 uninvertYaxis.c
-00000000 l    df *ABS*	00000000 util.c
-00000000 l    df *ABS*	00000000 weather.c
+00000000 l    df *ABS*	00000000 c/twinrova.c
+00000000 l    df *ABS*	00000000 c/uninvertYaxis.c
+00000000 l    df *ABS*	00000000 c/util.c
+00000000 l    df *ABS*	00000000 c/weather.c
 0000de04 g     F .text	00000114 draw_gi_deku_nut
 000210e0 g     O .data	00000004 RNG_SEED_INT
 000143ec g     F .text	00000054 scale_factor

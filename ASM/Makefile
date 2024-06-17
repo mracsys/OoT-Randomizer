@@ -3,8 +3,13 @@ LD = mips64-ld
 OBJDUMP = mips64-objdump
 OBJCOPY = mips64-objcopy
 
+ifdef GDB_BUNDLE
+CFLAGS = -O1 -G0 -fno-reorder-blocks -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
+	-mexplicit-relocs -g
+else
 CFLAGS = -O1 -G0 -fno-reorder-blocks -march=vr4300 -mtune=vr4300 -mabi=32 -mno-gpopt -mdivide-breaks \
 	-mexplicit-relocs
+endif
 CPPFLAGS = -DF3DEX_GBI_2
 
 OUTDIR := build
