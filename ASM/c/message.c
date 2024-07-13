@@ -1,3 +1,4 @@
+#include "message.h"
 #include "z64.h"
 #include "stdbool.h"
 #include "save.h"
@@ -26,7 +27,7 @@ extern uint8_t PLAYER_NAMES[256][8];
 extern uint8_t PLAYER_NAME_ID;
 
 // Helper function for adding characters to the decoded message buffer
-void Message_AddCharacter(MessageContext *msgCtx, void *pFont, uint32_t *pDecodedBufPos, uint32_t *pCharTexIdx, uint8_t charToAdd) {
+void Message_AddCharacter(MessageContext* msgCtx, void* pFont, uint32_t* pDecodedBufPos, uint32_t* pCharTexIdx, uint8_t charToAdd) {
     uint32_t decodedBufPosVal = *pDecodedBufPos;
     uint32_t charTexIdx = *pCharTexIdx;
     msgCtx->msgBufDecoded[decodedBufPosVal++] = charToAdd; // Add the character to the output buffer, increment the output position
@@ -41,7 +42,7 @@ void Message_AddCharacter(MessageContext *msgCtx, void *pFont, uint32_t *pDecode
 }
 
 // Helper function for adding integer numbers to the decoded message buffer
-void Message_AddInteger(MessageContext *msgCtx, void *pFont, uint32_t *pDecodedBufPos, uint32_t *pCharTexIdx, uint32_t numToAdd) {
+void Message_AddInteger(MessageContext* msgCtx, void* pFont, uint32_t* pDecodedBufPos, uint32_t* pCharTexIdx, uint32_t numToAdd) {
     uint8_t digits[10];
     uint8_t i = 0;
     // Extract each digit. They are added, in reverse order, to digits[]
@@ -59,7 +60,7 @@ void Message_AddInteger(MessageContext *msgCtx, void *pFont, uint32_t *pDecodedB
 }
 
 // Helper function for adding simple strings to the decoded message buffer. Does not support additional control codes.
-void Message_AddString(MessageContext *msgCtx, void *pFont, uint32_t *pDecodedBufPos, uint32_t *pCharTexIdx, char *stringToAdd) {
+void Message_AddString(MessageContext* msgCtx, void* pFont, uint32_t* pDecodedBufPos, uint32_t* pCharTexIdx, char* stringToAdd) {
     while (*stringToAdd != 0) {
         Message_AddCharacter(msgCtx, pFont, pDecodedBufPos, pCharTexIdx, *stringToAdd);
         stringToAdd++;
@@ -67,7 +68,7 @@ void Message_AddString(MessageContext *msgCtx, void *pFont, uint32_t *pDecodedBu
 }
 
 // Helper function for adding a filename to the decoded message buffer. Filenames use a different character set from other text.
-void Message_AddFileName(MessageContext *msgCtx, void *pFont, uint32_t *pDecodedBufPos, uint32_t *pCharTexIdx, uint8_t *filenameToAdd) {
+void Message_AddFileName(MessageContext* msgCtx, void* pFont, uint32_t* pDecodedBufPos, uint32_t* pCharTexIdx, uint8_t* filenameToAdd) {
     int end = 8;
     while (filenameToAdd[end - 1] == 0xDF) {
         // trim trailing space
@@ -84,12 +85,12 @@ void Message_AddFileName(MessageContext *msgCtx, void *pFont, uint32_t *pDecoded
 //      Compare currChar to the control code.
 //          Add text to the output buffer by performing the following:
 //          Call one of the above functions to add the text.
-//          Subtract 1 from *pDecodedBufPos
+//          Subtract 1 from* pDecodedBufPos
 //          Return true
-bool Message_Decode_Additional_Control_Codes(uint8_t currChar, uint32_t *pDecodedBufPos, uint32_t *pCharTexIdx) {
-    MessageContext *msgCtx = &(z64_game.msgContext);
-    Font *pFont = &(msgCtx->font); // Get a reference to the font.
-    char *msgRaw = (char *) &(pFont->msgBuf); // Get a reference to the start of the raw message. Index using msgCtx->msgBufPos.
+bool Message_Decode_Additional_Control_Codes(uint8_t currChar, uint32_t* pDecodedBufPos, uint32_t* pCharTexIdx) {
+    MessageContext* msgCtx = &(z64_game.msgContext);
+    Font* pFont = &(msgCtx->font); // Get a reference to the font.
+    char* msgRaw = (char*) &(pFont->msgBuf); // Get a reference to the start of the raw message. Index using msgCtx->msgBufPos.
 
     switch (currChar) {
         case 0xF0: {
@@ -119,5 +120,34 @@ bool Message_Decode_Additional_Control_Codes(uint8_t currChar, uint32_t *pDecode
         default: {
             return false;
         }
+    }
+}
+
+uint8_t shooting_gallery_show_message = 0;
+// Displays a warning message if player did adult shooting gallery without bow.
+void shooting_gallery_message() {
+    // Child/Adult shooting galleries actor is the same, so the asm hook will work for both.
+    // We only want the message for Adult.
+    if (!LINK_IS_ADULT) {
+        return;
+    }
+    // Check if we have a bow.
+    if (z64_file.items[ITEM_BOW] != ITEM_NONE) {
+        return;
+    }
+    // Check if the message was already displayed once.
+    if (shooting_gallery_show_message != 0) {
+        return;
+    }
+    shooting_gallery_show_message = 1;
+}
+
+// Function to display custom textboxes ingame.
+void display_misc_messages() {
+    if (shooting_gallery_show_message == 1 &&
+        z64_MessageGetState(((uint8_t *)(&z64_game)) + 0x20D8) == 0) {
+        z64_DisplayTextbox(&z64_game, 0x045C, 0);
+        // To avoid displaying the message several times if the player just wants to farm the 50 rupees.
+        shooting_gallery_show_message = -1;
     }
 }

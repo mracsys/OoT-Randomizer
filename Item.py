@@ -142,7 +142,8 @@ class Item:
                 (self.type == 'BossKey' and self.world.settings.shuffle_bosskeys in ('remove', 'vanilla', 'dungeon')) or
                 (self.type == 'GanonBossKey' and self.world.settings.shuffle_ganon_bosskey in ('remove', 'vanilla', 'dungeon')) or
                 ((self.map or self.compass) and (self.world.settings.shuffle_mapcompass in ('remove', 'startwith', 'vanilla', 'dungeon'))) or
-                (self.type == 'SilverRupee' and self.world.settings.shuffle_silver_rupees in ['remove','vanilla','dungeon']))
+                (self.type == 'SilverRupee' and self.world.settings.shuffle_silver_rupees in ('remove','vanilla','dungeon')) or
+                (self.type == 'DungeonReward' and self.world.settings.shuffle_dungeon_rewards in ('vanilla', 'reward', 'dungeon')))
 
     @property
     def majoritem(self) -> bool:
@@ -152,7 +153,7 @@ class Item:
             return (self.world.settings.bridge == 'tokens' or self.world.settings.shuffle_ganon_bosskey == 'tokens' or
                 (self.world.settings.shuffle_ganon_bosskey == 'on_lacs' and self.world.settings.lacs_condition == 'tokens'))
 
-        if self.type in ('Drop', 'Event', 'Shop', 'DungeonReward') or not self.advancement:
+        if self.type in ('Drop', 'Event', 'Shop') or not self.advancement:
             return False
 
         if self.name.startswith('Bombchus') and not self.world.settings.free_bombchu_drops:
@@ -164,17 +165,19 @@ class Item:
 
         if self.map or self.compass:
             return False
-        if self.type == 'SmallKey' and self.world.settings.shuffle_smallkeys in ['dungeon', 'vanilla']:
+        if self.type == 'DungeonReward' and self.world.settings.shuffle_dungeon_rewards in ('vanilla', 'reward', 'dungeon'):
+            return False
+        if self.type == 'SmallKey' and self.world.settings.shuffle_smallkeys in ('dungeon', 'vanilla'):
             return False
         if self.type == 'HideoutSmallKey' and self.world.settings.shuffle_hideoutkeys == 'vanilla':
             return False
         if self.type == 'TCGSmallKey' and self.world.settings.shuffle_tcgkeys == 'vanilla':
             return False
-        if self.type == 'BossKey' and self.world.settings.shuffle_bosskeys in ['dungeon', 'vanilla']:
+        if self.type == 'BossKey' and self.world.settings.shuffle_bosskeys in ('dungeon', 'vanilla'):
             return False
-        if self.type == 'GanonBossKey' and self.world.settings.shuffle_ganon_bosskey in ['dungeon', 'vanilla']:
+        if self.type == 'GanonBossKey' and self.world.settings.shuffle_ganon_bosskey in ('dungeon', 'vanilla'):
             return False
-        if self.type == 'SilverRupee' and self.world.settings.shuffle_silver_rupees in ['dungeon', 'vanilla']:
+        if self.type == 'SilverRupee' and self.world.settings.shuffle_silver_rupees in ('dungeon', 'vanilla'):
             return False
 
         return True
@@ -186,10 +189,10 @@ class Item:
         return self.name in self.world.goal_items
 
     def __str__(self) -> str:
-        return str(self.__unicode__())
+        return self.name
 
-    def __unicode__(self) -> str:
-        return '%s' % self.name
+    def __repr__(self) -> str:
+        return f"{self.world.__repr__()} {self.name}"
 
 
 @overload

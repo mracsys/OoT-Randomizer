@@ -3,12 +3,13 @@
 #include "file_icons.h"
 #include "file_message.h"
 #include "gfx.h"
+#include "music.h"
 #include "text.h"
 #include "util.h"
 #include "z64.h"
 
 
-sprite_t *hash_sprites[2] = {
+sprite_t* hash_sprites[2] = {
     &items_sprite,
     &quest_items_sprite,
 };
@@ -56,7 +57,7 @@ hash_symbol_t hash_symbols[32] = {
 extern uint8_t CFG_FILE_SELECT_HASH[5];
 
 void draw_file_select_hash(uint32_t fade_out_alpha, z64_menudata_t* menu_data) {
-    z64_disp_buf_t *db = &(z64_ctxt.gfx->poly_opa);
+    z64_disp_buf_t* db = &(z64_ctxt.gfx->poly_opa);
 
     // Call setup display list
     gSPDisplayList(db->p++, &setup_db);
@@ -74,8 +75,8 @@ void draw_file_select_hash(uint32_t fade_out_alpha, z64_menudata_t* menu_data) {
 
     for (int i = 0; i < icon_count; i++) {
         uint8_t sym_index = CFG_FILE_SELECT_HASH[i];
-        hash_symbol_t *sym_desc = &(hash_symbols[sym_index]);
-        sprite_t *sym_sprite = hash_sprites[sym_desc->sprite_index];
+        hash_symbol_t* sym_desc = &(hash_symbols[sym_index]);
+        sprite_t* sym_sprite = hash_sprites[sym_desc->sprite_index];
 
         sprite_load(db, sym_sprite, sym_desc->tile_index, 1);
         sprite_draw(db, sym_sprite, 0, left, top, icon_size, icon_size);
@@ -85,6 +86,7 @@ void draw_file_select_hash(uint32_t fade_out_alpha, z64_menudata_t* menu_data) {
 
     draw_file_message(db, menu_data);
     draw_file_icons(db, menu_data);
+    display_song_name_on_file_select(db);
 
     // Fade out once a file is selected
 
