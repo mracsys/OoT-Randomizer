@@ -117,29 +117,24 @@ if __name__ == "__main__":
     # item fill
     locs = worlds[0].get_locations()
     spheres = {}
-    if ':collect' not in world_conf or world_conf[':collect'] == 'all':
-        s.collect_locations()
-    elif world_conf[':collect'] == 'spheres':
-        item_locations = s.progression_locations()
-        collection_spheres = []
-        entrance_spheres = []
-        remaining_entrances = set(entrance for world in worlds for entrance in world.get_entrances())
-        while True:
-            collected = list(s.iter_reachable_locations(item_locations))
-            if not collected:
-                break
-            # Gather the new entrances before collecting items.
-            collection_spheres.append(collected)
-            accessed_entrances = set(filter(s.spot_access, remaining_entrances))
-            entrance_spheres.append(list(accessed_entrances))
-            remaining_entrances -= accessed_entrances
-            for location in collected:
-                # Collect the item for the state world it is for
-                s.state_list[location.item.world.id].collect(location.item)
-                location.maybe_set_misc_hints()
-        spheres = dict((location.name, i) for i, sphere in enumerate(collection_spheres) for location in sphere)
-    else:
-        s.visit_locations(locs)
+    item_locations = s.progression_locations()
+    collection_spheres = []
+    entrance_spheres = []
+    remaining_entrances = set(entrance for world in worlds for entrance in world.get_entrances())
+    while True:
+        collected = list(s.iter_reachable_locations(item_locations))
+        if not collected:
+            break
+        # Gather the new entrances before collecting items.
+        collection_spheres.append(collected)
+        accessed_entrances = set(filter(s.spot_access, remaining_entrances))
+        entrance_spheres.append(list(accessed_entrances))
+        remaining_entrances -= accessed_entrances
+        for location in collected:
+            # Collect the item for the state world it is for
+            s.state_list[location.item.world.id].collect(location.item)
+            location.maybe_set_misc_hints()
+    spheres = dict((location.name, i) for i, sphere in enumerate(collection_spheres) for location in sphere)
 
     # Send location rule metadata to stdout as a JSON-formatted string
     logic_output = '{\n'
