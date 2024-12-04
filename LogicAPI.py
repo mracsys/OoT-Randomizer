@@ -93,8 +93,10 @@ if __name__ == "__main__":
                 world_conf['settings']['enable_distribution_file'] = True
                 world_conf['settings']['distribution_file'] = settings['distribution_file']
         except Exception as ex:
-            print('Specify a plando file to load using the OOTR GUI')
-            raise ex
+            print ('Using cached GUI settings in settings.sav with no plando\'d locations.')
+            print('Specify a plando file to load using the OOTR GUI if more specific testing is needed.')
+            world_conf = {'settings': settings}
+            #raise ex
 
     # Minimum randomizer functions to build a traversable
     # world graph. This will randomly shuffle items that
@@ -184,5 +186,5 @@ if __name__ == "__main__":
         logic_output = logic_output[:-2] + '\n}'
     logic_output += '\n}'
     debug_output = json.loads(logic_output)
-    print(logic_output)
+    print(json.dumps(debug_output, indent=4))
     sys.stdout.flush()
