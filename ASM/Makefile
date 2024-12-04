@@ -34,18 +34,17 @@ $(OBJDIR):
 	mkdir -p $@
 
 $(OBJDIR)/%_bin.o: $(RESOURCEDIR)/%.bin
-	$(OBJCOPY) -I binary -O elf32-bigmips --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
+	$(OBJCOPY) -I binary -O elf32-bigmips --set-section-alignment .data=8 --rename-section .data=.rodata,alloc,load,readonly,data,contents $< $@
 	$(OBJCOPY) --redefine-sym _binary_resources_$*_bin_start=$(call UC,$*)_RESOURCE $@
 	$(OBJCOPY) --redefine-sym _binary_resources_$*_bin_end=$(call UC,$*)_RESOURCE_END $@
 	$(OBJCOPY) --redefine-sym _binary_resources_$*_bin_size=$(call UC,$*)_RESOURCE_SIZE $@
-
 
 $(RESOURCEDIR):
 	mkdir -p $@
 
 $(OBJECTS): | $(OBJDIR)
 
-$(RESOURCES): | $(RESOURCEDIR)
+$(RESOURCES): | $(OBJDIR) $(RESOURCEDIR)
 
 bundle: $(RESOURCES) $(OBJECTS)
 	$(LD) -T linker_script.ld -T ootSymbols.ld -o $(OUTDIR)/bundle.o -i -L. $(patsubst %.o,-l:%.o,$(OBJECTS) $(RESOURCES))

@@ -887,7 +887,9 @@ class SaveContext:
                 'trials_shadow': Address(extended=True, size=1),
                 'trials_water': Address(extended=True, size=1),
                 'trials_forest': Address(extended=True, size=1),
-            }
+            },
+            'password' : Address(extended=True, size=6),
+
         }
 
     item_id_map: dict[str, int] = {

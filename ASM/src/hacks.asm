@@ -519,6 +519,7 @@ SRAM_SLOTS:
 ;   jal     Save_Write_Hook
 .org 0x800905D4
     j       Sram_WriteSave
+    or      a1, r0, r0
 
 ; Hack Open_Save function to retrieve additional collectible flags
 ; At the start of the Sram_OpenSave function, SramContext address is stored in A0 and also on the stack at 0x20(SP)
@@ -546,6 +547,11 @@ SRAM_SLOTS:
 ; Hack Sram_CopySave to use our new version of the function
 .org 0x80090FD0
     j       Sram_CopySave
+    nop
+
+; Hack Sram_EraseSave to actually just erase the entire slot
+.org 0x80090eb8
+    j       Sram_EraseSave
     nop
 
 ; Increase the size of EnItem00 instances to store the override
@@ -3647,6 +3653,24 @@ DemoEffect_DrawJewel_AfterHook:
     jal     chestgame_delayed_chest_open
     nop
 
+; Show a key in the unopened chest regardless of chest
+; contents if the tcg_requires_lens setting is enabled.
+; Left/right do the same check for the get item ID,
+; but use different registers for the actor spawn branch
+; and chest actor references for coordinates.
+; Replaces:
+;   lwc1    $f0, 0x0024(v1)
+;   lwc1    $f2, 0x0028(v1)
+.orga 0xE43964
+    jal chestgame_force_game_loss_left
+    nop
+; Replaces:
+;   lwc1    $f0, 0x0024(v0)
+;   lwc1    $f2, 0x0028(v0)
+.orga 0xE43A0C
+    jal chestgame_force_game_loss_right
+    nop
+
 ;==================================================================================================
 ; Bombchu Ticking Color
 ;==================================================================================================
@@ -4131,6 +4155,16 @@ DemoEffect_DrawJewel_AfterHook:
     jal     volvagia_flying_hitbox
     nop
 
+;================================================================================
+; Reset choiceNum when decoding a new message
+; prevents weird text alignment when going from message box with icon to no icon
+;================================================================================
+; Replaces sh   $zero, 0x4c0(at)
+;          lhu  a3, 0x4c0(a3)
+.org 0x800DA34C
+    j       Message_Decode_reset_msgCtx.textPosX
+    nop
+
 .include "hacks/en_item00.asm"
 .include "hacks/ovl_bg_gate_shutter.asm"
 .include "hacks/ovl_bg_haka_tubo.asm"
@@ -4139,3 +4173,4 @@ DemoEffect_DrawJewel_AfterHook:
 .include "hacks/ovl_en_kz.asm"
 .include "hacks/ovl_obj_mure3.asm"
 .include "hacks/z_parameter.asm"
+.include "hacks/z_file_choose.asm"

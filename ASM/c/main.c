@@ -30,7 +30,6 @@ void Gameplay_InitSkybox(z64_game_t* globalCtx, int16_t skyboxId);
 void c_init() {
     heap_init();
     gfx_init();
-    text_init();
     item_overrides_init();
     override_flags_init();
     models_init();
@@ -38,6 +37,7 @@ void c_init() {
 }
 
 void before_game_state_update() {
+    rando_display_buffer_reset();
     handle_pending_items();
     handle_dpad();
     update_misc_colors();
@@ -52,15 +52,18 @@ void after_game_state_update() {
     // Checks if the prerender screen is being drawn before drawing new HUD things.
     // Else this will cause graphical and/or lag issues on some emulators when pausing.
     if (R_PAUSE_BG_PRERENDER_STATE != PAUSE_BG_PRERENDER_PROCESS) {
-        draw_dungeon_info(&(z64_ctxt.gfx->overlay));
-        draw_triforce_count(&(z64_ctxt.gfx->overlay));
-        draw_boss_key(&z64_game, &(z64_ctxt.gfx->overlay));
-        draw_silver_rupee_count(&z64_game, &(z64_ctxt.gfx->overlay));
-        draw_illegal_model_text(&(z64_ctxt.gfx->overlay));
-        draw_input_viewer(&(z64_ctxt.gfx->overlay));
-        display_song_name(&(z64_ctxt.gfx->overlay));
-        debug_utilities(&(z64_ctxt.gfx->overlay));
+        draw_dungeon_info(&rando_overlay_db);
+        draw_triforce_count(&rando_overlay_db);
+        draw_boss_key(&z64_game, &rando_overlay_db);
+        draw_silver_rupee_count(&z64_game, &rando_overlay_db);
+        draw_illegal_model_text(&rando_overlay_db);
+        draw_input_viewer(&rando_overlay_db);
+        display_song_name(&rando_overlay_db);
+#if DEBUG_MODE
+        debug_utilities(&debug_db);
+#endif
     }
+    close_rando_display_buffer();
     give_sage_gifts();
 }
 

@@ -20,8 +20,8 @@ from JSONDump import dump_obj, CollapseList, CollapseDict, AlignedDict, SortedDi
 from Location import Location, LocationIterator, LocationFactory
 from LocationList import location_groups, location_table
 from Search import Search
-from SettingsList import build_close_match, validate_settings
-from Spoiler import Spoiler, HASH_ICONS
+from SettingsList import build_close_match, validate_settings, settings_versioning
+from Spoiler import Spoiler, HASH_ICONS, PASSWORD_NOTES
 from version import __version__
 
 if TYPE_CHECKING:
@@ -278,7 +278,8 @@ class WorldDistribution:
         self.id: int = id
         self.base_pool: list[str] = []
         self.major_group: list[str] = []
-        self.song_as_items: bool = False
+        self.rewards_as_items: bool = False
+        self.songs_as_items: bool = False
         self.skipped_locations: list[Location] = []
         self.effective_starting_items: dict[str, StarterRecord] = {}
 
@@ -607,8 +608,10 @@ class WorldDistribution:
                     self.pool_remove_item([pool], item_name, record.count)
                 except KeyError:
                     pass
+                if item_name in item_groups["DungeonReward"]:
+                    self.rewards_as_items = True
                 if item_name in item_groups["Song"]:
-                    self.song_as_items = True
+                    self.songs_as_items = True
 
         junk_to_add = pool_size - len(pool)
         if junk_to_add > 0:
@@ -907,8 +910,10 @@ class WorldDistribution:
 
             item = self.get_item(ignore_pools, item_pools, location, player_id, record, worlds)
 
+            if location.type == 'Boss' and location.name != 'ToT Reward from Rauru' and item.type != 'DungeonReward':
+                self.rewards_as_items = True
             if location.type == 'Song' and item.type != 'Song':
-                self.song_as_items = True
+                self.songs_as_items = True
             location.world.push_item(location, item, True)
 
             if item.advancement:
@@ -1084,7 +1089,7 @@ class WorldDistribution:
             if iter_world.settings.empty_dungeons_mode != 'none':
                 skipped_locations_from_dungeons: list[Location] = []
                 if iter_world.settings.shuffle_dungeon_rewards in ('vanilla', 'reward'):
-                    skipped_locations_from_dungeons += [world.get_location(loc_name) for loc_name in location_groups['Boss']]
+                    skipped_locations_from_dungeons += [world.get_location(loc_name) for loc_name in location_groups['Boss'] if loc_name != 'ToT Reward from Rauru']
                 elif world.settings.shuffle_dungeon_rewards == 'dungeon':
                     skipped_locations_from_dungeons += [location for location in iter_world.get_filled_locations() if location.item.type == 'DungeonReward']
                 if world.settings.shuffle_song_items == 'song':
@@ -1137,6 +1142,7 @@ class WorldDistribution:
 class Distribution:
     def __init__(self, settings: Settings, src_dict: Optional[dict[str, Any]] = None) -> None:
         self.file_hash: Optional[list[str]] = None
+        self.password: Optional[list[str]] = None
         self.playthrough: Optional[dict[str, dict[str, LocationRecord]]] = None
         self.entrance_playthrough: Optional[dict[str, dict[str, EntranceRecord]]] = None
 
@@ -1156,6 +1162,7 @@ class Distribution:
         # One-time init
         update_dict = {
             'file_hash': (self.src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5],
+            'password': (self.src_dict.get('password', []) + [None, None, None, None, None, None])[0:6],
             'playthrough': None,
             'entrance_playthrough': None,
             '_settings': self.src_dict.get('settings', {}),
@@ -1169,6 +1176,10 @@ class Distribution:
 
         self.settings.update(update_dict['_settings'])
         if 'settings' in self.src_dict:
+            for setting in self.src_dict['settings']:
+                for setting_version in settings_versioning:
+                    if setting == setting_version.old_name:
+                        self.src_dict['settings'][setting_version.new_name] = self.src_dict['settings'].pop(setting_version.old_name)
             validate_settings(self.src_dict['settings'])
             self.src_dict['_settings'] = self.src_dict['settings']
             del self.src_dict['settings']
@@ -1292,11 +1303,15 @@ class Distribution:
         self_dict = {
             ':version': __version__,
             'file_hash': CollapseList(self.file_hash),
+            'password': CollapseList(self.password),
             ':seed': self.settings.seed,
             ':settings_string': self.settings.settings_string,
             ':enable_distribution_file': self.settings.enable_distribution_file,
             'settings': self.settings.to_json(),
         }
+
+        if not self.settings.password_lock or not spoiler:
+            self_dict.pop('password')
 
         if spoiler:
             world_dist_dicts = [world_dist.to_json() for world_dist in self.world_dists]
@@ -1337,6 +1352,7 @@ class Distribution:
 
     def update_spoiler(self, spoiler: Spoiler, output_spoiler: bool) -> None:
         self.file_hash = [HASH_ICONS[icon] for icon in spoiler.file_hash]
+        self.password = [PASSWORD_NOTES[note - 1] for note in spoiler.password]
 
         if not output_spoiler:
             return
