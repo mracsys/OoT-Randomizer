@@ -46,6 +46,8 @@ class Location:
         self.disabled: DisableType = DisableType.ENABLED
         self.always: bool = False
         self.never: bool = False
+        self.rule_string: str = ''
+        self.transformed_rule: str = ''
         self.filter_tags: Optional[tuple[str, ...]] = (filter_tags,) if isinstance(filter_tags, str) else filter_tags
         self.rule_string: Optional[str] = None
 

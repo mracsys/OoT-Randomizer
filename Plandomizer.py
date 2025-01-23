@@ -1028,7 +1028,7 @@ class WorldDistribution:
             location = self.pull_item_or_location(location_pools, worlds[self.id], name, remove=False)
             if location is None:
                 raise RuntimeError('Location already cloaked in world %d: %s' % (self.id + 1, name))
-            model = self.pull_item_or_location(model_pools, world, record.model, remove=False)
+            model = ItemInfo.items[record.model]
             if model is None:
                 raise RuntimeError('Unknown model in world %d: %s' % (self.id + 1, record.model))
             if can_cloak(location.item, model):

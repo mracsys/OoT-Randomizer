@@ -725,7 +725,7 @@ def shuffle_random_entrances(worlds: list[World]) -> None:
 def shuffle_one_way_priority_entrances(worlds: list[World], world: World, one_way_priorities: dict[str, tuple[list[str], list[str]]],
                                        one_way_entrance_pools: dict[str, list[Entrance]], one_way_target_entrance_pools: dict[str, list[Entrance]],
                                        locations_to_ensure_reachable: Iterable[Location], complete_itempool: list[Item],
-                                       retry_count: int = 2) -> list[tuple[Entrance, Entrance]]:
+                                       retry_count: int = 20) -> list[tuple[Entrance, Entrance]]:
     while retry_count:
         retry_count -= 1
         rollbacks = []

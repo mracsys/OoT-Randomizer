@@ -33,6 +33,7 @@ Bomb_Bag: int = ItemInfo.solver_ids['Bomb_Bag']
 class State:
     def __init__(self, parent: World) -> None:
         self.solv_items: list[int] = [0] * len(ItemInfo.solver_ids)
+        self.ItemInfo = ItemInfo
         self.world: World = parent
         self.search: Optional[Search] = None
 

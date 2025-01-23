@@ -433,6 +433,12 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                     allowed_globals)
             except TypeError as e:
                 raise Exception('Parse Error: %s' % e, self.current_spot.name, ast.dump(body, False))
+        #logging.getLogger('').debug(f'{self.current_spot.name}: {self.original_rule}\n{ast.dump(body, annotate_fields=False,indent=4)}')
+        if self.current_spot:
+            logging.getLogger('').debug(f'{self.current_spot.name}: {self.original_rule}\n{ast.unparse(body)}')
+            self.current_spot.transformed_rule = ast.unparse(body)
+        else:
+            logging.getLogger('').debug(f'disconnected rule: {self.original_rule}\n{ast.unparse(body)}')
         return self.rule_cache[rule_str]
 
     ## Handlers for specific internal functions used in the json logic.
@@ -482,6 +488,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
     # If spot is None, here() rules won't work.
     def parse_rule(self, rule_string: str, spot: Optional[Location | Entrance] = None) -> AccessRule:
         self.current_spot = spot
+        self.original_rule = rule_string
         return self.make_access_rule(self.visit(ast.parse(rule_string, mode='eval').body))
 
     def parse_spot_rule(self, spot: Location | Entrance) -> None:
