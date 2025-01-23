@@ -11,7 +11,9 @@
         "exits": {
             "Root Exits": "is_starting_age or Time_Travel",
             "HC Garden Skippable Locations": "skip_child_zelda",
-            "Beyond Door of Time Skippable Locations": "skip_reward_from_rauru"
+            "Beyond Door of Time Skippable Locations": "skip_reward_from_rauru",
+            # Hack to make ALR work if hideout entrances are unshuffled
+            "GF Above Jail Child Locations": "shuffle_gerudo_fortress_heart_piece == 'remove' or not shuffle_hideout_entrances"
         }
     },
     {
@@ -108,6 +110,12 @@
             "Ganons Castle Lobby": "
                 (is_child and at('Ganons Castle Lobby', is_child)) or
                 (is_adult and at('Ganons Castle Lobby', is_adult))",
+            "Ganons Castle Main": "
+                (is_child and at('Ganons Castle Main', is_child)) or
+                (is_adult and at('Ganons Castle Main', is_adult))",
+            "Ganons Castle Tower": "
+                (is_child and at('Ganons Castle Tower', is_child)) or
+                (is_adult and at('Ganons Castle Tower', is_adult))",
             "Gerudo Training Ground Lobby": "
                 (is_child and at('Gerudo Training Ground Lobby', is_child)) or
                 (is_adult and at('Gerudo Training Ground Lobby', is_adult))",
@@ -848,7 +856,16 @@
             "Hideout Hall to Balcony": "True",
             "Gerudo Fortress": "True",
             "GF Chest Roof": "can_use(Longshot)",
-            "GF Break Room Entrance": "damage_multiplier != 'ohko' or can_use(Nayrus_Love)"
+            "GF Break Room Entrance": "damage_multiplier != 'ohko' or can_use(Nayrus_Love)",
+            "GF Above Jail Child Locations": "is_child"
+        }
+    },
+    {
+        "region_name": "GF Above Jail Child Locations",
+        "scene": "Gerudo Fortress",
+        "hint": "GERUDO_FORTRESS",
+        "locations": {
+            "GF Freestanding PoH": "True"
         }
     },
     {
@@ -1436,6 +1453,7 @@
         "locations": {
             "Market 10 Big Poes": "
                 is_adult and (Big_Poe or (Bottle_with_Big_Poe, big_poe_count))",
+            "Market 10 Big Poes Hint": "is_adult",
             "Market Guard House Child Crate 1": "is_child and can_break_crate",
             "Market Guard House Child Crate 2": "is_child and can_break_crate",
             "Market Guard House Child Crate 3": "is_child and can_break_crate",

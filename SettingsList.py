@@ -627,7 +627,7 @@ class SettingInfos:
                 'settings': [
                     'open_forest', 'open_kakariko', 'open_door_of_time', 'zora_fountain', 'gerudo_fortress', 'dungeon_shortcuts_choice',
                     'dungeon_shortcuts', 'trials_random', 'trials',
-                    'starting_age', 'shuffle_interior_entrances', 'shuffle_hideout_entrances',
+                    'starting_age', 'shuffle_interior_entrances', 'shuffle_hideout_entrances', 'shuffle_gerudo_fortress_heart_piece',
                     'shuffle_grotto_entrances', 'shuffle_dungeon_entrances',
                     'shuffle_bosses', 'shuffle_overworld_entrances', 'shuffle_gerudo_valley_river_exit', 'owl_drops', 'warp_songs', 'spawn_positions',
                     'triforce_hunt', 'triforce_count_per_world', 'triforce_goal_per_world', 'free_bombchu_drops', 'one_item_per_dungeon',
@@ -664,10 +664,10 @@ class SettingInfos:
         ''',
         disable        = {
             'glitchless': {'settings': ['tricks_list_msg']},
-            'glitched':   {'settings': ['allowed_tricks', 'shuffle_interior_entrances', 'shuffle_hideout_entrances', 'shuffle_grotto_entrances',
+            'glitched':   {'settings': ['allowed_tricks', 'shuffle_interior_entrances', 'shuffle_hideout_entrances', 'shuffle_gerudo_fortress_heart_piece', 'shuffle_grotto_entrances',
                                          'shuffle_dungeon_entrances', 'shuffle_overworld_entrances', 'shuffle_gerudo_valley_river_exit', 'owl_drops',
                                          'warp_songs', 'spawn_positions', 'mq_dungeons_mode', 'mq_dungeons_specific',
-                                         'mq_dungeons_count', 'shuffle_bosses', 'dungeon_shortcuts', 'deadly_bonks',
+                                         'mq_dungeons_count', 'shuffle_bosses', 'shuffle_ganon_tower', 'dungeon_shortcuts', 'deadly_bonks',
                                          'shuffle_freestanding_items', 'shuffle_pots', 'shuffle_crates', 'shuffle_beehives', 'shuffle_silver_rupees', 'shuffle_wonderitems']},
             'none':       {'settings': ['allowed_tricks', 'logic_no_night_tokens_without_suns_song', 'reachable_locations']},
         },
@@ -1667,7 +1667,7 @@ class SettingInfos:
         ''',
         shared         = True,
         disable        = {
-            'off': {'settings': ['shuffle_hideout_entrances']},
+            'off': {'settings': ['shuffle_hideout_entrances', 'shuffle_gerudo_fortress_heart_piece']},
         },
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1687,15 +1687,49 @@ class SettingInfos:
 
             Note that savewarping in any room of Thieves' Hideout
             always takes you to the first room (with 1 torch).
-
-            There is an extra heart piece on the balcony above the jail in
-            Gerudo's Fortress if accessed as child. This is not shuffled
-            and not considered in logic.
         ''',
         default        = False,
         shared         = True,
+        disable        = {
+            False: {'settings': ['shuffle_gerudo_fortress_heart_piece']},
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
+        },
+    )
+
+    shuffle_gerudo_fortress_heart_piece = Combobox(
+        gui_text       = 'Shuffle Gerudo Fortress Heart Piece',
+        default        = 'remove',
+        choices        = {
+            'remove':  'Remove',
+            'vanilla': 'Vanilla',
+            'shuffle': 'Shuffle',
+        },
+        gui_tooltip    = '''\
+            There is an extra heart piece on the balcony above the jail in
+            Gerudo's Fortress if accessed as child. Normally, this is not
+            reachable without glitches, so it's not shuffled and not
+            considered in logic. With the Thieves' Hideout entrances
+            shuffled, it becomes reachable, so use this setting to decide
+            how to handle that.
+
+            'Remove':
+            The heart piece is completely removed from the game. There is
+            no freestanding item to collect above the jail.
+
+            'Vanilla':
+            The heart piece exists as an unshuffled heart piece. It is
+            considered in logic for the purpose of heart win conditions.
+
+            'Shuffle':
+            There is a shuffled item above the jail and the extra heart
+            piece is shuffled into the item pool. Both are considered in
+            logic.
+        ''',
+        shared         = True,
+        gui_params     = {
+            "hide_when_disabled": True,
         },
     )
 
@@ -1760,6 +1794,28 @@ class SettingInfos:
             'limited':   'Age-Restricted',
             'full':      'Full',
         },
+        disable        = {
+            'off' : {'settings': ['shuffle_ganon_tower']},
+        },
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    )
+
+    shuffle_ganon_tower = Checkbutton(
+        gui_text       = "Shuffle Ganon's Tower Entrance",
+        gui_tooltip    = '''\
+            Shuffle the entrance from Ganon's Castle to
+            Ganon's Tower, just behind the trials barrier,
+            into the adult boss entrance pool if "Shuffle
+            Boss Entrances" is set to "Age-Restricted", or
+            the boss entrance pool if it's set to "Full".
+
+            The entrance from Ganon's Tower to Ganondorf's
+            boss room is never shuffled.
+        ''',
+        default        = False,
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -3486,6 +3542,7 @@ class SettingInfos:
             'frogs2':         'Frogs Ocarina Game',
             'mask_shop':  'Shuffled Mask Shop',
             'unique_merchants':  'Unique Merchants',
+            'big_poes':  'Market Big Poes',
         },
         gui_tooltip    = '''\
             This setting adds some hints at locations
@@ -3539,6 +3596,9 @@ class SettingInfos:
             If Shuffle Magic Beans is enabled, the Magic bean
             salesman will tell what the reward is for buying
             the 60 Rupees item.
+
+            The Poe collector will tell the reward for selling
+            him Big Poes.
         ''',
         shared         = True,
         default        = ['altar', 'ganondorf', 'warp_songs_and_owls'],

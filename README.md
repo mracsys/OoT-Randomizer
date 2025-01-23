@@ -117,24 +117,40 @@ issue. You should always Hard Reset to avoid this issue entirely.
 * New hidden `plandomized_locations` setting to allow presets to place specific items at specific locations.
 * New setting to speed up the boat ride in the Shadow Temple.
 * New `Require Lens of Truth for Treasure Chest Game` setting.
-* The cutscene that plays when Morpha is defeated has been shortened from around 30 seconds to around 5 seconds.
+* New option `Market Big Poes` for the `Misc. Hints` setting.
+* New setting `Shuffle Ganon's Tower Entrance` to allow shuffling the boss entrance to Ganon himself.
+* New setting to control the behavior of the child-only heart piece in Gerudo Fortress when Thieves' Hideout entrances are shuffled.
 
 #### Bug fixes
-
 * Ocarina buttons required to play the Song of Time are now part of the `path of time` goal.
 * The `Frogs Ocarina Game` misc. hint text box has been moved slightly so it no longer requires reloading the area to reread.
 * Fix key rings being hinted as small keys when keys are in their own dungeons.
 * Fix a crash when pressing down on the D-pad on the inventory screen in some settings combinations.
 * Fix a possible void out at the Forest Temple boss door.
 * Fix importing settings from older versions on web.
+* Fix a Mac-specific issue when loading track .meta files.
+* Fix an error in the easy bite fishing hack.
+* The randomizer no longer ignores errors when decompressing the base rom or compressing the randomized rom.
+* Trade quest items from skipped locations are no longer lost when another trade item is found.
+* Fix a crash when dungeon rewards are directly selected as starting items.
+* Fix an error with pre-completed dungeon rewards in multiworld.
+
+#### New Speedups
+* The first text box from each carpenter in the Thieves' Hideout is skipped.
+* The cutscene that plays when Morpha is defeated has been shortened from around 30 seconds to around 5 seconds.
+* The cutscene introducing the arena where Ganon is fought is shortened by 5 seconds and the camera angle after it is improved.
 
 #### Other Changes
 * Now supports custom music written for the Majora's Mask Randomizer.
 * New Magic Meter item model to allow magic drops to be shuffled in the future.
-* The first text box from each carpenter in the Thieves' Hideout is skipped.
 * Seeds rolled on ootrandomizer.com display their ID in the top left corner of the file select screen.
 * The `Other` tab of the generator has been rearranged for better grouping of settings, and the `One Major Item per Dungeon` setting has been moved there since it was causing frequent failures with `Randomize Main Rule Settings`.
 * Biggoron's text after turning in the Eyedrops has been changed to avoid potential confusion.
+* Clarified the hint text for `HF Inside Fence Grotto`.
+* Farore's Wind now displays which dungeon it will warp Link to.
+* Reversed the order of the hints in the `Spirit Temple Adult Lower` dual hint.
+* Add adult and child trade items to the auto-tracker context.
+* Improve Debug menu with new options and menus.
 
 ### 8.2
 

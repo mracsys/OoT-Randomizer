@@ -463,8 +463,16 @@ def patch_cutscenes(rom: Rom, songs_as_items: bool, settings: Settings) -> None:
     patch_cutscene_destination_and_length(rom, 0x33FB328, 1)
 
     # After tower collapse
-    # Jump from csState 1 to csState 4, 100 frames before giving back control. Next state only starts when Link gets near Ganon.
+    # Delete a bunch of camera instructions to avoid sudden movement when getting control back.
+    # Put subCamId at 0 in csState 0
+    rom.write_byte(0xE82DE9, 0x00)
+    # Jump from csState 1 to csState 4.
     rom.write_byte(0xE82E0F, 0x04)
+    # Remove all main camera changes in csState 4.
+    for byte in range(0, 80):
+        rom.write_byte(0xE8343C + byte, 0x00)
+    # Reduce the 100 frames wait in state 4 to 1. Next cutscene state only starts when Link gets close to Ganon.
+    rom.write_int16(0xE8341A, 0x0001)
     # Ganon intro
     # Jump from state 14 to 15 instantly instead of waiting 60 frames.
     rom.write_int32(0xE83B5C, 0x00000000)

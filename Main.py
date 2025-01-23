@@ -241,7 +241,7 @@ def compress_rom(input_file: str, output_file: str, delete_input: bool = False) 
         logger.info("OS not supported for ROM compression.")
         raise Exception("This operating system does not support ROM compression. You may only output patch files or uncompressed ROMs.")
 
-    run_process(logger, [compressor_path, input_file, output_file])
+    run_process(logger, [compressor_path, input_file, output_file], check=True)
     if delete_input:
         os.remove(input_file)
 

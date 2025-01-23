@@ -375,6 +375,7 @@ item_table: dict[str, tuple[str, Optional[bool], Optional[int], Optional[dict[st
     'Gerudo Membership Card':                          ('Item',     True,  GetItemId.GI_GERUDOS_CARD, None),
     'Heart Container':                                 ('Item',     True,  GetItemId.GI_HEART_CONTAINER, {'alias': ('Piece of Heart', 4), 'progressive': float('Inf')}),
     'Piece of Heart':                                  ('Item',     True,  GetItemId.GI_HEART_PIECE, {'progressive': float('Inf')}),
+    'Piece of Heart (Out of Logic)':                   ('Item',     None,  GetItemId.GI_HEART_PIECE, None),
     'Boss Key':                                        ('BossKey',  True,  GetItemId.GI_BOSS_KEY, None),
     'Compass':                                         ('Compass',  None,  GetItemId.GI_COMPASS, None),
     'Map':                                             ('Map',      None,  GetItemId.GI_DUNGEON_MAP, None),

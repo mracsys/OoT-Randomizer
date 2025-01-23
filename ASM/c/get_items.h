@@ -6,8 +6,8 @@
 #include "en_item00.h"
 #include "override.h"
 
-extern uint16_t CFG_ADULT_TRADE_SHUFFLE;
-extern uint16_t CFG_CHILD_TRADE_SHUFFLE;
+extern uint8_t CFG_ADULT_TRADE_SHUFFLE;
+extern uint8_t CFG_CHILD_TRADE_SHUFFLE;
 
 void item_overrides_init();
 void handle_pending_items();

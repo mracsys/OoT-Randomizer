@@ -65,6 +65,7 @@ CONTROL_CODES: dict[int, tuple[str, int, Callable[[Any], str]]] = {
     0xF0: ('silver_rupee', 1, lambda d: '<silver rupee count ' + "{:02x}".format(d) + '>' ),
     0xF1: ('key_count', 1, lambda d: '<key count ' + "{:02x}".format(d) + '>' ),
     0xF2: ('outgoing_item_filename', 0, lambda _: '<outgoing item filename>' ),
+    0xF3: ('farores_wind_destination', 0, lambda _: '<farores_wind_destination>' ),
 }
 
 # Maps unicode characters to corresponding bytes in OOTR's character set.
@@ -518,6 +519,7 @@ MISC_MESSAGES: list[tuple[int, tuple[str | bytearray, int]]] = [
     (0x0033, ("\x08\x13\x09You got \x05\x41Bombchus\x05\x40!", 0x23)),
     (0x0034, ("\x08\x13\x01You got a \x05\x41Deku Nut\x05\x40!", 0x23)),
     (0x0037, ("\x08\x13\x00You got a \x05\x41Deku Stick\x05\x40!", 0x23)),
+    (0x003B, ("\x08You cast Farore's Wind!\x01\x1C\x05\x42Return to \xF3\x01Dispel the Warp Point\x01Exit\x05\x40", 0x23)),
     (0x0043, ("\x08\x13\x15You got a \x05\x41Red Potion\x05\x40!\x01It will restore your health", 0x23)),
     (0x0044, ("\x08\x13\x16You got a \x05\x42Green Potion\x05\x40!\x01It will restore your magic.", 0x23)),
     (0x0045, ("\x08\x13\x17You got a \x05\x43Blue Potion\x05\x40!\x01It will recover your health\x01and magic.", 0x23)),

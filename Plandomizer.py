@@ -1089,18 +1089,19 @@ class WorldDistribution:
             if iter_world.settings.empty_dungeons_mode != 'none':
                 skipped_locations_from_dungeons: list[Location] = []
                 if iter_world.settings.shuffle_dungeon_rewards in ('vanilla', 'reward'):
-                    skipped_locations_from_dungeons += [world.get_location(loc_name) for loc_name in location_groups['Boss'] if loc_name != 'ToT Reward from Rauru']
-                elif world.settings.shuffle_dungeon_rewards == 'dungeon':
+                    skipped_locations_from_dungeons += [iter_world.get_location(loc_name) for loc_name in location_groups['Boss'] if loc_name != 'ToT Reward from Rauru']
+                elif iter_world.settings.shuffle_dungeon_rewards == 'dungeon':
                     skipped_locations_from_dungeons += [location for location in iter_world.get_filled_locations() if location.item.type == 'DungeonReward']
-                if world.settings.shuffle_song_items == 'song':
-                    skipped_locations_from_dungeons += [world.get_location(loc_name) for loc_name in location_groups['Song']]
-                elif world.settings.shuffle_song_items == 'dungeon':
-                    skipped_locations_from_dungeons += [world.get_location(loc_name) for loc_name in location_groups['BossHeart']]
+                if iter_world.settings.shuffle_song_items == 'song':
+                    skipped_locations_from_dungeons += [iter_world.get_location(loc_name) for loc_name in location_groups['Song']]
+                elif iter_world.settings.shuffle_song_items == 'dungeon':
+                    skipped_locations_from_dungeons += [iter_world.get_location(loc_name) for loc_name in location_groups['BossHeart']]
                 for location in skipped_locations_from_dungeons:
-                    hint_area = HintArea.at(location)
-                    if hint_area.is_dungeon and iter_world.empty_dungeons[hint_area.dungeon_name].empty:
-                        skipped_locations.append(location)
-                        world.item_added_hint_types['barren'].append(location.item.name)
+                    if location.item is not None and world.id == location.item.world.id:
+                        hint_area = HintArea.at(location)
+                        if hint_area.is_dungeon and iter_world.empty_dungeons[hint_area.dungeon_name].empty:
+                            skipped_locations.append(location)
+                            world.item_added_hint_types['barren'].append(location.item.name)
             for location in skipped_locations:
                 if iter_world.id == world.id:
                     self.skipped_locations.append(location)
@@ -1108,32 +1109,18 @@ class WorldDistribution:
                     add_starting_item_with_ammo(items, location.item.name)
 
         effective_adult_trade_item_index = -1
-        effective_child_trade_item_index = -1
-        effective_adult_trade_item = None
-        effective_child_trade_item = None
-        trade_starting_items = list(items.keys())
-        for item_name in trade_starting_items:
+        for item_name in items:
             if item_name in trade_items:
                 if item_name in world.settings.adult_trade_start:
                     if trade_items.index(item_name) > effective_adult_trade_item_index:
                         effective_adult_trade_item_index = trade_items.index(item_name)
-                        effective_adult_trade_item = items[item_name]
                 else:
                     raise RuntimeError(f'An unshuffled trade item was included as a starting item. Please either remove {item_name} from starting items or add it to Adult Trade Sequence Items.')
-                del items[item_name]
             if item_name in child_trade_items:
-                if item_name in world.settings.shuffle_child_trade or item_name == 'Zeldas Letter':
-                    if child_trade_items.index(item_name) > effective_child_trade_item_index:
-                        effective_child_trade_item_index = child_trade_items.index(item_name)
-                        effective_child_trade_item = items[item_name]
-                else:
+                if item_name not in world.settings.shuffle_child_trade and item_name != 'Zeldas Letter':
                     raise RuntimeError(f'An unshuffled trade item was included as a starting item. Please either remove {item_name} from starting items or add it to Shuffled Child Trade Sequence Items.')
-                del items[item_name]
 
-        if effective_child_trade_item_index >= 0:
-            items[child_trade_items[effective_child_trade_item_index]] = effective_child_trade_item
         if effective_adult_trade_item_index >= 0:
-            items[trade_items[effective_adult_trade_item_index]] = effective_adult_trade_item
             world.adult_trade_starting_inventory = trade_items[effective_adult_trade_item_index]
 
         self.effective_starting_items = items

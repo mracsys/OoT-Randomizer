@@ -872,6 +872,7 @@ location_table: dict[str, tuple[str, Optional[int], LocationDefault, LocationAdd
 
     # Gerudo's Fortress
     ("GF Chest",                                                     ("Chest",        0x5D,  0x00, None,                            'Piece of Heart',                        ("Gerudo's Fortress", "Chests",))),
+    ("GF Freestanding PoH",                                          ("Collectable",  0x5D,  0x01, None,                            'Piece of Heart (Out of Logic)',         ("Gerudo's Fortress", "Freestandings",))),
     ("GF HBA 1000 Points",                                           ("NPC",          0x5D,  0x3E, None,                            'Piece of Heart',                        ("Gerudo's Fortress", "Minigames",))),
     ("GF HBA 1500 Points",                                           ("NPC",          0x5D,  0x30, None,                            'Bow',                                   ("Gerudo's Fortress", "Minigames",))),
     ("GF GS Top Floor",                                              ("GS Token",     0x14,  0x02, None,                            'Gold Skulltula Token',                  ("Gerudo's Fortress", "Gold Skulltulas",))),
@@ -2604,6 +2605,7 @@ location_table: dict[str, tuple[str, Optional[int], LocationDefault, LocationAdd
     ("40 Skulltulas Reward Hint",                                    ("Hint",         None,  None, None,                            None,                                    None)),
     ("50 Skulltulas Reward Hint",                                    ("Hint",         None,  None, None,                            None,                                    None)),
     ("ZR Frogs Ocarina Minigame Hint",                               ("Hint",         None,  None, None,                            None,                                    None)),
+    ("Market 10 Big Poes Hint",                                      ("Hint",         None,  None, None,                            None,                                    None)),
     ("Ganondorf Hint",                                               ("Hint",         None,  None, None,                            None,                                    None)),
 ])
 

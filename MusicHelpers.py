@@ -122,6 +122,8 @@ def process_sequence_ootrs(filepath: str, file_name: str, seq_type: str, include
         zbank_file = None
         bankmeta_file = None
         for f in zip.namelist():
+            if '/' in f: # Only read files in the root of the archive
+                continue
             if f.endswith(".meta"):
                 meta_file = f
                 continue

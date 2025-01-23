@@ -199,23 +199,20 @@ def subprocess_args(include_stdout: bool = True) -> dict[str, Any]:
     return ret
 
 
-def run_process(logger: logging.Logger, args: Sequence[str], stdin: Optional[AnyStr] = None) -> None:
+def run_process(logger: logging.Logger, args: Sequence[str], stdin: Optional[AnyStr] = None, *, check: bool = False) -> None:
     process = subprocess.Popen(args, bufsize=1, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
-    filecount = None
     if stdin is not None:
         process.communicate(input=stdin)
     else:
         while True:
             line = process.stdout.readline()
             if line != b'':
-                find_index = line.find(b'files remaining')
-                if find_index > -1:
-                    files = int(line[:find_index].strip())
-                    if filecount is None:
-                        filecount = files
                 logger.info(line.decode('utf-8').strip('\n'))
             else:
                 break
+        process.communicate()
+    if check and process.returncode != 0:
+        raise subprocess.CalledProcessError(process.returncode, args)
 
 
 # https://stackoverflow.com/a/23146126
