@@ -114,7 +114,7 @@ def process_scenes(rom) -> list[Scene]:
         scene_data = rom.read_int32(scene_table + (i * 0x14))
         scene = Scene(rom, i, scene_data)
         scenes.append(scene)
-        print(f"{i} {scene}")
+        #print(f"{i} {scene}")
     return scenes
 
 def process_room(rom, room_list, room_base, room_data, scene_id, room_id, setup, keep_id):
@@ -610,8 +610,8 @@ def get_bad_actors(rom: Rom, scenes_data: list[Scene]):
                         if init_obj not in room.setups[setup].objects and init_obj != scene.keep_id and init_obj != 1 and init_obj <= 0x0191: # Check if the init object is in the rooms data
                             bad_actors.append((actor.addr, scenes[scene.id], scene.id, room.id, setup, i, actor.id, overlay_entry['init_object']))
                         i += 1
-    for actor in bad_actors:
-        print(actor)
+    #for actor in bad_actors:
+    #    print(actor)
     return bad_actors
 
 

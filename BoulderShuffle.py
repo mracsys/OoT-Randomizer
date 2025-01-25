@@ -63,14 +63,14 @@ def shuffle_boulders(worlds: list[World]):
             for location in locations_to_ensure_reachable:
                 if location not in reachable_locations:
                     unreached = True
-                    print(location.name)
+                    #print(location.name)
             if unreached:
                 world.boulders = orig_boulders
                 world.boulders_by_id = orig_boulders_by_id
                 retries += 1
                 if retries >= 100:
                     raise Exception(f"Could not generate boulder layout to ensure all locations reachable in world {world.id}")
-                print("Retrying...")
+                #print("Retrying...")
 
 
 def _shuffle_boulders(world) -> tuple[dict[str, dict[tuple[int,int,int,int], dict[str, any]]], dict[tuple[int,int,int,int], tuple[str,BOULDER_TYPE]]]:

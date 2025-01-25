@@ -511,17 +511,17 @@ def verify_remap(scenes: list[Scene]) -> None:
             if file.start < file.remap:
                 return False
         return True
-    print("test code: verify remap won't corrupt data")
+    #print("test code: verify remap won't corrupt data")
 
     for scene in scenes:
         file = scene.file
         result = test_remap(file)
-        print("{0} - {1}".format(result, file))
+        #print("{0} - {1}".format(result, file))
 
         for room in scene.rooms:
             file = room.file
             result = test_remap(file)
-            print("{0} - {1}".format(result, file))
+            #print("{0} - {1}".format(result, file))
 
 
 def update_dmadata(rom: Rom, file: File) -> None:
