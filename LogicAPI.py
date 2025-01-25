@@ -134,6 +134,11 @@ if __name__ == "__main__":
             # Collect the item for the state world it is for
             s.state_list[location.item.world.id].collect(location.item)
             location.maybe_set_misc_hints()
+    # Checking entrances in case new entrances
+    # found with last items. Most common is Ganons Tower access "last"
+    # sphere getting the subrules for FW entrance
+    accessed_entrances = set(filter(s.spot_access, remaining_entrances))
+    entrance_spheres.append(list(accessed_entrances))
     spheres = dict((location.name, i) for i, sphere in enumerate(collection_spheres) for location in sphere)
 
     # Send location rule metadata to stdout as a JSON-formatted string
