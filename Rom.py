@@ -180,7 +180,7 @@ class Rom(BigStream):
 
     def sym_length(self, symbol_name: str) -> int:
         return self.symbols[symbol_name]['length']
-
+#test
     def write_to_file(self, file: str) -> None:
         self.verify_dmadata()
         self.update_header()
