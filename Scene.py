@@ -2527,3 +2527,25 @@ def compare_file_bytes(original_file: str, new_file: str) -> None:
         if original_bytes[i] != new_bytes[i]:
             raise Exception(f'Byte mismatch at offset 0x{i:0>8x}. Original: 0x{original_bytes[i]:0>2x} New: 0x{new_bytes[i]:0>2x}')
         i += 1
+
+if __name__ == '__main__':
+    uncompressed_rom = Rom('ZOOTDEC.z64')
+    scenes = Scenes(uncompressed_rom)
+    for scene in scenes:
+        for record in scene.data_records:
+            if record.type == RecordType.Unknown:
+                offset = 0
+                end_dl = b'\xDF\x00\x00\x00'
+                while offset < record.length:
+                    if record.data[offset:offset + 4] == end_dl:
+                        print(f'Possible display list located at offset 0x{record.offset + offset:0>8x} in file {scene.name}')
+                    offset += 4
+        for room in scene.rooms:
+            for record in room.data_records:
+                if record.type == RecordType.Unknown:
+                    offset = 0
+                    end_dl = b'\xDF\x00\x00\x00'
+                    while offset < record.length:
+                        if record.data[offset:offset + 4] == end_dl:
+                            print(f'Possible display list located at offset 0x{record.offset + offset:0>8x} in file {room.name}')
+                        offset += 4
