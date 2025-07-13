@@ -1,6 +1,8 @@
 from __future__ import annotations
 import datetime
 import itertools
+import os
+import pickle
 import random
 import re
 import struct
@@ -32,7 +34,7 @@ from SceneFlags import build_xflag_tables, build_xflags_from_world, get_alt_list
 from Sounds import move_audiobank_table
 from Spoiler import Spoiler
 from TextBox import line_wrap
-from Utils import data_path
+from Utils import data_path, local_path
 from World import World
 from ntype import BigStream
 from texture_util import ci4_rgba16patch_to_ci8, rgba16_patch
@@ -50,11 +52,36 @@ def patch_rom(spoiler: Spoiler, world: World, rom: Rom) -> Rom:
     with open(data_path('generated/rom_patch.txt'), 'r') as stream:
         for line in stream:
             address, value = [int(x, 16) for x in line.split(',')]
+            # Scene and room files are parsed and shifted in Python.
+            # To save processing time, the parsed data is cached to disk.
+            # The cache may not match the rom patch if the randomizer is
+            # updated without removing the cache file, so all scene/room
+            # changes have been moved to Python and this error check prevents
+            # future dev changes from conflicting.
+            if address >= 0x1F12000 and address <= 0x3471000:
+                raise Exception(f'Attempted to write to forbidden region in vanilla scene/room files')
             rom.write_int32(address, value)
     rom.scan_dmadata_update()
 
-    # Read in scene and room files AFTER patch to capture changes outside python.
-    scenes = Scenes(rom)
+    # Read in scene and room files, either from cache or parsed from the rom.
+    if os.path.exists(local_path('scenes.pkl')):
+        try:
+            with open(local_path('scenes.pkl'), 'rb') as pkl:
+                scenes: Scenes = pickle.load(pkl)
+            # Refresh reference to rom object for all FileDataRelocator classes
+            for scene in scenes:
+                scene.rom = rom
+                for room in scene.rooms:
+                    room.rom = rom
+        except:
+            # Fallback if cache is corrupted
+            scenes = Scenes(rom)
+            with open(local_path('scenes.pkl'), 'wb') as pkl:
+                pickle.dump(scenes, pkl)
+    else:
+        scenes = Scenes(rom)
+        with open(local_path('scenes.pkl'), 'wb') as pkl:
+            pickle.dump(scenes, pkl)
 
     # Set generic grotto gossip stone text ID to load from grotto ID
     # ACTOR_EN_GS parameters 0x3818 -> 0x38FF

@@ -1,5 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from base64 import b64decode, b64encode
 from enum import Enum
 from json import dumps
 from typing import Any, Optional, Literal, overload, TYPE_CHECKING
@@ -9,7 +10,7 @@ from MQ import align4, align8, align16, align_file
 from SceneList import RecordType, SCENE_EXTERNAL_REFERENCES
 
 if TYPE_CHECKING:
-    from Scene import SceneCutsceneData, SceneTransitionActorList, ScenePathList, RoomActorList, RoomObjectList, CollisionBgCamInfoList
+    from Scene import SceneCutsceneData, SceneTransitionActorList, ScenePathList, RoomActorList, RoomObjectList, CollisionBgCamInfoList, SceneHeader, RoomHeader
 
 def segment_address_offset(segment_address: int) -> int:
     return segment_address & 0x00FFFFFF
@@ -26,6 +27,9 @@ def unsegment_address(segment_address: int) -> tuple[int, int]:
 def create_segment_address(segment: int, offset: int) -> int:
     return (segment << 0x18) + offset
 
+class SceneCacheFileException(Exception):
+    def __init__(self, filename: str, record_type: str, record_version: int, max_version: int) -> None:
+        super().__init__(f'Cannot parse cached scene file record of type {record_type} in file {filename} with version {record_version}. Latest supported version: {max_version}')
 
 # File type values correspond to segment number from the segment address table
 # https://wiki.cloudmodding.com/oot/Addresses#Segment_Addresses
@@ -53,23 +57,107 @@ class FileType(Enum):
     PlayerAnimation = 7
 
 
+def pack_properties(cls: Any, schema: list[tuple[str, Any]]) -> dict[str, Any]:
+    packed = {}
+    for var, _ in schema:
+        if var not in cls.__dict__.keys():
+            raise Exception(f'Could not serialize {cls.__class__.__name__} class. {var} is not a valid property.')
+        value = cls.__dict__[var]
+        if isinstance(value, int) or isinstance(value, float) or isinstance(value, str) or isinstance(value, bool) or value is None:
+            packed[var] = value
+        elif isinstance(value, list):
+            if len(value) == 0:
+                packed[var] = []
+            elif isinstance(value[0], int) or isinstance(value[0], float) or isinstance(value[0], str) or isinstance(value, bool):
+                packed[var] = value.copy()
+            else:
+                packed[var] = []
+                for v in value:
+                    packed[var].append(pack_properties(v, v.data_record_schema))
+        elif isinstance(value, DataRecord):
+            packed[var] = [var, value.file.segment, value.vanilla_offset, value.type.value]
+        else:
+            packed[var] = pack_properties(value, value.data_record_schema)
+    return packed
+
+
+def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: dict[str, Any], file: FileDataRelocator) -> Any:
+    for var, subcls in schema:
+        if var not in record.__dict__.keys():
+            raise Exception(f'Cannot import cached {record.__class__.__name__}. Unknown property {var}')
+        if var not in data_records.keys():
+            continue
+        value = data_records[var]
+        # Important that the first condition remains first to catch any instances
+        # where an optional property is set to None instead of a non-primitive type.
+        if isinstance(value, int) or isinstance(value, float) or isinstance(value, str) or isinstance(value, bool) or value is None:
+            record.__dict__[var] = value
+        elif not issubclass(subcls, DataRecord) and isinstance(value, list):
+            if not isinstance(value, list):
+                raise Exception(f'Cannot import cached {record.__class__.__name__}. Expected list value for {var}. Got {var.__class__.__name__}')
+            if len(value) == 0:
+                record.__dict__[var] = []
+            elif isinstance(value[0], int) or isinstance(value[0], float) or isinstance(value[0], str) or isinstance(value, bool):
+                record.__dict__[var] = value.copy()
+            else:
+                record.__dict__[var] = []
+                for v in value:
+                    subrecord = subcls()
+                    record.__dict__[var].append(unpack_properties(subrecord, subrecord.data_record_schema, v))
+        elif issubclass(subcls, DataRecord):
+            # List of records
+            if isinstance(value[0], list):
+                record.__dict__[var] = [None for _ in range(len(value))]
+                idx = 0
+                for json_record in value:
+                    if json_record is not None:
+                        file.linked_json_records.append((
+                            var,
+                            record,
+                            json_record[1],
+                            json_record[2],
+                            RecordType(json_record[3]),
+                            idx,
+                        ))
+                    idx += 1
+            # Single record
+            else:
+                file.linked_json_records.append((
+                    var,
+                    record,
+                    value[1],
+                    value[2],
+                    RecordType(value[3]),
+                    -1,
+                ))
+        else:
+            record.__dict__[var] = subcls()
+            unpack_properties(record.__dict__[var], record.__dict__[var].data_record_schema, value)
+
+
 class DataRecord:
-    def __init__(self, file: FileDataRelocator, type: RecordType, start: int, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+    version: int = 1
+    # Class metadata used to interface with JSON cache
+    # data_record - class property + foreign class constructor
+    data_record_schema: list[tuple[str, Any]] = []
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
         assert offset >= 0
 
         self.file: FileDataRelocator = file
         if store_in_file:
             file.data_records.append(self)
-        self.type: RecordType = type
-        self.start: int = start
+        self.type: RecordType = RecordType.Unknown
+        self.start: int = file.start
         self.offset: int = offset
         self.vanilla_offset: int = offset
         self.length: int = length
         self.delay_parsing: bool = delay_parsing
+        self.store_in_file: bool = store_in_file
         self.align: int = 4
 
         if length > 0 and not delay_parsing:
-            self.data: bytearray = self.file.rom.read_bytes(start + offset, length)
+            self.data: bytearray = self.file.rom.read_bytes(self.start + offset, length)
         else:
             self.data: bytearray = bytearray()
 
@@ -87,7 +175,7 @@ class DataRecord:
         existing_record = file.get_existing_record_by_offset(offset, type)
         if existing_record is not None:
             return existing_record
-        return DataRecord(file, type, file.start, offset, length)
+        return DataRecord(file, offset, length)
 
     def decode_late(self) -> None:
         pass
@@ -144,15 +232,41 @@ class DataRecord:
         return f'{self.type.value} @ 0x{self.offset:0>6x}, 0x{self.length:0>6x} bytes (id {hex(id(self))})'
 
     def to_json(self) -> dict[str, Any]:
-        return {
+        record = {
+            'version': self.version,
             'type': self.type.value,
-            'start': f'0x{self.start:08X}',
             'start_offset': f'0x{self.offset:08X}',
-            'end_offset': f'0x{self.offset + self.length:08X}'
+            'length': f'0x{self.length:08X}',
+            'end_offset': f'0x{self.offset + self.length:08X}',
+            'vanilla_offset': f'0x{self.vanilla_offset:08X}',
+            'delay_parsing': self.delay_parsing,
+            'store_in_file': self.store_in_file,
+            'data': b64encode(self.data).decode('ascii'),
+            'align': self.align,
+            'data_records': {},
         }
+        record['data_records'] = pack_properties(self, self.data_record_schema)
+        return record
+
+    @classmethod
+    def from_json(cls, file: FileDataRelocator, cache: dict[str, Any]) -> DataRecord:
+        if cache['version'] != cls.version:
+            raise SceneCacheFileException(file.name, cache['type'], cache['version'], cls.version)
+        record = cls(file, cache['start_offset'], cache['length'], True, cache['store_in_file'])
+        record.vanilla_offset = cache['vanilla_offset']
+        record.data = b64decode(cache['data'])
+        record.align = cache['align']
+        # Not set in constructor as data should be read from json, not the ROM.
+        # Still important if this record is re-parsed for whatever reason.
+        record.delay_parsing = cache['delay_parsing']
+        unpack_properties(record, record.data_record_schema, cache['data_records'])
+        return record
 
 
 class FileDataRelocator(ABC):
+    version: int = 1
+    segment: int = 1 # not valid for actual OOT scene/room files
+
     def __init__(self, rom: Rom, name: str, start: int, end: int, type: FileType) -> None:
         self.rom: Rom = rom
         self.name: str = name
@@ -164,6 +278,19 @@ class FileDataRelocator(ABC):
         self.parsed: bool = False
 
         self.data_records: list[DataRecord] = []
+        # Tuple data: class property to assign record to, class instance, segment, vanilla offset
+        self.linked_json_records: list[tuple[str, Any, int, int, RecordType]] = []
+
+    # Prevent saving the Rom object to pickle files
+    def __getstate__(self):
+        state = super().__getstate__()
+        del state['rom']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        # Updated after unpickling in Patches.py
+        self.rom = None
 
     def parse(self) -> None:
         # Parse file header
@@ -189,6 +316,17 @@ class FileDataRelocator(ABC):
         self.add_unknown_records()
 
         # Mark parsing as complete
+        self.parsed = True
+
+    # Extra parsing already captured by json import
+    def finalize_from_cache(self) -> None:
+        for property, record, segment, offset, record_type, list_index in self.linked_json_records:
+            if list_index >= 0:
+                record.__dict__[property][list_index] = self.get_existing_record_by_vanilla_offset_and_segment(offset, record_type, segment)
+            else:
+                record.__dict__[property] = self.get_existing_record_by_vanilla_offset_and_segment(offset, record_type, segment)
+        self.linked_json_records = []
+        self.sort_records()
         self.parsed = True
 
     @abstractmethod
@@ -277,8 +415,7 @@ class FileDataRelocator(ABC):
         else:
             last_record_end_offset = last_record.offset + last_record.length
             last_record_end = self.start + last_record_end_offset
-            data_record = DataRecord(self, RecordType.Unknown, self.start,
-                                     last_record_end_offset, self.end - last_record_end)
+            data_record = DataRecord(self, last_record_end_offset, self.end - last_record_end)
             data_record.align = 8
 
     def check_for_overlapping_records(self) -> None:
@@ -298,9 +435,7 @@ class FileDataRelocator(ABC):
             previous_record = self.data_records[index - 1]
             previous_record_end = align4(previous_record.offset + previous_record.length)
             if record.offset > previous_record_end:
-                data_record = DataRecord(self, RecordType.Unknown, self.start,
-                                         previous_record_end, record.offset - previous_record_end,
-                                         store_in_file=False)
+                data_record = DataRecord(self, previous_record_end, record.offset - previous_record_end, store_in_file=False)
                 data_record.align = 8
                 self.data_records.insert(index, data_record)
             index -= 1
@@ -333,16 +468,27 @@ class FileDataRelocator(ABC):
         return existing_record
 
     @overload
-    def get_existing_record_by_vanilla_offset(self, offset: int, record_type: Literal[RecordType.CutsceneData]) -> Optional[SceneCutsceneData]: ...
+    def get_existing_record_by_vanilla_offset(self, offset: int, record_type: RecordType, throw_on_not_found: Literal[True]) -> DataRecord: ...
+    @overload
+    def get_existing_record_by_vanilla_offset(self, offset: int, record_type: Literal[RecordType.CutsceneData], throw_on_not_found: Optional[bool]) -> Optional[SceneCutsceneData]: ...
+    @overload
+    def get_existing_record_by_vanilla_offset(self, offset: int, record_type: Literal[RecordType.SceneHeader], throw_on_not_found: Literal[True]) -> SceneHeader: ...
+    @overload
+    def get_existing_record_by_vanilla_offset(self, offset: int, record_type: Literal[RecordType.RoomHeader], throw_on_not_found: Literal[True]) -> RoomHeader: ...
 
     # Return the existing data record matching the given file offset or None
-    def get_existing_record_by_vanilla_offset(self, offset: int, record_type: RecordType) -> Optional[DataRecord]:
+    def get_existing_record_by_vanilla_offset(self, offset: int, record_type: RecordType, throw_on_not_found: bool = False) -> Optional[DataRecord]:
         existing_record: Optional[DataRecord] = next(
             (x for x in self.data_records if x.vanilla_offset == offset), None)
+        if existing_record is None and throw_on_not_found:
+            raise Exception(f'{record_type} at 0x{offset:08X} could not be found in parsed file records')
         if existing_record is not None and existing_record.type != record_type:
             raise Exception(
                 f'Existing {existing_record.type.value} at 0x{existing_record.vanilla_offset:08X} does not match requested type {record_type} in {self.name}')
         return existing_record
+
+    def get_existing_record_by_vanilla_offset_and_segment(self, offset: int, record_type: RecordType, segment: int) -> DataRecord:
+        return self.get_existing_record_by_vanilla_offset(offset, record_type, True)
 
     @overload
     def get_existing_records_by_type(self, record_type: Literal[RecordType.TransitionActorList]) -> list[SceneTransitionActorList]: ...
@@ -463,11 +609,26 @@ class FileDataRelocator(ABC):
         rom.write_bytes(external_low, address_low.to_bytes(2, 'big'))
 
     # Return the file data as a serializable dict
-
     def to_json(self) -> dict[str, Any]:
         return {
+            'version': self.version,
+            'type': self.type.value,
             'name': self.name,
             'start': f'{self.start:08X}',
             'end': f'{self.end:08X}',
-            'data_records': [x.to_json() for x in self.data_records],
+            'vanilla_start': f'{self.vanilla_start:08X}',
+            'records': [x.to_json() for x in self.data_records],
+            'parsed': self.parsed,
         }
+
+    # Does not include other parsed data from the Scene/Room subclasses.
+    # Only use for files with pure data.
+    @staticmethod
+    def from_json(rom: Rom, cache: dict[str, Any]) -> FileDataRelocator:
+        if cache['version'] != FileDataRelocator.version:
+            raise SceneCacheFileException(cache['name'], cache['type'], cache['version'], FileDataRelocator.version)
+        file = FileDataRelocator(rom, cache['name'], cache['start'], cache['end'], RecordType(cache['type']))
+        file.vanilla_start = cache['vanilla_start']
+        file.data_records = [DataRecord.from_json(file, x) for x in cache['records']]
+        file.parsed = cache['parsed']
+        return file

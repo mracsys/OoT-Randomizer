@@ -10,6 +10,8 @@
 /testlogs
 __pycache__
 ARCHIVE.bin
+scenes.pkl
+scenes.json
 
 **/.DS_Store
 

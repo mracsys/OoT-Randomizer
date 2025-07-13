@@ -481,6 +481,11 @@ class Vec3s:
         self.x: int = x
         self.y: int = y
         self.z: int = z
+        self.data_record_schema = [
+            ('x', int),
+            ('y', int),
+            ('z', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, addr: int) -> Vec3s:
@@ -522,6 +527,11 @@ class Vec3i:
         self.x: int = x
         self.y: int = y
         self.z: int = z
+        self.data_record_schema = [
+            ('x', int),
+            ('y', int),
+            ('z', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, addr: int) -> Vec3i:

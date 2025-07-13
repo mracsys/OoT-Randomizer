@@ -1,14 +1,16 @@
 from __future__ import annotations
+from base64 import b64decode
 from dataclasses import dataclass
+import json
 from os import path, walk
 from typing import Any, Optional
 import xml.etree.ElementTree as ET
 import logging
 
-from FileDataRelocator import segment_address_offset, create_segment_address, DataRecord, FileDataRelocator, FileType
-from Utils import data_path
+from FileDataRelocator import segment_address_offset, create_segment_address, DataRecord, FileDataRelocator, FileType, SceneCacheFileException
+from Utils import data_path, local_path
 from SceneList import SCENE_TABLE, RecordType, SCENE_EXTERNAL_REFERENCES, SCENE_TABLE_ADDRESS
-from Cutscenes import Cutscene, CutsceneCommandID, ACTOR_CUE_COMMANDS, GENERIC_COMMANDS, CAMERA_COMMANDS, NULL_COMMANDS
+from Cutscenes import Cutscene, CutsceneCommand
 from FileList import SCENE_AND_ROOM_FILES
 from Rom import Rom, Vec3s
 from SaveContext import SceneIDs
@@ -32,7 +34,11 @@ def s32_to_u32(num: int) -> int:
 
 
 class SceneDataRelocator(FileDataRelocator):
+    version: int = 1
+    segment: int = 2
+
     def __init__(self, rom: Rom, name: str, start: int, end: int) -> None:
+        super().__init__(rom, name, start, end, FileType.Scene)
         self.rooms: list[RoomDataRelocator] = []
         self.headers: list[Optional[SceneHeader]] = [None]
         self.id: int = -1
@@ -44,7 +50,6 @@ class SceneDataRelocator(FileDataRelocator):
                 break
         if scene_id == -1:
             raise Exception(f'Could not locate scene file {name} in vanilla scene table')
-        super().__init__(rom, name, start, end, FileType.Scene)
 
     def parse_file_header(self, alternate: Optional[int] = None) -> DataRecord:
         self.headers[0] = SceneHeader.decode(self)
@@ -65,7 +70,7 @@ class SceneDataRelocator(FileDataRelocator):
         if 'TActors' in patch.keys() and len(patch['TActors']) > 0:
             scene.transition_actor_list.apply_patch(patch['TActors'])
         if 'Paths' in patch.keys() and len(patch['Paths']) > 0:
-            scene.path_list = ScenePathList.from_json(self, patch['Paths'])
+            scene.path_list = ScenePathList.from_mq_json(self, patch['Paths'])
         else:
             scene.path_list = None
         if 'ColDelta' in patch.keys():
@@ -113,15 +118,42 @@ class SceneDataRelocator(FileDataRelocator):
 
     def to_json(self) -> dict[str, Any]:
         return {
-            **super().to_json(),
+            'version': self.version,
+            'type': self.type.value,
+            'name': self.name,
+            'start': f'{self.start:08X}',
+            'end': f'{self.end:08X}',
+            'vanilla_start': f'{self.vanilla_start:08X}',
+            'records': [x.to_json() for x in self.data_records],
+            'parsed': self.parsed,
+            'id': self.id,
+            'description': self.description,
+            'headers': [x.vanilla_offset if x is not None else None for x in self.headers],
             'rooms': [x.to_json() for x in self.rooms],
         }
+
+    @staticmethod
+    def from_json(rom: Rom, cache: dict[str, Any]) -> SceneDataRelocator:
+        scene = SceneDataRelocator(rom, cache['name'], cache['start'], cache['end'])
+        scene.vanilla_start = cache['vanilla_start']
+        scene.id = cache['id']
+        scene.description = cache['description']
+        scene.data_records = [scene_json_factory(scene, x) for x in cache['records']]
+        scene.headers = [scene.get_existing_record_by_vanilla_offset(x, RecordType.SceneHeader, True) if x is not None else None for x in cache['headers']]
+        scene.rooms = [RoomDataRelocator.from_json(rom, x) for x in cache['rooms']]
+        room_list_records = list(filter(lambda r: r.type == RecordType.RoomList, scene.data_records))
+        for room_list in room_list_records:
+            room_list.rooms = scene.rooms.copy()
+        return scene
 
 
 # Always 16 byte aligned in vanilla
 class SceneHeader(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.SceneHeader, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.SceneHeader
         self.alt_header_list: SceneAltHeaderList = None
         self.sound_settings: SceneSoundSettings = None
         self.room_list: SceneRoomList = None
@@ -138,6 +170,25 @@ class SceneHeader(DataRecord):
         self.cutscene_data: SceneCutsceneData = None
         self.actor_list: RoomActorList = None
         self.align = 16
+        self.data_record_schema = [
+            # DataRecords
+            ('alt_header_list', SceneAltHeaderList),
+            ('room_list', SceneRoomList),
+            ('transition_actor_list', SceneTransitionActorList),
+            ('collision_header', SceneCollisionHeader),
+            ('entrance_list', SceneEntranceList),
+            ('path_list', ScenePathList),
+            ('spawn_points', SceneSpawnPointList),
+            ('actor_list', RoomActorList),
+            ('exit_list', SceneExitList),
+            ('light_settings', SceneLightSettingsList),
+            ('cutscene_data', SceneCutsceneData),
+            # Raw Data
+            ('sound_settings', SceneSoundSettings),
+            ('misc_settings', SceneMiscSettings),
+            ('special_objects', SceneSpecialSettings),
+            ('skybox_settings', SceneSkyboxSettings),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int = 0, length: Optional[int] = -1) -> SceneHeader:
@@ -327,10 +378,16 @@ class SceneHeader(DataRecord):
 # Always 8 byte aligned in vanilla, but may be artifact of only coming after the first header
 # with 8 byte long commands
 class SceneAltHeaderList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.AlternateHeaders, file.start, offset, length, True)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = True, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.AlternateHeaders
         self.headers: list[Optional[SceneHeader | RoomHeader]] = []
         self.align = 8
+        self.data_record_schema = [
+            ('headers', SceneHeader), # JSON export uses the record type property, not the constructor here, only needed to mark a DataRecord entry
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> SceneAltHeaderList:
@@ -377,10 +434,15 @@ class SceneAltHeaderList(DataRecord):
 
 # Data only, part of the scene header
 class SceneSoundSettings():
-    def __init__(self, specId: int, natureAmbienceId: int, seqId: int) -> None:
-        self.specID: int = specId
+    def __init__(self, specID: int, natureAmbienceId: int, seqId: int) -> None:
+        self.specID: int = specID
         self.natureAmbienceId: int = natureAmbienceId
         self.seqId: int = seqId
+        self.data_record_schema = [
+            ('specID', int),
+            ('natureAmbienceId', int),
+            ('seqId', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, scene_cmd_addr: int) -> SceneSoundSettings:
@@ -402,9 +464,16 @@ class SceneSoundSettings():
 
 # 4 byte aligned in vanilla
 class SceneRoomList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.RoomList, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.RoomList
         self.rooms: list[RoomDataRelocator] = []
+        # Do NOT add json schemas for this class as rooms are
+        # imported/exported directly from the parent scene class.
+        # Base metadata from the parent DataRecord class is still
+        # processed.
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> SceneRoomList:
@@ -441,9 +510,15 @@ class SceneRoomList(DataRecord):
 
 # 4 byte aligned in vanilla
 class SceneTransitionActorList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.TransitionActorList, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.TransitionActorList
         self.actors: list[TransitionActor] = []
+        self.data_record_schema = [
+            ('actors', TransitionActor),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> SceneTransitionActorList:
@@ -460,7 +535,7 @@ class SceneTransitionActorList(DataRecord):
     def apply_patch(self, patch_data: list[str]) -> None:
         self.actors = []
         for actor in patch_data:
-            self.actors.append(TransitionActor.from_json(actor))
+            self.actors.append(TransitionActor.from_mq_json(actor))
 
     def encode(self) -> bytearray:
         bytes: bytearray = bytearray()
@@ -479,14 +554,31 @@ class ActorData:
     params: int
 
 
+class TransitionActorSide:
+    def __init__(self, room: int = 0, bgCamIndex: int = 0):
+        self.room: int = room
+        self.bgCamIndex: int = bgCamIndex
+        self.data_record_schema = [
+            ('room', int),
+            ('bgCamIndex', int),
+        ]
+
+
 # Data only, part of the transition actor list
 class TransitionActor(ActorData):
-    def __init__(self, front: TransitionActorSide, back: TransitionActorSide, id: int, pos: Vec3s, rot: Vec3s, params: int):
+    def __init__(self, front: TransitionActorSide = TransitionActorSide(), back: TransitionActorSide = TransitionActorSide(), id: int = 0, pos: Vec3s = Vec3s(), rot: Vec3s = Vec3s(), params: int = 0):
         self.sides: list[TransitionActorSide] = [front, back]
         self.id: int = id
         self.pos: Vec3s = pos
         self.rot: Vec3s = rot # only y variable is used
         self.params: int = params
+        self.data_record_schema = [
+            ('sides', TransitionActorSide),
+            ('id', int),
+            ('pos', Vec3s),
+            ('rot', Vec3s),
+            ('params', int),
+        ]
 
     def decode(rom: Rom, cursor: int) -> TransitionActor:
         return TransitionActor(
@@ -505,7 +597,7 @@ class TransitionActor(ActorData):
         )
 
     @staticmethod
-    def from_json(patch_data: str) -> TransitionActor:
+    def from_mq_json(patch_data: str) -> TransitionActor:
         raw_bytes = patch_data.replace(' ', '')
         return TransitionActor(
             TransitionActorSide(
@@ -539,17 +631,15 @@ class TransitionActor(ActorData):
         return bytes
 
 
-@dataclass
-class TransitionActorSide:
-    room: int
-    bgCamIndex: int
-
-
 # Data only, part of the scene header
 class SceneMiscSettings():
-    def __init__(self, sceneCamType: int, worldMapLocation: int) -> None:
+    def __init__(self, sceneCamType: int = 0, worldMapLocation: int = 0) -> None:
         self.sceneCamType: int = sceneCamType
         self.worldMapLocation: int = worldMapLocation
+        self.data_record_schema = [
+            ('sceneCamType', int),
+            ('worldMapLocation', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> SceneMiscSettings:
@@ -561,8 +651,11 @@ class SceneMiscSettings():
 
 # 4 byte aligned in vanilla
 class SceneCollisionHeader(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.CollisionHeader, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.CollisionHeader
         self.minBounds: Vec3s = None
         self.maxBounds: Vec3s = None
         self.numVertices: int = 0
@@ -573,6 +666,20 @@ class SceneCollisionHeader(DataRecord):
         self.bgCamList: CollisionBgCamInfoList = None
         self.numWaterBoxes: int = 0
         self.waterBoxes: Optional[CollisionWaterBoxList] = None
+        self.data_record_schema = [
+            # DataRecords
+            ('vtxList', CollisionVtxList),
+            ('polyList', CollisionPolyList),
+            ('surfaceTypeList', CollisionSurfaceTypeList),
+            ('bgCamList', CollisionBgCamInfoList),
+            ('waterBoxes', CollisionWaterBoxList),
+            # Raw Data
+            ('minBounds', Vec3s),
+            ('maxBounds', Vec3s),
+            ('numVertices', int),
+            ('numPolygons', int),
+            ('numWaterBoxes', int),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> SceneCollisionHeader:
@@ -661,9 +768,15 @@ class SceneCollisionHeader(DataRecord):
 
 # 4 byte aligned in vanilla
 class CollisionVtxList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.Vertices, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Vertices
         self.vertices: list[Vec3s] = []
+        self.data_record_schema = [
+            ('vertices', Vec3s),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionVtxList:
@@ -686,10 +799,17 @@ class CollisionVtxList(DataRecord):
 
 # 4 byte aligned in vanilla
 class CollisionPolyList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.Polys, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Polys
         self.polygons: list[CollisionPoly] = []
         self.numPolygonTypes: int = 0
+        self.data_record_schema = [
+            ('polygons', CollisionPoly),
+            ('numPolygonTypes', int),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionPolyList:
@@ -727,12 +847,20 @@ class CollisionPolyList(DataRecord):
 class CollisionPoly:
     def __init__(self) -> None:
         self.type: int = 0
-        self.vtxData: tuple[int, int, int] = (0, 0, 0)
+        self.vtxData: list[int] = [0, 0, 0]
         self.flags_vIA: int = 0
         self.flags_vIB: int = 0
         self.flags_vIC: int = 0
         self.normal: Vec3s = Vec3s()
         self.dist: int = 0
+        self.data_record_schema = [
+            ('vtxData', int),
+            ('flags_vIA', int),
+            ('flags_vIB', int),
+            ('flags_vIC', int),
+            ('normal', Vec3s),
+            ('dist', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CollisionPoly:
@@ -741,11 +869,11 @@ class CollisionPoly:
         vtx1 = rom.read_int16(cursor + 0x02)
         vtx2 = rom.read_int16(cursor + 0x04)
         vtx3 = rom.read_int16(cursor + 0x06)
-        poly.vtxData = (
+        poly.vtxData = [
             vtx1 & 0x1FFF,
             vtx2 & 0x1FFF,
             vtx3 & 0x1FFF
-        )
+        ]
         poly.flags_vIA = vtx1 & 0xE000
         poly.flags_vIB = vtx2 & 0xE000
         poly.flags_vIC = vtx3 & 0xE000
@@ -766,9 +894,15 @@ class CollisionPoly:
 
 # 4 byte aligned
 class CollisionSurfaceTypeList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.SurfaceTypes, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.SurfaceTypes
         self.surfaces: list[CollisionSurfaceType] = []
+        self.data_record_schema = [
+            ('surfaces', CollisionSurfaceType),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionSurfaceTypeList:
@@ -802,15 +936,18 @@ class CollisionSurfaceTypeList(DataRecord):
 # Data only, part of collision surface type lists
 class CollisionSurfaceType:
     def __init__(self, type1: int = 0, type2: int = 0) -> None:
-        self.data: tuple[int, int] = (type1, type2)
+        self.data: list[int] = [type1, type2]
+        self.data_record_schema = [
+            ('data', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CollisionSurfaceType:
         surface = CollisionSurfaceType()
-        surface.data = (
+        surface.data = [
             rom.read_int32(cursor),
             rom.read_int32(cursor + 0x04)
-        )
+        ]
         return surface
 
     def encode(self) -> bytearray:
@@ -822,9 +959,15 @@ class CollisionSurfaceType:
 
 # 4 byte aligned in vanilla
 class CollisionBgCamInfoList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.Cams, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Cams
         self.cams: list[CollisionBgCamInfo] = []
+        self.data_record_schema = [
+            ('cams', CollisionBgCamInfo),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionBgCamInfoList:
@@ -865,6 +1008,11 @@ class CollisionBgCamInfo:
         self.setting: int = setting
         self.count: int = count
         self.bgCamFuncData: Optional[CollisionCamPosData] = data
+        self.data_record_schema = [
+            ('setting', int),
+            ('count', int),
+            ('bgCamFuncData', CollisionCamPosData),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int, file: FileDataRelocator, cam_info_list_offset: int) -> CollisionBgCamInfo:
@@ -896,29 +1044,39 @@ class CollisionBgCamInfo:
 
 # Wrapper class to allow merging records and referencing via array index/pointer offset
 class CollisionCamPosData:
-    def __init__(self, record: CollisionBgCamFuncData, record_offset: int = 0) -> None:
+    def __init__(self, record: CollisionBgCamFuncData = None, record_offset: int = 0) -> None:
         self.record: CollisionBgCamFuncData = record
         self.record_offset: int = record_offset
+        self.data_record_schema = [
+            ('record', CollisionBgCamFuncData),
+            ('record_offset', int),
+        ]
 
     def get_segment_address_bytes(self) -> bytes:
         record_address = create_segment_address(int(self.record.file.type.value), self.record.offset + self.record_offset)
         return record_address.to_bytes(4, 'big')
 
     @staticmethod
-    def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionBgCamFuncData:
+    def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionCamPosData:
         record = CollisionBgCamFuncData.decode(file, offset, length)
         return CollisionCamPosData(record)
 
 
 # 4 byte aligned in vanilla
 class CollisionBgCamFuncData(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.CamPosData, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.CamPosData
         # Data is either a set of 6 Vec3s (crawlspaces/Camera_Subj4 only) or a more
         # complicated struct the same length as 3 Vec3s (0x12). See BgCamFuncData
         # and its comments in z64bgcheck.h in decomp.
         # Assume this is always a list of Vec3s for simplicity.
         self.positions: list[Vec3s] = []
+        self.data_record_schema = [
+            ('positions', Vec3s),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionBgCamFuncData:
@@ -968,9 +1126,15 @@ class CollisionBgCamFuncData(DataRecord):
 
 # 4 byte aligned in vanilla
 class CollisionWaterBoxList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.Waterboxes, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Waterboxes
         self.waterboxes: list[CollisionWaterBox] = []
+        self.data_record_schema = [
+            ('waterboxes', CollisionWaterBox)
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> CollisionWaterBoxList:
@@ -1000,6 +1164,14 @@ class CollisionWaterBox:
         self.xLength: int = 0
         self.zLength: int = 0
         self.properties: int = 0
+        self.data_record_schema = [
+            ('xMin', int),
+            ('ySurface', int),
+            ('zMin', int),
+            ('xLength', int),
+            ('zLength', int),
+            ('properties', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CollisionWaterBox:
@@ -1026,9 +1198,15 @@ class CollisionWaterBox:
 
 # 4 byte aligned in vanilla
 class SceneEntranceList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.EntranceList, file.start, offset, length, True)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = True, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.EntranceList
         self.entrances: list[SceneEntrance] = []
+        self.data_record_schema = [
+            ('entrances', SceneEntrance),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> SceneEntranceList:
@@ -1058,6 +1236,10 @@ class SceneEntrance:
     def __init__(self, playerEntryIndex: int, room: int) -> None:
         self.playerEntryIndex: int = playerEntryIndex
         self.room: int = room
+        self.data_record_schema = [
+            ('playerEntryIndex', int),
+            ('room', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> SceneEntrance:
@@ -1078,6 +1260,10 @@ class SceneSpecialSettings:
     def __init__(self, naviQuestHintFileId: int, keepObjectId: int) -> None:
         self.naviQuestHintFileId: int = naviQuestHintFileId
         self.keepObjectId: int = keepObjectId
+        self.data_record_schema = [
+            ('naviQuestHintFileId', int),
+            ('keepObjectId', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> SceneSpecialSettings:
@@ -1089,9 +1275,15 @@ class SceneSpecialSettings:
 
 # 4 byte aligned in vanilla
 class ScenePathList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.PathList, file.start, offset, length, True)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = True, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.PathList
         self.paths: list[ScenePathVtxList] = []
+        self.data_record_schema = [
+            ('paths', ScenePathVtxList),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> ScenePathList:
@@ -1127,14 +1319,14 @@ class ScenePathList(DataRecord):
         self.delay_parsing = False
 
     @staticmethod
-    def from_json(file: FileDataRelocator, patch_data: list[dict[str, list[list[int]]]]) -> ScenePathList:
+    def from_mq_json(file: FileDataRelocator, patch_data: list[dict[str, list[list[int]]]]) -> ScenePathList:
         # Don't attempt to replace any existing path records
         # in case MQ has more paths than the vanilla file.
         record_offset = file.end - file.start + 1
         path_list = ScenePathList(file, record_offset)
         path_cursor = record_offset + 1
         for path_dict in patch_data:
-            path_list.paths.append(ScenePathVtxList.from_json(file, path_cursor, path_dict['Points']))
+            path_list.paths.append(ScenePathVtxList.from_mq_json(file, path_cursor, path_dict['Points']))
             path_cursor += 1
         return path_list
 
@@ -1150,9 +1342,15 @@ class ScenePathList(DataRecord):
 
 # 4 byte aligned in vanilla
 class ScenePathVtxList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.Points, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Points
         self.vertices: list[Vec3s] = []
+        self.data_record_schema = [
+            ('vertices', Vec3s),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> ScenePathVtxList:
@@ -1167,7 +1365,7 @@ class ScenePathVtxList(DataRecord):
         return path_vtx_list
 
     @staticmethod
-    def from_json(file: FileDataRelocator, offset: int, patch_data: list[list[int]]) -> ScenePathVtxList:
+    def from_mq_json(file: FileDataRelocator, offset: int, patch_data: list[list[int]]) -> ScenePathVtxList:
         path_vtx_list = ScenePathVtxList(file, offset)
         for vtx in patch_data:
             path_vtx_list.vertices.append(Vec3s(vtx[0], vtx[1], vtx[2]))
@@ -1182,9 +1380,15 @@ class ScenePathVtxList(DataRecord):
 
 # 4 byte aligned in vanilla
 class SceneSpawnPointList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.SpawnList, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.SpawnList
         self.spawns: list[ActorEntry] = []
+        self.data_record_schema = [
+            ('spawns', ActorEntry),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> SceneSpawnPointList:
@@ -1212,6 +1416,12 @@ class ActorEntry(ActorData):
         self.pos: Vec3s = pos
         self.rot: Vec3s = rot
         self.params: int = params
+        self.data_record_schema = [
+            ('id', int),
+            ('pos', Vec3s),
+            ('rot', Vec3s),
+            ('params', int),
+        ]
 
     def copy(self) -> ActorEntry:
         return ActorEntry(self.id, self.pos.copy(), self.rot.copy(), self.params)
@@ -1226,7 +1436,7 @@ class ActorEntry(ActorData):
         )
 
     @staticmethod
-    def from_json(patch_data: str) -> ActorEntry:
+    def from_mq_json(patch_data: str) -> ActorEntry:
         raw_bytes = patch_data.replace(' ', '')
         return ActorEntry(
             str_to_s16(raw_bytes[0:4]),
@@ -1268,6 +1478,11 @@ class SceneSkyboxSettings:
         self.skyboxID: int = skyboxID
         self.skyboxConfig: int = skyboxConfig
         self.envLightMode: int = envLightMode
+        self.data_record_schema = [
+            ('skyboxID', int),
+            ('skyboxConfig', int),
+            ('envLightMode', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, scene_cmd_addr: int) -> SceneSkyboxSettings:
@@ -1280,9 +1495,15 @@ class SceneSkyboxSettings:
 
 # 4 byte aligned in vanilla
 class SceneExitList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.ExitList, file.start, offset, length, True)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = True, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.ExitList
         self.exits: list[int] = []
+        self.data_record_schema = [
+            ('exits', int),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> SceneExitList:
@@ -1309,9 +1530,15 @@ class SceneExitList(DataRecord):
 
 # 4 byte aligned in vanilla
 class SceneLightSettingsList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.LightSettings, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.LightSettings
         self.lights: list[SceneLightSettings] = []
+        self.data_record_schema = [
+            ('lights', SceneLightSettings),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> SceneLightSettingsList:
@@ -1335,49 +1562,60 @@ class SceneLightSettingsList(DataRecord):
 # Data only, part of light settings list
 class SceneLightSettings:
     def __init__(self) -> None:
-        self.ambientColor: tuple[int, int, int] = (0, 0, 0)
-        self.light1Dir: tuple[int, int, int] = (0, 0, 0)
-        self.light1Color: tuple[int, int, int] = (0, 0, 0)
-        self.light2Dir: tuple[int, int, int] = (0, 0, 0)
-        self.light2Color: tuple[int, int, int] = (0, 0, 0)
-        self.fogColor: tuple[int, int, int] = (0, 0, 0)
+        self.ambientColor: list[int] = [0, 0, 0]
+        self.light1Dir: list[int] = [0, 0, 0]
+        self.light1Color: list[int] = [0, 0, 0]
+        self.light2Dir: list[int] = [0, 0, 0]
+        self.light2Color: list[int] = [0, 0, 0]
+        self.fogColor: list[int] = [0, 0, 0]
         self.blendRate: int = 0
         self.zNear: int = 0
         self.zFar: int = 0
+        self.data_record_schema = [
+            ('ambientColor', int),
+            ('light1Dir', int),
+            ('light1Color', int),
+            ('light2Dir', int),
+            ('light2Color', int),
+            ('fogColor', int),
+            ('blendRate', int),
+            ('zNear', int),
+            ('zFar', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> SceneLightSettings:
         light = SceneLightSettings()
-        light.ambientColor = (
+        light.ambientColor = [
             rom.read_byte(cursor),
             rom.read_byte(cursor + 1),
             rom.read_byte(cursor + 2),
-        )
-        light.light1Dir = (
+        ]
+        light.light1Dir = [
             rom.read_s8(cursor + 3),
             rom.read_s8(cursor + 4),
             rom.read_s8(cursor + 5),
-        )
-        light.light1Color = (
+        ]
+        light.light1Color = [
             rom.read_byte(cursor + 6),
             rom.read_byte(cursor + 7),
             rom.read_byte(cursor + 8),
-        )
-        light.light2Dir = (
+        ]
+        light.light2Dir = [
             rom.read_s8(cursor + 9),
             rom.read_s8(cursor + 10),
             rom.read_s8(cursor + 11),
-        )
-        light.light2Color = (
+        ]
+        light.light2Color = [
             rom.read_byte(cursor + 12),
             rom.read_byte(cursor + 13),
             rom.read_byte(cursor + 14),
-        )
-        light.fogColor = (
+        ]
+        light.fogColor = [
             rom.read_byte(cursor + 15),
             rom.read_byte(cursor + 16),
             rom.read_byte(cursor + 17),
-        )
+        ]
         blendRateAndFogNear = rom.read_int16(cursor + 18)
         light.blendRate = (blendRateAndFogNear & 0xFC00) >> 0xA
         light.zNear = blendRateAndFogNear & 0x03FF
@@ -1399,9 +1637,18 @@ class SceneLightSettings:
 
 # 4 byte aligned in vanilla
 class SceneCutsceneData(DataRecord, Cutscene):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        DataRecord.__init__(self, file, RecordType.CutsceneData, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        DataRecord.__init__(self, file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.CutsceneData
         Cutscene.__init__(self, file.start + offset)
+        self.data_record_schema = [
+            ('vrom_address', int),
+            ('commands', CutsceneCommand),
+            ('frames', int),
+            ('original_length', int),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int = -1) -> SceneCutsceneData:
@@ -1420,6 +1667,9 @@ class SceneCutsceneData(DataRecord, Cutscene):
 
 
 class RoomDataRelocator(FileDataRelocator):
+    version: int = 1
+    segment: int = 3
+
     def __init__(self, rom: Rom, name: str, start: int, end: int, scene: SceneDataRelocator) -> None:
         self.scene = scene
         self.headers: list[Optional[RoomHeader]] = [None]
@@ -1440,14 +1690,44 @@ class RoomDataRelocator(FileDataRelocator):
             return (offset, self)  # room
         return (-1, None)  # unknown
 
+    def get_existing_record_by_vanilla_offset_and_segment(self, offset: int, record_type: RecordType, segment: int) -> DataRecord:
+        if segment == self.segment:
+            return self.get_existing_record_by_vanilla_offset(offset, record_type, True)
+        else:
+            return self.scene.get_existing_record_by_vanilla_offset(offset, record_type, True)
+
+    def to_json(self) -> dict[str, Any]:
+        return {
+            'version': self.version,
+            'type': self.type.value,
+            'name': self.name,
+            'start': f'{self.start:08X}',
+            'end': f'{self.end:08X}',
+            'vanilla_start': f'{self.vanilla_start:08X}',
+            'records': [x.to_json() for x in self.data_records],
+            'parsed': self.parsed,
+            'headers': [x.vanilla_offset if x is not None else None for x in self.headers],
+        }
+
+    @staticmethod
+    def from_json(rom: Rom, scene: SceneDataRelocator, cache: dict[str, Any]) -> SceneDataRelocator:
+        room = RoomDataRelocator(rom, cache['name'], cache['start'], cache['end'], scene)
+        room.vanilla_start = cache['vanilla_start']
+        room.data_records = [scene_json_factory(room, x) for x in cache['records']]
+        room.headers = [room.get_existing_record_by_vanilla_offset(x, RecordType.RoomHeader, True) if x is not None else None for x in cache['headers']]
+        return room
+
 
 # Some duplication from SceneHeader. Separate class
 # used to provide distinction in class properties
 # for scene- and room-specific commands.
 # Always 16 byte aligned in vanilla.
 class RoomHeader(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.RoomHeader, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.RoomHeader
         self.alt_header_list: SceneAltHeaderList = None
         self.echo_settings: RoomEchoSettings = None
         self.behavior_settings: RoomBehaviorSettings = None
@@ -1458,6 +1738,19 @@ class RoomHeader(DataRecord):
         self.object_list: RoomObjectList = None
         self.actor_list: RoomActorList = None
         self.align = 16
+        self.data_record_schema = [
+            # DataRecords
+            ('alt_header_list', SceneAltHeaderList),
+            ('mesh_header', RoomMeshHeader),
+            ('object_list', RoomObjectList),
+            ('actor_list', RoomActorList),
+            # Raw Data
+            ('echo_settings', RoomEchoSettings),
+            ('behavior_settings', RoomBehaviorSettings),
+            ('skybox_settings', RoomSkyboxSettings),
+            ('time_settings', RoomTimeSettings),
+            ('wind_settings', RoomWindSettings),
+        ]
 
     def copy(self) -> RoomHeader:
         new_header = RoomHeader(self.file, self.offset + 1, self.length)
@@ -1600,17 +1893,26 @@ class RoomHeader(DataRecord):
 
 # Data only, part of room headers
 class RoomEchoSettings:
-    def __init__(self, echo: int) -> None:
+    def __init__(self, echo: int = 0) -> None:
         self.echo: int = echo
+        self.data_record_schema = [
+            ('echo', int),
+        ]
 
 
 # Data only, part of room headers
 class RoomBehaviorSettings:
-    def __init__(self, curRoomUnk3: int, curRoomUnk2: int, showInvisActors: bool, disableWarpSongs: bool) -> None:
+    def __init__(self, curRoomUnk3: int = 0, curRoomUnk2: int = 0, showInvisActors: bool = False, disableWarpSongs: bool = False) -> None:
         self.curRoomUnk3: int = curRoomUnk3
         self.curRoomUnk2: int = curRoomUnk2
         self.showInvisActors: bool = showInvisActors
         self.disableWarpSongs: bool = disableWarpSongs
+        self.data_record_schema = [
+            ('curRoomUnk3', int),
+            ('curRoomUnk2', int),
+            ('showInvisActors', bool),
+            ('disableWarpSongs', bool),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> RoomBehaviorSettings:
@@ -1626,9 +1928,13 @@ class RoomBehaviorSettings:
 
 # Data only, part of room headers
 class RoomSkyboxSettings:
-    def __init__(self, disableSky: bool, disableSunMoon: bool) -> None:
+    def __init__(self, disableSky: bool = False, disableSunMoon: bool = False) -> None:
         self.disableSky: bool = disableSky
         self.disableSunMoon: bool = disableSunMoon
+        self.data_record_schema = [
+            ('disableSky', bool),
+            ('disableSunMoon', bool),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> RoomSkyboxSettings:
@@ -1640,10 +1946,15 @@ class RoomSkyboxSettings:
 
 # Data only, part of room headers
 class RoomTimeSettings:
-    def __init__(self, hour: int, minute: int, speed: int) -> None:
+    def __init__(self, hour: int = 0, minute: int = 0, speed: int = 0) -> None:
         self.hour: int = hour
         self.minute: int = minute
         self.speed: int = speed
+        self.data_record_schema = [
+            ('hour', int),
+            ('minute', int),
+            ('speed', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> RoomTimeSettings:
@@ -1656,11 +1967,17 @@ class RoomTimeSettings:
 
 # Data only, part of room headers
 class RoomWindSettings:
-    def __init__(self, xDir: int, yDir: int, zDir: int, strength: int) -> None:
+    def __init__(self, xDir: int = 0, yDir: int = 0, zDir: int = 0, strength: int = 0) -> None:
         self.xDir: int = xDir
         self.yDir: int = yDir
         self.zDir: int = zDir
         self.strength: int = strength
+        self.data_record_schema = [
+            ('xDir', int),
+            ('yDir', int),
+            ('zDir', int),
+            ('strength', int),
+        ]
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> RoomWindSettings:
@@ -1674,10 +1991,16 @@ class RoomWindSettings:
 
 # 16 byte aligned in vanilla
 class RoomMeshHeader(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.MeshHeader, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.MeshHeader
         self.display_list_entries: RoomMeshDLEntries = None
         self.align = 16
+        self.data_record_schema = [
+            ('display_list_entries', RoomMeshDLEntries),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> RoomMeshHeader:
@@ -1706,10 +2029,13 @@ class RoomMeshHeader(DataRecord):
 
 # 16 byte aligned in vanilla
 class _RoomMeshImageHeader(DataRecord):
-    def __init__(self, file: FileDataRelocator, type: RecordType, offset: int, length: int) -> None:
-        super().__init__(file, type, file.start, offset, length)
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        # record type is set by child classes
         self.display_list_entries: RoomMeshDLEntries = None
         self.align = 16
+        # Common class for the Single and Multi background variants.
+        # Schemas and versions are defined on child classes.
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> RoomMeshImageSingleHeader | RoomMeshImageMultiHeader:
@@ -1731,10 +2057,17 @@ class _RoomMeshImageHeader(DataRecord):
 
 # 16 byte aligned in vanilla
 class RoomMeshImageSingleHeader(_RoomMeshImageHeader):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.MeshHeaderImageSingle, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.MeshHeaderImageSingle
         self.background: RoomMeshImage = None
         self.align = 16
+        self.data_record_schema = [
+            ('display_list_entries', RoomMeshDLEntries),
+            ('background', RoomMeshImage),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> RoomMeshImageSingleHeader:
@@ -1760,10 +2093,17 @@ class RoomMeshImageSingleHeader(_RoomMeshImageHeader):
 
 # 16 byte aligned in vanilla
 class RoomMeshImageMultiHeader(_RoomMeshImageHeader):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.MeshHeaderImageMulti, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.MeshHeaderImageMulti
         self.background_list: RoomMeshImageMultiEntries = None
         self.align = 16
+        self.data_record_schema = [
+            ('display_list_entries', RoomMeshDLEntries),
+            ('background_list', RoomMeshImageMultiEntries),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> RoomMeshImageMultiHeader:
@@ -1805,6 +2145,17 @@ class RoomMeshImage:
         self.siz: int = 0
         self.tlutMode: int = 0
         self.tlutCount: int = 0
+        self.data_record_schema = [
+            ('source', RoomMeshRawImage),
+            ('unk_0C', int),
+            ('tlut', int),
+            ('width', int),
+            ('height', int),
+            ('fmt', int),
+            ('siz', int),
+            ('tlutMode', int),
+            ('tlutCount', int),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, cursor: int) -> RoomMeshImage:
@@ -1836,9 +2187,15 @@ class RoomMeshImage:
 
 # Textures are 16 byte aligned in vanilla
 class RoomMeshRawImage(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.BackgroundImage, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.BackgroundImage
         self.align = 16
+        # No additional properties beyond the raw bytes saved in
+        # the base DataRecord. This class exists to set the
+        # record type.
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int = -1) -> RoomMeshRawImage:
@@ -1851,10 +2208,16 @@ class RoomMeshRawImage(DataRecord):
 
 # 16 byte aligned in vanilla
 class RoomMeshImageMultiEntries(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.Backgrounds, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Backgrounds
         self.backgrounds: list[RoomMeshImageMultiEntry] = []
         self.align = 16
+        self.data_record_schema = [
+            ('backgrounds', RoomMeshImageMultiEntry)
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int = -1) -> RoomMeshImageMultiEntries:
@@ -1881,6 +2244,11 @@ class RoomMeshImageMultiEntry:
         self.unk_00: int = 0
         self.bgCamIndex: int = 0
         self.background: RoomMeshImage = None
+        self.data_record_schema = [
+            ('unk_00', int),
+            ('bgCamIndex', int),
+            ('background', RoomMeshImage),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, cursor: int) -> RoomMeshImageMultiEntry:
@@ -1902,10 +2270,16 @@ class RoomMeshImageMultiEntry:
 
 # 16 byte aligned in vanilla
 class RoomMeshCullableHeader(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.MeshHeaderCullable, file.start, offset, length)
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.MeshHeaderCullable
         self.display_list_entries: RoomMeshDLCullableEntries = None
         self.align = 16
+        self.data_record_schema = [
+            ('display_list_entries', RoomMeshDLCullableEntries),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> RoomMeshCullableHeader:
@@ -1934,9 +2308,17 @@ class RoomMeshCullableHeader(DataRecord):
 
 # 4 byte aligned in vanilla
 class RoomMeshDLEntries(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.DlistEntries, file.start, offset, length)
-        self.entries: list[tuple[Optional[RoomMeshDL], Optional[RoomMeshDL]]] = []
+    version: int = 1
+
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.DlistEntries
+        # List of tuples of OPA and XLU display lists.
+        # Tuple not used to make JSON import/export easier.
+        self.entries: list[list[Optional[RoomMeshDL]]] = []
+        self.data_record_schema = [
+            ('entries', RoomMeshDL),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> RoomMeshDLEntries:
@@ -1981,8 +2363,9 @@ class RoomMeshDLEntries(DataRecord):
 
 # 4 byte aligned in vanilla
 class RoomMeshDLCullableEntries(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.DlistCullableEntries, file.start, offset, length)
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.DlistCullableEntries
         self.entries: list[RoomMeshDLCullableEntry] = []
 
     @staticmethod
@@ -2047,8 +2430,9 @@ class RoomMeshDLCullableEntry:
 
 # 8 byte aligned in vanilla
 class RoomMeshDL(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.Dlist, file.start, offset, length)
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Dlist
         self.external_references: list[DisplayListRecord] = []
         self.align = 8
 
@@ -2141,8 +2525,9 @@ class DisplayListRecord:
 
 # 8 byte aligned in vanilla
 class DisplayListVtxList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.Vtx, file.start, offset, length)
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Vtx
         self.align = 8
 
     @staticmethod
@@ -2174,8 +2559,9 @@ class DisplayListVtxList(DataRecord):
 
 # 4 byte aligned in vanilla
 class RoomObjectList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.ObjectList, file.start, offset, length)
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.ObjectList
         self.objects: list[int] = []
 
     @staticmethod
@@ -2204,8 +2590,9 @@ class RoomObjectList(DataRecord):
 
 # 4 byte aligned in vanilla
 class RoomActorList(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1) -> None:
-        super().__init__(file, RecordType.ActorList, file.start, offset, length)
+    def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.ActorList
         self.actors: list[ActorEntry] = []
 
     def copy(self) -> RoomActorList:
@@ -2228,7 +2615,7 @@ class RoomActorList(DataRecord):
     def apply_patch(self, patch_data: list[str]) -> None:
         self.actors = []
         for actor in patch_data:
-            self.actors.append(ActorEntry.from_json(actor))
+            self.actors.append(ActorEntry.from_mq_json(actor))
 
     def encode(self) -> bytearray:
         bytes = bytearray()
@@ -2239,8 +2626,9 @@ class RoomActorList(DataRecord):
 
 # 8 byte aligned in vanilla
 class SceneTexture(DataRecord):
-    def __init__(self, file: FileDataRelocator, offset: int, length: int) -> None:
-        super().__init__(file, RecordType.Texture, file.start, offset, length)
+    def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
+        super().__init__(file, offset, length, delay_parsing, store_in_file)
+        self.type = RecordType.Texture
         if length < 0:
             self.delay_parsing = True
         self.align = 8
@@ -2306,6 +2694,76 @@ def scene_resource_factory(file: FileDataRelocator, offset: int, type: str, attr
         raise Exception(f'Unrecognized resource type when parsing scenes: {type}')
 
 
+def scene_json_factory(file: FileDataRelocator, data: dict[str, Any]) -> Any:
+    type = RecordType(data['type'])
+    if type == RecordType.SceneHeader:
+        return SceneHeader.from_json(file, data)
+    elif type == RecordType.AlternateHeaders:
+        return SceneAltHeaderList.from_json(file, data)
+    elif type == RecordType.RoomList:
+        return SceneRoomList.from_json(file, data)
+    elif type == RecordType.TransitionActorList:
+        return SceneTransitionActorList.from_json(file, data)
+    elif type == RecordType.CollisionHeader:
+        return SceneCollisionHeader.from_json(file, data)
+    elif type == RecordType.Vertices:
+        return CollisionVtxList.from_json(file, data)
+    elif type == RecordType.Polys:
+        return CollisionPolyList.from_json(file, data)
+    elif type == RecordType.SurfaceTypes:
+        return CollisionSurfaceTypeList.from_json(file, data)
+    elif type == RecordType.Cams:
+        return CollisionBgCamInfoList.from_json(file, data)
+    elif type == RecordType.CamPosData:
+        return CollisionBgCamFuncData.from_json(file, data)
+    elif type == RecordType.Waterboxes:
+        return CollisionWaterBoxList.from_json(file, data)
+    elif type == RecordType.EntranceList:
+        return SceneEntranceList.from_json(file, data)
+    elif type == RecordType.PathList:
+        return ScenePathList.from_json(file, data)
+    elif type == RecordType.Points:
+        return ScenePathVtxList.from_json(file, data)
+    elif type == RecordType.SpawnList:
+        return SceneSpawnPointList.from_json(file, data)
+    elif type == RecordType.ExitList:
+        return SceneExitList.from_json(file, data)
+    elif type == RecordType.LightSettings:
+        return SceneLightSettingsList.from_json(file, data)
+    elif type == RecordType.CutsceneData:
+        return SceneCutsceneData.from_json(file, data)
+    elif type == RecordType.RoomHeader:
+        return RoomHeader.from_json(file, data)
+    elif type == RecordType.MeshHeader:
+        return RoomMeshHeader.from_json(file, data)
+    elif type == RecordType.MeshHeaderImageSingle:
+        return RoomMeshImageSingleHeader.from_json(file, data)
+    elif type == RecordType.MeshHeaderImageMulti:
+        return RoomMeshImageMultiHeader.from_json(file, data)
+    elif type == RecordType.BackgroundImage:
+        return RoomMeshRawImage.from_json(file, data)
+    elif type == RecordType.Backgrounds:
+        return RoomMeshImageMultiEntries.from_json(file, data)
+    elif type == RecordType.MeshHeaderCullable:
+        return RoomMeshCullableHeader.from_json(file, data)
+    elif type == RecordType.DlistEntries:
+        return RoomMeshDLEntries.from_json(file, data)
+    elif type == RecordType.DlistCullableEntries:
+        return RoomMeshDLCullableEntries.from_json(file, data)
+    elif type == RecordType.Dlist:
+        return RoomMeshDL.from_json(file, data)
+    elif type == RecordType.Vtx:
+        return DisplayListVtxList.from_json(file, data)
+    elif type == RecordType.ObjectList:
+        return RoomObjectList.from_json(file, data)
+    elif type == RecordType.ActorList:
+        return RoomActorList.from_json(file, data)
+    elif type == RecordType.Texture:
+        return SceneTexture.from_json(file, data)
+    else:
+        raise Exception(f'Unrecognized resource type when parsing cached scenes: {type}')
+
+
 TOTAL_SCENE_ROOM_FILES = 489
 
 # Convenience class to wrap scene parsing, writing, and in-process changes into one object.
@@ -2369,6 +2827,14 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
     logger.debug('Reading scene files from ROM')
     xml_dir = data_path('scenes')
     parsed_files = 0
+    scene_cache: dict[int, dict[str, Any]] = {}
+    if path.exists(local_path('scenes.json')):
+        try:
+            with open(local_path('scenes.json'), 'r') as f:
+                scene_cache = json.load(f)
+        except:
+            scene_cache = {}
+    refresh_cache = False
     # XML files may not be read in the same order as the scene IDs
     scenes: list[Optional[SceneDataRelocator]] = [None for _ in range(0x00, 0x65)]
     for subdir, _, files in walk(xml_dir):
@@ -2376,6 +2842,7 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
             scene_id = -1
             tree = ET.parse(path.join(subdir, zapd_xml))
             root = tree.getroot()
+            from_cache = True
             for file in root:
                 parsed_files += 1
                 filename = file.attrib['Name']
@@ -2388,10 +2855,17 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
                     if len(ids) > 1:
                         raise Exception(f'Multiple scenes match filename {filename}')
                     scene_id = ids[0][0]
-                    scene_start = rom.read_int32(SCENE_TABLE_ADDRESS + (scene_id * 0x14))
-                    entry = rom.dma.get_dmadata_record_by_key(scene_start)
-                    scene_end = entry.end
-                    scene_file = SceneDataRelocator(rom, filename, scene_start, scene_end)
+                    try:
+                        scene_file = SceneDataRelocator.from_json(rom, scene_cache[scene_id])
+                    except (SceneCacheFileException, IndexError) as e:
+                        if isinstance(e, SceneCacheFileException):
+                            logger.debug('Attempting to parse file from ROM instead')
+                        scene_start = rom.read_int32(SCENE_TABLE_ADDRESS + (scene_id * 0x14))
+                        entry = rom.dma.get_dmadata_record_by_key(scene_start)
+                        scene_end = entry.end
+                        scene_file = SceneDataRelocator(rom, filename, scene_start, scene_end)
+                        from_cache = False
+                        refresh_cache = True
                     current_file = scene_file
                 elif segment == 0x03:
                     # rooms always defined after parent scene
@@ -2399,20 +2873,27 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
                     current_file = scene_file.rooms[room_num]
                 else:
                     raise Exception(f'Attempted to parse ZAPD XML file {filename} with type (segment {segment}) that is not a scene (segment 0x02) or room (segment 0x03)')
-                logger.info(f'Parsing file {parsed_files} of {TOTAL_SCENE_ROOM_FILES}')
-                logger.debug(f'File name: {current_file.name}')
-                for res in file:
-                    offset = int(res.attrib['Offset'], 16)
-                    res_type = res.tag
-                    scene_resource_factory(current_file, offset, res_type, res.attrib)
-                # Don't finalize scene files until all rooms have been parsed
-                # in case they have any references to the parent scene file for
-                # new records
-                if segment == 0x03:
-                    current_file.finalize()
+                if not from_cache:
+                    logger.info(f'Parsing file {parsed_files} of {TOTAL_SCENE_ROOM_FILES}')
+                    logger.debug(f'File name: {current_file.name}')
+                    for res in file:
+                        offset = int(res.attrib['Offset'], 16)
+                        res_type = res.tag
+                        scene_resource_factory(current_file, offset, res_type, res.attrib)
+                    # Don't finalize scene files until all rooms have been parsed
+                    # in case they have any references to the parent scene file for
+                    # new records
+                    if segment == 0x03:
+                        current_file.finalize()
+                elif segment == 0x03:
+                    current_file.finalize_from_cache()
             if scene_id < 0 or scene_file is None:
                 raise Exception(f'Something went wrong parsing {zapd_xml}. Scene file not found.')
-            scene_file.finalize()
+            if not from_cache:
+                scene_file.finalize()
+                scene_cache[scene_file.id] = scene_file.to_json()
+            else:
+                scene_file.finalize_from_cache()
             scenes[scene_id] = scene_file
             # Just to be safe in case the XML gets mangled
             scene_file = None
@@ -2420,9 +2901,15 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
     for scene_id, scene_file in enumerate(scenes):
         if scene_file is None or not scene_file.parsed:
             raise Exception(f'Scene 0x{scene_id:0>2x} was not parsed')
+        if scene_id not in scene_cache.keys():
+            raise Exception(f'Scene 0x{scene_id:0>2x} parsed data was not cached to disk')
         for room_id, room_file in enumerate(scene_file.rooms):
             if room_file is None or not room_file.parsed:
                 raise Exception(f'Room {room_id} in Scene 0x{scene_id:0>2x} was not parsed')
+    if refresh_cache:
+        logger.debug('Saving scene file cached data to disk')
+        with open(local_path('scenes.json'), 'w') as f:
+            json.dump(scene_cache)
     logger.debug('Finished parsing scene files')
     return scenes
 
