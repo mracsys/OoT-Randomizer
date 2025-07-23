@@ -2363,10 +2363,15 @@ class RoomMeshDLEntries(DataRecord):
 
 # 4 byte aligned in vanilla
 class RoomMeshDLCullableEntries(DataRecord):
+    version: int = 1
+
     def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
         super().__init__(file, offset, length, delay_parsing, store_in_file)
         self.type = RecordType.DlistCullableEntries
         self.entries: list[RoomMeshDLCullableEntry] = []
+        self.data_record_schema = [
+            ('entries', RoomMeshDLCullableEntry),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> RoomMeshDLCullableEntries:
@@ -2403,6 +2408,12 @@ class RoomMeshDLCullableEntry:
         self.boundsSphereRadius: int = boundsSphereRadius
         self.opa: Optional[RoomMeshDL] = opa
         self.xlu: Optional[RoomMeshDL] = xlu
+        self.data_record_schema = [
+            ('boundsSphereCenter', Vec3s),
+            ('boundsSphereRadius', int),
+            ('opa', RoomMeshDL),
+            ('xlu', RoomMeshDL),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, cursor: int) -> RoomMeshDLCullableEntry:
@@ -2430,11 +2441,16 @@ class RoomMeshDLCullableEntry:
 
 # 8 byte aligned in vanilla
 class RoomMeshDL(DataRecord):
+    version: int = 1
+
     def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
         super().__init__(file, offset, length, delay_parsing, store_in_file)
         self.type = RecordType.Dlist
         self.external_references: list[DisplayListRecord] = []
         self.align = 8
+        self.data_record_schema = [
+            ('external_references', DisplayListRecord),
+        ]
 
     def decode(file: FileDataRelocator, offset: int, length: int = -1) -> RoomMeshDL:
         existing_record = file.get_existing_record_by_offset(offset, RecordType.Dlist)
@@ -2517,6 +2533,11 @@ class DisplayListRecord:
         self.pointer_offset: int = pointer_offset
         self.record: DataRecord = record
         self.record_offset: int = record_offset
+        self.data_record_schema = [
+            ('pointer_offset', int),
+            ('record', DataRecord),
+            ('record_offset', int),
+        ]
 
     def get_segment_address_bytes(self) -> bytes:
         record_address = create_segment_address(self.record.file.type.value, self.record.offset + self.record_offset)
@@ -2525,10 +2546,13 @@ class DisplayListRecord:
 
 # 8 byte aligned in vanilla
 class DisplayListVtxList(DataRecord):
+    version: int = 1
+
     def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
         super().__init__(file, offset, length, delay_parsing, store_in_file)
         self.type = RecordType.Vtx
         self.align = 8
+        # No properties to track for caching outside base DataRecord class
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> DisplayListVtxList:
@@ -2559,10 +2583,15 @@ class DisplayListVtxList(DataRecord):
 
 # 4 byte aligned in vanilla
 class RoomObjectList(DataRecord):
+    version: int = 1
+
     def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
         super().__init__(file, offset, length, delay_parsing, store_in_file)
         self.type = RecordType.ObjectList
         self.objects: list[int] = []
+        self.data_record_schema = [
+            ('objects', int),
+        ]
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int = -1) -> RoomObjectList:
@@ -2590,10 +2619,15 @@ class RoomObjectList(DataRecord):
 
 # 4 byte aligned in vanilla
 class RoomActorList(DataRecord):
+    version: int = 1
+
     def __init__(self, file: FileDataRelocator, offset: int, length: Optional[int] = -1, delay_parsing: bool = False, store_in_file: bool = True) -> None:
         super().__init__(file, offset, length, delay_parsing, store_in_file)
         self.type = RecordType.ActorList
         self.actors: list[ActorEntry] = []
+        self.data_record_schema = [
+            ('actors', int),
+        ]
 
     def copy(self) -> RoomActorList:
         new_list = RoomActorList(self.file, self.offset + 1, self.length)
@@ -2626,12 +2660,15 @@ class RoomActorList(DataRecord):
 
 # 8 byte aligned in vanilla
 class SceneTexture(DataRecord):
+    version: int = 1
+
     def __init__(self, file: FileDataRelocator, offset: int, length: int, delay_parsing: bool = False, store_in_file: bool = True) -> None:
         super().__init__(file, offset, length, delay_parsing, store_in_file)
         self.type = RecordType.Texture
         if length < 0:
             self.delay_parsing = True
         self.align = 8
+        # No properties to track for caching outside base DataRecord class
 
     @staticmethod
     def decode(file: FileDataRelocator, offset: int, length: int) -> SceneTexture:

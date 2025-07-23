@@ -1,16 +1,18 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from base64 import b64decode, b64encode
-from enum import Enum
+from enum import Enum, IntEnum
 from json import dumps
 from typing import Any, Optional, Literal, overload, TYPE_CHECKING
 
 from Rom import Rom
 from MQ import align4, align8, align16, align_file
 from SceneList import RecordType, SCENE_EXTERNAL_REFERENCES
+from Cutscenes import CutsceneCommand
 
 if TYPE_CHECKING:
     from Scene import SceneCutsceneData, SceneTransitionActorList, ScenePathList, RoomActorList, RoomObjectList, CollisionBgCamInfoList, SceneHeader, RoomHeader
+    from Cutscenes import CutsceneCommandID
 
 def segment_address_offset(segment_address: int) -> int:
     return segment_address & 0x00FFFFFF
@@ -76,6 +78,10 @@ def pack_properties(cls: Any, schema: list[tuple[str, Any]]) -> dict[str, Any]:
                     packed[var].append(pack_properties(v, v.data_record_schema))
         elif isinstance(value, DataRecord):
             packed[var] = [var, value.file.segment, value.vanilla_offset, value.type.value]
+        elif isinstance(value, CutsceneCommand):
+            packed[var] = pack_properties(value, value.data_record_schema)
+            packed[var]['id'] = value.id
+            packed[var]['is_cutscene_command'] = True
         else:
             packed[var] = pack_properties(value, value.data_record_schema)
     return packed
@@ -104,6 +110,17 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
                 for v in value:
                     subrecord = subcls()
                     record.__dict__[var].append(unpack_properties(subrecord, subrecord.data_record_schema, v))
+        elif issubclass(subcls, CutsceneCommand):
+            value_commands = []
+            if 'sub_commands' in value.keys():
+                value_commands = value['sub_commands']
+            del value['sub_commands']
+            record.__dict__[var] = subcls(**value)
+            sub_commands = []
+            for sub_command in value_commands:
+                sub_commands.append(unpack_properties())
+            if len(value_commands) > 0:
+                record.__dict__['sub_commands'] = sub_commands
         elif issubclass(subcls, DataRecord):
             # List of records
             if isinstance(value[0], list):
@@ -111,14 +128,31 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
                 idx = 0
                 for json_record in value:
                     if json_record is not None:
-                        file.linked_json_records.append((
-                            var,
-                            record,
-                            json_record[1],
-                            json_record[2],
-                            RecordType(json_record[3]),
-                            idx,
-                        ))
+                        # Display list tuple check
+                        if isinstance(json_record[0], list):
+                            record.__dict__[var][idx] = [None for _ in range(len(value))]
+                            subidx = 0
+                            for tuple_record in json_record:
+                                file.linked_json_records.append((
+                                    var,
+                                    record,
+                                    tuple_record[1],
+                                    tuple_record[2],
+                                    RecordType(tuple_record[3]),
+                                    idx,
+                                    subidx,
+                                ))
+                                subidx += 1
+                        else:
+                            file.linked_json_records.append((
+                                var,
+                                record,
+                                json_record[1],
+                                json_record[2],
+                                RecordType(json_record[3]),
+                                idx,
+                                -1,
+                            ))
                     idx += 1
             # Single record
             else:
@@ -128,6 +162,7 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
                     value[1],
                     value[2],
                     RecordType(value[3]),
+                    -1,
                     -1,
                 ))
         else:
@@ -320,9 +355,12 @@ class FileDataRelocator(ABC):
 
     # Extra parsing already captured by json import
     def finalize_from_cache(self) -> None:
-        for property, record, segment, offset, record_type, list_index in self.linked_json_records:
+        for property, record, segment, offset, record_type, list_index, tuple_index in self.linked_json_records:
             if list_index >= 0:
-                record.__dict__[property][list_index] = self.get_existing_record_by_vanilla_offset_and_segment(offset, record_type, segment)
+                if tuple_index >= 0:
+                    record.__dict__[property][list_index][tuple_index] = self.get_existing_record_by_vanilla_offset_and_segment(offset, record_type, segment)
+                else:
+                    record.__dict__[property][list_index] = self.get_existing_record_by_vanilla_offset_and_segment(offset, record_type, segment)
             else:
                 record.__dict__[property] = self.get_existing_record_by_vanilla_offset_and_segment(offset, record_type, segment)
         self.linked_json_records = []

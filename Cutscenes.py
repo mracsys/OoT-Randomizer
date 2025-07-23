@@ -8,7 +8,7 @@ from Rom import Rom, Vec3s, Vec3i, float_to_bytes
 from Settings import Settings
 from SaveContext import SceneIDs
 from SceneList import RecordType
-from Item import ItemInfo
+from FileDataRelocator import CutsceneCommand
 
 if TYPE_CHECKING:
     from Scene import Scenes
@@ -1186,6 +1186,11 @@ class CutsceneCommand(ABC):
         self.start_frame: int = start_frame
         self.end_frame: int = end_frame
         self.sub_commands: list[CutsceneCommand] = []
+        self.data_record_schema = [
+            ('start_frame', int),
+            ('end_frame', int),
+            ('sub_commands', CutsceneCommand),
+        ]
 
     @abstractmethod
     def encode(self) -> bytearray:
@@ -1200,6 +1205,13 @@ class CutsceneCommandCamPoint(CutsceneCommand):
         self.view_angle: float = view_angle
         self.pos: Vec3s = pos
         self.unused: int = unused
+        self.data_record_schema.extend([
+            ('continue_flag', int),
+            ('roll', int),
+            ('view_angle', int),
+            ('pos', int),
+            ('unused', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandCamPoint:
@@ -1944,3 +1956,8 @@ class CutsceneCommandUnknownDataList(CutsceneCommand):
         for cmd in self.sub_commands:
             bytes.extend(cmd.encode())
         return bytes
+
+
+CutsceneCommandConstructorMap = {
+    CutsceneCommandID.CS_SUBCMD_CAM_POINT: CutsceneCommandCamPoint,
+}
