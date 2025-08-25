@@ -8,7 +8,6 @@ from Rom import Rom, Vec3s, Vec3i, float_to_bytes
 from Settings import Settings
 from SaveContext import SceneIDs
 from SceneList import RecordType
-from FileDataRelocator import CutsceneCommand
 
 if TYPE_CHECKING:
     from Scene import Scenes
@@ -704,6 +703,7 @@ def patch_wondertalk2(rom: Rom, scenes: Scenes, settings: Settings) -> None:
 # Gaps in IDs are intentional
 # https://github.com/zeldaret/oot/blob/7235af2249843fb68740111b70089bad827a4730/include/z64cutscene.h#L35-L165
 class CutsceneCommandID(IntEnum):
+    CS_CMD_UNIMPL                       = 0x0000
     CS_CMD_CAM_EYE_SPLINE               = 0x0001
     CS_CMD_CAM_AT_SPLINE                = 0x0002
     CS_CMD_MISC                         = 0x0003
@@ -1181,7 +1181,7 @@ class Cutscene:
 
 
 class CutsceneCommand(ABC):
-    def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0) -> None:
+    def __init__(self, id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, start_frame: int = 0, end_frame: int = 0) -> None:
         self.id: CutsceneCommandID = id
         self.start_frame: int = start_frame
         self.end_frame: int = end_frame
@@ -1189,7 +1189,6 @@ class CutsceneCommand(ABC):
         self.data_record_schema = [
             ('start_frame', int),
             ('end_frame', int),
-            ('sub_commands', CutsceneCommand),
         ]
 
     @abstractmethod
@@ -1208,8 +1207,8 @@ class CutsceneCommandCamPoint(CutsceneCommand):
         self.data_record_schema.extend([
             ('continue_flag', int),
             ('roll', int),
-            ('view_angle', int),
-            ('pos', int),
+            ('view_angle', float),
+            ('pos', Vec3s),
             ('unused', int),
         ])
 
@@ -1239,6 +1238,9 @@ class CutsceneCommandCamSpline(CutsceneCommand):
     def __init__(self, id: CutsceneCommandID, start_frame: int, end_frame: int, points: list[CutsceneCommandCamPoint] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandCamPoint] = points or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandCamPoint),
+        ])
 
     @staticmethod
     def decode(rom: Rom, address: int) -> tuple[CutsceneCommandCamSpline, int]:
@@ -1285,6 +1287,20 @@ class CutsceneCommandMisc(CutsceneCommand):
         self.unused8: int = unused8
         self.unused9: int = unused9
         self.unused10: int = unused10
+        self.data_record_schema.extend([
+            ('type_id', int),
+            ('unused0', int),
+            ('unused1', int),
+            ('unused2', int),
+            ('unused3', int),
+            ('unused4', int),
+            ('unused5', int),
+            ('unused6', int),
+            ('unused7', int),
+            ('unused8', int),
+            ('unused9', int),
+            ('unused10', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandMisc:
@@ -1328,6 +1344,9 @@ class CutsceneCommandMiscList(CutsceneCommand):
     def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandMisc] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandMisc] = sub_commands or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandMisc),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandMiscList, int]:
@@ -1363,6 +1382,20 @@ class CutsceneCommandLightSetting(CutsceneCommand):
         self.unused8: int = unused8
         self.unused9: int = unused9
         self.unused10: int = unused10
+        self.data_record_schema.extend([
+            ('light_setting', int),
+            ('unused0', int),
+            ('unused1', int),
+            ('unused2', int),
+            ('unused3', int),
+            ('unused4', int),
+            ('unused5', int),
+            ('unused6', int),
+            ('unused7', int),
+            ('unused8', int),
+            ('unused9', int),
+            ('unused10', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandLightSetting:
@@ -1408,6 +1441,9 @@ class CutsceneCommandLightSettingList(CutsceneCommand):
     def __init__(self, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandLightSetting] = None) -> None:
         super().__init__(CutsceneCommandID.CS_CMD_LIGHT_SETTING, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandLightSetting] = sub_commands or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandLightSetting),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandLightSettingList, int]:
@@ -1435,6 +1471,14 @@ class CutsceneCommandRumbleController(CutsceneCommand):
         self.unused0: int = unused0
         self.unused1: int = unused1
         self.unused2: int = unused2
+        self.data_record_schema.extend([
+            ('source_strength', int),
+            ('duration', int),
+            ('decrease_rate', int),
+            ('unused0', int),
+            ('unused1', int),
+            ('unused2', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandRumbleController:
@@ -1466,6 +1510,9 @@ class CutsceneCommandRumbleControllerList(CutsceneCommand):
     def __init__(self, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandRumbleController] = None) -> None:
         super().__init__(CutsceneCommandID.CS_CMD_RUMBLE_CONTROLLER, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandRumbleController] = sub_commands or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandRumbleController),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandRumbleControllerList, int]:
@@ -1500,6 +1547,15 @@ class CutsceneCommandActorCue(CutsceneCommand):
         self.unused0: float = unused0
         self.unused1: float = unused1
         self.unused2: float = unused2
+        self.data_record_schema.extend([
+            ('cue_id', int),
+            ('rot', Vec3s),
+            ('start_pos', Vec3i),
+            ('end_pos', Vec3i),
+            ('unused0', float),
+            ('unused1', float),
+            ('unused2', float),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int, command_id: CutsceneCommandID) -> CutsceneCommandActorCue:
@@ -1534,6 +1590,9 @@ class CutsceneCommandActorCueList(CutsceneCommand):
     def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, cues: list[CutsceneCommandActorCue] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandActorCue] = cues or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandActorCue),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandActorCueList, int]:
@@ -1562,6 +1621,12 @@ class CutsceneCommandText(CutsceneCommand):
         self.text_type: int = text_type
         self.alt_id1: int = alt_id1
         self.alt_id2: int = alt_id2
+        self.data_record_schema.extend([
+            ('text_id', int),
+            ('text_type', int),
+            ('alt_id1', int),
+            ('alt_id2', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandText:
@@ -1613,6 +1678,10 @@ class CutsceneCommandTextOcarinaAction(CutsceneCommand):
         super().__init__(CutsceneCommandID.CS_SUBCMD_TEXT_OCARINA_ACTION, start_frame, end_frame)
         self.ocarina_action: int = ocarina_action
         self.message_id: int = message_id
+        self.data_record_schema.extend([
+            ('ocarina_action', int),
+            ('message_id', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandTextOcarinaAction:
@@ -1638,6 +1707,9 @@ class CutsceneCommandTextList(CutsceneCommand):
     def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, cmds: list[CutsceneCommandText | CutsceneCommandTextNone | CutsceneCommandTextOcarinaAction] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandText | CutsceneCommandTextNone | CutsceneCommandTextOcarinaAction] = cmds or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandText), # different text command types are handled in the unpack function, pack doesn't use this
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandTextList, int]:
@@ -1667,6 +1739,9 @@ class CutsceneCommandTransition(CutsceneCommand):
     def __init__(self, transition_type: int, start_frame: int = 0, end_frame: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_CMD_TRANSITION, start_frame, end_frame)
         self.transition_type: int = transition_type
+        self.data_record_schema.extend([
+            ('transition_type', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandTransition, int]:
@@ -1708,6 +1783,17 @@ class CutsceneCommandSequenceCommand(CutsceneCommand):
         self.unused5: int = unused5
         self.unused6: int = unused6
         self.unused7: int = unused7
+        self.data_record_schema.extend([
+            ('seq_id', int),
+            ('unused0', int),
+            ('unused1', int),
+            ('unused2', int),
+            ('unused3', int),
+            ('unused4', int),
+            ('unused5', int),
+            ('unused6', int),
+            ('unused7', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int, command_type: int) -> CutsceneCommandSequenceCommand:
@@ -1747,6 +1833,9 @@ class CutsceneCommandSequenceList(CutsceneCommand):
     def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandSequenceCommand] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandSequenceCommand] = sub_commands or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandSequenceCommand),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandSequenceList, int]:
@@ -1815,6 +1904,11 @@ class CutsceneCommandTime(CutsceneCommand):
         self.hour: int = hour
         self.minute: int = minute
         self.unused0: int = unused0
+        self.data_record_schema.extend([
+            ('hour', int),
+            ('minute', int),
+            ('unused0', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandTime:
@@ -1841,6 +1935,9 @@ class CutsceneCommandTimeList(CutsceneCommand):
     def __init__(self, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandTime] = None) -> None:
         super().__init__(CutsceneCommandID.CS_CMD_TIME, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandTime] = sub_commands or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandTime),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandTimeList, int]:
@@ -1863,6 +1960,9 @@ class CutsceneCommandDestination(CutsceneCommand):
     def __init__(self, destination: int, start_frame: int = 0, end_frame: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_CMD_DESTINATION, start_frame, end_frame)
         self.destination: int = destination
+        self.data_record_schema.extend([
+            ('destination', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandDestination, int]:
@@ -1899,6 +1999,20 @@ class CutsceneCommandUnknownData(CutsceneCommand):
         self.unk10: int = unk10
         self.unk11: int = unk11
         self.unk12: int = unk12
+        self.data_record_schema.extend([
+            ('unk1', int),
+            ('unk2', int),
+            ('unk3', int),
+            ('unk4', int),
+            ('unk5', int),
+            ('unk6', int),
+            ('unk7', int),
+            ('unk8', int),
+            ('unk9', int),
+            ('unk10', int),
+            ('unk11', int),
+            ('unk12', int),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> CutsceneCommandUnknownData:
@@ -1938,6 +2052,9 @@ class CutsceneCommandUnknownDataList(CutsceneCommand):
     def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandUnknownData] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandUnknownData] = sub_commands or []
+        self.data_record_schema.extend([
+            ('sub_commands', CutsceneCommandUnknownData),
+        ])
 
     @staticmethod
     def decode(rom: Rom, cursor: int) -> tuple[CutsceneCommandUnknownDataList, int]:
@@ -1958,6 +2075,53 @@ class CutsceneCommandUnknownDataList(CutsceneCommand):
         return bytes
 
 
-CutsceneCommandConstructorMap = {
-    CutsceneCommandID.CS_SUBCMD_CAM_POINT: CutsceneCommandCamPoint,
-}
+def cutscene_constructor_from_id(cmd_id: int) -> type[CutsceneCommand]:
+    class_def = CutsceneCommandUnknownDataList
+    id = CutsceneCommandID(cmd_id)
+    if id in ACTOR_CUE_COMMANDS:
+        class_def = CutsceneCommandActorCueList
+    elif id == CutsceneCommandID.CS_CMD_MISC:
+        class_def = CutsceneCommandMiscList
+    elif id == CutsceneCommandID.CS_CMD_LIGHT_SETTING:
+        class_def = CutsceneCommandLightSettingList
+    elif id in SEQUENCE_COMMANDS:
+        class_def = CutsceneCommandSequenceList
+    elif id in CAMERA_COMMANDS:
+        class_def = CutsceneCommandCamSpline
+    elif id == CutsceneCommandID.CS_CMD_TEXT:
+        class_def = CutsceneCommandTextList
+    elif id == CutsceneCommandID.CS_CMD_TIME:
+        class_def = CutsceneCommandTimeList
+    elif id == CutsceneCommandID.CS_CMD_RUMBLE_CONTROLLER:
+        class_def = CutsceneCommandRumbleControllerList
+    elif id == CutsceneCommandID.CS_CMD_TRANSITION:
+        class_def = CutsceneCommandTransition
+    elif id == CutsceneCommandID.CS_CMD_DESTINATION:
+        class_def = CutsceneCommandDestination
+    elif id == CutsceneCommandID.CS_CMD_END:
+        raise Exception(f'Attempted to parse CS_END cutscene command as a class for deserialization. This is not supported.')
+    elif id == CutsceneCommandID.CS_SUBCMD_CAM_POINT:
+        class_def = CutsceneCommandCamPoint
+    elif id == CutsceneCommandID.CS_SUBCMD_MISC:
+        class_def = CutsceneCommandMisc
+    elif id == CutsceneCommandID.CS_SUBCMD_LIGHT_SETTING:
+        class_def = CutsceneCommandLightSetting
+    elif id == CutsceneCommandID.CS_SUBCMD_RUMBLE_CONTROLLER:
+        class_def = CutsceneCommandRumbleController
+    elif id in [CutsceneCommandID.CS_SUBCMD_ACTOR_CUE, CutsceneCommandID.CS_SUBCMD_PLAYER_CUE]:
+        class_def = CutsceneCommandActorCue
+    elif id == CutsceneCommandID.CS_SUBCMD_TEXT:
+        class_def = CutsceneCommandText
+    elif id == CutsceneCommandID.CS_SUBCMD_TEXT_NONE:
+        class_def = CutsceneCommandTextNone
+    elif id == CutsceneCommandID.CS_SUBCMD_TEXT_OCARINA_ACTION:
+        class_def = CutsceneCommandTextOcarinaAction
+    elif id in [CutsceneCommandID.CS_SUBCMD_START_SEQ, CutsceneCommandID.CS_SUBCMD_STOP_SEQ, CutsceneCommandID.CS_SUBCMD_FADEOUT_SEQ]:
+        class_def = CutsceneCommandSequenceCommand
+    elif id == CutsceneCommandID.CS_SUBCMD_TIME:
+        class_def = CutsceneCommandTime
+    elif id == CutsceneCommandID.CS_SUBCMD_UNK_DATA:
+        class_def = CutsceneCommandUnknownData
+    else:
+        raise Exception(f'Unknown cutscene command ID "{id}" when determining command class to load for deserialization.')
+    return class_def

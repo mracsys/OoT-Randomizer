@@ -25,6 +25,7 @@ from Settings import Settings, get_preset_files
 from Spoiler import Spoiler
 from Rom import Rom
 from Audiobank import *
+from Utils import local_path
 
 test_dir = os.path.join(os.path.dirname(__file__), 'tests')
 output_dir = os.path.join(test_dir, 'Output')
@@ -950,3 +951,11 @@ class TestSceneFiles(unittest.TestCase):
         from Scene import check_external_reference_locations
         uncompressed_rom = Rom('ZOOTDEC.z64')
         check_external_reference_locations(uncompressed_rom)
+
+    # Verifies reading scene data from the cache file
+    # instead of the vanilla ROM produces the same content.
+    @unittest.skipUnless(os.path.isfile('ZOOTDEC.z64'), "requires the vanilla ROM to compare to")
+    def test_scene_file_cache(self):
+        from Scene import compare_cached_data_to_rom
+        uncompressed_rom = Rom('ZOOTDEC.z64')
+        compare_cached_data_to_rom(uncompressed_rom)

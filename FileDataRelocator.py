@@ -8,11 +8,10 @@ from typing import Any, Optional, Literal, overload, TYPE_CHECKING
 from Rom import Rom
 from MQ import align4, align8, align16, align_file
 from SceneList import RecordType, SCENE_EXTERNAL_REFERENCES
-from Cutscenes import CutsceneCommand
+from Cutscenes import CutsceneCommand, CutsceneCommandID, CutsceneCommandTextList, cutscene_constructor_from_id
 
 if TYPE_CHECKING:
     from Scene import SceneCutsceneData, SceneTransitionActorList, ScenePathList, RoomActorList, RoomObjectList, CollisionBgCamInfoList, SceneHeader, RoomHeader
-    from Cutscenes import CutsceneCommandID
 
 def segment_address_offset(segment_address: int) -> int:
     return segment_address & 0x00FFFFFF
@@ -75,13 +74,27 @@ def pack_properties(cls: Any, schema: list[tuple[str, Any]]) -> dict[str, Any]:
             else:
                 packed[var] = []
                 for v in value:
-                    packed[var].append(pack_properties(v, v.data_record_schema))
+                    if isinstance(v, list):
+                        # Only applies to RoomMeshDLEntries opa/xlu tuples
+                        e = []
+                        if v[0] is None:
+                            e.append(None)
+                        else:
+                            e.append(pack_properties(v[0], v[0].data_record_schema))
+                        if v[1] is None:
+                            e.append(None)
+                        else:
+                            e.append(pack_properties(v[1], v[1].data_record_schema))
+                        packed[var].append(e)
+                    elif v is None:
+                        packed[var].append(None)
+                    else:
+                        packed[var].append(pack_properties(v, v.data_record_schema))
         elif isinstance(value, DataRecord):
             packed[var] = [var, value.file.segment, value.vanilla_offset, value.type.value]
         elif isinstance(value, CutsceneCommand):
             packed[var] = pack_properties(value, value.data_record_schema)
-            packed[var]['id'] = value.id
-            packed[var]['is_cutscene_command'] = True
+            packed[var]['id'] = int(value.id) # manually cast IntEnum to int to avoid another conditional in the pack/unpack functions
         else:
             packed[var] = pack_properties(value, value.data_record_schema)
     return packed
@@ -108,19 +121,42 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
             else:
                 record.__dict__[var] = []
                 for v in value:
-                    subrecord = subcls()
-                    record.__dict__[var].append(unpack_properties(subrecord, subrecord.data_record_schema, v))
+                    if isinstance(v, list):
+                        # Only applies to RoomMeshDLEntries opa/xlu tuples
+                        e = []
+                        if v[0] is None:
+                            e.append(None)
+                        else:
+                            subrecord = subcls()
+                            e.append(unpack_properties(subrecord, subrecord.data_record_schema, v[0], file))
+                        if v[1] is None:
+                            e.append(None)
+                        else:
+                            subrecord = subcls()
+                            e.append(unpack_properties(subrecord, subrecord.data_record_schema, v[1], file))
+                        record.__dict__[var].append(e)
+                    elif v is None:
+                        record.__dict__[var].append(None)
+                    else:
+                        subrecord = subcls()
+                        record.__dict__[var].append(unpack_properties(subrecord, subrecord.data_record_schema, v, file))
         elif issubclass(subcls, CutsceneCommand):
-            value_commands = []
+            # Cutscene commands are self-contained, making it possible to expand nested command lists in one pass
             if 'sub_commands' in value.keys():
-                value_commands = value['sub_commands']
-            del value['sub_commands']
+                value_commands = []
+                # Text command lists can have one of three subtypes for subcommands.
+                # All other cutscene command subcommands use one consistent subtype.
+                # This prevents using the class schema directly as multiple types per key
+                # are not implemented. Use a lookup function keyed on subcommand id instead.
+                for subcmd_data in value['sub_commands']:
+                    if 'id' not in subcmd_data.keys():
+                        raise Exception(f'Could not determine cutscene subcommand type from schema during cache import. Missing "id" key.')
+                    subcmdcls = cutscene_constructor_from_id(subcmd_data['id'])
+                    subcmd = subcmdcls()
+                    value_commands.append(unpack_properties(subcmd, subcmd.data_record_schema, subcmd_data, file))
+                value['sub_commands'] = value_commands
+            value['id'] = CutsceneCommandID(value['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
             record.__dict__[var] = subcls(**value)
-            sub_commands = []
-            for sub_command in value_commands:
-                sub_commands.append(unpack_properties())
-            if len(value_commands) > 0:
-                record.__dict__['sub_commands'] = sub_commands
         elif issubclass(subcls, DataRecord):
             # List of records
             if isinstance(value[0], list):
@@ -167,7 +203,7 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
                 ))
         else:
             record.__dict__[var] = subcls()
-            unpack_properties(record.__dict__[var], record.__dict__[var].data_record_schema, value)
+            unpack_properties(record.__dict__[var], record.__dict__[var].data_record_schema, value, file)
 
 
 class DataRecord:
@@ -270,10 +306,10 @@ class DataRecord:
         record = {
             'version': self.version,
             'type': self.type.value,
-            'start_offset': f'0x{self.offset:08X}',
-            'length': f'0x{self.length:08X}',
-            'end_offset': f'0x{self.offset + self.length:08X}',
-            'vanilla_offset': f'0x{self.vanilla_offset:08X}',
+            'start_offset': self.offset,
+            'length': self.length,
+            'end_offset': self.offset + self.length,
+            'vanilla_offset': self.vanilla_offset,
             'delay_parsing': self.delay_parsing,
             'store_in_file': self.store_in_file,
             'data': b64encode(self.data).decode('ascii'),
@@ -294,7 +330,7 @@ class DataRecord:
         # Not set in constructor as data should be read from json, not the ROM.
         # Still important if this record is re-parsed for whatever reason.
         record.delay_parsing = cache['delay_parsing']
-        unpack_properties(record, record.data_record_schema, cache['data_records'])
+        unpack_properties(record, record.data_record_schema, cache['data_records'], file)
         return record
 
 

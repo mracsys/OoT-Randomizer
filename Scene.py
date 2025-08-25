@@ -2,10 +2,12 @@ from __future__ import annotations
 from base64 import b64decode
 from dataclasses import dataclass
 import json
-from os import path, walk
+from os import path, walk, remove
 from typing import Any, Optional
 import xml.etree.ElementTree as ET
 import logging
+import time
+import pickle
 
 from FileDataRelocator import segment_address_offset, create_segment_address, DataRecord, FileDataRelocator, FileType, SceneCacheFileException
 from Utils import data_path, local_path
@@ -2343,7 +2345,7 @@ class RoomMeshDLEntries(DataRecord):
                 raise RoomFileAddressException(file, file.rom.read_byte(cursor + 0x04), cursor + 0x04, 'transparent mesh display list')
             else:
                 xlu = RoomMeshDL.decode(xlu_file, xlu_offset)
-            dl_entries.entries.append((opa, xlu))
+            dl_entries.entries.append([opa, xlu])
             cursor += 0x08
         return dl_entries
 
@@ -2892,17 +2894,18 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
                     if len(ids) > 1:
                         raise Exception(f'Multiple scenes match filename {filename}')
                     scene_id = ids[0][0]
-                    try:
-                        scene_file = SceneDataRelocator.from_json(rom, scene_cache[scene_id])
-                    except (SceneCacheFileException, IndexError) as e:
-                        if isinstance(e, SceneCacheFileException):
-                            logger.debug('Attempting to parse file from ROM instead')
-                        scene_start = rom.read_int32(SCENE_TABLE_ADDRESS + (scene_id * 0x14))
-                        entry = rom.dma.get_dmadata_record_by_key(scene_start)
-                        scene_end = entry.end
-                        scene_file = SceneDataRelocator(rom, filename, scene_start, scene_end)
-                        from_cache = False
-                        refresh_cache = True
+                    # try:
+                    print(f'Loading scene {scene_id}')
+                    scene_file = SceneDataRelocator.from_json(rom, scene_cache[str(scene_id)])
+                    # except (SceneCacheFileException, KeyError) as e:
+                    #     if not isinstance(e, KeyError):
+                    #         print(f'Attempting to parse file from ROM instead for scene {scene_id}')
+                    #     scene_start = rom.read_int32(SCENE_TABLE_ADDRESS + (scene_id * 0x14))
+                    #     entry = rom.dma.get_dmadata_record_by_key(scene_start)
+                    #     scene_end = entry.end
+                    #     scene_file = SceneDataRelocator(rom, filename, scene_start, scene_end)
+                    #     from_cache = False
+                    #     refresh_cache = True
                     current_file = scene_file
                 elif segment == 0x03:
                     # rooms always defined after parent scene
@@ -2946,7 +2949,7 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
     if refresh_cache:
         logger.debug('Saving scene file cached data to disk')
         with open(local_path('scenes.json'), 'w') as f:
-            json.dump(scene_cache)
+            json.dump(scene_cache, f)
     logger.debug('Finished parsing scene files')
     return scenes
 
@@ -2989,10 +2992,8 @@ def check_external_reference_locations(rom: Rom):
 
 # Test function to compare scene/room encode function output to the
 # vanilla file contents and verify they match.
-def compare_parsed_data_to_rom(rom: Rom, save_files: bool = False):
-    scene_list = parse_scene_data(rom)
-    print('Done parsing')
-    for scene in scene_list:
+def compare_parsed_data_to_rom(scenes: Scenes, rom: Rom, save_files: bool = False, print_status: bool = True) -> bool:
+    for scene in scenes:
         scene_bytes = scene.encode(True)
         if save_files:
             with open('scene_out', 'wb') as f:
@@ -3000,9 +3001,9 @@ def compare_parsed_data_to_rom(rom: Rom, save_files: bool = False):
         _, vrom_start, vrom_end = SCENE_AND_ROOM_FILES[scene.name]
         rom_scene = rom.read_bytes(vrom_start, vrom_end - vrom_start)
         if len(rom_scene) != len(scene_bytes):
-            print(f'Length mismatch for {scene.name}. Vanilla: {len(rom_scene):0>8x} Encode: {len(scene_bytes):0>8x}')
+            if print_status: print(f'Length mismatch for {scene.name}. Vanilla: {len(rom_scene):0>8x} Encode: {len(scene_bytes):0>8x}')
         else:
-            print(f'Lengths match for {scene.name}')
+            if print_status: print(f'Lengths match for {scene.name}')
         i = 0
         while i < len(rom_scene) and i < len(scene_bytes):
             # spot00_sceneCutsceneData_00E5F0 has only 29 commands, but vanilla lists it as 31.
@@ -3011,7 +3012,7 @@ def compare_parsed_data_to_rom(rom: Rom, save_files: bool = False):
             if scene_bytes[i] != rom_scene[i] and not (i == 0xe5f3 and scene.name == 'spot00_scene' and scene_bytes[i] == 29):
                 raise Exception(f'Byte mismatch in {scene.name} at offset 0x{i:0>8x}, address 0x{vrom_start + i:0>8x}. Vanilla: 0x{rom_scene[i]:0>2x} Encode: 0x{scene_bytes[i]:0>2x}')
             i += 1
-        print(f'Bytes match for {scene.name}')
+        if print_status: print(f'Bytes match for {scene.name}')
         for room in scene.rooms:
             room_bytes = room.encode(True)
             if save_files:
@@ -3020,16 +3021,56 @@ def compare_parsed_data_to_rom(rom: Rom, save_files: bool = False):
             _, vrom_start, vrom_end = SCENE_AND_ROOM_FILES[room.name]
             rom_room = rom.read_bytes(vrom_start, vrom_end - vrom_start)
             if len(rom_room) != len(room_bytes):
-                print(f'Length mismatch for {room.name}. Vanilla: {len(rom_room):0>8x} Encode: {len(room_bytes):0>8x}')
+                if print_status: print(f'Length mismatch for {room.name}. Vanilla: {len(rom_room):0>8x} Encode: {len(room_bytes):0>8x}')
             else:
-                print(f'Lengths match for {room.name}')
+                if print_status: print(f'Lengths match for {room.name}')
             i = 0
             while i < len(rom_room) and i < len(room_bytes):
                 if room_bytes[i] != rom_room[i]:
                     raise Exception(f'Byte mismatch in {room.name} at offset 0x{i:0>8x}, address 0x{vrom_start + i:0>8x}. Vanilla: 0x{rom_room[i]:0>2x} Encode: 0x{room_bytes[i]:0>2x}')
                 i += 1
-            print(f'Bytes match for {room.name}')
-    print('Done comparing')
+            if print_status: print(f'Bytes match for {room.name}')
+    if print_status: print('Done comparing')
+
+
+# Test function to compare data parsed from a json cache file
+# to the vanilla file contents and verify they match
+def compare_cached_data_to_rom(rom: Rom):
+    # # Invalidate cache if it exists
+    # if path.isfile(local_path('scenes.json')):
+    #     remove(local_path('scenes.json'))
+    # if path.isfile(local_path('scenes.pkl')):
+    #     remove(local_path('scenes.pkl'))
+    # # Build initial cache
+    # start_time = time.perf_counter()
+    # scenes = Scenes(uncompressed_rom)
+    # end_time = time.perf_counter()
+    # print(f"Parsing from ROM: {end_time - start_time:.4f} seconds")
+    # with open(local_path('scenes.pkl'), 'wb') as pkl:
+    #     pickle.dump(scenes, pkl)
+    # Rebuild using JSON cache
+    start_time = time.perf_counter()
+    scenes = Scenes(uncompressed_rom)
+    end_time = time.perf_counter()
+    print(f"Parsing from JSON: {end_time - start_time:.4f} seconds")
+    # try:
+    #     compare_parsed_data_to_rom(scenes, rom, False, False)
+    # except:
+    #     print('JSON import failed verification.')
+    # # Rebuild using pickled cache
+    # start_time = time.perf_counter()
+    # with open(local_path('scenes.pkl'), 'rb') as pkl:
+    #     scenes: Scenes = pickle.load(pkl)
+    # for scene in scenes:
+    #     scene.rom = rom
+    #     for room in scene.rooms:
+    #         room.rom = rom
+    # end_time = time.perf_counter()
+    # print(f"Unpickling: {end_time - start_time:.4f} seconds")
+    # try:
+    #     compare_parsed_data_to_rom(scenes, rom, False, False)
+    # except:
+    #     print('Unpickling failed verification.')
 
 
 def extract_bytes_to_file(file: str, start: int, length: int, new_file: str) -> None:
@@ -3051,3 +3092,7 @@ def compare_file_bytes(original_file: str, new_file: str) -> None:
         if original_bytes[i] != new_bytes[i]:
             raise Exception(f'Byte mismatch at offset 0x{i:0>8x}. Original: 0x{original_bytes[i]:0>2x} New: 0x{new_bytes[i]:0>2x}')
         i += 1
+
+if __name__ == '__main__':
+    uncompressed_rom = Rom('ZOOTDEC.z64')
+    compare_cached_data_to_rom(uncompressed_rom)
