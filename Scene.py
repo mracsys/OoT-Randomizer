@@ -123,9 +123,9 @@ class SceneDataRelocator(FileDataRelocator):
             'version': self.version,
             'type': self.type.value,
             'name': self.name,
-            'start': f'{self.start:08X}',
-            'end': f'{self.end:08X}',
-            'vanilla_start': f'{self.vanilla_start:08X}',
+            'start': self.start,
+            'end': self.end,
+            'vanilla_start': self.vanilla_start,
             'records': [x.to_json() for x in self.data_records],
             'parsed': self.parsed,
             'id': self.id,
@@ -142,7 +142,7 @@ class SceneDataRelocator(FileDataRelocator):
         scene.description = cache['description']
         scene.data_records = [scene_json_factory(scene, x) for x in cache['records']]
         scene.headers = [scene.get_existing_record_by_vanilla_offset(x, RecordType.SceneHeader, True) if x is not None else None for x in cache['headers']]
-        scene.rooms = [RoomDataRelocator.from_json(rom, x) for x in cache['rooms']]
+        scene.rooms = [RoomDataRelocator.from_json(rom, scene, x) for x in cache['rooms']]
         room_list_records = list(filter(lambda r: r.type == RecordType.RoomList, scene.data_records))
         for room_list in room_list_records:
             room_list.rooms = scene.rooms.copy()
@@ -436,7 +436,7 @@ class SceneAltHeaderList(DataRecord):
 
 # Data only, part of the scene header
 class SceneSoundSettings():
-    def __init__(self, specID: int, natureAmbienceId: int, seqId: int) -> None:
+    def __init__(self, specID: int = 0, natureAmbienceId: int = 0, seqId: int = 0) -> None:
         self.specID: int = specID
         self.natureAmbienceId: int = natureAmbienceId
         self.seqId: int = seqId
@@ -847,15 +847,16 @@ class CollisionPolyList(DataRecord):
 
 # Data only, part of collision polygon lists
 class CollisionPoly:
-    def __init__(self) -> None:
-        self.type: int = 0
-        self.vtxData: list[int] = [0, 0, 0]
-        self.flags_vIA: int = 0
-        self.flags_vIB: int = 0
-        self.flags_vIC: int = 0
-        self.normal: Vec3s = Vec3s()
-        self.dist: int = 0
+    def __init__(self, type: int = 0, vtxData: list[int] = [0, 0, 0], flags_vIA: int = 0, flags_vIB: int = 0, flags_vIC: int = 0, normal: Vec3s = Vec3s(), dist: int = 0) -> None:
+        self.type: int = type
+        self.vtxData: list[int] = vtxData
+        self.flags_vIA: int = flags_vIA
+        self.flags_vIB: int = flags_vIB
+        self.flags_vIC: int = flags_vIC
+        self.normal: Vec3s = normal
+        self.dist: int = dist
         self.data_record_schema = [
+            ('type', int),
             ('vtxData', int),
             ('flags_vIA', int),
             ('flags_vIB', int),
@@ -924,7 +925,7 @@ class CollisionSurfaceTypeList(DataRecord):
             high = s32_to_u32(item['High'])
             low = s32_to_u32(item['Low'])
             if id == len(self.surfaces):
-                self.surfaces.append(CollisionSurfaceType(high, low))
+                self.surfaces.append(CollisionSurfaceType([high, low]))
             else:
                 self.surfaces[id].data = (high, low)
 
@@ -937,8 +938,8 @@ class CollisionSurfaceTypeList(DataRecord):
 
 # Data only, part of collision surface type lists
 class CollisionSurfaceType:
-    def __init__(self, type1: int = 0, type2: int = 0) -> None:
-        self.data: list[int] = [type1, type2]
+    def __init__(self, data: list[int] = [0, 0]) -> None:
+        self.data: list[int] = data
         self.data_record_schema = [
             ('data', int),
         ]
@@ -1159,13 +1160,13 @@ class CollisionWaterBoxList(DataRecord):
 
 # Data only, referenced in waterbox list
 class CollisionWaterBox:
-    def __init__(self) -> None:
-        self.xMin: int = 0
-        self.ySurface: int = 0
-        self.zMin: int = 0
-        self.xLength: int = 0
-        self.zLength: int = 0
-        self.properties: int = 0
+    def __init__(self, xMin: int = 0, ySurface: int = 0, zMin: int = 0, xLength: int = 0, zLength: int = 0, properties: int = 0) -> None:
+        self.xMin: int = xMin
+        self.ySurface: int = ySurface
+        self.zMin: int = zMin
+        self.xLength: int = xLength
+        self.zLength: int = zLength
+        self.properties: int = properties
         self.data_record_schema = [
             ('xMin', int),
             ('ySurface', int),
@@ -1235,7 +1236,7 @@ class SceneEntranceList(DataRecord):
 
 # Data only, referenced in entrance list
 class SceneEntrance:
-    def __init__(self, playerEntryIndex: int, room: int) -> None:
+    def __init__(self, playerEntryIndex: int = 0, room: int = 0) -> None:
         self.playerEntryIndex: int = playerEntryIndex
         self.room: int = room
         self.data_record_schema = [
@@ -1259,7 +1260,7 @@ class SceneEntrance:
 
 # Data only, part of scene headers
 class SceneSpecialSettings:
-    def __init__(self, naviQuestHintFileId: int, keepObjectId: int) -> None:
+    def __init__(self, naviQuestHintFileId: int = 0, keepObjectId: int = 0) -> None:
         self.naviQuestHintFileId: int = naviQuestHintFileId
         self.keepObjectId: int = keepObjectId
         self.data_record_schema = [
@@ -1413,7 +1414,7 @@ class SceneSpawnPointList(DataRecord):
 
 # Data only, used in scene spawn lists and room actor lists
 class ActorEntry(ActorData):
-    def __init__(self, id: int, pos: Vec3s, rot: Vec3s, params: int) -> None:
+    def __init__(self, id: int = 0, pos: Vec3s = Vec3s(), rot: Vec3s = Vec3s(), params: int = 0) -> None:
         self.id: int = id
         self.pos: Vec3s = pos
         self.rot: Vec3s = rot
@@ -1476,7 +1477,7 @@ class ActorEntry(ActorData):
 
 # Data only, used in scene headers
 class SceneSkyboxSettings:
-    def __init__(self, skyboxID: int, skyboxConfig: int, envLightMode: int) -> None:
+    def __init__(self, skyboxID: int = 0, skyboxConfig: int = 0, envLightMode: int = 0) -> None:
         self.skyboxID: int = skyboxID
         self.skyboxConfig: int = skyboxConfig
         self.envLightMode: int = envLightMode
@@ -1563,16 +1564,16 @@ class SceneLightSettingsList(DataRecord):
 
 # Data only, part of light settings list
 class SceneLightSettings:
-    def __init__(self) -> None:
-        self.ambientColor: list[int] = [0, 0, 0]
-        self.light1Dir: list[int] = [0, 0, 0]
-        self.light1Color: list[int] = [0, 0, 0]
-        self.light2Dir: list[int] = [0, 0, 0]
-        self.light2Color: list[int] = [0, 0, 0]
-        self.fogColor: list[int] = [0, 0, 0]
-        self.blendRate: int = 0
-        self.zNear: int = 0
-        self.zFar: int = 0
+    def __init__(self, ambientColor: list[int] = [0, 0, 0], light1Dir: list[int] = [0, 0, 0], light1Color: list[int] = [0, 0, 0], light2Dir: list[int] = [0, 0, 0], light2Color: list[int] = [0, 0, 0], fogColor: list[int] = [0, 0, 0], blendRate: int = 0, zNear: int = 0, zFar: int = 0) -> None:
+        self.ambientColor: list[int] = ambientColor
+        self.light1Dir: list[int] = light1Dir
+        self.light1Color: list[int] = light1Color
+        self.light2Dir: list[int] = light2Dir
+        self.light2Color: list[int] = light2Color
+        self.fogColor: list[int] = fogColor
+        self.blendRate: int = blendRate
+        self.zNear: int = zNear
+        self.zFar: int = zFar
         self.data_record_schema = [
             ('ambientColor', int),
             ('light1Dir', int),
@@ -1703,9 +1704,9 @@ class RoomDataRelocator(FileDataRelocator):
             'version': self.version,
             'type': self.type.value,
             'name': self.name,
-            'start': f'{self.start:08X}',
-            'end': f'{self.end:08X}',
-            'vanilla_start': f'{self.vanilla_start:08X}',
+            'start': self.start,
+            'end': self.end,
+            'vanilla_start': self.vanilla_start,
             'records': [x.to_json() for x in self.data_records],
             'parsed': self.parsed,
             'headers': [x.vanilla_offset if x is not None else None for x in self.headers],
@@ -2137,16 +2138,16 @@ class RoomMeshImageMultiHeader(_RoomMeshImageHeader):
 
 # Data only, part of both single and multi background image mesh headers
 class RoomMeshImage:
-    def __init__(self) -> None:
-        self.source: RoomMeshRawImage = None
-        self.unk_0C: int = 0
-        self.tlut: int = 0 # no vanilla rooms use tluts
-        self.width: int = 0
-        self.height: int = 0
-        self.fmt: int = 0
-        self.siz: int = 0
-        self.tlutMode: int = 0
-        self.tlutCount: int = 0
+    def __init__(self, source: RoomMeshRawImage = None, unk_0C: int = 0, tlut: int = 0, width: int = 0, height: int = 0, fmt: int = 0, siz: int = 0, tlutMode: int = 0, tlutCount: int = 0) -> None:
+        self.source: RoomMeshRawImage = source
+        self.unk_0C: int = unk_0C
+        self.tlut: int = tlut # no vanilla rooms use tluts
+        self.width: int = width
+        self.height: int = height
+        self.fmt: int = fmt
+        self.siz: int = siz
+        self.tlutMode: int = tlutMode
+        self.tlutCount: int = tlutCount
         self.data_record_schema = [
             ('source', RoomMeshRawImage),
             ('unk_0C', int),
@@ -2242,10 +2243,10 @@ class RoomMeshImageMultiEntries(DataRecord):
 
 # Data only, part of multi-image backround list just above
 class RoomMeshImageMultiEntry:
-    def __init__(self) -> None:
-        self.unk_00: int = 0
-        self.bgCamIndex: int = 0
-        self.background: RoomMeshImage = None
+    def __init__(self, unk_00: int = 0, bgCamIndex: int = 0, background: RoomMeshImage = None) -> None:
+        self.unk_00: int = unk_00
+        self.bgCamIndex: int = bgCamIndex
+        self.background: RoomMeshImage = background
         self.data_record_schema = [
             ('unk_00', int),
             ('bgCamIndex', int),
@@ -2405,7 +2406,7 @@ class RoomMeshDLCullableEntries(DataRecord):
 
 # Data only, used in cullable display list list
 class RoomMeshDLCullableEntry:
-    def __init__(self, boundsSphereCenter: Vec3s, boundsSphereRadius: int, opa: Optional[RoomMeshDL], xlu: Optional[RoomMeshDL]) -> None:
+    def __init__(self, boundsSphereCenter: Vec3s = Vec3s(), boundsSphereRadius: int = 0, opa: Optional[RoomMeshDL] = None, xlu: Optional[RoomMeshDL] = None) -> None:
         self.boundsSphereCenter: Vec3s = boundsSphereCenter
         self.boundsSphereRadius: int = boundsSphereRadius
         self.opa: Optional[RoomMeshDL] = opa
@@ -2531,7 +2532,7 @@ def is_external_resource(file: FileDataRelocator, pointer_offset: int) -> bool:
 
 # Wrapper class for display list pointer references to permit merging asset objects
 class DisplayListRecord:
-    def __init__(self, pointer_offset: int, record: DataRecord, record_offset: int = 0) -> None:
+    def __init__(self, pointer_offset: int = 0, record: DataRecord = None, record_offset: int = 0) -> None:
         self.pointer_offset: int = pointer_offset
         self.record: DataRecord = record
         self.record_offset: int = record_offset
@@ -2628,7 +2629,7 @@ class RoomActorList(DataRecord):
         self.type = RecordType.ActorList
         self.actors: list[ActorEntry] = []
         self.data_record_schema = [
-            ('actors', int),
+            ('actors', ActorEntry),
         ]
 
     def copy(self) -> RoomActorList:
@@ -2799,6 +2800,10 @@ def scene_json_factory(file: FileDataRelocator, data: dict[str, Any]) -> Any:
         return RoomActorList.from_json(file, data)
     elif type == RecordType.Texture:
         return SceneTexture.from_json(file, data)
+    elif type == RecordType.Blob:
+        return DataRecord.from_json(file, data)
+    elif type == RecordType.Unknown:
+        return DataRecord.from_json(file, data)
     else:
         raise Exception(f'Unrecognized resource type when parsing cached scenes: {type}')
 
@@ -2941,7 +2946,7 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
     for scene_id, scene_file in enumerate(scenes):
         if scene_file is None or not scene_file.parsed:
             raise Exception(f'Scene 0x{scene_id:0>2x} was not parsed')
-        if scene_id not in scene_cache.keys():
+        if str(scene_id) not in scene_cache.keys():
             raise Exception(f'Scene 0x{scene_id:0>2x} parsed data was not cached to disk')
         for room_id, room_file in enumerate(scene_file.rooms):
             if room_file is None or not room_file.parsed:
@@ -3054,7 +3059,7 @@ def compare_cached_data_to_rom(rom: Rom):
     end_time = time.perf_counter()
     print(f"Parsing from JSON: {end_time - start_time:.4f} seconds")
     # try:
-    #     compare_parsed_data_to_rom(scenes, rom, False, False)
+    compare_parsed_data_to_rom(scenes, rom, False, True)
     # except:
     #     print('JSON import failed verification.')
     # # Rebuild using pickled cache

@@ -80,14 +80,20 @@ def pack_properties(cls: Any, schema: list[tuple[str, Any]]) -> dict[str, Any]:
                         if v[0] is None:
                             e.append(None)
                         else:
-                            e.append(pack_properties(v[0], v[0].data_record_schema))
+                            e.append([var, v[0].file.segment, v[0].vanilla_offset, v[0].type.value])
                         if v[1] is None:
                             e.append(None)
                         else:
-                            e.append(pack_properties(v[1], v[1].data_record_schema))
+                            e.append([var, v[1].file.segment, v[1].vanilla_offset, v[1].type.value])
                         packed[var].append(e)
                     elif v is None:
                         packed[var].append(None)
+                    elif isinstance(v, DataRecord):
+                        packed[var] = [var, v.file.segment, v.vanilla_offset, v.type.value]
+                    elif isinstance(v, CutsceneCommand):
+                        command = pack_properties(v, v.data_record_schema)
+                        command['id'] = int(v.id) # manually cast IntEnum to int to avoid another conditional in the pack/unpack functions
+                        packed[var].append(command)
                     else:
                         packed[var].append(pack_properties(v, v.data_record_schema))
         elif isinstance(value, DataRecord):
@@ -111,52 +117,88 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
         # where an optional property is set to None instead of a non-primitive type.
         if isinstance(value, int) or isinstance(value, float) or isinstance(value, str) or isinstance(value, bool) or value is None:
             record.__dict__[var] = value
-        elif not issubclass(subcls, DataRecord) and isinstance(value, list):
+        elif not issubclass(subcls, DataRecord) and not issubclass(subcls, CutsceneCommand) and isinstance(value, list):
             if not isinstance(value, list):
                 raise Exception(f'Cannot import cached {record.__class__.__name__}. Expected list value for {var}. Got {var.__class__.__name__}')
             if len(value) == 0:
                 record.__dict__[var] = []
-            elif isinstance(value[0], int) or isinstance(value[0], float) or isinstance(value[0], str) or isinstance(value, bool):
+            elif isinstance(value[0], int) or isinstance(value[0], float) or isinstance(value[0], str) or isinstance(value[0], bool):
                 record.__dict__[var] = value.copy()
             else:
                 record.__dict__[var] = []
                 for v in value:
-                    if isinstance(v, list):
-                        # Only applies to RoomMeshDLEntries opa/xlu tuples
-                        e = []
-                        if v[0] is None:
-                            e.append(None)
-                        else:
-                            subrecord = subcls()
-                            e.append(unpack_properties(subrecord, subrecord.data_record_schema, v[0], file))
-                        if v[1] is None:
-                            e.append(None)
-                        else:
-                            subrecord = subcls()
-                            e.append(unpack_properties(subrecord, subrecord.data_record_schema, v[1], file))
-                        record.__dict__[var].append(e)
-                    elif v is None:
+                    # if isinstance(v, list):
+                    #     # Only applies to RoomMeshDLEntries opa/xlu tuples
+                    #     e = []
+                    #     if v[0] is None:
+                    #         e.append(None)
+                    #     else:
+                    #         subrecord = subcls()
+                    #         e.append(unpack_properties(subrecord, subrecord.data_record_schema, v[0], file))
+                    #     if v[1] is None:
+                    #         e.append(None)
+                    #     else:
+                    #         subrecord = subcls()
+                    #         e.append(unpack_properties(subrecord, subrecord.data_record_schema, v[1], file))
+                    #     record.__dict__[var].append(e)
+                    if v is None:
                         record.__dict__[var].append(None)
                     else:
                         subrecord = subcls()
-                        record.__dict__[var].append(unpack_properties(subrecord, subrecord.data_record_schema, v, file))
+                        if isinstance(subrecord, int) or isinstance(subrecord, float) or isinstance(subrecord, str) or isinstance(subrecord, bool):
+                            print(value)
+                            print(f'Cannot import cached {record.__class__.__name__}. Expected data record for {var}. Got {subrecord.__class__.__name__}')
+                            raise Exception(f'{subrecord.__class__.__name__} object has no attribute \'data_record_schema\'')
+                        unpack_properties(subrecord, subrecord.data_record_schema, v, file)
+                        record.__dict__[var].append(subrecord)
         elif issubclass(subcls, CutsceneCommand):
             # Cutscene commands are self-contained, making it possible to expand nested command lists in one pass
-            if 'sub_commands' in value.keys():
-                value_commands = []
-                # Text command lists can have one of three subtypes for subcommands.
-                # All other cutscene command subcommands use one consistent subtype.
-                # This prevents using the class schema directly as multiple types per key
-                # are not implemented. Use a lookup function keyed on subcommand id instead.
-                for subcmd_data in value['sub_commands']:
-                    if 'id' not in subcmd_data.keys():
-                        raise Exception(f'Could not determine cutscene subcommand type from schema during cache import. Missing "id" key.')
-                    subcmdcls = cutscene_constructor_from_id(subcmd_data['id'])
-                    subcmd = subcmdcls()
-                    value_commands.append(unpack_properties(subcmd, subcmd.data_record_schema, subcmd_data, file))
-                value['sub_commands'] = value_commands
-            value['id'] = CutsceneCommandID(value['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
-            record.__dict__[var] = subcls(**value)
+            if isinstance(value, list):
+                command_list = []
+                for command in value:
+                    if 'sub_commands' in command.keys():
+                        command_commands = []
+                        # Text command lists can have one of three subtypes for subcommands.
+                        # All other cutscene command subcommands use one consistent subtype.
+                        # This prevents using the class schema directly as multiple types per key
+                        # are not implemented. Use a lookup function keyed on subcommand id instead.
+                        for subcmd_data in command['sub_commands']:
+                            if 'id' not in subcmd_data.keys():
+                                raise Exception(f'Could not determine cutscene subcommand type from schema during cache import. Missing "id" key.')
+                            subcmdcls = cutscene_constructor_from_id(subcmd_data['id'])
+                            subcmd = subcmdcls()
+                            unpack_properties(subcmd, subcmd.data_record_schema, subcmd_data, file)
+                            subcmd.id = CutsceneCommandID(subcmd_data['id'])
+                            command_commands.append(subcmd)
+                        command['sub_commands'] = command_commands
+                    cmd_id = CutsceneCommandID(command['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
+                    cmdcls = cutscene_constructor_from_id(command['id'])
+                    del command['id']
+                    cmd = cmdcls(**command)
+                    cmd.id = cmd_id
+                    command_list.append(cmd)
+                record.__dict__[var] = command_list
+            else:
+                if 'sub_commands' in value.keys():
+                    value_commands = []
+                    # Text command lists can have one of three subtypes for subcommands.
+                    # All other cutscene command subcommands use one consistent subtype.
+                    # This prevents using the class schema directly as multiple types per key
+                    # are not implemented. Use a lookup function keyed on subcommand id instead.
+                    for subcmd_data in value['sub_commands']:
+                        if 'id' not in subcmd_data.keys():
+                            raise Exception(f'Could not determine cutscene subcommand type from schema during cache import. Missing "id" key.')
+                        subcmdcls = cutscene_constructor_from_id(subcmd_data['id'])
+                        subcmd = subcmdcls()
+                        unpack_properties(subcmd, subcmd.data_record_schema, subcmd_data, file)
+                        subcmd.id = CutsceneCommandID(subcmd_data['id'])
+                        value_commands.append(subcmd)
+                    value['sub_commands'] = value_commands
+                cmd_id = CutsceneCommandID(value['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
+                cmdcls = cutscene_constructor_from_id(value['id'])
+                del value['id']
+                record.__dict__[var] = subcls(**value)
+                record.__dict__[var].id = cmd_id
         elif issubclass(subcls, DataRecord):
             # List of records
             if isinstance(value[0], list):
@@ -165,19 +207,20 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
                 for json_record in value:
                     if json_record is not None:
                         # Display list tuple check
-                        if isinstance(json_record[0], list):
-                            record.__dict__[var][idx] = [None for _ in range(len(value))]
+                        if isinstance(json_record[0], list) or isinstance(json_record[1], list):
+                            record.__dict__[var][idx] = [None for _ in range(len(json_record))]
                             subidx = 0
                             for tuple_record in json_record:
-                                file.linked_json_records.append((
-                                    var,
-                                    record,
-                                    tuple_record[1],
-                                    tuple_record[2],
-                                    RecordType(tuple_record[3]),
-                                    idx,
-                                    subidx,
-                                ))
+                                if tuple_record is not None:
+                                    file.linked_json_records.append((
+                                        var,
+                                        record,
+                                        tuple_record[1],
+                                        tuple_record[2],
+                                        RecordType(tuple_record[3]),
+                                        idx,
+                                        subidx,
+                                    ))
                                 subidx += 1
                         else:
                             file.linked_json_records.append((
@@ -192,6 +235,8 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
                     idx += 1
             # Single record
             else:
+                if len(value) < 4:
+                    print('uh oh')
                 file.linked_json_records.append((
                     var,
                     record,

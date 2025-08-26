@@ -1197,8 +1197,8 @@ class CutsceneCommand(ABC):
 
 
 class CutsceneCommandCamPoint(CutsceneCommand):
-    def __init__(self, continue_flag: int, roll: int, frame: int, view_angle: float, pos: Vec3s, unused: int) -> None:
-        super().__init__(CutsceneCommandID.CS_SUBCMD_CAM_POINT, frame)
+    def __init__(self, continue_flag: int = 0, roll: int = 0, start_frame: int = 0, view_angle: float = 0, pos: Vec3s = Vec3s(), unused: int = 0, end_frame: int = 0) -> None:
+        super().__init__(CutsceneCommandID.CS_SUBCMD_CAM_POINT, start_frame)
         self.continue_flag: int = continue_flag
         self.roll: int = roll
         self.view_angle: float = view_angle
@@ -1235,9 +1235,9 @@ class CutsceneCommandCamPoint(CutsceneCommand):
 
 
 class CutsceneCommandCamSpline(CutsceneCommand):
-    def __init__(self, id: CutsceneCommandID, start_frame: int, end_frame: int, points: list[CutsceneCommandCamPoint] = None) -> None:
+    def __init__(self, id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandCamPoint] = None) -> None:
         super().__init__(id, start_frame, end_frame)
-        self.sub_commands: list[CutsceneCommandCamPoint] = points or []
+        self.sub_commands: list[CutsceneCommandCamPoint] = sub_commands or []
         self.data_record_schema.extend([
             ('sub_commands', CutsceneCommandCamPoint),
         ])
@@ -1272,10 +1272,10 @@ class CutsceneCommandCamSpline(CutsceneCommand):
 
 
 class CutsceneCommandMisc(CutsceneCommand):
-    def __init__(self, id: int, start_frame: int, end_frame: int, unused0: int, unused1: int, unused2: int, unused3: int, unused4: int, unused5: int, unused6: int, unused7: int, unused8: int, unused9: int, unused10: int) -> None:
+    def __init__(self, type_id: int = 0, start_frame: int = 0, end_frame: int = 0, unused0: int = 0, unused1: int = 0, unused2: int = 0, unused3: int = 0, unused4: int = 0, unused5: int = 0, unused6: int = 0, unused7: int = 0, unused8: int = 0, unused9: int = 0, unused10: int = 0) -> None:
         # ID in this case is the from CutsceneMiscType, not a cutscene command ID
         super().__init__(CutsceneCommandID.CS_SUBCMD_MISC, start_frame, end_frame)
-        self.type_id: int = id
+        self.type_id: int = type_id
         self.unused0: int = unused0
         self.unused1: int = unused1
         self.unused2: int = unused2
@@ -1341,7 +1341,7 @@ class CutsceneCommandMisc(CutsceneCommand):
 
 
 class CutsceneCommandMiscList(CutsceneCommand):
-    def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandMisc] = None) -> None:
+    def __init__(self, id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandMisc] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandMisc] = sub_commands or []
         self.data_record_schema.extend([
@@ -1368,7 +1368,7 @@ class CutsceneCommandMiscList(CutsceneCommand):
 
 
 class CutsceneCommandLightSetting(CutsceneCommand):
-    def __init__(self, light_setting: int, start_frame: int, end_frame: int, unused0: int, unused1: int, unused2: int, unused3: int, unused4: int, unused5: int, unused6: int, unused7: int, unused8: int, unused9: int, unused10: int) -> None:
+    def __init__(self, light_setting: int = 0, start_frame: int = 0, end_frame: int = 0, unused0: int = 0, unused1: int = 0, unused2: int = 0, unused3: int = 0, unused4: int = 0, unused5: int = 0, unused6: int = 0, unused7: int = 0, unused8: int = 0, unused9: int = 0, unused10: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_SUBCMD_LIGHT_SETTING, start_frame, end_frame)
         self.light_setting: int = light_setting
         self.unused0: int = unused0
@@ -1463,7 +1463,7 @@ class CutsceneCommandLightSettingList(CutsceneCommand):
 
 
 class CutsceneCommandRumbleController(CutsceneCommand):
-    def __init__(self, unused0: int, start_frame: int, end_frame: int, source_strength: int, duration: int, decrease_rate: int, unused1: int, unused2: int) -> None:
+    def __init__(self, unused0: int = 0, start_frame: int = 0, end_frame: int = 0, source_strength: int = 0, duration: int = 0, decrease_rate: int = 0, unused1: int = 0, unused2: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_SUBCMD_RUMBLE_CONTROLLER, start_frame, end_frame)
         self.source_strength: int = source_strength
         self.duration: int = duration
@@ -1532,14 +1532,14 @@ class CutsceneCommandRumbleControllerList(CutsceneCommand):
 
 
 class CutsceneCommandActorCue(CutsceneCommand):
-    def __init__(self, command_id: CutsceneCommandID, id: int, start_frame: int, end_frame: int, rot: Vec3s, start_pos: Vec3i, end_pos: Vec3i, unused0: float, unused1: float, unused2: float) -> None:
+    def __init__(self, command_id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, cue_id: int = 0, start_frame: int = 0, end_frame: int = 0, rot: Vec3s = Vec3s(), start_pos: Vec3i = Vec3i(), end_pos: Vec3i = Vec3i(), unused0: float = 0.0, unused1: float = 0.0, unused2: float = 0.0) -> None:
         # ID in this case is the cue ID, not a cutscene command ID
         if command_id == CutsceneCommandID.CS_CMD_PLAYER_CUE:
             cue_command_id = CutsceneCommandID.CS_SUBCMD_PLAYER_CUE
         else:
             cue_command_id = CutsceneCommandID.CS_SUBCMD_ACTOR_CUE
         super().__init__(cue_command_id, start_frame, end_frame)
-        self.cue_id: int = id
+        self.cue_id: int = cue_id
         self.rot: Vec3s = rot
         self.start_pos: Vec3i = start_pos
         self.end_pos: Vec3i = end_pos
@@ -1587,9 +1587,9 @@ class CutsceneCommandActorCue(CutsceneCommand):
 
 
 class CutsceneCommandActorCueList(CutsceneCommand):
-    def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, cues: list[CutsceneCommandActorCue] = None) -> None:
+    def __init__(self, id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandActorCue] = None) -> None:
         super().__init__(id, start_frame, end_frame)
-        self.sub_commands: list[CutsceneCommandActorCue] = cues or []
+        self.sub_commands: list[CutsceneCommandActorCue] = sub_commands or []
         self.data_record_schema.extend([
             ('sub_commands', CutsceneCommandActorCue),
         ])
@@ -1614,10 +1614,10 @@ class CutsceneCommandActorCueList(CutsceneCommand):
 
 
 class CutsceneCommandText(CutsceneCommand):
-    def __init__(self, id: int, start_frame: int, end_frame: int, text_type: int, alt_id1: int, alt_id2: int) -> None:
+    def __init__(self, text_id: int = 0, start_frame: int = 0, end_frame: int = 0, text_type: int = 0, alt_id1: int = 0, alt_id2: int = 0) -> None:
         # ID in this case is the text ID, not a cutscene command ID
         super().__init__(CutsceneCommandID.CS_SUBCMD_TEXT, start_frame, end_frame)
-        self.text_id: int = id
+        self.text_id: int = text_id
         self.text_type: int = text_type
         self.alt_id1: int = alt_id1
         self.alt_id2: int = alt_id2
@@ -1651,7 +1651,7 @@ class CutsceneCommandText(CutsceneCommand):
 
 
 class CutsceneCommandTextNone(CutsceneCommand):
-    def __init__(self, start_frame: int, end_frame: int) -> None:
+    def __init__(self, start_frame: int = 0, end_frame: int = 0) -> None:
         # ID in this case is the text ID, not a cutscene command ID
         super().__init__(CutsceneCommandID.CS_SUBCMD_TEXT_NONE, start_frame, end_frame)
 
@@ -1674,7 +1674,7 @@ class CutsceneCommandTextNone(CutsceneCommand):
 
 
 class CutsceneCommandTextOcarinaAction(CutsceneCommand):
-    def __init__(self, ocarina_action: int, start_frame: int, end_frame: int, message_id: int) -> None:
+    def __init__(self, ocarina_action: int = 0, start_frame: int = 0, end_frame: int = 0, message_id: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_SUBCMD_TEXT_OCARINA_ACTION, start_frame, end_frame)
         self.ocarina_action: int = ocarina_action
         self.message_id: int = message_id
@@ -1704,9 +1704,9 @@ class CutsceneCommandTextOcarinaAction(CutsceneCommand):
 
 
 class CutsceneCommandTextList(CutsceneCommand):
-    def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, cmds: list[CutsceneCommandText | CutsceneCommandTextNone | CutsceneCommandTextOcarinaAction] = None) -> None:
+    def __init__(self, id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandText | CutsceneCommandTextNone | CutsceneCommandTextOcarinaAction] = None) -> None:
         super().__init__(id, start_frame, end_frame)
-        self.sub_commands: list[CutsceneCommandText | CutsceneCommandTextNone | CutsceneCommandTextOcarinaAction] = cmds or []
+        self.sub_commands: list[CutsceneCommandText | CutsceneCommandTextNone | CutsceneCommandTextOcarinaAction] = sub_commands or []
         self.data_record_schema.extend([
             ('sub_commands', CutsceneCommandText), # different text command types are handled in the unpack function, pack doesn't use this
         ])
@@ -1736,7 +1736,7 @@ class CutsceneCommandTextList(CutsceneCommand):
 
 
 class CutsceneCommandTransition(CutsceneCommand):
-    def __init__(self, transition_type: int, start_frame: int = 0, end_frame: int = 0) -> None:
+    def __init__(self, transition_type: int = 0, start_frame: int = 0, end_frame: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_CMD_TRANSITION, start_frame, end_frame)
         self.transition_type: int = transition_type
         self.data_record_schema.extend([
@@ -1763,7 +1763,7 @@ class CutsceneCommandTransition(CutsceneCommand):
 
 
 class CutsceneCommandSequenceCommand(CutsceneCommand):
-    def __init__(self, command_type: CutsceneCommandID, id: int, start_frame: int, end_frame: int, unused0: int, unused1: int, unused2: int, unused3: int, unused4: int, unused5: int, unused6: int, unused7: int) -> None:
+    def __init__(self, command_type: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, seq_id: int = 0, start_frame: int = 0, end_frame: int = 0, unused0: int = 0, unused1: int = 0, unused2: int = 0, unused3: int = 0, unused4: int = 0, unused5: int = 0, unused6: int = 0, unused7: int = 0) -> None:
         # ID in this case is the sequence ID, not a cutscene command ID
         if command_type == CutsceneCommandID.CS_CMD_START_SEQ:
             sub_type = CutsceneCommandID.CS_SUBCMD_START_SEQ
@@ -1771,10 +1771,12 @@ class CutsceneCommandSequenceCommand(CutsceneCommand):
             sub_type = CutsceneCommandID.CS_SUBCMD_STOP_SEQ
         elif command_type == CutsceneCommandID.CS_CMD_FADE_OUT_SEQ:
             sub_type = CutsceneCommandID.CS_SUBCMD_FADEOUT_SEQ
+        elif command_type == CutsceneCommandID.CS_CMD_UNIMPL:
+            sub_type = CutsceneCommandID.CS_CMD_UNIMPL
         else:
             raise Exception(f'Unimplemented cutscene audio sequence command ID {command_type:04X}')
         super().__init__(sub_type, start_frame, end_frame)
-        self.seq_id: int = id
+        self.seq_id: int = seq_id
         self.unused0: int = unused0
         self.unused1: int = unused1
         self.unused2: int = unused2
@@ -1830,7 +1832,7 @@ class CutsceneCommandSequenceCommand(CutsceneCommand):
 
 
 class CutsceneCommandSequenceList(CutsceneCommand):
-    def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandSequenceCommand] = None) -> None:
+    def __init__(self, id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandSequenceCommand] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandSequenceCommand] = sub_commands or []
         self.data_record_schema.extend([
@@ -1899,7 +1901,7 @@ class CutsceneCommandFadeOutSequenceList(CutsceneCommandSequenceList):
 
 
 class CutsceneCommandTime(CutsceneCommand):
-    def __init__(self, unused0: int, start_frame: int, end_frame: int, hour: int, minute: int) -> None:
+    def __init__(self, unused0: int = 0, start_frame: int = 0, end_frame: int = 0, hour: int = 0, minute: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_SUBCMD_TIME, start_frame, end_frame)
         self.hour: int = hour
         self.minute: int = minute
@@ -1957,7 +1959,7 @@ class CutsceneCommandTimeList(CutsceneCommand):
 
 
 class CutsceneCommandDestination(CutsceneCommand):
-    def __init__(self, destination: int, start_frame: int = 0, end_frame: int = 0) -> None:
+    def __init__(self, destination: int = 0, start_frame: int = 0, end_frame: int = 0) -> None:
         super().__init__(CutsceneCommandID.CS_CMD_DESTINATION, start_frame, end_frame)
         self.destination: int = destination
         self.data_record_schema.extend([
@@ -1984,7 +1986,7 @@ class CutsceneCommandDestination(CutsceneCommand):
 
 
 class CutsceneCommandUnknownData(CutsceneCommand):
-    def __init__(self, unk1: int, unk2: int, unk3: int, unk4: int, unk5: int, unk6: int, unk7: int, unk8: int, unk9: int, unk10: int, unk11: int, unk12: int) -> None:
+    def __init__(self, unk1: int = 0, unk2: int = 0, unk3: int = 0, unk4: int = 0, unk5: int = 0, unk6: int = 0, unk7: int = 0, unk8: int = 0, unk9: int = 0, unk10: int = 0, unk11: int = 0, unk12: int = 0, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommand] = [], id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL) -> None:
         # ID in this case is the from CutsceneMiscType, not a cutscene command ID
         super().__init__(CutsceneCommandID.CS_SUBCMD_UNK_DATA)
         self.unk1: int = unk1
@@ -2049,7 +2051,7 @@ class CutsceneCommandUnknownData(CutsceneCommand):
 
 
 class CutsceneCommandUnknownDataList(CutsceneCommand):
-    def __init__(self, id: CutsceneCommandID, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandUnknownData] = None) -> None:
+    def __init__(self, id: CutsceneCommandID = CutsceneCommandID.CS_CMD_UNIMPL, start_frame: int = 0, end_frame: int = 0, sub_commands: list[CutsceneCommandUnknownData] = None) -> None:
         super().__init__(id, start_frame, end_frame)
         self.sub_commands: list[CutsceneCommandUnknownData] = sub_commands or []
         self.data_record_schema.extend([
@@ -2123,5 +2125,6 @@ def cutscene_constructor_from_id(cmd_id: int) -> type[CutsceneCommand]:
     elif id == CutsceneCommandID.CS_SUBCMD_UNK_DATA:
         class_def = CutsceneCommandUnknownData
     else:
-        raise Exception(f'Unknown cutscene command ID "{id}" when determining command class to load for deserialization.')
+        class_def = CutsceneCommandUnknownData
+        #raise Exception(f'Unknown cutscene command ID "{id}" when determining command class to load for deserialization.')
     return class_def
