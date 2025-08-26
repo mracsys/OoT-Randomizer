@@ -2125,6 +2125,6 @@ def cutscene_constructor_from_id(cmd_id: int) -> type[CutsceneCommand]:
     elif id == CutsceneCommandID.CS_SUBCMD_UNK_DATA:
         class_def = CutsceneCommandUnknownData
     else:
-        class_def = CutsceneCommandUnknownData
+        class_def = CutsceneCommandUnknownDataList
         #raise Exception(f'Unknown cutscene command ID "{id}" when determining command class to load for deserialization.')
     return class_def

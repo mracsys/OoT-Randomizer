@@ -145,8 +145,8 @@ class RecordType(str, Enum):
 
     # Mesh header record types
     MeshHeader = 'MeshHeader'
-    MeshHeaderImageSingle = 'MeshHeaderImage'
-    MeshHeaderImageMulti = 'MeshHeaderImage'
+    MeshHeaderImageSingle = 'MeshHeaderImageSingle'
+    MeshHeaderImageMulti = 'MeshHeaderImageMulti'
     MeshHeaderCullable = 'MeshHeaderCullable'
     DlistEntries = 'DlistEntries'
     DlistEntry = 'DlistEntry'

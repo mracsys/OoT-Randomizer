@@ -2812,8 +2812,8 @@ TOTAL_SCENE_ROOM_FILES = 489
 
 # Convenience class to wrap scene parsing, writing, and in-process changes into one object.
 class Scenes:
-    def __init__(self, rom: Rom) -> None:
-        self.scene_list: list[SceneDataRelocator] = parse_scene_data(rom)
+    def __init__(self, rom: Rom, use_cache: bool = True) -> None:
+        self.scene_list: list[SceneDataRelocator] = parse_scene_data(rom, use_cache)
         self._index = 0
 
     def write_to_rom(self, rom: Rom) -> None:
@@ -2866,13 +2866,13 @@ class Scenes:
 
 
 # Entry function to parse the vanilla rom using ZAPD xml resources for oot-ntsc-1.0.
-def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
+def parse_scene_data(rom: Rom, use_cache: bool = True) -> list[SceneDataRelocator]:
     logger = logging.getLogger('')
     logger.debug('Reading scene files from ROM')
     xml_dir = data_path('scenes')
     parsed_files = 0
     scene_cache: dict[int, dict[str, Any]] = {}
-    if path.exists(local_path('scenes.json')):
+    if use_cache and path.exists(local_path('scenes.json')):
         try:
             with open(local_path('scenes.json'), 'r') as f:
                 scene_cache = json.load(f)
@@ -2899,18 +2899,25 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
                     if len(ids) > 1:
                         raise Exception(f'Multiple scenes match filename {filename}')
                     scene_id = ids[0][0]
-                    # try:
-                    print(f'Loading scene {scene_id}')
-                    scene_file = SceneDataRelocator.from_json(rom, scene_cache[str(scene_id)])
-                    # except (SceneCacheFileException, KeyError) as e:
-                    #     if not isinstance(e, KeyError):
-                    #         print(f'Attempting to parse file from ROM instead for scene {scene_id}')
-                    #     scene_start = rom.read_int32(SCENE_TABLE_ADDRESS + (scene_id * 0x14))
-                    #     entry = rom.dma.get_dmadata_record_by_key(scene_start)
-                    #     scene_end = entry.end
-                    #     scene_file = SceneDataRelocator(rom, filename, scene_start, scene_end)
-                    #     from_cache = False
-                    #     refresh_cache = True
+                    if use_cache:
+                        try:
+                            logger.debug(f'Attempting to Load scene {scene_id} from cache')
+                            scene_file = SceneDataRelocator.from_json(rom, scene_cache[str(scene_id)])
+                        except (SceneCacheFileException, KeyError) as e:
+                            if not isinstance(e, KeyError):
+                                logger.debug(f'Attempting to parse file from ROM instead for scene {scene_id}')
+                            scene_start = rom.read_int32(SCENE_TABLE_ADDRESS + (scene_id * 0x14))
+                            entry = rom.dma.get_dmadata_record_by_key(scene_start)
+                            scene_end = entry.end
+                            scene_file = SceneDataRelocator(rom, filename, scene_start, scene_end)
+                            from_cache = False
+                            refresh_cache = True
+                    else:
+                        scene_start = rom.read_int32(SCENE_TABLE_ADDRESS + (scene_id * 0x14))
+                        entry = rom.dma.get_dmadata_record_by_key(scene_start)
+                        scene_end = entry.end
+                        scene_file = SceneDataRelocator(rom, filename, scene_start, scene_end)
+                        from_cache = False
                     current_file = scene_file
                 elif segment == 0x03:
                     # rooms always defined after parent scene
@@ -2936,7 +2943,7 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
                 raise Exception(f'Something went wrong parsing {zapd_xml}. Scene file not found.')
             if not from_cache:
                 scene_file.finalize()
-                scene_cache[scene_file.id] = scene_file.to_json()
+                if use_cache: scene_cache[scene_file.id] = scene_file.to_json()
             else:
                 scene_file.finalize_from_cache()
             scenes[scene_id] = scene_file
@@ -2946,12 +2953,14 @@ def parse_scene_data(rom: Rom) -> list[SceneDataRelocator]:
     for scene_id, scene_file in enumerate(scenes):
         if scene_file is None or not scene_file.parsed:
             raise Exception(f'Scene 0x{scene_id:0>2x} was not parsed')
-        if str(scene_id) not in scene_cache.keys():
+        # Check scene_id as string for actual json import and as int for
+        # initial python cache build
+        if use_cache and str(scene_id) not in scene_cache.keys() and scene_id not in scene_cache.keys():
             raise Exception(f'Scene 0x{scene_id:0>2x} parsed data was not cached to disk')
         for room_id, room_file in enumerate(scene_file.rooms):
             if room_file is None or not room_file.parsed:
                 raise Exception(f'Room {room_id} in Scene 0x{scene_id:0>2x} was not parsed')
-    if refresh_cache:
+    if use_cache and refresh_cache:
         logger.debug('Saving scene file cached data to disk')
         with open(local_path('scenes.json'), 'w') as f:
             json.dump(scene_cache, f)
@@ -3041,41 +3050,46 @@ def compare_parsed_data_to_rom(scenes: Scenes, rom: Rom, save_files: bool = Fals
 # Test function to compare data parsed from a json cache file
 # to the vanilla file contents and verify they match
 def compare_cached_data_to_rom(rom: Rom):
-    # # Invalidate cache if it exists
-    # if path.isfile(local_path('scenes.json')):
-    #     remove(local_path('scenes.json'))
-    # if path.isfile(local_path('scenes.pkl')):
-    #     remove(local_path('scenes.pkl'))
-    # # Build initial cache
-    # start_time = time.perf_counter()
-    # scenes = Scenes(uncompressed_rom)
-    # end_time = time.perf_counter()
-    # print(f"Parsing from ROM: {end_time - start_time:.4f} seconds")
-    # with open(local_path('scenes.pkl'), 'wb') as pkl:
-    #     pickle.dump(scenes, pkl)
+    # Invalidate cache if it exists
+    if path.isfile(local_path('scenes.json')):
+        remove(local_path('scenes.json'))
+    if path.isfile(local_path('scenes.pkl')):
+        remove(local_path('scenes.pkl'))
+    # Time parsing from ROM without caching
+    start_time = time.perf_counter()
+    scenes = Scenes(uncompressed_rom, False)
+    end_time = time.perf_counter()
+    print(f"Parsing from ROM: {end_time - start_time:.4f} seconds")
+    # Build initial cache
+    start_time = time.perf_counter()
+    scenes = Scenes(uncompressed_rom)
+    end_time = time.perf_counter()
+    print(f"Parsing from ROM with cache export: {end_time - start_time:.4f} seconds")
+    with open(local_path('scenes.pkl'), 'wb') as pkl:
+        pickle.dump(scenes, pkl)
     # Rebuild using JSON cache
     start_time = time.perf_counter()
     scenes = Scenes(uncompressed_rom)
     end_time = time.perf_counter()
     print(f"Parsing from JSON: {end_time - start_time:.4f} seconds")
-    # try:
-    compare_parsed_data_to_rom(scenes, rom, False, True)
-    # except:
-    #     print('JSON import failed verification.')
-    # # Rebuild using pickled cache
-    # start_time = time.perf_counter()
-    # with open(local_path('scenes.pkl'), 'rb') as pkl:
-    #     scenes: Scenes = pickle.load(pkl)
-    # for scene in scenes:
-    #     scene.rom = rom
-    #     for room in scene.rooms:
-    #         room.rom = rom
-    # end_time = time.perf_counter()
-    # print(f"Unpickling: {end_time - start_time:.4f} seconds")
-    # try:
-    #     compare_parsed_data_to_rom(scenes, rom, False, False)
-    # except:
-    #     print('Unpickling failed verification.')
+    try:
+        compare_parsed_data_to_rom(scenes, rom, False, False)
+    except:
+        print('JSON import failed verification.')
+    # Rebuild using pickled cache
+    start_time = time.perf_counter()
+    with open(local_path('scenes.pkl'), 'rb') as pkl:
+        scenes: Scenes = pickle.load(pkl)
+    for scene in scenes:
+        scene.rom = rom
+        for room in scene.rooms:
+            room.rom = rom
+    end_time = time.perf_counter()
+    print(f"Unpickling: {end_time - start_time:.4f} seconds")
+    try:
+        compare_parsed_data_to_rom(scenes, rom, False, False)
+    except:
+        print('Unpickling failed verification.')
 
 
 def extract_bytes_to_file(file: str, start: int, length: int, new_file: str) -> None:

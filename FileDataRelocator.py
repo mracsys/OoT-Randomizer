@@ -89,7 +89,8 @@ def pack_properties(cls: Any, schema: list[tuple[str, Any]]) -> dict[str, Any]:
                     elif v is None:
                         packed[var].append(None)
                     elif isinstance(v, DataRecord):
-                        packed[var] = [var, v.file.segment, v.vanilla_offset, v.type.value]
+                        record = [var, v.file.segment, v.vanilla_offset, v.type.value]
+                        packed[var].append(record)
                     elif isinstance(v, CutsceneCommand):
                         command = pack_properties(v, v.data_record_schema)
                         command['id'] = int(v.id) # manually cast IntEnum to int to avoid another conditional in the pack/unpack functions
@@ -153,55 +154,59 @@ def unpack_properties(record: Any, schema: list[tuple[str, Any]], data_records: 
                         record.__dict__[var].append(subrecord)
         elif issubclass(subcls, CutsceneCommand):
             # Cutscene commands are self-contained, making it possible to expand nested command lists in one pass
-            if isinstance(value, list):
-                command_list = []
-                for command in value:
-                    if 'sub_commands' in command.keys():
-                        command_commands = []
-                        # Text command lists can have one of three subtypes for subcommands.
-                        # All other cutscene command subcommands use one consistent subtype.
-                        # This prevents using the class schema directly as multiple types per key
-                        # are not implemented. Use a lookup function keyed on subcommand id instead.
-                        for subcmd_data in command['sub_commands']:
-                            if 'id' not in subcmd_data.keys():
-                                raise Exception(f'Could not determine cutscene subcommand type from schema during cache import. Missing "id" key.')
-                            subcmdcls = cutscene_constructor_from_id(subcmd_data['id'])
-                            subcmd = subcmdcls()
-                            unpack_properties(subcmd, subcmd.data_record_schema, subcmd_data, file)
-                            subcmd.id = CutsceneCommandID(subcmd_data['id'])
-                            command_commands.append(subcmd)
-                        command['sub_commands'] = command_commands
-                    cmd_id = CutsceneCommandID(command['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
-                    cmdcls = cutscene_constructor_from_id(command['id'])
-                    del command['id']
-                    cmd = cmdcls(**command)
-                    cmd.id = cmd_id
-                    command_list.append(cmd)
-                record.__dict__[var] = command_list
-            else:
-                if 'sub_commands' in value.keys():
-                    value_commands = []
+            # if isinstance(value, list):
+            command_list = []
+            for command in value:
+                if 'sub_commands' in command.keys():
+                    command_commands = []
                     # Text command lists can have one of three subtypes for subcommands.
                     # All other cutscene command subcommands use one consistent subtype.
                     # This prevents using the class schema directly as multiple types per key
                     # are not implemented. Use a lookup function keyed on subcommand id instead.
-                    for subcmd_data in value['sub_commands']:
+                    for subcmd_data in command['sub_commands']:
                         if 'id' not in subcmd_data.keys():
                             raise Exception(f'Could not determine cutscene subcommand type from schema during cache import. Missing "id" key.')
                         subcmdcls = cutscene_constructor_from_id(subcmd_data['id'])
                         subcmd = subcmdcls()
                         unpack_properties(subcmd, subcmd.data_record_schema, subcmd_data, file)
                         subcmd.id = CutsceneCommandID(subcmd_data['id'])
-                        value_commands.append(subcmd)
-                    value['sub_commands'] = value_commands
-                cmd_id = CutsceneCommandID(value['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
-                cmdcls = cutscene_constructor_from_id(value['id'])
-                del value['id']
-                record.__dict__[var] = subcls(**value)
-                record.__dict__[var].id = cmd_id
+                        command_commands.append(subcmd)
+                    command['sub_commands'] = command_commands
+                cmd_id = CutsceneCommandID(command['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
+                cmdcls = cutscene_constructor_from_id(command['id'])
+                del command['id']
+                cmd = cmdcls(**command)
+                cmd.id = cmd_id
+                command_list.append(cmd)
+            record.__dict__[var] = command_list
+            # else:
+            #     if 'sub_commands' in value.keys():
+            #         value_commands = []
+            #         # Text command lists can have one of three subtypes for subcommands.
+            #         # All other cutscene command subcommands use one consistent subtype.
+            #         # This prevents using the class schema directly as multiple types per key
+            #         # are not implemented. Use a lookup function keyed on subcommand id instead.
+            #         for subcmd_data in value['sub_commands']:
+            #             if 'id' not in subcmd_data.keys():
+            #                 raise Exception(f'Could not determine cutscene subcommand type from schema during cache import. Missing "id" key.')
+            #             subcmdcls = cutscene_constructor_from_id(subcmd_data['id'])
+            #             subcmd = subcmdcls()
+            #             unpack_properties(subcmd, subcmd.data_record_schema, subcmd_data, file)
+            #             subcmd.id = CutsceneCommandID(subcmd_data['id'])
+            #             value_commands.append(subcmd)
+            #         value['sub_commands'] = value_commands
+            #     cmd_id = CutsceneCommandID(value['id']) # cast from int to CutsceneCommandID to convert back to IntEnum
+            #     cmdcls = cutscene_constructor_from_id(value['id'])
+            #     del value['id']
+            #     record.__dict__[var] = subcls(**value)
+            #     record.__dict__[var].id = cmd_id
         elif issubclass(subcls, DataRecord):
+            is_list = True
+            for v in value:
+                if not isinstance(v, list) and v is not None:
+                    is_list = False
             # List of records
-            if isinstance(value[0], list):
+            if is_list:
                 record.__dict__[var] = [None for _ in range(len(value))]
                 idx = 0
                 for json_record in value:
