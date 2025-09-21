@@ -1944,7 +1944,10 @@ def build_world_gossip_hints(spoiler: Spoiler, world: World, checked_locations: 
                 else:
                     logging.getLogger('').debug('Placed %s hint for %s.', hint_type, ', '.join([location.name for location in locations]))
             if not place_ok and custom_fixed:
-                logging.getLogger('').debug('Failed to place %s fixed hint for %s.', hint_type, ', '.join([location.name for location in locations]))
+                if locations is None:
+                    logging.getLogger('').debug('Failed to place %s fixed hint.', hint_type)
+                else:
+                    logging.getLogger('').debug('Failed to place %s fixed hint for %s.', hint_type, ', '.join([location.name for location in locations]))
                 fixed_hint_types.insert(0, hint_type)
 
 

@@ -1050,6 +1050,8 @@ class WorldDistribution:
                 else:
                     raise RuntimeError('Gossip stone unknown or already assigned in world %d: %r. %s' % (self.id + 1, name, build_close_match(name, 'stone')))
             if record.text is not None:
+                if len(record.text) > 1200:
+                    raise ValueError(f'Text length for gossip stone {name!r} ({len(record.text)} characters) exceeds maximum safe length (1200 characters)')
                 spoiler.hints[self.id][stone_id] = GossipText(text=record.text, colors=record.colors, prefix='')
             else:
                 all_checked_locations = checked_locations | checked_always_locations
@@ -1288,15 +1290,14 @@ class Distribution:
             for itemsetting in starting_items:
                 if itemsetting in StartingItems.everything:
                     item = StartingItems.everything[itemsetting]
-                    if not item.special:
-                        add_starting_item_with_ammo(data, item.item_name)
+                    if self.settings.blue_fire_arrows and item.item_name == 'Ice Arrows':
+                        add_starting_item_with_ammo(data, 'Blue Fire Arrows')
+                    elif item.item_name == 'Rutos Letter' and self.settings.zora_fountain != 'open':
+                        data['Rutos Letter'].count += 1
+                    elif item.item_name in ('Bottle', 'Rutos Letter'):
+                        data['Bottle'].count += 1
                     else:
-                        if item.item_name == 'Rutos Letter' and world.settings.zora_fountain != 'open':
-                            data['Rutos Letter'].count += 1
-                        elif item.item_name in ('Bottle', 'Rutos Letter'):
-                            data['Bottle'].count += 1
-                        else:
-                            raise KeyError(f"invalid special item: {item.item_name}")
+                        add_starting_item_with_ammo(data, item.item_name)
                 else:
                     raise KeyError(f"invalid starting item: {itemsetting}")
             world.settings.starting_equipment = []
