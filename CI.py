@@ -34,13 +34,9 @@ def error(msg: str, can_fix: bool) -> None:
 
 def run_unit_tests() -> None:
     # Run Unit Tests
-    stream = StringIO()
-    runner = unittest.TextTestRunner(stream=stream)
+    runner = unittest.TextTestRunner()
     suite = unittest.defaultTestLoader.loadTestsFromModule(Tests)
     result = runner.run(suite)
-    print(f'Tests run: {result.testsRun}.')
-    stream.seek(0)
-    print(f'Test output:\n{stream.read()}')
     if not result.wasSuccessful():
         error('Unit Tests had an error, see output above.', False)
 
