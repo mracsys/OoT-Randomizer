@@ -77,7 +77,6 @@ Differences between `dev-fenhl` and [`Dev-R`](https://github.com/Roman971/OoT-Ra
 * Bug fixes:
   * Potentially fix a bug causing an item to turn into a Gerudo mask when picked up at the same time a Triforce piece is received from the network ([#2406](https://github.com/OoTRandomizer/OoT-Randomizer/pull/2406))
   * Fix Dual and Dual Always hints hinting locations in precompleted dungeons ([#2397](https://github.com/OoTRandomizer/OoT-Randomizer/pull/2397))
-  * Fix incorrect color highlighting in Important Check hints ([#2394](https://github.com/OoTRandomizer/OoT-Randomizer/pull/2394))
   * Fix generator crash with bingo hints when all bottles (other than Ruto's letter) are milk bottles ([#2392](https://github.com/OoTRandomizer/OoT-Randomizer/pull/2392))
   * Fix misc. location hints not being counted as always hints for the purpose of Barren and Named Item hints ([#2391](https://github.com/OoTRandomizer/OoT-Randomizer/pull/2391))
   * Fix conditions for `Deku Theater Rewards` becoming a Dual Always hint.
