@@ -788,7 +788,10 @@ def shuffle_random_entrances(worlds: list[World]) -> None:
         for pool_type, entrance_pool in entrance_pools.items():
             if world.settings.require_gohma and (
                 pool_type in ('Dungeon', 'ChildBoss', 'Boss', 'Overworld', 'Mixed')
-                or (pool_type in ('GrottoGrave', 'GrottoGraveReverse') and world.settings.warp_songs == 'full') # to avoid Minuet leading inside a forest grotto that has been placed outside the forest
+                or (pool_type in ('GrottoGrave', 'GrottoGraveReverse') and (
+                    world.settings.warp_songs == 'full' # to avoid Minuet leading inside a forest grotto that has been placed outside the forest
+                    or world.settings.logic_rules == 'advanced' # to avoid forest escape via Dampé's grave using groundjump
+                ))
                 or (pool_type in ('Interior', 'InteriorReverse') and (
                     world.shuffle_special_interior_entrances
                     or world.settings.shuffle_hideout_entrances != 'off'

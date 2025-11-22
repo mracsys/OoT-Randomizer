@@ -20,6 +20,10 @@
 * Limit length of plandomized text boxes to 1200 characters to prevent buffer overflow bugs.
 * Fix Blue Fire Arrows being logically treated as Ice Arrows when selected as a starting item.
 * Fix a bug where it was possible to buy the item from Granny's Potion Shop without turning in the Odd Mushroom in some cases.
+* Fix two different trade items being shuffled with plentiful item pool and no adult trade shuffle, which could lead to softlocks due to inconsistent game state.
+* Fix the code that checks whether a hint is reachable not taking effective starting items (e.g. the rewards of precompleted dungeons) into account.
+* Pause menu has been modified to more closely align equip swap behavior with the vanilla game, while also removing some cursor movement restrictions.
+* Fix the texture of the rotated Forest Temple boss key chest when `Chest Appearance Matches Content` is off.
 
 ## Other changes
 * Big poe souls can now be collected while riding Epona.

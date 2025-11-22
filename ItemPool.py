@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Optional
 
 from Item import Item, ItemInfo, ItemFactory
 from Location import DisableType
+import StartingItems
 
 if TYPE_CHECKING:
     from Plandomizer import ItemPoolRecord
@@ -532,9 +533,8 @@ def get_pool_core(world: World) -> tuple[list[str], dict[str, Item]]:
             if 'Pocket Egg' in world.settings.adult_trade_start and 'Pocket Cucco' in world.settings.adult_trade_start:
                 pending_junk_pool.remove('Pocket Cucco')
         elif world.settings.adult_trade_start:
-            # With adult trade shuffle off, add a random extra adult trade item
-            item = random.choice(world.settings.adult_trade_start)
-            pending_junk_pool.append(item)
+            # With adult trade shuffle off, add another copy of the selected adult trade item
+            pending_junk_pool.append(world.selected_adult_trade_item)
         if world.settings.zora_fountain != 'open':
             ruto_bottles += 1
         if world.settings.shuffle_kokiri_sword:
@@ -1085,12 +1085,13 @@ def get_pool_core(world: World) -> tuple[list[str], dict[str, Item]]:
         for ocarina_button in ocarina_buttons:
             world.state.collect(ItemFactory(ocarina_button, world))
 
-    for _ in range(world.settings.add_random_starting_items):
-        random_starting_items_pool = sorted({item for item in pool if item not in ItemInfo.junk_weight}) # give each item the same weight regardless of how many copies there are
+    for _ in range(world.settings.random_starting_items_count):
+        random_starting_items_pool = configure_random_starting_items_pool(world, pool)
         selected_item = random.choice(random_starting_items_pool)
         world.randomized_starting_items[selected_item] = world.randomized_starting_items.get(selected_item, 0) + 1
         pool.remove(selected_item)
         pool.extend(get_junk_item())
+    add_random_starting_items_ammo(world.randomized_starting_items)
     for item, count in world.randomized_starting_items.items():
         item = ItemFactory(item, world)
         for _ in range(count):
@@ -1162,3 +1163,29 @@ def get_pool_core(world: World) -> tuple[list[str], dict[str, Item]]:
         world.distribution.distribution.search_groups['Junk'] = remove_junk_items
 
     return pool, placed_items
+
+
+def configure_random_starting_items_pool(world: World, pool: list[str]) -> list[str]:
+    exclude_list = []
+
+    if 'songs' in world.settings.random_starting_items_exclude:
+        exclude_list.extend(item_groups['Song'])
+    if 'bombchus' in world.settings.random_starting_items_exclude:
+        exclude_list.extend((item for item in pool if 'Bombchus' in item))
+    if 'shields' in world.settings.random_starting_items_exclude:
+        exclude_list.extend(item_groups['Shield'])
+    if 'deku_upgrades' in world.settings.random_starting_items_exclude:
+        exclude_list.extend(('Deku Stick Capacity', 'Deku Nut Capacity'))
+    if 'health_upgrades' in world.settings.random_starting_items_exclude:
+        exclude_list.extend(item_groups['HealthUpgrade'])
+    if 'junk' in world.settings.random_starting_items_exclude:
+        exclude_list.extend(ItemInfo.junk_weight)
+
+    return sorted({item for item in pool if item not in exclude_list and ItemInfo.items[item].type != 'Shop'}) # give each item the same weight regardless of how many copies there are
+
+
+def add_random_starting_items_ammo(randomized_starting_items: dict[str, int]) -> None:
+    for item in StartingItems.inventory.values():
+        if item.item_name in randomized_starting_items and item.ammo:
+            for ammo, qty in item.ammo.items():
+                randomized_starting_items[ammo] = qty[randomized_starting_items[item.item_name] - 1]

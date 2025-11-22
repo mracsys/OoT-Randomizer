@@ -569,7 +569,7 @@ def patch_rom(spoiler: Spoiler, world: World, rom: Rom) -> Rom:
         world.settings.shuffle_song_items not in ('vanilla', 'song')
         or world.distribution.songs_as_items
         or any(name in song_list and record.count for name, record in world.settings.starting_items.items())
-        or any(name in song_list and count for name, count in world.randomized_starting_items.items())
+        or (world.settings.random_starting_items_count > 0 and 'songs' not in world.settings.random_starting_items_exclude)
         or world.settings.shuffle_individual_ocarina_notes
     )
     if songs_as_items:
