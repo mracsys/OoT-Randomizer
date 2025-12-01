@@ -129,10 +129,9 @@ class World:
         }
         if len(self.mix_entrance_pools) == 1:
             self.mix_entrance_pools = set()
-        self.mixed_pools_bosses: bool = 'Boss' in self.mix_entrance_pools
         self.dungeon_back_access: bool = settings.dungeon_back_access and (
             self.full_one_ways or (
-                self.mixed_pools_bosses and (
+                'Boss' in self.mix_entrance_pools and (
                     self.settings.decouple_entrances
                     or 'Overworld' in self.mix_entrance_pools
                     or (
@@ -151,7 +150,7 @@ class World:
             )
         )
         # in these settings, there's not necessarily one dungeon reward in each main dungeon, so compasses and the pause menu switch to a different behavior
-        self.entrance_rando_reward_hints = self.mixed_pools_bosses or self.settings.shuffle_ganon_tower or self.settings.shuffle_dungeon_rewards not in ('vanilla', 'reward')
+        self.entrance_rando_reward_hints = 'Boss' in self.mix_entrance_pools or self.settings.shuffle_ganon_tower or self.settings.shuffle_dungeon_rewards not in ('vanilla', 'reward')
 
         self.ensure_tod_access: bool = bool(self.shuffle_interior_entrances or settings.shuffle_overworld_entrances or self.spawn_positions)
         self.disable_trade_revert: bool = self.shuffle_interior_entrances or settings.shuffle_overworld_entrances or settings.adult_trade_shuffle
@@ -306,7 +305,7 @@ class World:
 
         self.always_hints: list[str] = [hint.name for hint in get_required_hints(self)]
 
-        self.dungeon_rewards_hinted: bool = settings.shuffle_mapcompass != 'remove' if settings.enhance_map_compass else 'altar' in settings.misc_hints
+        self.dungeon_rewards_hinted: bool = settings.shuffle_mapcompass != 'remove' if 'compass_reward' in settings.enhance_map_compass else 'altar' in settings.misc_hints
         self.misc_hint_items: dict[str, str] = {hint_type: self.hint_dist_user.get('misc_hint_items', {}).get(hint_type, data['default_item']) for hint_type, data in misc_item_hint_table.items()}
         self.misc_hint_locations: dict[str, str] = {hint_type: self.hint_dist_user.get('misc_hint_locations', {}).get(hint_type, data['item_location']) for hint_type, data in misc_location_hint_table.items()}
         self.state: State = State(self)

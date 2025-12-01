@@ -1038,7 +1038,7 @@ class WorldDistribution:
             if can_cloak(location.item, model):
                 location.item.looks_like_item = model
 
-    def configure_gossip(self, spoiler: Spoiler, world: World, stone_ids: list[int], checked_locations: set[str], checked_always_locations: set[str]) -> None:
+    def configure_gossip(self, spoiler: Spoiler, world: World, stone_ids: list[int], checked_locations: dict[HintArea | str, set[CheckedKind]]) -> None:
         for (name, record) in self.pattern_dict_items(self.gossip_stones):
             matcher = self.pattern_matcher(name)
             stone_id = pull_random_element([stone_ids], lambda id: matcher(gossipLocations[id].name))
@@ -1054,12 +1054,7 @@ class WorldDistribution:
                     raise ValueError(f'Text length for gossip stone {name!r} ({len(record.text)} characters) exceeds maximum safe length (1200 characters)')
                 spoiler.hints[self.id][stone_id] = GossipText(text=record.text, colors=record.colors, prefix='')
             else:
-                all_checked_locations = checked_locations | checked_always_locations
-                if record.hint_type == 'barren':
-                    hint = hint_func[record.hint_type](spoiler, world, checked_locations, all_checked_locations)
-                else:
-                    hint = hint_func[record.hint_type](spoiler, world, all_checked_locations)
-                    checked_locations.update(all_checked_locations - checked_always_locations)
+                hint = hint_func[record.hint_type](spoiler, world, checked_locations)
                 if hint is None:
                     raise RuntimeError(f'Attempted to plando unavailable hint type {record.hint_type}')
                 gossip_text, _ = hint

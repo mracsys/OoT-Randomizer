@@ -1245,7 +1245,7 @@ def validate_world(world: World, worlds: list[World], entrance_placed: Optional[
 
     if (
         world.shuffle_interior_entrances and (
-            (world.dungeon_rewards_hinted and (world.mixed_pools_bosses or world.settings.shuffle_dungeon_rewards in ('regional', 'overworld', 'anywhere')))
+            (world.dungeon_rewards_hinted and ('Boss' in world.mix_entrance_pools or world.settings.shuffle_dungeon_rewards in ('regional', 'overworld', 'anywhere')))
             or any(
                 hint_type in world.settings.misc_hints
                 for hint_type in misc_item_hint_table
