@@ -1468,7 +1468,6 @@ def get_important_check_hint(spoiler: Spoiler, world: World, checked: dict[HintA
                 and not location.item.name == 'Triforce Piece'
                 and not (location.name == 'Song from Impa' and 'Zeldas Letter' in world.settings.starting_items and 'Zeldas Letter' not in world.settings.shuffle_child_trade)
                 # Special cases where the item is only considered major for important checks hints
-                or location.item.name == 'Biggoron Sword'
                 or location.item.name == 'Double Defense'
                 # Handle make keys not in own dungeon major items
                 or (location.item.type in ('SmallKey', 'SmallKeyRing') and not (world.settings.shuffle_smallkeys == 'dungeon' or world.settings.shuffle_smallkeys == 'vanilla'))

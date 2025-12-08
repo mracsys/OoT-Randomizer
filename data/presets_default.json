@@ -3559,14 +3559,14 @@
         "custom_ice_trap_count": 100,
         "ice_trap_appearance": "junk_only"
     },
-    "S8 Tournament": {
+    "S9 Tournament": {
         "aliases": [
-            "s8",
+            "s9",
             "tournament"
         ],
         "language": "english",
         "show_seed_info": true,
-        "user_message": "S8 Tournament",
+        "user_message": "S9 Tournament",
         "world_count": 1,
         "create_spoiler": true,
         "password_lock": false,
@@ -3621,7 +3621,7 @@
         "shuffle_hideout_entrances": "off",
         "shuffle_gerudo_fortress_heart_piece": "remove",
         "shuffle_grotto_entrances": false,
-        "shuffle_dungeon_entrances": "off",
+        "shuffle_dungeon_entrances": "simple",
         "shuffle_bosses": "off",
         "shuffle_ganon_tower": false,
         "shuffle_overworld_entrances": false,
@@ -3681,7 +3681,10 @@
         "shuffle_silver_rupees": "vanilla",
         "silver_rupee_pouches_choice": "off",
         "silver_rupee_pouches": [],
-        "enhance_map_compass": [],
+        "enhance_map_compass": [
+            "map_dungeon_location",
+            "compass_reward"
+        ],
         "triforce_hunt_mode": "normal",
         "free_bombchu_drops": false,
         "logic_no_night_tokens_without_suns_song": false,
@@ -3705,7 +3708,9 @@
             "logic_lens_bongo",
             "logic_lens_spirit",
             "logic_lens_gtg",
-            "logic_lens_castle"
+            "logic_lens_castle",
+            "logic_deku_b1_webs_with_bow",
+            "logic_dc_scarecrow_gs"
         ],
         "advanced_allowed_tricks": [],
         "starting_equipment": [
@@ -3716,9 +3721,15 @@
             "zeldas_letter"
         ],
         "starting_songs": [],
-        "add_random_starting_items": false,
-        "random_starting_items_exclude": [],
-        "random_starting_items_count": 0,
+        "add_random_starting_items": true,
+        "random_starting_items_exclude": [
+            "bombchus",
+            "shields",
+            "deku_upgrades",
+            "health_upgrades",
+            "junk"
+        ],
+        "random_starting_items_count": 1,
         "start_with_consumables": true,
         "start_with_rupees": false,
         "starting_hearts": 3,
@@ -3730,7 +3741,7 @@
         "complete_mask_quest": false,
         "useful_cutscenes": false,
         "fast_chests": true,
-        "scarecrow_behavior": "vanilla",
+        "scarecrow_behavior": "fast",
         "fast_bunny_hood": true,
         "auto_equip_masks": false,
         "plant_beans": false,
@@ -3752,6 +3763,7 @@
             "altar",
             "ganondorf",
             "warp_songs_and_owls",
+            "dampe_diary",
             "30_skulltulas",
             "40_skulltulas",
             "50_skulltulas"
@@ -3783,7 +3795,7 @@
         "starting_tod": "default",
         "blue_fire_arrows": true,
         "fix_broken_drops": false,
-        "tcg_requires_lens": false,
+        "tcg_requires_lens": true,
         "no_collectible_hearts": false,
         "one_item_per_dungeon": false,
         "item_pool_value": "balanced",
