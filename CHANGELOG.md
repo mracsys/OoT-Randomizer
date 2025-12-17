@@ -27,6 +27,8 @@
 * Fix the texture of the rotated Forest Temple boss key chest when `Chest Appearance Matches Content` is off.
 * Misc. location hints no longer prevent their area from being hinted as Barren.
 * Fix a generator failure when a `named_items_required` Named Item hint conflicts with a misc. location hint.
+* Prevent another case of Dead Hand spawning outside the room collision.
+* Fix a bug where the ROM compressor may rarely produce corrupted ROMs.
 
 ## Other changes
 * Big poe souls can now be collected while riding Epona.
