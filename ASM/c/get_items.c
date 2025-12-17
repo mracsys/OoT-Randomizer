@@ -315,7 +315,7 @@ void move_outgoing_queue() {
             OUTGOING_PLAYER,
             0, 0, 0, 0,
         };
-        everdrive_write(send_item_packet);
+        everdrive_write(16, send_item_packet);
         OUTGOING_ITEM = 0;
         OUTGOING_PLAYER = 0;
         OUTGOING_KEY.all = 0;
@@ -371,7 +371,7 @@ void after_key_received(override_key_t key) {
         uint8_t EVERDRIVE_MESSAGE_ITEM_RECEIVED[16] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
         if (everdrive_detect() && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
-            everdrive_write(EVERDRIVE_MESSAGE_ITEM_RECEIVED);
+            everdrive_write(16, EVERDRIVE_MESSAGE_ITEM_RECEIVED);
         }
         INCOMING_ITEM = 0;
         INCOMING_PLAYER = 0;

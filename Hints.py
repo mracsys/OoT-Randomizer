@@ -394,46 +394,46 @@ class HintAreaNotFound(RuntimeError):
 
 
 class HintArea(Enum):
-    # internal name          prepositions        display name                  short name                color         internal dungeon name          shorter name
+    # internal name          prepositions        display name                  idx   color         internal dungeon name    shorter name
     #                        vague     clear
-    ROOT                   = 'in',     'in',     "Link's pocket",              'Free',                   'White',      None,                          None
-    HYRULE_FIELD           = 'in',     'in',     'Hyrule Field',               'Hyrule Field',           'Light Blue', None,                          'Field'
-    LON_LON_RANCH          = 'at',     'at',     'Lon Lon Ranch',              'Lon Lon Ranch',          'Light Blue', None,                          'Ranch'
-    MARKET                 = 'in',     'in',     'the Market',                 'Market',                 'Light Blue', None,                          'Market'
-    TEMPLE_OF_TIME         = 'inside', 'inside', 'the Temple of Time',         'Temple of Time',         'Light Blue', None,                          'ToT'
-    CASTLE_GROUNDS         = 'on',     'on',     'the Castle Grounds',         None,                     'Light Blue', None,                          'Castle' # required for warp songs
-    HYRULE_CASTLE          = 'at',     'at',     'Hyrule Castle',              'Hyrule Castle',          'Light Blue', None,                          'HC'
-    OUTSIDE_GANONS_CASTLE  = None,     None,     "outside Ganon's Castle",     "Outside Ganon's Castle", 'Light Blue', None,                          'OGC'
-    INSIDE_GANONS_CASTLE   = 'inside', None,     "inside Ganon's Castle",      "Inside Ganon's Castle",  'Light Blue', 'Ganons Castle',               'Ganon'
-    GANONDORFS_CHAMBER     = 'in',     'in',     "Ganondorf's Chamber",        "Ganondorf's Chamber",    'Light Blue', None,                          None
-    KOKIRI_FOREST          = 'in',     'in',     'Kokiri Forest',              "Kokiri Forest",          'Green',      None,                          'Kokiri'
-    DEKU_TREE              = 'inside', 'inside', 'the Deku Tree',              "Deku Tree",              'Green',      'Deku Tree',                   'Deku'
-    LOST_WOODS             = 'in',     'in',     'the Lost Woods',             "Lost Woods",             'Green',      None,                          'Woods'
-    SACRED_FOREST_MEADOW   = 'at',     'at',     'the Sacred Forest Meadow',   "Sacred Forest Meadow",   'Green',      None,                          'Meadow'
-    FOREST_TEMPLE          = 'in',     'in',     'the Forest Temple',          "Forest Temple",          'Green',      'Forest Temple',               'Forest'
-    DEATH_MOUNTAIN_TRAIL   = 'on',     'on',     'the Death Mountain Trail',   "Death Mountain Trail",   'Red',        None,                          'Trail'
-    DODONGOS_CAVERN        = 'within', 'in',     "Dodongo's Cavern",           "Dodongo's Cavern",       'Red',        'Dodongos Cavern',             'DC'
-    GORON_CITY             = 'in',     'in',     'Goron City',                 "Goron City",             'Red',        None,                          'Goron'
-    DEATH_MOUNTAIN_CRATER  = 'in',     'in',     'the Death Mountain Crater',  "Death Mountain Crater",  'Red',        None,                          'Crater'
-    FIRE_TEMPLE            = 'on',     'in',     'the Fire Temple',            "Fire Temple",            'Red',        'Fire Temple',                 'Fire'
-    ZORA_RIVER             = 'at',     'at',     "Zora's River",               "Zora's River",           'Blue',       None,                          'River'
-    ZORAS_DOMAIN           = 'at',     'at',     "Zora's Domain",              "Zora's Domain",          'Blue',       None,                          'Domain'
-    ZORAS_FOUNTAIN         = 'at',     'at',     "Zora's Fountain",            "Zora's Fountain",        'Blue',       None,                          'Fountain'
-    JABU_JABUS_BELLY       = 'in',     'inside', "Jabu Jabu's Belly",          "Jabu Jabu's Belly",      'Blue',       'Jabu Jabus Belly',            'Jabu'
-    ICE_CAVERN             = 'inside', 'in'    , 'the Ice Cavern',             "Ice Cavern",             'Blue',       'Ice Cavern',                  'Ice'
-    LAKE_HYLIA             = 'at',     'at',     'Lake Hylia',                 "Lake Hylia",             'Blue',       None,                          'Lake'
-    WATER_TEMPLE           = 'under',  'in',     'the Water Temple',           "Water Temple",           'Blue',       'Water Temple',                'Water'
-    KAKARIKO_VILLAGE       = 'in',     'in',     'Kakariko Village',           "Kakariko Village",       'Pink',       None,                          'Kakariko'
-    BOTTOM_OF_THE_WELL     = 'within', 'at',     'the Bottom of the Well',     "Bottom of the Well",     'Pink',       'Bottom of the Well',          'BotW'
-    GRAVEYARD              = 'in',     'in',     'the Graveyard',              "Graveyard",              'Pink',       None,                          'GY'
-    SHADOW_TEMPLE          = 'within', 'in',     'the Shadow Temple',          "Shadow Temple",          'Pink',       'Shadow Temple',               'Shadow'
-    GERUDO_VALLEY          = 'at',     'at',     'Gerudo Valley',              "Gerudo Valley",          'Yellow',     None,                          'Valley'
-    GERUDO_FORTRESS        = 'at',     'at',     "Gerudo's Fortress",          "Gerudo's Fortress",      'Yellow',     None,                          'Fortress'
-    THIEVES_HIDEOUT        = 'in',     'in',     "the Thieves' Hideout",       "Thieves' Hideout",       'Yellow',     None,                          'Hideout'
-    GERUDO_TRAINING_GROUND = 'within', 'on',     'the Gerudo Training Ground', "Gerudo Training Ground", 'Yellow',     'Gerudo Training Ground',      'GTG'
-    HAUNTED_WASTELAND      = 'in',     'in',     'the Haunted Wasteland',      "Haunted Wasteland",      'Yellow',     None,                          'Wasteland'
-    DESERT_COLOSSUS        = 'at',     'at',     'the Desert Colossus',        "Desert Colossus",        'Yellow',     None,                          'Colossus'
-    SPIRIT_TEMPLE          = 'inside', 'in',     'the Spirit Temple',          "Spirit Temple",          'Yellow',     'Spirit Temple',               'Spirit'
+    ROOT                   = 'in',     'in',     "Link's pocket",              0x01, 'White',      None,                     None
+    HYRULE_FIELD           = 'in',     'in',     'Hyrule Field',               0x02, 'Light Blue', None,                     'Field'
+    LON_LON_RANCH          = 'at',     'at',     'Lon Lon Ranch',              0x03, 'Light Blue', None,                     'Ranch'
+    MARKET                 = 'in',     'in',     'the Market',                 0x04, 'Light Blue', None,                     'Market'
+    TEMPLE_OF_TIME         = 'inside', 'inside', 'the Temple of Time',         0x05, 'Light Blue', None,                     'ToT'
+    CASTLE_GROUNDS         = 'on',     'on',     'the Castle Grounds',         None, 'Light Blue', None,                     'Castle' # required for warp songs
+    HYRULE_CASTLE          = 'at',     'at',     'Hyrule Castle',              0x06, 'Light Blue', None,                     'HC'
+    OUTSIDE_GANONS_CASTLE  = None,     None,     "outside Ganon's Castle",     0x07, 'Light Blue', None,                     'OGC'
+    INSIDE_GANONS_CASTLE   = 'inside', None,     "inside Ganon's Castle",      0x08, 'Light Blue', 'Ganons Castle',          'Ganon'
+    GANONDORFS_CHAMBER     = 'in',     'in',     "Ganondorf's Chamber",        None, 'Light Blue', None,                     None
+    KOKIRI_FOREST          = 'in',     'in',     'Kokiri Forest',              0x09, 'Green',      None,                     'Kokiri'
+    DEKU_TREE              = 'inside', 'inside', 'the Deku Tree',              0x0A, 'Green',      'Deku Tree',              'Deku'
+    LOST_WOODS             = 'in',     'in',     'the Lost Woods',             0x0B, 'Green',      None,                     'Woods'
+    SACRED_FOREST_MEADOW   = 'at',     'at',     'the Sacred Forest Meadow',   0x0C, 'Green',      None,                     'Meadow'
+    FOREST_TEMPLE          = 'in',     'in',     'the Forest Temple',          0x0D, 'Green',      'Forest Temple',          'Forest'
+    DEATH_MOUNTAIN_TRAIL   = 'on',     'on',     'the Death Mountain Trail',   0x0E, 'Red',        None,                     'Trail'
+    DODONGOS_CAVERN        = 'within', 'in',     "Dodongo's Cavern",           0x0F, 'Red',        'Dodongos Cavern',        'DC'
+    GORON_CITY             = 'in',     'in',     'Goron City',                 0x10, 'Red',        None,                     'Goron'
+    DEATH_MOUNTAIN_CRATER  = 'in',     'in',     'the Death Mountain Crater',  0x11, 'Red',        None,                     'Crater'
+    FIRE_TEMPLE            = 'on',     'in',     'the Fire Temple',            0x12, 'Red',        'Fire Temple',            'Fire'
+    ZORA_RIVER             = 'at',     'at',     "Zora's River",               0x13, 'Blue',       None,                     'River'
+    ZORAS_DOMAIN           = 'at',     'at',     "Zora's Domain",              0x14, 'Blue',       None,                     'Domain'
+    ZORAS_FOUNTAIN         = 'at',     'at',     "Zora's Fountain",            0x15, 'Blue',       None,                     'Fountain'
+    JABU_JABUS_BELLY       = 'in',     'inside', "Jabu Jabu's Belly",          0x16, 'Blue',       'Jabu Jabus Belly',       'Jabu'
+    ICE_CAVERN             = 'inside', 'in'    , 'the Ice Cavern',             0x17, 'Blue',       'Ice Cavern',             'Ice'
+    LAKE_HYLIA             = 'at',     'at',     'Lake Hylia',                 0x18, 'Blue',       None,                     'Lake'
+    WATER_TEMPLE           = 'under',  'in',     'the Water Temple',           0x19, 'Blue',       'Water Temple',           'Water'
+    KAKARIKO_VILLAGE       = 'in',     'in',     'Kakariko Village',           0x1A, 'Pink',       None,                     'Kakariko'
+    BOTTOM_OF_THE_WELL     = 'within', 'at',     'the Bottom of the Well',     0x1B, 'Pink',       'Bottom of the Well',     'BotW'
+    GRAVEYARD              = 'in',     'in',     'the Graveyard',              0x1C, 'Pink',       None,                     'GY'
+    SHADOW_TEMPLE          = 'within', 'in',     'the Shadow Temple',          0x1D, 'Pink',       'Shadow Temple',          'Shadow'
+    GERUDO_VALLEY          = 'at',     'at',     'Gerudo Valley',              0x1E, 'Yellow',     None,                     'Valley'
+    GERUDO_FORTRESS        = 'at',     'at',     "Gerudo's Fortress",          0x1F, 'Yellow',     None,                     'Fortress'
+    THIEVES_HIDEOUT        = 'in',     'in',     "the Thieves' Hideout",       0x20, 'Yellow',     None,                     'Hideout'
+    GERUDO_TRAINING_GROUND = 'within', 'on',     'the Gerudo Training Ground', 0x21, 'Yellow',     'Gerudo Training Ground', 'GTG'
+    HAUNTED_WASTELAND      = 'in',     'in',     'the Haunted Wasteland',      0x22, 'Yellow',     None,                     'Wasteland'
+    DESERT_COLOSSUS        = 'at',     'at',     'the Desert Colossus',        0x23, 'Yellow',     None,                     'Colossus'
+    SPIRIT_TEMPLE          = 'inside', 'in',     'the Spirit Temple',          0x24, 'Yellow',     'Spirit Temple',          'Spirit'
 
     # Performs a breadth first search to find the closest hint area from a given spot (region, location, or entrance).
     # May fail to find a hint if the given spot is only accessible from the root and not from any other region with a hint area
@@ -501,9 +501,10 @@ class HintArea(Enum):
     def __str__(self) -> str:
         return self.value[2]
 
-    # used for dungeon reward locations in the pause menu
+    # Used for dungeon reward locations in the pause menu.
+    # Must match the value of the corresponding opt_hint_area_t variant in C.
     @property
-    def short_name(self) -> str:
+    def c_index(self) -> Optional[int]:
         return self.value[3]
 
     # Hint areas are further grouped into colored sections of the map by association with the medallions.

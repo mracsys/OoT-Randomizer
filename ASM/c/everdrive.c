@@ -223,9 +223,8 @@ bool everdrive_read(uint8_t *buf) {
     }
 }
 
-bool everdrive_write(uint8_t *buf) {
+bool everdrive_write(uint32_t len, uint8_t *buf) {
     cart_lock_safe();
-    uint32_t len = 16; // for simplicity, the protocol is designed so each packet size is the EverDrive's minimum of 16 bytes
     uint32_t usb_cfg = reg_rd(REG_USB_CFG);
     if (!(usb_cfg & USB_STA_PWR)) {
         // cannot read or write (no USB device connected?)
@@ -297,10 +296,10 @@ void everdrive_handshake() {
             CFG_FILE_SELECT_HASH[3],
             CFG_FILE_SELECT_HASH[4],
         };
-        everdrive_write(reply);
+        everdrive_write(16, reply);
         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_HANDSHAKE;
     } else {
-        everdrive_write(EVERDRIVE_MESSAGE_RESET);
+        everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
     }
 }
@@ -313,7 +312,7 @@ void everdrive_update_in_game(bool in_game) {
             z64_file.ammo[5], // internal item count, lo
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //TODO send relevant parts of save data (which?)
         };
-        everdrive_write(state_packet);
+        everdrive_write(16, state_packet);
         everdrive_in_game = 1;
     } else {
         uint8_t state_packet[16] = {
@@ -328,7 +327,7 @@ void everdrive_update_in_game(bool in_game) {
             z64_file.file_name[7],
             0, 0, 0, 0, 0, 0, 0,
         };
-        everdrive_write(state_packet);
+        everdrive_write(16, state_packet);
         everdrive_in_game = 0;
         for (int i = 0; i < 8; i++) {
             everdrive_file_name[i] = z64_file.file_name[i];
@@ -340,7 +339,7 @@ void everdrive_frame(bool in_game) {
     if (everdrive_detect()) {
         if (everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
             if (++frames_since_last_ping >= 5 * 20) {
-                everdrive_write(EVERDRIVE_MESSAGE_PING);
+                everdrive_write(16, EVERDRIVE_MESSAGE_PING);
                 frames_since_last_ping = 0;
             }
             if (in_game) {
@@ -374,7 +373,7 @@ void everdrive_frame(bool in_game) {
                 case EVERDRIVE_PROTOCOL_STATE_HANDSHAKE: {
                     if (EVERDRIVE_READ_BUF[0] == 'M' && EVERDRIVE_READ_BUF[1] == 'W') {
                         if (EVERDRIVE_READ_BUF[2] != EVERDRIVE_PROTOCOL_VERSION) {
-                            everdrive_write(EVERDRIVE_MESSAGE_RESET);
+                            everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
                             everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
                         } else {
                             MW_SEND_OWN_ITEMS = EVERDRIVE_READ_BUF[3];
@@ -393,7 +392,7 @@ void everdrive_frame(bool in_game) {
                     } else if (EVERDRIVE_READ_BUF[0] == 'c') {
                         everdrive_handshake();
                     } else {
-                        everdrive_write(EVERDRIVE_MESSAGE_RESET);
+                        everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
                         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
                     }
                     break;
@@ -421,7 +420,7 @@ void everdrive_frame(bool in_game) {
                     } else if (EVERDRIVE_READ_BUF[0] == 'c') {
                         everdrive_handshake();
                     } else {
-                        everdrive_write(EVERDRIVE_MESSAGE_RESET);
+                        everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
                         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
                     }
                     break;

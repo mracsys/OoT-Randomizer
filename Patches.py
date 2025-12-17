@@ -451,9 +451,6 @@ def patch_rom(spoiler: Spoiler, world: World, rom: Rom) -> Rom:
     # include version info
     rom.write_bytes(rom.sym('CFG_RANDO_VERSION_MAJOR'), get_version_bytes(base_version, branch_identifier, supplementary_version))
 
-    # initialize world ID
-    rom.write_byte(rom.sym('PLAYER_ID'), world.id + 1)
-
     # set fallback player names
     for player_name_id in range(256):
         if player_name_id < 10:
@@ -2746,7 +2743,7 @@ def configure_dungeon_info(rom: Rom, world: World) -> None:
              'Gerudo Training Ground', 'Hideout (N/A)', 'Ganons Castle']
 
     dungeon_rewards = [0xff] * 14
-    dungeon_reward_areas = bytearray()
+    dungeon_reward_areas = []
     dungeon_reward_worlds = []
     if world.dungeon_rewards_hinted:
         for reward in REWARD_COLORS:
@@ -2755,7 +2752,7 @@ def configure_dungeon_info(rom: Rom, world: World) -> None:
                 area = HintArea.ROOT
             else:
                 area = HintArea.at(location)
-            dungeon_reward_areas += area.short_name.encode('ascii').ljust(0x16) + b'\0'
+            dungeon_reward_areas.append(area.c_index)
             dungeon_reward_worlds.append((world.id if location is None else location.world.id) + 1)
             if location is not None and location.world.id == world.id and area.is_dungeon:
                 dungeon_rewards[codes.index(area.dungeon_name)] = boss_reward_index(location.item)
@@ -2768,9 +2765,11 @@ def configure_dungeon_info(rom: Rom, world: World) -> None:
                               'Graveyard Warp Pad Region -> Shadow Temple Entryway', 'Desert Colossus -> Spirit Temple Lobby', 'Kakariko Village -> Bottom of the Well',
                               'ZF Ice Ledge -> Ice Cavern Beginning', 'Gerudo Fortress -> Gerudo Training Ground Lobby', 'Ganons Castle Ledge -> Ganons Castle Lobby']
 
-    dungeon_names_list = ["Deku Tree", "Dodongo's Cavern", "Jabu Jabu's Belly",
-                          "Forest Temple", "Fire Temple", "Water Temple",
-                          "Shadow Temple", "Spirit Temple", "Inside Ganon's Castle"]
+    dungeon_names_list = [
+        HintArea.DEKU_TREE, HintArea.DODONGOS_CAVERN, HintArea.JABU_JABUS_BELLY,
+        HintArea.FOREST_TEMPLE, HintArea.FIRE_TEMPLE, HintArea.WATER_TEMPLE,
+        HintArea.SHADOW_TEMPLE, HintArea.SPIRIT_TEMPLE, HintArea.INSIDE_GANONS_CASTLE,
+    ]
 
     dungeon_info = []
     dungeon_entrances = bytearray()
@@ -2800,7 +2799,7 @@ def configure_dungeon_info(rom: Rom, world: World) -> None:
                 if (area in [HintArea.GERUDO_TRAINING_GROUND, HintArea.ICE_CAVERN, HintArea.BOTTOM_OF_THE_WELL]):
                     boss_index.append(-1)
                 else:
-                    boss_index.append(dungeon_names_list.index(area.short_name))
+                    boss_index.append(dungeon_names_list.index(area))
     else:
         dungeon_info.append(0)
         boss_index = [0, 1, 2, 3, 4, 5, 6, 7, -1, -1, -1, 8]

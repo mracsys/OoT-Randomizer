@@ -13,7 +13,7 @@
 
 bool everdrive_detect();
 bool everdrive_read(uint8_t *buf);
-bool everdrive_write(uint8_t *buf);
+bool everdrive_write(uint32_t len, uint8_t *buf);
 void everdrive_frame(bool in_game);
 
 #endif

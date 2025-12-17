@@ -288,7 +288,7 @@ DOT_CONDITION:
 ; Any changes made here should be documented in Notes/auto-tracker-ctx.md
 AUTO_TRACKER_CONTEXT:
 AUTO_TRACKER_VERSION:
-.word 6 ; Increment this if the auto-tracker context layout changes
+.word 7 ; Increment this if the auto-tracker context layout changes
 
 CFG_DUNGEON_INFO_ENABLE:
 .word 0
@@ -346,8 +346,12 @@ TRIFORCE_PIECES_REQUIRED:
 SPECIAL_DEAL_COUNTS:
 .endarea
 
-.area 9 * 0x17, 0x00
+.area 9, 0x00
 CFG_DUNGEON_REWARD_AREAS:
+.endarea
+
+.area 0 * 0x16, 0x00
+; space used by CFG_DUNGEON_REWARD_AREAS in previous versions, now available again
 .endarea
 
 CFG_ADULT_TRADE_SHUFFLE:

@@ -12,22 +12,22 @@
 int dungeon_count = 13;
 
 dungeon_entry_t dungeons[] = {
-    {  0, 0, 0, 0, 1, 0x0F, "Deku",      {-1, -1, -1, -1}, {-1, -1, -1, -1} },
-    {  1, 0, 0, 0, 1, 0x1F, "Dodongo",   {-1, -1, -1, -1}, { 0, -1, -1, -1} },
-    {  2, 0, 0, 0, 1, 0x0F, "Jabu",      {-1, -1, -1, -1}, {-1, -1, -1, -1} },
+    {  0, 0, 0, 0, 1, 0x0F, "Deku",      {-1, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_DEKU_TREE },
+    {  1, 0, 0, 0, 1, 0x1F, "Dodongo",   {-1, -1, -1, -1}, { 0, -1, -1, -1}, OPT_HINT_AREA_DODONGOS_CAVERN },
+    {  2, 0, 0, 0, 1, 0x0F, "Jabu",      {-1, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_JABU_JABUS_BELLY },
 
-    {  3, 1, 1, 0, 1, 0x1F, "Forest",    {-1, -1, -1, -1}, {-1, -1, -1, -1} },
-    {  4, 1, 1, 0, 1, 0x1F, "Fire",      {-1, -1, -1, -1}, {-1, -1, -1, -1} },
-    {  5, 1, 1, 0, 1, 0x1F, "Water",     {-1, -1, -1, -1}, {-1, -1, -1, -1} },
-    {  7, 1, 1, 0, 1, 0x1F, "Shadow",    { 4,  6,  7, -1}, { 4,  5,  6,  7} },
-    {  6, 1, 1, 0, 1, 0x1F, "Spirit",    {11, 14, 12, -1}, {13, 15, -1, -1} },
+    {  3, 1, 1, 0, 1, 0x1F, "Forest",    {-1, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_FOREST_TEMPLE },
+    {  4, 1, 1, 0, 1, 0x1F, "Fire",      {-1, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_FIRE_TEMPLE },
+    {  5, 1, 1, 0, 1, 0x1F, "Water",     {-1, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_WATER_TEMPLE },
+    {  7, 1, 1, 0, 1, 0x1F, "Shadow",    { 4,  6,  7, -1}, { 4,  5,  6,  7}, OPT_HINT_AREA_SHADOW_TEMPLE },
+    {  6, 1, 1, 0, 1, 0x1F, "Spirit",    {11, 14, 12, -1}, {13, 15, -1, -1}, OPT_HINT_AREA_SPIRIT_TEMPLE },
 
-    {  8, 1, 0, 0, 1, 0x07, "BotW",      { 3, -1, -1, -1}, {-1, -1, -1, -1} },
-    {  9, 0, 0, 0, 1, 0x07, "Ice",       { 1,  2, -1, -1}, {-1, -1, -1, -1} },
-    { 12, 1, 0, 1, 0, 0x00, "Hideout",   {-1, -1, -1, -1}, {-1, -1, -1, -1} },
-    { 11, 1, 0, 0, 0, 0x00, "GTG",       { 8,  9, 10, -1}, { 8,  9, 10, -1} },
-    { 13, 1, 1, 0, 0, 0x00, "Ganon",     {16, 17, 18, 21}, {18, 19, 20, -1} },
-    { 16, 1, 0, 0, 0, 0x00, "Chest Game",{-1, -1, -1, -1}, {-1, -1, -1, -1 }},
+    {  8, 1, 0, 0, 1, 0x07, "BotW",      { 3, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_BOTTOM_OF_THE_WELL },
+    {  9, 0, 0, 0, 1, 0x07, "Ice",       { 1,  2, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_ICE_CAVERN },
+    { 12, 1, 0, 1, 0, 0x00, "Hideout",   {-1, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_THIEVES_HIDEOUT },
+    { 11, 1, 0, 0, 0, 0x00, "GTG",       { 8,  9, 10, -1}, { 8,  9, 10, -1}, OPT_HINT_AREA_GERUDO_TRAINING_GROUND },
+    { 13, 1, 1, 0, 0, 0x00, "Ganon",     {16, 17, 18, 21}, {18, 19, 20, -1}, OPT_HINT_AREA_INSIDE_GANONS_CASTLE },
+    { 16, 1, 0, 0, 0, 0x00, "Chest Game",{-1, -1, -1, -1}, {-1, -1, -1, -1}, OPT_HINT_AREA_MARKET },
 };
 
 boss_entry_t bosses[] = {
@@ -58,11 +58,52 @@ medal_t medals[] = {
     { 3, 0xFF, 0x82, 0x00 }, // Spirit
 };
 
+char hint_area_names[OPT_HINT_AREA_MAX][0x17] = {
+    [OPT_HINT_AREA_UNKNOWN]                = "?                     ",
+    [OPT_HINT_AREA_ROOT]                   = "Free                  ",
+    [OPT_HINT_AREA_HYRULE_FIELD]           = "Hyrule Field          ",
+    [OPT_HINT_AREA_LON_LON_RANCH]          = "Lon Lon Ranch         ",
+    [OPT_HINT_AREA_MARKET]                 = "Market                ",
+    [OPT_HINT_AREA_TEMPLE_OF_TIME]         = "Temple of Time        ",
+    [OPT_HINT_AREA_HYRULE_CASTLE]          = "Hyrule Castle         ",
+    [OPT_HINT_AREA_OUTSIDE_GANONS_CASTLE]  = "Outside Ganon's Castle",
+    [OPT_HINT_AREA_INSIDE_GANONS_CASTLE]   = "Inside Ganon's Castle ",
+    [OPT_HINT_AREA_KOKIRI_FOREST]          = "Kokiri Forest         ",
+    [OPT_HINT_AREA_DEKU_TREE]              = "Deku Tree             ",
+    [OPT_HINT_AREA_LOST_WOODS]             = "Lost Woods            ",
+    [OPT_HINT_AREA_SACRED_FOREST_MEADOW]   = "Sacred Forest Meadow  ",
+    [OPT_HINT_AREA_FOREST_TEMPLE]          = "Forest Temple         ",
+    [OPT_HINT_AREA_DEATH_MOUNTAIN_TRAIL]   = "Death Mountain Trail  ",
+    [OPT_HINT_AREA_DODONGOS_CAVERN]        = "Dodongo's Cavern      ",
+    [OPT_HINT_AREA_GORON_CITY]             = "Goron City            ",
+    [OPT_HINT_AREA_DEATH_MOUNTAIN_CRATER]  = "Death Mountain Crater ",
+    [OPT_HINT_AREA_FIRE_TEMPLE]            = "Fire Temple           ",
+    [OPT_HINT_AREA_ZORA_RIVER]             = "Zora's River          ",
+    [OPT_HINT_AREA_ZORAS_DOMAIN]           = "Zora's Domain         ",
+    [OPT_HINT_AREA_ZORAS_FOUNTAIN]         = "Zora's Fountain       ",
+    [OPT_HINT_AREA_JABU_JABUS_BELLY]       = "Jabu Jabu's Belly     ",
+    [OPT_HINT_AREA_ICE_CAVERN]             = "Ice Cavern            ",
+    [OPT_HINT_AREA_LAKE_HYLIA]             = "Lake Hylia            ",
+    [OPT_HINT_AREA_WATER_TEMPLE]           = "Water Temple          ",
+    [OPT_HINT_AREA_KAKARIKO_VILLAGE]       = "Kakariko Village      ",
+    [OPT_HINT_AREA_BOTTOM_OF_THE_WELL]     = "Bottom of the Well    ",
+    [OPT_HINT_AREA_GRAVEYARD]              = "Graveyard             ",
+    [OPT_HINT_AREA_SHADOW_TEMPLE]          = "Shadow Temple         ",
+    [OPT_HINT_AREA_GERUDO_VALLEY]          = "Gerudo Valley         ",
+    [OPT_HINT_AREA_GERUDO_FORTRESS]        = "Gerudo's Fortress     ",
+    [OPT_HINT_AREA_THIEVES_HIDEOUT]        = "Thieves' Hideout      ",
+    [OPT_HINT_AREA_GERUDO_TRAINING_GROUND] = "Gerudo Training Ground",
+    [OPT_HINT_AREA_HAUNTED_WASTELAND]      = "Haunted Wasteland     ",
+    [OPT_HINT_AREA_DESERT_COLOSSUS]        = "Desert Colossus       ",
+    [OPT_HINT_AREA_SPIRIT_TEMPLE]          = "Spirit Temple         ",
+};
+
 uint8_t reward_rows[] = { 0, 1, 2, 8, 3, 4, 5, 7, 6 };
 uint8_t bk_display = 0;
 bool world_display = false;
 bool boss_display = false;
 
+extern uint8_t PLAYER_ID;
 extern uint32_t CFG_DUNGEON_INFO_MQ_ENABLE;
 extern uint32_t CFG_DUNGEON_INFO_MQ_NEED_MAP;
 extern uint32_t CFG_DUNGEON_INFO_REWARD_ENABLE;
@@ -74,7 +115,7 @@ extern bool CFG_DUNGEON_INFO_REWARD_WORLDS_ENABLE;
 extern uint8_t SHUFFLE_CHEST_GAME;
 
 extern int8_t CFG_DUNGEON_REWARDS[14];
-extern char CFG_DUNGEON_REWARD_AREAS[9][0x17];
+extern opt_hint_area_t CFG_DUNGEON_REWARD_AREAS[9];
 extern uint8_t CFG_DUNGEON_REWARD_WORLDS[9];
 
 extern uint8_t CFG_DUNGEON_INFO_SILVER_RUPEES;
@@ -85,6 +126,7 @@ extern extended_savecontext_static_t extended_savectx;
 extern silver_rupee_data_t silver_rupee_vars[0x16][2];
 
 extern uint8_t EVERDRIVE_READ_BUF[16];
+extern uint8_t everdrive_protocol_state;
 
 void draw_background(z64_disp_buf_t* db, int bg_left, int bg_top, int bg_width, int bg_height) {
     gDPSetCombineMode(db->p++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
@@ -521,6 +563,7 @@ void draw_world_info(z64_disp_buf_t* db) {
 
 void draw_dungeon_info(z64_disp_buf_t* db) {
     show_dungeon_info = 0;
+    uint8_t everdrive_new_dungeon_info[0x13] = { 0x05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     pad_t pad_held = z64_ctxt.input[0].raw.pad;
     int draw = CAN_DRAW_DUNGEON_INFO && !CAN_DRAW_TRADE_DPAD && (
         ((pad_held.dl || pad_held.dr || pad_held.dd || pad_held.du) && CFG_DPAD_DUNGEON_INFO_ENABLE) ||
@@ -613,6 +656,10 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                 } else if (reward == 5) {
                     reward_index = 0;
                 }
+
+                everdrive_new_dungeon_info[2 * reward + 7] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
+                everdrive_new_dungeon_info[2 * reward + 8] = d->hint_area;
+
                 medal_t* c = &(medals[reward_index]);
                 gDPSetPrimColor(db->p++, 0, 0, c->r, c->g, c->b, 0xFF);
 
@@ -636,6 +683,9 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                 }
                 int reward = CFG_DUNGEON_REWARDS[d->index];
                 if (reward < 0 || reward >= 3) continue;
+
+                everdrive_new_dungeon_info[2 * reward + 1] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
+                everdrive_new_dungeon_info[2 * reward + 2] = d->hint_area;
 
                 int top = start_top + ((icon_size + padding) * i);
                 sprite_draw(db, &stones_sprite, reward,
@@ -871,7 +921,6 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
 
     } else if (pad_held.du) {
         extern uint8_t everdrive_detection_state;
-        extern uint8_t everdrive_protocol_state;
 
         int icon_size = 16;
         int padding = 1;
@@ -1089,8 +1138,12 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                 if (!display_area) {
                     continue;
                 }
+
+                everdrive_new_dungeon_info[2 * i + 1] = CFG_DUNGEON_REWARD_WORLDS[i];
+                everdrive_new_dungeon_info[2 * i + 2] = CFG_DUNGEON_REWARD_AREAS[i];
+
                 int top = start_top + ((icon_size + padding) * i) + 1;
-                text_print(db, CFG_DUNGEON_REWARD_AREAS[i], left, top);
+                text_print(db, hint_area_names[CFG_DUNGEON_REWARD_AREAS[i]], left, top);
             }
         }
 
@@ -1381,6 +1434,21 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
     }
 
     // Finish
+    if (show_dungeon_info && everdrive_detect() && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
+        bool changed = false;
+        for (int i = 0; i < 0x13; i++) {
+            if (everdrive_new_dungeon_info[i] != everdrive_last_dungeon_info[i]) {
+                changed = true;
+                break;
+            }
+        }
+        if (changed) {
+            everdrive_write(19, everdrive_new_dungeon_info);
+            for (int i = 0; i < 0x13; i++) {
+                everdrive_last_dungeon_info[i] = everdrive_new_dungeon_info[i];
+            }
+        }
+    }
 }
 
 int dungeon_info_is_drawn() {
