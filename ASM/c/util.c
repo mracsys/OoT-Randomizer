@@ -30,3 +30,12 @@ void* resolve_overlay_addr(void* addr, uint16_t overlay_id) {
     }
     return NULL;
 }
+
+void* memset(void* dest, int val, size_t len) {
+    char* ptr = dest;
+
+    while (len--) {
+        *ptr++ = val;
+    }
+    return dest;
+}

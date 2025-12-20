@@ -306,13 +306,14 @@ void everdrive_handshake() {
 
 void everdrive_update_in_game(bool in_game) {
     if (in_game) {
-        uint8_t state_packet[16] = {
-            0x02, // State: In Game
-            z64_file.ammo[4], // internal item count, hi
-            z64_file.ammo[5], // internal item count, lo
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //TODO send relevant parts of save data (which?)
-        };
-        everdrive_write(16, state_packet);
+        uint8_t state_packet[201] = { 0x02 }; // State: In Game
+        z64_memcopy(&state_packet[1], &z64_file, 200);
+        everdrive_write(201, state_packet);
+        for (uint8_t segment_idx; segment_idx < 10; segment_idx++) {
+            uint8_t save_data_packet[502] = { 0x06, segment_idx }; // Save Data Segment
+            z64_memcopy(&save_data_packet[2], ((uint8_t*)z64_file_addr) + 200 + segment_idx * 500, 500);
+            everdrive_write(502, save_data_packet);
+        }
         everdrive_in_game = 1;
     } else {
         uint8_t state_packet[16] = {
