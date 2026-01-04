@@ -14,7 +14,7 @@ $ clang -pthread bin/Compress/src/compressor.c -o bin/Compress/Compress_ARM64.ex
 
 # Windows (x86_64)
 
-In `mingw64`, run:
+In `mingw64` (`~\scoop\apps\msys2\current\mingw64.exe` if installed via `scoop install msys2`), run:
 
 ```bash
 gcc bin/Compress/src/compressor.c -o bin/Compress/Compress.exe
