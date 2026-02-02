@@ -1,5 +1,17 @@
 # Dev
 
+## New features
+* New hint distribution field `boss_goal_names` can be set to `false` to force dungeon reward names to be used for goal text instead of boss names even if dungeon rewards are on bosses.
+* The `Free Reward from Rauru` has a new `Yes (Forced)` option which forces the check to be a dungeon reward even if these are otherwise shuffled.
+
+## Bug fixes
+* Fix a potential softlock when talking to Pierre (the upper scarecrow) as child in Lake Hylia.
+* Fix a generator failure when a dungeon reward is selected as a random starting item.
+* Fix a bug where the starting health capacity in game might be miscalculated when starting with a heart piece.
+* Fix the Chicken (child trade quest item) using the same get item text box as the Pocket Cucco (adult trade quest item).
+
+# 9.0
+
 ## New Settings and Options
 * New settings for more control over special deal prices.
 * The `Randomize Ocarina Melodies` setting has a new option to randomize the Frogs 2 melody.

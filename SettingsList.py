@@ -3919,12 +3919,30 @@ class SettingInfos:
 
     # Other
 
-    skip_reward_from_rauru = Checkbutton(
+    skip_reward_from_rauru = Combobox(
         gui_text       = 'Free Reward from Rauru',
+        default        = 'not_free',
+        choices        = {
+            'not_free':    'No',
+            'free':        'Yes',
+            'free_forced': 'Yes (Forced)',
+        },
         gui_tooltip    = '''\
             The item given by Rauru beyond the Door of Time
             (the Light Medallion in the vanilla game) is
             given as a starting item instead.
+
+            'No': Rauru gives reward when you go beyond
+            the Door of Time.
+
+            'Yes': You begin the game with the reward Rauru
+            normally gives beyond the Door of Time. If dungeon
+            rewards are shuffled then this will be as well.
+
+            'Yes (Forced)': You begin the game with the
+            reward Rauru normally gives beyond the Door of Time,
+            if dungeon rewards are shuffled you will still
+            get a random Spiritual Stone or Medallion.
         ''',
         shared         = True,
     )

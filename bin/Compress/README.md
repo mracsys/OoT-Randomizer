@@ -17,7 +17,7 @@ $ clang -pthread bin/Compress/src/compressor.c -o bin/Compress/Compress_ARM64.ex
 In `mingw64` (`~\scoop\apps\msys2\current\mingw64.exe` if installed via `scoop install msys2`), run:
 
 ```bash
-gcc bin/Compress/src/compressor.c -o bin/Compress/Compress.exe
+gcc bin/Compress/src/compressor.c -o bin/Compress/Compress.exe --static
 ```
 
 # Windows (i686)
@@ -28,7 +28,7 @@ In `mingw32`, run:
 
 ```bash
 pacman -S mingw-w64-i686-toolchain # only needs to be run once (installs the toolchain into the mingw environment)
-gcc bin/Compress/src/compressor.c -o bin/Compress/Compress32.exe
+gcc bin/Compress/src/compressor.c -o bin/Compress/Compress32.exe --static
 ```
 
 # macOS (Universal)

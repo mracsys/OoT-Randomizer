@@ -212,6 +212,7 @@ ITEM_MESSAGES: list[tuple[int, str]] = [
     (0x0099, "\x08\x13\x1BYou found \x05\x41Ruto's Letter\x05\x40 in a\x01bottle! Show it to King Zora."),
     (0x9099, "\x08\x13\x1BYou found \x05\x41a letter in a bottle\x05\x40!\x01You remove the letter from the\x01bottle, freeing it for other uses."),
     (0x009A, "\x08\x13\x21You got a \x05\x41Weird Egg\x05\x40!\x01Feels like there's something\x01moving inside!"),
+    (0x9097, "\x08\x13\x2EYou got a \x05\x41Chicken, \x05\x40one\x01of Anju's prized hens! It fits \x01in your pocket."),
     (0x00A4, "\x08\x13\x3BYou got the \x05\x42Kokiri Sword\x05\x40!\x01This is a hidden treasure of\x01the Kokiri."),
     (0x00A7, "\x08\x13\x01Now you can carry\x01many \x05\x41Deku Nuts\x05\x40!\x01You can hold up to \x05\x4630\x05\x40 nuts!"),
     (0x00A8, "\x08\x13\x01You can now carry even\x01more \x05\x41Deku Nuts\x05\x40! You can carry\x01up to \x05\x4640\x05\x41 \x05\x40nuts!"),
@@ -264,8 +265,8 @@ ITEM_MESSAGES: list[tuple[int, str]] = [
     (0x9094, "\x08\x06\x28You have learned the\x01\x06\x2D\x05\x46Requiem of Spirit\x05\x40!"),
     (0x9095, "\x08\x06\x28You have learned the\x01\x06\x28\x05\x45Nocturne of Shadow\x05\x40!"),
     (0x9096, "\x08\x06\x28You have learned the\x01\x06\x32\x05\x44Prelude of Light\x05\x40!"),
-    # 0x9097 and 0x9098 unused
-    # 0x9099 used above
+    # 0x9098 unused
+    # 0x9097 and 0x9099 used above
     (0x909A, "\x08\x06\x15You've learned \x05\x43Zelda's Lullaby\x05\x40!"),
     (0x909B, "\x08\x06\x11You've learned \x05\x41Epona's Song\x05\x40!"),
     (0x909C, "\x08\x06\x14You've learned \x05\x42Saria's Song\x05\x40!"),
@@ -827,7 +828,9 @@ class Message:
         instant_text_code = TextCode(0x08, 0)
 
         # # speed the text
-        if speed_up_text:
+        if (speed_up_text
+                and self.id != 0x4078  # long recording scarecrow message after playback
+        ):
             text_codes.append(instant_text_code) # allow instant
 
         # write the message
