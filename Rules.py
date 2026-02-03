@@ -82,7 +82,8 @@ def set_rules(worlds: Iterable[World], world: World) -> None:
             and world.dungeon_back_access
             and 'Shadow Temple' not in world.settings.dungeon_shortcuts
             and world.settings.shuffle_pots in ('off', 'overworld')
-            and world.settings.shuffle_mapcompass == 'vanilla'
+            and world.settings.shuffle_map == 'vanilla'
+            and world.settings.shuffle_compass == 'vanilla'
             and world.settings.shuffle_silver_rupees == 'vanilla'
         ):
             forbid_item(location, 'Boss Key (Shadow Temple)')

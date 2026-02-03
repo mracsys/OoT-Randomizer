@@ -3,12 +3,15 @@
 ## New features
 * New hint distribution field `boss_goal_names` can be set to `false` to force dungeon reward names to be used for goal text instead of boss names even if dungeon rewards are on bosses.
 * The `Free Reward from Rauru` has a new `Yes (Forced)` option which forces the check to be a dungeon reward even if these are otherwise shuffled.
+* The `Maps & Compasses` shuffle setting has been split into separate `Maps` and `Compasses` settings.
+* The Farore's Wind text box now distinguishes between Ganon's Castle and Ganon's Tower.
 
 ## Bug fixes
 * Fix a potential softlock when talking to Pierre (the upper scarecrow) as child in Lake Hylia.
 * Fix a generator failure when a dungeon reward is selected as a random starting item.
 * Fix a bug where the starting health capacity in game might be miscalculated when starting with a heart piece.
 * Fix the Chicken (child trade quest item) using the same get item text box as the Pocket Cucco (adult trade quest item).
+* Fix a vanilla bug where playing the ocarina with vibrato before recording the Scarecrow's Song could prevent Pierre from spawning.
 
 # 9.0
 
