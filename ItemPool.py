@@ -1196,7 +1196,7 @@ def configure_random_starting_items_pool(world: World, pool: list[str]) -> list[
     if 'songs' in world.settings.random_starting_items_exclude:
         exclude_list.extend(item_groups['Song'])
     if 'bombchus' in world.settings.random_starting_items_exclude:
-        exclude_list.extend((item for item in pool if 'Bombchus' in item))
+        exclude_list.extend(item for item in pool if 'Bombchus' in item)
     if 'shields' in world.settings.random_starting_items_exclude:
         exclude_list.extend(item_groups['Shield'])
     if 'deku_upgrades' in world.settings.random_starting_items_exclude:
@@ -1205,6 +1205,17 @@ def configure_random_starting_items_pool(world: World, pool: list[str]) -> list[
         exclude_list.extend(item_groups['HealthUpgrade'])
     if 'junk' in world.settings.random_starting_items_exclude:
         exclude_list.extend(ItemInfo.junk_weight)
+    if 'other' in world.settings.random_starting_items_exclude:
+        exclude_list.extend(
+            item
+            for item in pool
+            if item not in item_groups['Song']
+            and 'Bombchus' not in item
+            and item not in item_groups['Shield']
+            and item not in ('Deku Stick Capacity', 'Deku Nut Capacity')
+            and item not in item_groups['HealthUpgrade']
+            and item not in ItemInfo.junk_weight
+        )
 
     return sorted({item for item in pool if item not in exclude_list and ItemInfo.items[item].type != 'Shop'}) # give each item the same weight regardless of how many copies there are
 

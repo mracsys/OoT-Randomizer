@@ -30,6 +30,7 @@ Differences between `dev-fenhl` and [`Dev-R`](https://github.com/Roman971/OoT-Ra
   * The “Key Appearance Matches Dungeon” setting has been reworked into “Distinct Item Models”, with additional options that are on by default but can be disabled to reintroduce pairs of items with the same model, including frog songs/warp songs and small keys/keyrings
   * Ganon's Castle can now be a pre-completed dungeon; new “Ganon's Castle Can Be Pre-completed” setting which can be disabled to make “Pre-completed Dungeon Count” exclude Ganon's Castle
   * New option “Specific Dungeon Rewards” for the “Rainbow Bridge Requirement”, “Ganon's Boss Key”, and “LACS Condition” settings
+  * New option “Everything Else” for the “Exclude Item Types” setting controlling randomized starting items
 * New hint types based on [Elagatua's `Dev` branch](https://github.com/Elagatua/OoT-Randomizer/tree/Dev):
   * `goal-count` tells you how many items are on the path to a goal.
   * `goal-legacy` is a variant of `goal` with many subtle differences. Notably, hints will be placed in the goal's world, not the world where the item can be found. It is used in the “Triforce Blitz S2” hint distribution.
@@ -57,7 +58,7 @@ Differences between `dev-fenhl` and [`Dev-R`](https://github.com/Roman971/OoT-Ra
   * “Vanilla (Master Quest)” and “Fast Vanilla (Master Quest)” are “Vanilla” and “Fast Vanilla” but with all dungeons from Master Quest.
   * “Ice%” is an extremely fast-paced game mode where the goal is to reach the Iron Boots chest.
   * 4th Mixed Pools Tournament” is used for [an upcoming tournament](https://midos.house/event/mp/4) with nearly full mixed pools entrance randomizer.
-  * “Standard Anti-Weekly Settings (Beginner)” disables every location that's enabled in “S7 Tournament” and enables every location that's disabled there, as well as changing some miscellaneous settings. See [the official document](https://docs.google.com/document/d/1sbL6Zju943F5qyx4QbTLUsqZqOTMmvqKVbDwJl08SGc/edit) for details.
+  * “Standard Anti-Weekly Settings (Beginner)” disables every location that's enabled in “S9 Tournament” and enables every location that's disabled there, as well as changing some miscellaneous settings. See [the official document](https://docs.google.com/document/d/1vS7JrYjlWFkXfUnT5BJSQ19ywJa-TiB7RPK7Uz0JLsU/edit) for details.
   * “Standard Anti-Weekly Settings (Advanced)” adds “Shuffle Rupees & Hearts”, “Shuffle Pots”, “Shuffle Crates”, “Shuffle Beehives”, and “Shuffle Silver Rupees”, has a minimal item pool, and adds extra ice traps.
   * “Triforce Blitz S2” is a fast-paced game mode with very powerful hints used for [a tournament](https://midos.house/event/tfb/2), taken from [Elagatua's `Dev` branch](https://github.com/Elagatua/OoT-Randomizer/tree/Dev). Note that the tournament itself was played on that branch, not this one. See [the official website](https://www.triforceblitz.com/) for details.
   * “SDG Bingo Tournament 3” is a variant of “Bingo” used for an ongoing tournament. Note that the tournament itself is being played on version 8.0 of the randomizer, not this branch. See [the official document](https://docs.google.com/document/d/1fpDPSBGH9YQeC9W3P1SMDE7FhoikVgbFTJapqKnMmL4/edit) for details.

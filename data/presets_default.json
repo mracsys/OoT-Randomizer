@@ -1887,7 +1887,7 @@
         "shuffle_gerudo_fortress_heart_piece": "remove",
         "shuffle_grotto_entrances": false,
         "shuffle_dungeon_entrances": "off",
-        "shuffle_bosses": "off",
+        "shuffle_bosses": "full",
         "shuffle_ganon_tower": false,
         "shuffle_overworld_entrances": false,
         "mix_entrance_pools": [],
@@ -1966,7 +1966,10 @@
         "shuffle_silver_rupees": "vanilla",
         "silver_rupee_pouches_choice": "off",
         "silver_rupee_pouches": [],
-        "enhance_map_compass": [],
+        "enhance_map_compass": [
+            "map_mq",
+            "compass_boss_location"
+        ],
         "triforce_hunt_mode": "normal",
         "free_bombchu_drops": true,
         "logic_no_night_tokens_without_suns_song": false,
@@ -2265,9 +2268,12 @@
             "lens"
         ],
         "starting_songs": [],
-        "add_random_starting_items": false,
-        "random_starting_items_exclude": [],
-        "random_starting_items_count": 0,
+        "add_random_starting_items": true,
+        "random_starting_items_exclude": [
+            "songs",
+            "other"
+        ],
+        "random_starting_items_count": 1,
         "start_with_consumables": false,
         "start_with_rupees": true,
         "starting_hearts": 3,
@@ -2299,6 +2305,7 @@
         "plandomized_locations": {},
         "misc_hints": [
             "altar",
+            "dampe_diary",
             "ganondorf",
             "warp_songs_and_owls",
             "unique_merchants"
@@ -2332,7 +2339,7 @@
         "starting_tod": "sunset",
         "blue_fire_arrows": false,
         "fix_broken_drops": true,
-        "tcg_requires_lens": false,
+        "tcg_requires_lens": true,
         "no_collectible_hearts": false,
         "one_item_per_dungeon": false,
         "item_pool_value": "balanced",
@@ -2412,7 +2419,7 @@
         "shuffle_gerudo_fortress_heart_piece": "remove",
         "shuffle_grotto_entrances": false,
         "shuffle_dungeon_entrances": "off",
-        "shuffle_bosses": "off",
+        "shuffle_bosses": "full",
         "shuffle_ganon_tower": false,
         "shuffle_overworld_entrances": false,
         "mix_entrance_pools": [],
@@ -2491,7 +2498,10 @@
         "shuffle_silver_rupees": "anywhere",
         "silver_rupee_pouches_choice": "off",
         "silver_rupee_pouches": [],
-        "enhance_map_compass": [],
+        "enhance_map_compass": [
+            "map_mq",
+            "compass_boss_location"
+        ],
         "triforce_hunt_mode": "normal",
         "free_bombchu_drops": true,
         "logic_no_night_tokens_without_suns_song": false,
@@ -2790,9 +2800,12 @@
             "lens"
         ],
         "starting_songs": [],
-        "add_random_starting_items": false,
-        "random_starting_items_exclude": [],
-        "random_starting_items_count": 0,
+        "add_random_starting_items": true,
+        "random_starting_items_exclude": [
+            "songs",
+            "other"
+        ],
+        "random_starting_items_count": 1,
         "start_with_consumables": false,
         "start_with_rupees": true,
         "starting_hearts": 3,
@@ -2824,6 +2837,7 @@
         "plandomized_locations": {},
         "misc_hints": [
             "altar",
+            "dampe_diary",
             "ganondorf",
             "warp_songs_and_owls",
             "100_skulltulas",
@@ -2858,7 +2872,7 @@
         "starting_tod": "sunset",
         "blue_fire_arrows": false,
         "fix_broken_drops": true,
-        "tcg_requires_lens": false,
+        "tcg_requires_lens": true,
         "no_collectible_hearts": false,
         "one_item_per_dungeon": false,
         "item_pool_value": "minimal",

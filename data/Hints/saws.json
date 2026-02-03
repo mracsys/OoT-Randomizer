@@ -35,6 +35,9 @@
     "remove_items":          [
         { "item": "Zeldas Lullaby", "types": ["goal"] }
     ],
+    "misc_hint_items": {
+        "ganondorf": "Progressive Hookshot"
+    },
     "dungeons_barren_limit": 1,
     "named_items_required":  true,
     "vague_named_items":     false,
