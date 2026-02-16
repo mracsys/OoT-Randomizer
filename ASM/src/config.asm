@@ -350,7 +350,7 @@ SPECIAL_DEAL_COUNTS:
 CFG_DUNGEON_REWARD_AREAS:
 .endarea
 
-.area 0 * 0x16, 0x00
+.area 9 * 0x16, 0x00
 ; space used by CFG_DUNGEON_REWARD_AREAS in previous versions, now available again
 .endarea
 
