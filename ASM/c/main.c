@@ -25,6 +25,7 @@
 #include "inputviewer.h"
 #include "message.h"
 #include "everdrive.h"
+#include "usb.h"
 
 void Gameplay_InitSkybox(z64_game_t* globalCtx, int16_t skyboxId);
 
@@ -35,6 +36,10 @@ void c_init() {
     override_flags_init();
     models_init();
     init_textures();
+    char usb_status = usb_initialize();
+    /*while (usb_status != 1) {
+        usb_status = usb_sendheartbeat();
+    }*/
 #if DEBUG_MODE
     SKIP_N64_LOGO = 1;
 #endif
@@ -43,6 +48,10 @@ void c_init() {
 void before_game_state_update() {
     rando_display_buffer_reset();
     everdrive_frame(true);
+    // while (usb_poll() != 0) {
+    //     usb_purge();
+    // }
+    //usb_sendheartbeat();
     handle_pending_items();
     handle_dpad();
     update_misc_colors();

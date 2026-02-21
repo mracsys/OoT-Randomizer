@@ -17,7 +17,7 @@ parser.add_argument('--compile-c', action='store_true', help="Recompile C module
 parser.add_argument('--no-compile-c', action='store_true', help="Do not recompile C modules")
 parser.add_argument('--dump-obj', action='store_true', help="Dumps extra object info for debugging purposes. Does nothing with --no-compile-c")
 parser.add_argument('--diff-only', action='store_true', help="Creates diff output without running armips")
-parser.add_argument('--mips-binutils-prefix', type=str, default="mips64-", help="Use a different prefix for N64 toolchain")
+parser.add_argument('--mips-binutils-prefix', type=str, default="mips64-ultra-elf-", help="Use a different prefix for N64 toolchain")
 
 args = parser.parse_args()
 pj64_sym_path = args.pj64sym

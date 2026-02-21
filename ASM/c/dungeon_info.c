@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include "dungeon_info.h"
 #include "everdrive.h"
+#include "usb.h"
 #include "gfx.h"
 #include "text.h"
 #include "z64.h"
@@ -941,7 +942,7 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
         draw_background(db, bg_left, bg_top, bg_width, bg_height);
         gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
 
-        if (everdrive_detection_state == ED64_DETECTION_PRESENT) {
+        /*if (everdrive_detection_state == ED64_DETECTION_PRESENT) {
             char top_text[16] = "EverDrive found";
             text_print(db, top_text, left, top);
             top += icon_size + padding;
@@ -1004,7 +1005,7 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
         } else {
             char bottom_text[20] = "EverDrive not found";
             text_print(db, bottom_text, left, top);
-        }
+        }*/
     } else if (pad_held.dd) {
         show_dungeon_info = 1;
         uint16_t altar_flags = z64_file.inf_table[27];
@@ -1472,7 +1473,7 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
     }
 
     // Finish
-    if (show_dungeon_info && everdrive_detect() && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
+    /*if (show_dungeon_info && usb_getcart() != CART_NONE && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
         bool changed = false;
         for (int i = 0; i < 0x13; i++) {
             if (everdrive_new_dungeon_info[i] != everdrive_last_dungeon_info[i]) {
@@ -1481,12 +1482,12 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
             }
         }
         if (changed) {
-            everdrive_write(19, everdrive_new_dungeon_info);
+            //everdrive_write(19, everdrive_new_dungeon_info);
             for (int i = 0; i < 0x13; i++) {
                 everdrive_last_dungeon_info[i] = everdrive_new_dungeon_info[i];
             }
         }
-    }
+    }*/
 }
 
 int dungeon_info_is_drawn() {

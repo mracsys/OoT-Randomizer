@@ -7,6 +7,7 @@
 #include "get_items.h"
 #include "item_upgrades.h"
 #include "z64.h"
+#include "usb.h"
 
 #define REG_USB_CFG 0x0001
 #define REG_EDID    0x0005
@@ -41,7 +42,7 @@ static uint16_t spi_cfg;
 
 uint8_t everdrive_detection_state = ED64_DETECTION_UNKNOWN;
 
-extern uint8_t EVERDRIVE_READ_BUF[16];
+extern uint8_t EVERDRIVE_READ_BUF[1024];
 
 uint8_t EVERDRIVE_PROTOCOL_VERSION = 1;
 
@@ -162,28 +163,6 @@ void cart_unlock() {
     set_irqf(cart_irqf);
 }
 
-bool everdrive_detect() {
-    if (everdrive_detection_state == ED64_DETECTION_UNKNOWN) {
-        cart_lock_safe();
-        reg_wr(REG_KEY, 0xAA55);
-        switch (reg_rd(REG_EDID)) {
-            case 0xED640008: // EverDrive 3.0
-            case 0xED640013: // EverDrive X7
-                // initialize USB
-                reg_wr(REG_SYS_CFG, 0);
-                cart_unlock();
-                everdrive_detection_state = ED64_DETECTION_PRESENT;
-                break;
-            default: // EverDrive without USB support or no EverDrive
-                reg_wr(REG_KEY, 0);
-                cart_unlock();
-                everdrive_detection_state = ED64_DETECTION_NOT_PRESENT;
-                break;
-        }
-    }
-    return everdrive_detection_state == ED64_DETECTION_PRESENT;
-}
-
 bool everdrive_read(uint8_t *buf) {
     cart_lock_safe();
     uint32_t len = 16; // for simplicity, the protocol is designed so each packet size is the EverDrive's minimum of 16 bytes
@@ -273,6 +252,11 @@ extern mw_progressive_items_state_t MW_PROGRESSIVE_ITEMS_STATE[256];
 uint8_t everdrive_in_game = 2;
 char everdrive_file_name[0x08] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
 uint8_t everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
+int     EVERDRIVE_STATUS = 0;
+int     EDHEADER1 = 0;
+int     EDHEADER2 = 0;
+int     EDHEADER3 = 0;
+int     EDHEADER4 = 0;
 
 uint8_t EVERDRIVE_MESSAGE_PING[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 uint8_t EVERDRIVE_MESSAGE_RESET[16] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
@@ -296,10 +280,10 @@ void everdrive_handshake() {
             CFG_FILE_SELECT_HASH[3],
             CFG_FILE_SELECT_HASH[4],
         };
-        everdrive_write(16, reply);
+        usb_write(DATATYPE_RAWBINARY, reply, 16);
         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_HANDSHAKE;
     } else {
-        everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
+        usb_write(DATATYPE_RAWBINARY, EVERDRIVE_MESSAGE_RESET, 16);
         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
     }
 }
@@ -337,9 +321,10 @@ void everdrive_update_in_game(bool in_game) {
 }
 
 void everdrive_frame(bool in_game) {
-    if (everdrive_detect()) {
-        if (everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
+    if (usb_getcart() != CART_NONE) {
+        /*if (everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
             if (++frames_since_last_ping >= 5 * 20) {
+                
                 everdrive_write(16, EVERDRIVE_MESSAGE_PING);
                 frames_since_last_ping = 0;
             }
@@ -364,8 +349,24 @@ void everdrive_frame(bool in_game) {
                     everdrive_update_in_game(in_game);
                 }
             }
+        }*/
+        // Clear USB buffer before potentially writing back
+        char incoming_type = DATATYPE_HEARTBEAT;
+        int incoming_size = 0;
+        while (usb_poll() != 0) {
+            // Assumes we never fill up the buffer,
+            // send a message bigger than it,
+            // or send multiple messages in one cycle.
+            u32 header = usb_poll();
+            incoming_type = USBHEADER_GETTYPE(header);
+            incoming_size = USBHEADER_GETSIZE(header);
+            usb_read(EVERDRIVE_READ_BUF, incoming_size);
+            EVERDRIVE_STATUS = 1;
         }
-        if (everdrive_read(EVERDRIVE_READ_BUF)) {
+        // Heartbeat from external client is ignored in all
+        // states as it contains no data to process.
+        if (incoming_type != DATATYPE_HEARTBEAT) {
+            // Data potentially requiring action
             switch (everdrive_protocol_state) {
                 case EVERDRIVE_PROTOCOL_STATE_INIT: {
                     everdrive_handshake();
@@ -374,12 +375,12 @@ void everdrive_frame(bool in_game) {
                 case EVERDRIVE_PROTOCOL_STATE_HANDSHAKE: {
                     if (EVERDRIVE_READ_BUF[0] == 'M' && EVERDRIVE_READ_BUF[1] == 'W') {
                         if (EVERDRIVE_READ_BUF[2] != EVERDRIVE_PROTOCOL_VERSION) {
-                            everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
+                            usb_write(DATATYPE_RAWBINARY, EVERDRIVE_MESSAGE_RESET, 16);
                             everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
                         } else {
                             MW_SEND_OWN_ITEMS = EVERDRIVE_READ_BUF[3];
                             MW_PROGRESSIVE_ITEMS_ENABLE = EVERDRIVE_READ_BUF[4];
-                            if (!in_game || (
+                            /*if (!in_game || (
                                 z64_logo_state != 0x802C5880
                                 && z64_logo_state != 0
                                 && z64_file.game_mode == 0
@@ -387,13 +388,13 @@ void everdrive_frame(bool in_game) {
                                 everdrive_update_in_game(in_game);
                             } else {
                                 everdrive_in_game = 2; // uninitialized; ensure state packet is sent
-                            }
+                            }*/
                             everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_MW;
                         }
                     } else if (EVERDRIVE_READ_BUF[0] == 'c') {
                         everdrive_handshake();
                     } else {
-                        everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
+                        usb_write(DATATYPE_RAWBINARY, EVERDRIVE_MESSAGE_RESET, 16);
                         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
                     }
                     break;
@@ -421,12 +422,18 @@ void everdrive_frame(bool in_game) {
                     } else if (EVERDRIVE_READ_BUF[0] == 'c') {
                         everdrive_handshake();
                     } else {
-                        everdrive_write(16, EVERDRIVE_MESSAGE_RESET);
+                        usb_write(DATATYPE_RAWBINARY, EVERDRIVE_MESSAGE_RESET, 16);
                         everdrive_protocol_state = EVERDRIVE_PROTOCOL_STATE_INIT;
                     }
                     break;
                 }
             }
+        } else if (++frames_since_last_ping >= 5 * 20) {
+            // No incoming data to process. Send heartbeat to
+            // maintain connection or signal to a new client we
+            // are ready to handshake.
+            usb_sendheartbeat();
+            frames_since_last_ping = 0;
         }
     }
 }

@@ -7,6 +7,56 @@
 #include "z64collision_check.h"
 #include "save.h"
 
+typedef signed char            s8;
+typedef unsigned char          u8;
+typedef signed short int       s16;
+typedef unsigned short int     u16;
+typedef signed long            s32;
+typedef unsigned long          u32;
+typedef signed long long int   s64;
+typedef unsigned long long int u64;
+
+typedef volatile u8  vu8;
+typedef volatile u16 vu16;
+typedef volatile u32 vu32;
+typedef volatile u64 vu64;
+typedef volatile s8  vs8;
+typedef volatile s16 vs16;
+typedef volatile s32 vs32;
+typedef volatile s64 vs64;
+
+typedef float  f32;
+typedef double f64;
+
+#define U32(x) ((u32)x)
+extern void* osRomBase;
+extern u32 __osProbeTLB(void*);
+#define K0BASE      0x80000000
+#define K1BASE      0xA0000000
+#define K2BASE      0xC0000000
+#define IS_KSEG0(x)         (U32(x) >= K0BASE && U32(x) < K1BASE)
+#define IS_KSEG1(x)         (U32(x) >= K1BASE && U32(x) < K2BASE)
+#define K0_TO_PHYS(x)       (U32(x) & 0x1FFFFFFF)  // kseg0 to physical
+#define K1_TO_PHYS(x)       (U32(x) & 0x1FFFFFFF)  // kseg1 to physical
+#define PHYS_TO_K1(x)       (U32(x) | 0xA0000000)  // physical to kseg1
+#define IO_READ(addr)       (*(vu32*)PHYS_TO_K1(addr))
+#define IO_WRITE(addr,data) (*(vu32*)PHYS_TO_K1(addr)=(u32)(data))
+
+// PI status (R): [3] interrupt flag, [2] error, [1] IO busy, [0] DMA busy
+//           (W): [1] clear intr, [0] reset controller (and abort current op)
+#define PI_STATUS_REG       (PI_BASE_REG + 0x10)
+
+/**
+ * Peripheral Interface (PI) Registers
+ */
+#define PI_BASE_REG         0x04600000
+// PI DRAM address (R/W): [23:0] starting RDRAM address
+#define PI_DRAM_ADDR_REG    (PI_BASE_REG + 0x00)
+// PI pbus (cartridge) address (R/W): [31:0] starting AD16 address
+#define PI_CART_ADDR_REG    (PI_BASE_REG + 0x04)
+
+#define OS_USEC_TO_CYCLES(n)    (((u64)(n)*(OS_CPU_COUNTER/15625LL))/(1000000LL/15625LL))
+
 #define Z64_OOT10             0x00
 #define Z64_OOT11             0x01
 #define Z64_OOT12             0x02
@@ -2473,5 +2523,8 @@ extern void Fault_AddHungupAndCrashImpl(const char* msg1, const char* msg2);
 extern int32_t sprintf(char* dst, char* fmt, ...);
 extern int32_t CutsceneFlags_Get(void* play, int16_t flag);
 extern int32_t DemoKankyo_CutsceneFlags_Get_Hook(void* play, int16_t flag);
+extern void osWritebackDCache(void* vaddr, s32 nbytes);
+extern void osInvalDCache(void* vaddr, s32 nbytes);
+extern u32 osGetCount(void);
 
 #endif

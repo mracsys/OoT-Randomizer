@@ -2,6 +2,7 @@
 #include "objects.h"
 #include "item_effects.h"
 #include "actor.h"
+#include "everdrive.h"
 
 extern uint16_t current_textbox_id;
 
@@ -375,6 +376,13 @@ void debug_utilities(z64_disp_buf_t* db)
     if (z64_game.common.input[0].raw.pad.du || z64_game.common.input[0].raw.pad.l) {
         z64_link.common.vel_1.y = 6.34375f;
     }
+
+    draw_debug_int(0, EVERDRIVE_STATUS);
+    draw_debug_int(1, everdrive_protocol_state);
+    draw_debug_int(2, EDHEADER1);
+    draw_debug_int(3, EDHEADER2);
+    draw_debug_int(4, EDHEADER3);
+    draw_debug_int(5, EDHEADER4);
 
     draw_debug_menu(db);
     draw_debug_numbers(db);

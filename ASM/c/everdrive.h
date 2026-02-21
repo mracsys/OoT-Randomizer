@@ -11,9 +11,15 @@
 #define EVERDRIVE_PROTOCOL_STATE_HANDSHAKE 0x01
 #define EVERDRIVE_PROTOCOL_STATE_MW        0x02
 
-bool everdrive_detect();
 bool everdrive_read(uint8_t *buf);
 bool everdrive_write(uint32_t len, uint8_t *buf);
 void everdrive_frame(bool in_game);
+
+extern int EVERDRIVE_STATUS;
+extern int EDHEADER1;
+extern int EDHEADER2;
+extern int EDHEADER3;
+extern int EDHEADER4;
+extern uint8_t everdrive_protocol_state;
 
 #endif

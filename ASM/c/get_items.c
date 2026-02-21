@@ -4,6 +4,7 @@
 
 #include "en_item00.h"
 #include "everdrive.h"
+#include "usb.h"
 #include "icetrap.h"
 #include "item_table.h"
 #include "trade_quests.h"
@@ -13,6 +14,7 @@
 #include "actor.h"
 #include "save.h"
 #include "models.h"
+#include "usb.h"
 
 extern uint8_t SHUFFLE_CHEST_GAME;
 extern uint8_t FAST_CHESTS;
@@ -299,7 +301,7 @@ void move_outgoing_queue() {
             outgoing_queue[i] = outgoing_queue[i + 1];
         }
         outgoing_queue[7] = (override_t){ 0 };
-    } else if (everdrive_detect() && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
+    }/* else if (usb_getcart() != CART_NONE && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
         uint8_t send_item_packet[16] = {
             0x03, // Send Item
             (OUTGOING_KEY.all & 0xFF00000000000000) >> 56,
@@ -315,11 +317,11 @@ void move_outgoing_queue() {
             OUTGOING_PLAYER,
             0, 0, 0, 0,
         };
-        everdrive_write(16, send_item_packet);
+        usb_write(DATATYPE_RAWBINARY, send_item_packet, 16);
         OUTGOING_ITEM = 0;
         OUTGOING_PLAYER = 0;
         OUTGOING_KEY.all = 0;
-    }
+    }*/
 }
 
 void push_pending_item(override_t override) {
@@ -370,9 +372,9 @@ void after_key_received(override_key_t key) {
         extern uint8_t everdrive_protocol_state;
         uint8_t EVERDRIVE_MESSAGE_ITEM_RECEIVED[16] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-        if (everdrive_detect() && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
-            everdrive_write(16, EVERDRIVE_MESSAGE_ITEM_RECEIVED);
-        }
+        /*if (usb_getcart() != CART_NONE && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
+            usb_write(DATATYPE_RAWBINARY, EVERDRIVE_MESSAGE_ITEM_RECEIVED, 16);
+        }*/
         INCOMING_ITEM = 0;
         INCOMING_PLAYER = 0;
         uint16_t* received_item_counter = (uint16_t*)(z64_file_addr + 0x90);
