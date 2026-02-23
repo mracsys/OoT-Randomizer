@@ -1,4 +1,10 @@
 #include "pi_read_write.h"
+#include "variables.h"
+#include "convert.h"
+#include "ultra64.h"
+#include "rcp.h"
+#include "R4300.h"
+#include "ultratypes.h"
 
 u32 osVirtualToPhysical(void* vaddr) {
     if (IS_KSEG0(vaddr)) {

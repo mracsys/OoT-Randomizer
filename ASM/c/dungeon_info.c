@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include "dungeon_info.h"
-#include "everdrive.h"
+#include "flashcart.h"
 #include "usb.h"
 #include "gfx.h"
 #include "text.h"
@@ -126,9 +126,6 @@ extern int8_t CFG_DUNGEON_PRECOMPLETED[14];
 
 extern extended_savecontext_static_t extended_savectx;
 extern silver_rupee_data_t silver_rupee_vars[0x16][2];
-
-extern uint8_t EVERDRIVE_READ_BUF[16];
-extern uint8_t everdrive_protocol_state;
 
 void draw_background(z64_disp_buf_t* db, int bg_left, int bg_top, int bg_width, int bg_height) {
     gDPSetCombineMode(db->p++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
@@ -566,7 +563,7 @@ void draw_world_info(z64_disp_buf_t* db) {
 
 void draw_dungeon_info(z64_disp_buf_t* db) {
     show_dungeon_info = 0;
-    uint8_t everdrive_new_dungeon_info[0x13] = { 0x05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    uint8_t flashcart_new_dungeon_info[0x13] = { 0x05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     pad_t pad_held = z64_ctxt.input[0].raw.pad;
     int draw = CAN_DRAW_DUNGEON_INFO && !CAN_DRAW_TRADE_DPAD && (
         ((pad_held.dl || pad_held.dr || pad_held.dd || pad_held.du) && CFG_DPAD_DUNGEON_INFO_ENABLE) ||
@@ -660,8 +657,8 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                     reward_index = 0;
                 }
 
-                everdrive_new_dungeon_info[2 * reward + 7] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
-                everdrive_new_dungeon_info[2 * reward + 8] = d->hint_area;
+                flashcart_new_dungeon_info[2 * reward + 7] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
+                flashcart_new_dungeon_info[2 * reward + 8] = d->hint_area;
 
                 medal_t* c = &(medals[reward_index]);
                 gDPSetPrimColor(db->p++, 0, 0, c->r, c->g, c->b, 0xFF);
@@ -687,8 +684,8 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                 int reward = CFG_DUNGEON_REWARDS[d->index];
                 if (reward < 0 || reward >= 3) continue;
 
-                everdrive_new_dungeon_info[2 * reward + 1] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
-                everdrive_new_dungeon_info[2 * reward + 2] = d->hint_area;
+                flashcart_new_dungeon_info[2 * reward + 1] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
+                flashcart_new_dungeon_info[2 * reward + 2] = d->hint_area;
 
                 int top = start_top + ((icon_size + padding) * i);
                 sprite_draw(db, &stones_sprite, reward,
@@ -923,8 +920,6 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
         // Finish
 
     } else if (pad_held.du) {
-        extern uint8_t everdrive_detection_state;
-
         int icon_size = 16;
         int padding = 1;
         int rows = 4;
@@ -942,22 +937,22 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
         draw_background(db, bg_left, bg_top, bg_width, bg_height);
         gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
 
-        /*if (everdrive_detection_state == ED64_DETECTION_PRESENT) {
+        if (usb_getcart() != CART_NONE) {
             char top_text[16] = "EverDrive found";
             text_print(db, top_text, left, top);
             top += icon_size + padding;
-            switch (everdrive_protocol_state) {
-                case EVERDRIVE_PROTOCOL_STATE_INIT: {
+            switch (flashcart_protocol_state) {
+                case FLASHCART_PROTOCOL_STATE_INIT: {
                     char state_text[12] = "state: init";
                     text_print(db, state_text, left, top);
                     break;
                 }
-                case EVERDRIVE_PROTOCOL_STATE_HANDSHAKE: {
+                case FLASHCART_PROTOCOL_STATE_HANDSHAKE: {
                     char state_text[17] = "state: handshake";
                     text_print(db, state_text, left, top);
                     break;
                 }
-                case EVERDRIVE_PROTOCOL_STATE_MW: {
+                case FLASHCART_PROTOCOL_STATE_MW: {
                     char state_text[18] = "state: multiworld";
                     text_print(db, state_text, left, top);
                     break;
@@ -971,13 +966,13 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
             top += icon_size + padding;
             char buf_line_1[24] = "OO OO OO OO OO OO OO OO";
             for (int i = 0; i < 8; i++) {
-                uint8_t hi = EVERDRIVE_READ_BUF[i] >> 4;
+                uint8_t hi = FLASHCART_READ_BUF[i] >> 4;
                 if (hi > 9) {
                     buf_line_1[3 * i] = 'A' + (hi - 0xA);
                 } else if (hi) {
                     buf_line_1[3 * i] = '0' + hi;
                 }
-                uint8_t lo = EVERDRIVE_READ_BUF[i] & 0x0F;
+                uint8_t lo = FLASHCART_READ_BUF[i] & 0x0F;
                 if (lo > 9) {
                     buf_line_1[3 * i + 1] = 'A' + (lo - 0xA);
                 } else if (lo) {
@@ -988,13 +983,13 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
             top += icon_size + padding;
             char buf_line_2[24] = "OO OO OO OO OO OO OO OO";
             for (int i = 8; i < 16; i++) {
-                uint8_t hi = EVERDRIVE_READ_BUF[i] >> 4;
+                uint8_t hi = FLASHCART_READ_BUF[i] >> 4;
                 if (hi > 9) {
                     buf_line_2[3 * i] = 'A' + (hi - 0xA);
                 } else if (hi) {
                     buf_line_2[3 * i] = '0' + hi;
                 }
-                uint8_t lo = EVERDRIVE_READ_BUF[i] & 0x0F;
+                uint8_t lo = FLASHCART_READ_BUF[i] & 0x0F;
                 if (lo > 9) {
                     buf_line_2[3 * i + 1] = 'A' + (lo - 0xA);
                 } else if (lo) {
@@ -1005,7 +1000,7 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
         } else {
             char bottom_text[20] = "EverDrive not found";
             text_print(db, bottom_text, left, top);
-        }*/
+        }
     } else if (pad_held.dd) {
         show_dungeon_info = 1;
         uint16_t altar_flags = z64_file.inf_table[27];
@@ -1142,8 +1137,8 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                     continue;
                 }
 
-                everdrive_new_dungeon_info[2 * i + 1] = CFG_DUNGEON_REWARD_WORLDS[i];
-                everdrive_new_dungeon_info[2 * i + 2] = CFG_DUNGEON_REWARD_AREAS[i];
+                flashcart_new_dungeon_info[2 * i + 1] = CFG_DUNGEON_REWARD_WORLDS[i];
+                flashcart_new_dungeon_info[2 * i + 2] = CFG_DUNGEON_REWARD_AREAS[i];
 
                 int top = start_top + ((icon_size + padding) * i) + 1;
                 text_print(db, hint_area_names[CFG_DUNGEON_REWARD_AREAS[i]], left, top);
@@ -1473,21 +1468,21 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
     }
 
     // Finish
-    /*if (show_dungeon_info && usb_getcart() != CART_NONE && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
+    if (show_dungeon_info && usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
         bool changed = false;
         for (int i = 0; i < 0x13; i++) {
-            if (everdrive_new_dungeon_info[i] != everdrive_last_dungeon_info[i]) {
+            if (flashcart_new_dungeon_info[i] != flashcart_last_dungeon_info[i]) {
                 changed = true;
                 break;
             }
         }
         if (changed) {
-            //everdrive_write(19, everdrive_new_dungeon_info);
+            flashcart_queue_message(DATATYPE_RAWBINARY, flashcart_new_dungeon_info, 0x13);
             for (int i = 0; i < 0x13; i++) {
-                everdrive_last_dungeon_info[i] = everdrive_new_dungeon_info[i];
+                flashcart_last_dungeon_info[i] = flashcart_new_dungeon_info[i];
             }
         }
-    }*/
+    }
 }
 
 int dungeon_info_is_drawn() {

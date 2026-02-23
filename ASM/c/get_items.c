@@ -3,7 +3,7 @@
 #include "get_items.h"
 
 #include "en_item00.h"
-#include "everdrive.h"
+#include "flashcart.h"
 #include "usb.h"
 #include "icetrap.h"
 #include "item_table.h"
@@ -39,7 +39,7 @@ extern uint16_t OUTGOING_PLAYER;
 extern uint16_t GET_ITEM_SEQ_ID;
 xflag_t drop_collectible_override_flag; // Flag used by hacks in Item_DropCollectible to override the item being dropped. Set it to the flag for the overridden item.
 xflag_t* spawn_actor_with_flag = NULL;
-extern uint8_t everdrive_protocol_state;
+extern uint8_t flashcart_protocol_state;
 
 override_t active_override = { 0 };
 int active_override_is_outgoing = 0;
@@ -301,7 +301,7 @@ void move_outgoing_queue() {
             outgoing_queue[i] = outgoing_queue[i + 1];
         }
         outgoing_queue[7] = (override_t){ 0 };
-    }/* else if (usb_getcart() != CART_NONE && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
+    } else if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
         uint8_t send_item_packet[16] = {
             0x03, // Send Item
             (OUTGOING_KEY.all & 0xFF00000000000000) >> 56,
@@ -317,11 +317,14 @@ void move_outgoing_queue() {
             OUTGOING_PLAYER,
             0, 0, 0, 0,
         };
-        usb_write(DATATYPE_RAWBINARY, send_item_packet, 16);
-        OUTGOING_ITEM = 0;
-        OUTGOING_PLAYER = 0;
-        OUTGOING_KEY.all = 0;
-    }*/
+        // Keep retrying if queue is too full to send the message
+        bool success = flashcart_queue_message(DATATYPE_RAWBINARY, send_item_packet, 16);
+        if (success) {
+            OUTGOING_ITEM = 0;
+            OUTGOING_PLAYER = 0;
+            OUTGOING_KEY.all = 0;
+        }
+    }
 }
 
 void push_pending_item(override_t override) {
@@ -369,12 +372,19 @@ void pop_pending_item() {
 
 void after_key_received(override_key_t key) {
     if (key.type == OVR_DELAYED && key.flag == 0xFF) {
-        extern uint8_t everdrive_protocol_state;
-        uint8_t EVERDRIVE_MESSAGE_ITEM_RECEIVED[16] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        extern uint8_t flashcart_protocol_state;
+        uint8_t FLASHCART_MESSAGE_ITEM_RECEIVED[16] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-        /*if (usb_getcart() != CART_NONE && everdrive_protocol_state == EVERDRIVE_PROTOCOL_STATE_MW) {
-            usb_write(DATATYPE_RAWBINARY, EVERDRIVE_MESSAGE_ITEM_RECEIVED, 16);
-        }*/
+        if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
+            // Write queue can hold up to 8 messages of 16-byte length
+            // with the current buffer size of 128 bytes. Mido's House MW
+            // will not send another item until receiving this message. The
+            // only other ways to queue messages to PC are currently via the
+            // dungeon menu (total 19 bytes) and sending items out from the
+            // outgoing queue (only 1 sent per frame at 16 bytes total), so
+            // this should never fail due to a full queue.
+            flashcart_queue_message(DATATYPE_RAWBINARY, FLASHCART_MESSAGE_ITEM_RECEIVED, 16);
+        }
         INCOMING_ITEM = 0;
         INCOMING_PLAYER = 0;
         uint16_t* received_item_counter = (uint16_t*)(z64_file_addr + 0x90);

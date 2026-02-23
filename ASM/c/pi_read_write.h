@@ -2,6 +2,7 @@
 #define PI_READ_WRITE
 
 #include "z64.h"
+#include "ultratypes.h"
 
 typedef struct OSDevMgr {
     /* 0x00 */ u32 active;

@@ -6,16 +6,19 @@ using UNFLoader.
 https://github.com/buu342/N64-UNFLoader
 ***************************************************************/
 
+#include "ultratypes.h"
 #include "usb.h"
-// #ifndef LIBDRAGON
-//     #include <ultra64.h>
-// #else
-//     #include <libdragon.h>
-// #endif
+#ifndef LIBDRAGON
+    #include "ultra64.h"
+    #include "rcp.h"
+    #include "convert.h"
+#else
+    #include <libdragon.h>
+#endif
 #include "z64.h"
 #include "pi_read_write.h"
 #include <string.h>
-#include "everdrive.h"
+#include "flashcart.h"
 
 
 /*********************************
@@ -75,10 +78,8 @@ https://github.com/buu342/N64-UNFLoader
 #ifndef ALIGN
     #define ALIGN(value, align) (((value) + ((typeof(value))(align) - 1)) & ~((typeof(value))(align) - 1))
 #endif
-#define MAX(x, max) ((x) > (max) ? (max) : (x))
-#define MIN(x, min) ((x) < (min) ? (min) : (x))
-#define OS_DCACHE_ROUNDUP_ADDR(x) (void *)(((((u32)(x)+0xf)/0x10)*0x10))
-#define OS_DCACHE_ROUNDUP_SIZE(x) (u32)(((((u32)(x)+0xf)/0x10)*0x10))
+#define MAX(x, max) ((x) > (max) ? (x) : (max))
+#define MIN(x, min) ((x) < (min) ? (x) : (min))
 
 /*********************************
           64Drive macros
@@ -231,17 +232,17 @@ https://github.com/buu342/N64-UNFLoader
 static void usb_findcart(void);
 static u32  usb_getaddr();
 
-static s8   usb_64drive_write(int datatype, const void* data, int size);
+static s8   usb_64drive_write(int datatype, const void* data, u32 size);
 static u32  usb_64drive_poll(void);
 static void usb_64drive_read(void);
 static void usb_64drive_set_extendedaddress(u8 enable);
 static u32  usb_64drive_get_baseaddr();
 
-static s8   usb_everdrive_write(int datatype, const void* data, int size);
+static s8   usb_everdrive_write(int datatype, const void* data, u32 size);
 static u32  usb_everdrive_poll(void);
 static void usb_everdrive_read(void);
 
-static s8   usb_sc64_write(int datatype, const void* data, int size);
+static s8   usb_sc64_write(int datatype, const void* data, u32 size);
 static u32  usb_sc64_poll(void);
 static void usb_sc64_read(void);
 
@@ -251,7 +252,7 @@ static void usb_sc64_read(void);
 *********************************/
 
 // Function pointers
-s8   (*funcPointer_write)(int datatype, const void* data, int size);
+s8   (*funcPointer_write)(int datatype, const void* data, u32 size);
 u32  (*funcPointer_poll)(void);
 void (*funcPointer_read)(void);
 
@@ -485,7 +486,7 @@ char usb_initialize(void)
     }
 
     // Send a heartbeat
-    return usb_sendheartbeat();
+    return usb_sendhandshake();
     //return 1;
 }
 
@@ -606,7 +607,7 @@ u32 usb_getaddr()
     @return 1 on success, 0 on fail, -1 on timeout
 ==============================*/
 
-char usb_write(int datatype, const void* data, int size)
+s8 usb_write(int datatype, const void* data, u32 size)
 {
     // If no debug cart exists, stop
     if (usb_cart == CART_NONE)
@@ -659,14 +660,14 @@ u32 usb_poll(void)
     @param The number of bytes to read
 ==============================*/
 
-void usb_read(void* buffer, int nbytes)
+void usb_read(void* buffer, u32 nbytes)
 {
-    int read = 0;
-    int left = nbytes;
-    int offset = usb_datasize-usb_dataleft;
-    int copystart = offset%BUFFER_SIZE;
-    int block = BUFFER_SIZE-copystart;
-    int blockoffset = (offset/BUFFER_SIZE)*BUFFER_SIZE;
+    u32 read = 0;
+    u32 left = nbytes;
+    u32 offset = usb_datasize-usb_dataleft;
+    u32 copystart = offset%BUFFER_SIZE;
+    u32 block = BUFFER_SIZE-copystart;
+    u32 blockoffset = (offset/BUFFER_SIZE)*BUFFER_SIZE;
     
     // If no debug cart exists, stop
     if (usb_cart == CART_NONE)
@@ -716,7 +717,7 @@ void usb_read(void* buffer, int nbytes)
     @param The number of bytes to skip
 ==============================*/
 
-void usb_skip(int nbytes)
+void usb_skip(u32 nbytes)
 {
     // Subtract the amount of bytes to skip to the data pointers
     usb_dataleft -= nbytes;
@@ -737,7 +738,7 @@ void usb_skip(int nbytes)
     @param The number of bytes to rewind
 ==============================*/
 
-void usb_rewind(int nbytes)
+void usb_rewind(u32 nbytes)
 {
     // Add the amount of bytes to rewind to the data pointers
     usb_dataleft += nbytes;
@@ -779,13 +780,9 @@ char usb_timedout()
 /*==============================
     usb_sendheartbeat
     Sends a heartbeat packet to the PC
-    This is done once automatically at initialization,
-    but can be called manually to ensure that the
-    host side tool is aware of the current USB protocol
-    version.
 ==============================*/
 
-char usb_sendheartbeat(void)
+s8 usb_sendheartbeat(void)
 {
     u8 buffer[4];
 
@@ -799,6 +796,32 @@ char usb_sendheartbeat(void)
 
     // Send through USB
     return usb_write(DATATYPE_HEARTBEAT, buffer, sizeof(buffer)/sizeof(buffer[0]));
+}
+
+
+/*==============================
+    usb_sendhandshake
+    Sends a handshake request packet to the PC
+    This is done once automatically at initialization,
+    but can be called manually to ensure that the
+    host side tool is aware of the current USB protocol
+    version.
+==============================*/
+
+s8 usb_sendhandshake(void)
+{
+    u8 buffer[4];
+
+    // First two bytes describe the USB library protocol version
+    buffer[0] = (u8)(((USBPROTOCOL_VERSION)>>8)&0xFF);
+    buffer[1] = (u8)(((USBPROTOCOL_VERSION))&0xFF);
+
+    // Next two bytes describe the heartbeat packet version
+    buffer[2] = (u8)(((HEARTBEAT_VERSION)>>8)&0xFF);
+    buffer[3] = (u8)(((HEARTBEAT_VERSION))&0xFF);
+
+    // Send through USB
+    return usb_write(DATATYPE_HANDSHAKE, buffer, sizeof(buffer)/sizeof(buffer[0]));
 }
 
 
@@ -1046,7 +1069,7 @@ static u32 usb_64drive_cui_read(u32 offset)
     @return 1 on success, 0 on fail, -1 on timeout
 ==============================*/
 
-static s8 usb_64drive_write(int datatype, const void* data, int size)
+static s8 usb_64drive_write(int datatype, const void* data, u32 size)
 {
     s32 left = size;
     u32 pi_address = D64_BASE + usb_getaddr();
@@ -1200,7 +1223,7 @@ static char usb_everdrive_canread(void)
     @param The number of bytes to read
 ==============================*/
 
-static void usb_everdrive_readusb(void* buffer, int size)
+static void usb_everdrive_readusb(void* buffer, u32 size)
 {
     u16 block, addr;
     
@@ -1237,13 +1260,13 @@ static void usb_everdrive_readusb(void* buffer, int size)
     @return 1 on success, 0 on fail, -1 on timeout
 ==============================*/
 
-static s8 usb_everdrive_write(int datatype, const void* data, int size)
+static s8 usb_everdrive_write(int datatype, const void* data, u32 size)
 {
     char wrotecmp = 0;
     char cmp[] = {'C', 'M', 'P', 'H'};
-    int read = 0;
-    int left = size;
-    int offset = 8;
+    u32 read = 0;
+    u32 left = size;
+    u32 offset = 8;
     u32 header = (size & 0x00FFFFFF) | (datatype << 24);
     
     // Put in the DMA header along with length and type information in the global buffer
@@ -1259,8 +1282,8 @@ static s8 usb_everdrive_write(int datatype, const void* data, int size)
     // Write data to USB until we've finished
     while (left > 0)
     {
-        int block = left;
-        int blocksend, baddr;
+        u32 block = left;
+        u32 blocksend, baddr;
         if (block+offset > BUFFER_SIZE)
             block = BUFFER_SIZE-offset;
             
@@ -1268,7 +1291,8 @@ static s8 usb_everdrive_write(int datatype, const void* data, int size)
         memcpy(usb_buffer+offset, (void*)((char*)data+read), block);
         
         // Restart the loop to write the CMP signal if we've finished
-        if (!wrotecmp && read+block >= size)
+        // and there is room in the last data block
+        if (!wrotecmp && read+block >= size && block + 4 <= BUFFER_SIZE)
         {
             left = 4;
             offset = block+offset;
@@ -1298,6 +1322,14 @@ static s8 usb_everdrive_write(int datatype, const void* data, int size)
         left -= block;
         read += block;
         offset = 0;
+        // If there wasn't room for the CMP signal in the last data block,
+        // write it to a new block
+        if (!wrotecmp && read >= size) {
+            left = 4;
+            data = cmp;
+            wrotecmp = 1;
+            read = 0;
+        }
     }
     usb_didtimeout = false;
     return 1;
@@ -1313,32 +1345,25 @@ static s8 usb_everdrive_write(int datatype, const void* data, int size)
 
 static u32 usb_everdrive_poll(void)
 {
-    int len;
-    int offset = 0;
+    u32 len;
+    u32 offset = 0;
     unsigned char  buffaligned[32];
     unsigned char* buff = (unsigned char*)OS_DCACHE_ROUNDUP_ADDR(buffaligned);
     
     // Wait for the USB to be ready
     if (usb_everdrive_usbbusy())
     {
-        EVERDRIVE_STATUS = 2;
         return 0;
     }
     // Check if the USB is ready to be read
     if (!usb_everdrive_canread())
     {
-        EVERDRIVE_STATUS = 3;
         return 0;
     }
     // Read the first 8 bytes that are being received and check if they're valid
     usb_everdrive_readusb(buff, 8);
     if (buff[0] != 'D' || buff[1] != 'M' || buff[2] != 'A' || buff[3] != '@')
     {
-        EVERDRIVE_STATUS = 4;
-        EDHEADER1 = buff[0];
-        EDHEADER2 = buff[1];
-        EDHEADER3 = buff[2];
-        EDHEADER4 = buff[3];
         return 0;
     }
     // Store information about the incoming data
@@ -1369,7 +1394,6 @@ static u32 usb_everdrive_poll(void)
     // Read the CMP Signal
     if (usb_everdrive_usbbusy())
     {
-        EVERDRIVE_STATUS = 5;
         return 0;
     }
     usb_everdrive_readusb(buff, 4);
@@ -1380,7 +1404,6 @@ static u32 usb_everdrive_poll(void)
         usb_datasize = 0;
         usb_dataleft = 0;
         usb_readblock = -1;
-        EVERDRIVE_STATUS = 6;
         return 0;
     }
     
@@ -1483,7 +1506,7 @@ static u32 usb_sc64_set_writable(u32 enable)
     @return 1 on success, 0 on fail, -1 on timeout
 ==============================*/
 
-static s8 usb_sc64_write(int datatype, const void* data, int size)
+static s8 usb_sc64_write(int datatype, const void* data, u32 size)
 {
     u32 left = size;
     u32 pi_address = SC64_BASE + usb_getaddr();
@@ -1506,7 +1529,7 @@ static s8 usb_sc64_write(int datatype, const void* data, int size)
     while (left > 0)
     {
         // Calculate transfer size
-        u32 block = MAX(left, BUFFER_SIZE);
+        u32 block = MIN(left, BUFFER_SIZE);
 
         // Copy data to PI DMA aligned buffer
         memcpy(usb_buffer, data, block);

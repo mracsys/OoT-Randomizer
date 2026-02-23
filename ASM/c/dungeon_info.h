@@ -86,7 +86,7 @@ extern char CFG_DUNGEON_ENTRANCES[12][0x9];
 extern char CFG_BOSSES[21][0x9];
 
 static int show_dungeon_info = 0;
-static uint8_t everdrive_last_dungeon_info[0x13] = { 0x05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static uint8_t flashcart_last_dungeon_info[0x13] = { 0x05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 #define CAN_DRAW_DUNGEON_INFO (CFG_DUNGEON_INFO_ENABLE != 0 && \
         z64_game.pause_ctxt.state == PAUSE_STATE_MAIN && \

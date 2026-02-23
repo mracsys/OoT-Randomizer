@@ -1,6 +1,8 @@
 #ifndef UNFL_USB_H
 #define UNFL_USB_H
     
+    #include "ultratypes.h"
+
     /*********************************
              DataType macros
     *********************************/
@@ -11,6 +13,8 @@
     // Settings
     #define USE_OSRAW          0           // Use if you're doing USB operations without the PI Manager (libultra only)
     #define DEBUG_ADDRESS_SIZE 8*1024*1024 // Max size of USB I/O. The bigger this value, the more ROM you lose!
+    
+    // CHECK_EMULATOR checks currently trip on a real console with Everdrive V3, don't use them.
     #define CHECK_EMULATOR     0           // Stops the USB library from working if it detects an emulator to prevent problems
     
     // Cart definitions
@@ -20,13 +24,15 @@
     #define CART_SC64      3
     
     // Data types defintions
-    #define DATATYPE_TEXT        0x01
-    #define DATATYPE_RAWBINARY   0x02
-    #define DATATYPE_HEADER      0x03
-    #define DATATYPE_SCREENSHOT  0x04
-    #define DATATYPE_HEARTBEAT   0x05
-    #define DATATYPE_RDBPACKET   0x06
-    
+    #define DATATYPE_TEXT          0x01
+    #define DATATYPE_RAWBINARY     0x02
+    #define DATATYPE_HEADER        0x03
+    #define DATATYPE_SCREENSHOT    0x04
+    #define DATATYPE_HEARTBEAT     0x05
+    #define DATATYPE_RDBPACKET     0x06
+    #define DATATYPE_HANDSHAKE     0x07
+    #define DATATYPE_INGAME_STATE  0x08
+    #define DATATYPE_SAVE_FILENAME 0x09
     
     /*********************************
             Convenience macros
@@ -69,7 +75,7 @@
         @return 1 on success, 0 on fail, -1 on timeout
     ==============================*/
     
-    extern char usb_write(int datatype, const void* data, int size);
+    extern s8 usb_write(int datatype, const void* data, u32 size);
     
     
     /*==============================
@@ -89,7 +95,7 @@
         @param The number of bytes to read
     ==============================*/
     
-    extern void usb_read(void* buffer, int size);
+    extern void usb_read(void* buffer, u32 size);
     
     
     /*==============================
@@ -98,7 +104,7 @@
         @param The number of bytes to skip
     ==============================*/
     
-    extern void usb_skip(int nbytes);
+    extern void usb_skip(u32 nbytes);
     
     
     /*==============================
@@ -107,7 +113,7 @@
         @param The number of bytes to rewind
     ==============================*/
     
-    extern void usb_rewind(int nbytes);
+    extern void usb_rewind(u32 nbytes);
     
     
     /*==============================
@@ -130,12 +136,20 @@
     /*==============================
         usb_sendheartbeat
         Sends a heartbeat packet to the PC
+    ==============================*/
+
+    extern s8 usb_sendheartbeat(void);
+
+
+    /*==============================
+        usb_sendhandshake
+        Sends a handshake request packet to the PC
         This is done once automatically at initialization,
         but can be called manually to ensure that the
         host side tool is aware of the current USB protocol
         version.
     ==============================*/
 
-    extern char usb_sendheartbeat(void);
+    extern s8 usb_sendhandshake(void);
 
 #endif
