@@ -1,28 +1,28 @@
 #ifndef UNFL_USB_H
 #define UNFL_USB_H
-    
+
     #include "ultratypes.h"
 
     /*********************************
              DataType macros
     *********************************/
-    
+
     // UNCOMMENT THE #DEFINE IF USING LIBDRAGON
     //#define LIBDRAGON
-    
+
     // Settings
     #define USE_OSRAW          0           // Use if you're doing USB operations without the PI Manager (libultra only)
     #define DEBUG_ADDRESS_SIZE 8*1024*1024 // Max size of USB I/O. The bigger this value, the more ROM you lose!
-    
+
     // CHECK_EMULATOR checks currently trip on a real console with Everdrive V3, don't use them.
     #define CHECK_EMULATOR     0           // Stops the USB library from working if it detects an emulator to prevent problems
-    
+
     // Cart definitions
     #define CART_NONE      0
     #define CART_64DRIVE   1
     #define CART_EVERDRIVE 2
     #define CART_SC64      3
-    
+
     // Data types defintions
     #define DATATYPE_TEXT          0x01
     #define DATATYPE_RAWBINARY     0x02
@@ -33,38 +33,38 @@
     #define DATATYPE_HANDSHAKE     0x07
     #define DATATYPE_INGAME_STATE  0x08
     #define DATATYPE_SAVE_FILENAME 0x09
-    
+
     /*********************************
             Convenience macros
     *********************************/
-    
+
     // Use these to conveniently read the header from usb_poll()
     #define USBHEADER_GETTYPE(header) (((header) & 0xFF000000) >> 24)
     #define USBHEADER_GETSIZE(header) (((header) & 0x00FFFFFF))
-    
-    
+
+
     /*********************************
               USB Functions
     *********************************/
-    
+
     /*==============================
         usb_initialize
         Initializes the USB buffers and pointers
         @return 1 if the USB initialization was successful, 0 if not
     ==============================*/
-    
+
     extern char usb_initialize(void);
-    
-    
+
+
     /*==============================
         usb_getcart
         Returns which flashcart is currently connected
         @return The CART macro that corresponds to the identified flashcart
     ==============================*/
-    
+
     extern char usb_getcart(void);
-    
-    
+
+
     /*==============================
         usb_write
         Writes data to the USB.
@@ -74,53 +74,53 @@
         @param The size of the data being sent
         @return 1 on success, 0 on fail, -1 on timeout
     ==============================*/
-    
+
     extern s8 usb_write(int datatype, const void* data, u32 size);
-    
-    
+
+
     /*==============================
         usb_poll
         Returns the header of data being received via USB
         The first byte contains the data type, the next 3 the number of bytes left to read
         @return The data header, or 0
     ==============================*/
-    
+
     extern unsigned long usb_poll(void);
-    
-    
+
+
     /*==============================
         usb_read
         Reads bytes from USB into the provided buffer
         @param The buffer to put the read data in
         @param The number of bytes to read
     ==============================*/
-    
+
     extern void usb_read(void* buffer, u32 size);
-    
-    
+
+
     /*==============================
         usb_skip
         Skips a USB read by the specified amount of bytes
         @param The number of bytes to skip
     ==============================*/
-    
+
     extern void usb_skip(u32 nbytes);
-    
-    
+
+
     /*==============================
         usb_rewind
         Rewinds a USB read by the specified amount of bytes
         @param The number of bytes to rewind
     ==============================*/
-    
+
     extern void usb_rewind(u32 nbytes);
-    
-    
+
+
     /*==============================
         usb_purge
         Purges the incoming USB data
     ==============================*/
-    
+
     extern void usb_purge(void);
 
 
