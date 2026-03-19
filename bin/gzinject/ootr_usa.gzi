@@ -1248,6 +1248,47 @@
 0304 00087cb8 4bf79c10
 0304 00087f78 4bf77c11
 0304 00170adc 01400000
+# resize MEM1 heap for serial payload
+# replaces command to read r3/Arena1Hi from 0x80003110
+# VRAM 0x8008A0EC
+#   8008a0ec 3c 60 80 00     lis        r3,-0x8000
+#   8008a0f0 80 63 31 10     lwz        r3,offset DAT_80003110(r3)
+#   to
+#   8008a0ec 3c 60 81 7f     lis        r3,0x817f
+#   8008a0f0 60 63 80 00     ori        r3,r3,0x7000
+0304 000856AC 3C60817F
+0304 000856B0 60630000
+# copy serial payload from load address to end of MEM1
+0304 00002520 80300000
+0304 00002524 817F0000
+0304 00002528 00010000
+# Replace function pointer to cpuExecuteLoadStore with a pointer to the serial payload.
+# This gets called once each iteration of the main emulator loop in cpuExecute (start at 0x8003BACC).
+# VRAM 0x8003BB8C and 0x8003BB98
+#   8003bb8c 3c a0 80 04     lis        r5,-0x7ffc
+#   ...
+#   8003bb98 38 a5 a0 00     subi       r5,r5,0x6000
+#   to
+#   8003bb8c 3c a0 81 7f     lis        r5,0x817f
+#   ...
+#   8003bb98 60 a5 80 00     ori        r5,r5,0x7000
+#
+# Calculating VROM addresses from the oot-vc ELF map
+#   * Find VRAM address in the map or ghidra
+#   * Find a nearby symbol in the map file
+#   * Calculate VRAM offset
+#   * Add offset to the symbol's file offset
+#   * Determine which file the .text section is in (usually the second one)
+#   * Subtract the offset of the start of the section
+#   * File offset for the .text section is 0x3220
+#   * Add the file offset from the DOL header (offset 1 at 0x0000:0000, offset 2 at 0x0000:0004, up to 0x0000:001C)
+#   * File offset for file 2 is 0x25E0 (e.g. total offset for symbols in .text is -0x0C40)
+#   * Confirm by comparing bytes in content1.app in a hex editor to ghidra disassembly
+#
+# 0304 0003714C 3CA0817F
+# 0304 00037158 60A50000
+# VRAM 80009F44
+0304 00005504 497E60BD
 # Change IOS to 58
 0000 00000000 00000064
 0301 0000018B 0000003A

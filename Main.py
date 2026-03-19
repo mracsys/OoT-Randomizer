@@ -298,9 +298,11 @@ def generate_wad(wad_file: str, rom_file: str, output_file: str, channel_title: 
         wad_patch_name = "ootr_jpn.gzi"
     else:
         raise RuntimeError('Base WAD file is not a valid OoT USA or JPN wad.')
+    wad_payload_name = "mwserial.bin"
 
     gzinject_path = "./" if is_bundled() else "bin/gzinject/"
     gzinject_patch_path = gzinject_path + wad_patch_name
+    gzinject_payload_path = gzinject_path + wad_payload_name
     if platform.system() == 'Windows':
         if platform.machine() == 'AMD64':
             gzinject_path += "gzinject.exe"
@@ -327,7 +329,8 @@ def generate_wad(wad_file: str, rom_file: str, output_file: str, channel_title: 
     run_process(logger, [gzinject_path, "-a", "genkey"], b'45e')
     run_process(logger, [gzinject_path, "-a", "inject", "--rom", rom_file, "--wad", wad_file,
                          "-o", output_file, "-i", channel_id, "-t", channel_title,
-                         "-p", gzinject_patch_path, "--cleanup"])
+                         "-p", gzinject_patch_path, "--dol-inject", gzinject_payload_path,
+                         "--dol-loading", "80300000", "--cleanup"])
     os.remove("common-key.bin")
     if delete_input:
         os.remove(rom_file)
