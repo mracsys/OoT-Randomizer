@@ -1248,6 +1248,18 @@
 0304 00087cb8 4bf79c10
 0304 00087f78 4bf77c11
 0304 00170adc 01400000
+# Calculating VROM addresses from the oot-vc ELF map
+#   * Find VRAM address in the map or ghidra
+#   * Find a nearby symbol in the map file
+#   * Calculate VRAM offset
+#   * Add offset to the symbol's file offset
+#   * Determine which file the .text section is in (usually the second one)
+#   * Subtract the offset of the start of the section
+#   * File offset for the .text section is 0x3220
+#   * Add the file offset from the DOL header (offset 1 at 0x0000:0000, offset 2 at 0x0000:0004, up to 0x0000:001C)
+#   * File offset for file 2 is 0x25E0 (e.g. total offset for symbols in .text is -0x0C40)
+#   * Confirm by comparing bytes in content1.app in a hex editor or ghidra disassembly
+#
 # resize MEM1 heap for serial payload
 # replaces command to read r3/Arena1Hi from 0x80003110
 # VRAM 0x8008A0EC
@@ -1262,31 +1274,32 @@
 0304 00002520 80300000
 0304 00002524 817F0000
 0304 00002528 00010000
-# Replace function pointer to cpuExecuteLoadStore with a pointer to the serial payload.
-# This gets called once each iteration of the main emulator loop in cpuExecute (start at 0x8003BACC).
-# VRAM 0x8003BB8C and 0x8003BB98
-#   8003bb8c 3c a0 80 04     lis        r5,-0x7ffc
-#   ...
-#   8003bb98 38 a5 a0 00     subi       r5,r5,0x6000
-#   to
-#   8003bb8c 3c a0 81 7f     lis        r5,0x817f
-#   ...
-#   8003bb98 60 a5 80 00     ori        r5,r5,0x7000
 #
-# Calculating VROM addresses from the oot-vc ELF map
-#   * Find VRAM address in the map or ghidra
-#   * Find a nearby symbol in the map file
-#   * Calculate VRAM offset
-#   * Add offset to the symbol's file offset
-#   * Determine which file the .text section is in (usually the second one)
-#   * Subtract the offset of the start of the section
-#   * File offset for the .text section is 0x3220
-#   * Add the file offset from the DOL header (offset 1 at 0x0000:0000, offset 2 at 0x0000:0004, up to 0x0000:001C)
-#   * File offset for file 2 is 0x25E0 (e.g. total offset for symbols in .text is -0x0C40)
-#   * Confirm by comparing bytes in content1.app in a hex editor to ghidra disassembly
+# VRAM 80052D50
+# hook at end of frameEnd
+# This runs once per emulated game frame.
+# nop's all the instructions for pCPU->gTree->kill_number = 0
+# and adds jump to per-frame payload
+# original:
+#   80052d50 3c 7f 00 10     addis      r3,r31,0x10
+#   80052d54 38 00 00 00     li         r0,0x0         <-- add bl here, after setting r3 to pCPU
+#   80052d58 80 83 14 94     lwz        r4,0x1494(r3)
+#   80052d5c 38 60 00 01     li         r3,0x1         <-- preserve, return value for frameEnd
+#   80052d60 90 04 00 74     stw        r0,0x74(r4)
 #
-# 0304 0003714C 3CA0817F
-# 0304 00037158 60A50000
+# to:
+#   ori r3,r31,0   # r31 contains pCPU at this point
+#   bl  0x817F008C
+#   ori r0,r0,0
+#   li  r3,0x1
+#   ori r0,r0,0
+#
+0304 0004E310 63E30000
+0304 0004E314 4979D339
+0304 0004E318 60000000
+0304 0004E320 60000000
+#
+# _start hook to initialize the payload heap
 # VRAM 80009F44
 0304 00005504 497E60BD
 # Change IOS to 58
