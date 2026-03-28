@@ -1,7 +1,7 @@
 COOP_CONTEXT:
 
 COOP_VERSION:
-.word 7 ; Increment this if layout of co-op state changes
+.word 8 ; Increment this if layout of co-op state changes
 
 PLAYER_ID:
 .byte 0x00 ; Written by frontend
@@ -44,5 +44,22 @@ MW_PROGRESSIVE_ITEMS_STATE:
 OUTGOING_KEY:
 .word 0x00000000
 .word 0x00000000
+
+SERIAL_CONTEXT:
+SERIAL_VERSION:
+.byte 0
+SERIAL_ENABLE:
+.byte 0
+
+; 32-byte alignment required for the Wii's USB DMA engine
+; Buffer sizes are 512 byte payload plus 32 bytes for
+; flashcart-specific metadata
+.align 32
+.area 544, 0x00
+SERIAL_RECEIVE_BUFFER:
+.endarea
+.area 544, 0x00
+SERIAL_TRANSMIT_BUFFER:
+.endarea
 
 .align 4

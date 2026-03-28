@@ -1266,8 +1266,8 @@
 #   8008a0ec 3c 60 80 00     lis        r3,-0x8000
 #   8008a0f0 80 63 31 10     lwz        r3,offset DAT_80003110(r3)
 #   to
-#   8008a0ec 3c 60 81 7f     lis        r3,0x817f
-#   8008a0f0 60 63 80 00     ori        r3,r3,0x7000
+#   lis r3,0x817f
+#   ori r3,r3,0x7000
 0304 000856AC 3C60817F
 0304 000856B0 60630000
 # copy serial payload from load address to end of MEM1
@@ -1288,20 +1288,28 @@
 #   80052d60 90 04 00 74     stw        r0,0x74(r4)
 #
 # to:
-#   ori r3,r31,0   # r31 contains pCPU at this point
-#   bl  0x817F008C
+#   ori r3,r31,0      # r31 contains pCPU at this point
+#   bl  frameEnd_hook # target address is calculated when building the patch in /ASM/wiivc
 #   ori r0,r0,0
 #   li  r3,0x1
 #   ori r0,r0,0
 #
 0304 0004E310 63E30000
-0304 0004E314 4979D339
+0304 0004E314 4979D359
 0304 0004E318 60000000
 0304 0004E320 60000000
 #
 # _start hook to initialize the payload heap
-# VRAM 80009F44
-0304 00005504 497E60BD
+# and virtual serial device
+# VRAM 80007914 at end of systemSetupGameRAM()
+# Replaces call to ramWipe()
+# original:
+#   80007914 48 03 a4 3d     bl         0x80041d50
+#
+# to:
+#   bl  0x817f0000
+#
+0304 00002ED4 497E86ED
 # Change IOS to 58
 0000 00000000 00000064
 0301 0000018B 0000003A

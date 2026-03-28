@@ -281,6 +281,7 @@ def generate_wad(wad_file: str, rom_file: str, output_file: str, channel_title: 
     ]
 
     wad_patch_name = ""
+    wad_payload_name = ""
     wad_app1_sha1 = list(wad_buffer[0xF18:0xF2C])
     wad_app5_sha1 = list(wad_buffer[0xFA8:0xFBC])
 
@@ -294,15 +295,16 @@ def generate_wad(wad_file: str, rom_file: str, output_file: str, channel_title: 
 
     if is_usa_wad:
         wad_patch_name = "ootr_usa.gzi"
+        wad_payload_name = "wiivc_usa.bin"
     elif is_jpn_wad:
         wad_patch_name = "ootr_jpn.gzi"
+        wad_payload_name = "wiivc_jpn.bin"
     else:
         raise RuntimeError('Base WAD file is not a valid OoT USA or JPN wad.')
-    wad_payload_name = "mwserial.bin"
 
     gzinject_path = "./" if is_bundled() else "bin/gzinject/"
     gzinject_patch_path = gzinject_path + wad_patch_name
-    gzinject_payload_path = gzinject_path + wad_payload_name
+    gzinject_payload_path = "ASM/build/" + wad_payload_name
     if platform.system() == 'Windows':
         if platform.machine() == 'AMD64':
             gzinject_path += "gzinject.exe"

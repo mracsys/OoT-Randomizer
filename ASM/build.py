@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--pj64sym', help="Output path for Project64 debugging symbols")
 parser.add_argument('--compile-c', action='store_true', help="Recompile C modules. This is the default")
 parser.add_argument('--no-compile-c', action='store_true', help="Do not recompile C modules")
+parser.add_argument('--compile-wii', action='store_true', help="Recompile Wii VC modules. Requires devkitpro toolchain.")
 parser.add_argument('--dump-obj', action='store_true', help="Dumps extra object info for debugging purposes. Does nothing with --no-compile-c")
 parser.add_argument('--diff-only', action='store_true', help="Creates diff output without running armips")
 parser.add_argument('--mips-binutils-prefix', type=str, default="mips64-ultra-elf-", help="Use a different prefix for N64 toolchain")
@@ -22,11 +23,16 @@ parser.add_argument('--mips-binutils-prefix', type=str, default="mips64-ultra-el
 args = parser.parse_args()
 pj64_sym_path = args.pj64sym
 compile_c = not args.no_compile_c
+compile_wii = args.compile_wii
 dump_obj = args.dump_obj
 diff_only = args.diff_only
 mips_binutils_prefix = args.mips_binutils_prefix
 
 root_dir = os.path.dirname(os.path.realpath(__file__))
+wii_src_dir = os.path.join(root_dir, 'wiivc')
+wii_bin_dir = os.path.join(wii_src_dir, 'bin')
+wii_out_dir = os.path.join(root_dir, 'build')
+gzinject_dir = os.path.join(root_dir, '..', 'bin', 'gzinject')
 tools_dir = os.path.join(root_dir, 'tools')
 # Makes it possible to use the "tools" directory as the prefix for the toolchain
 tools_bin_dir = os.path.join(tools_dir, 'bin')
@@ -50,6 +56,41 @@ if compile_c:
     if dump_obj:
         clist.append('RUN_OBJDUMP=1')
     call(clist)
+
+if compile_wii:
+    os.chdir(wii_src_dir)
+    clist = ['make','all']
+    call(clist)
+    regions = ['usa','jpn']
+    gzi_branches = {
+        'usa': '0304 0004E314',
+        'jpn': '0304 0004E314',
+    }
+    def calculate_branch_bytes(region: str) -> str:
+        gzi_vram = {
+            'usa': 0x80052d54,
+            'jpn': 0x80052d54,
+        }
+        target_addr = 0
+        with open(os.path.join(wii_src_dir, 'bin',region,f'mwserial-{region}.map'), 'r') as f:
+            for line in f.readlines():
+                if line.endswith(' frameEnd_hook\n'):
+                    target_addr = int(line.replace('frameEnd_hook','').strip(), 16)
+        instruction_addr = gzi_vram[region]
+        offset = ((target_addr - instruction_addr) >> 2) & 0x00FFFFFF
+        instruction = (18 << 26) | (offset << 2) | 0b1
+        return f'{instruction:08x}'
+    for region in regions:
+        bin_file = os.path.join(wii_bin_dir, region, f"mwserial-{region}.bin")
+        if os.path.exists(bin_file):
+            os.replace(bin_file, os.path.join(wii_out_dir, f"wiivc_{region}.bin"))
+        gzi_file = os.path.join(gzinject_dir, f'ootr_{region}.gzi')
+        with open(gzi_file, 'r+') as f:
+            for line in f:
+                # update branch to frameEnd_hook() if it shifted
+                if line.startswith(gzi_branches[region]):
+                    f.seek(f.tell() - len(line.encode()))
+                    f.write(f'{gzi_branches[region]} {calculate_branch_bytes(region)}\n')
 
 if not diff_only:
     os.chdir(run_dir + '/src')

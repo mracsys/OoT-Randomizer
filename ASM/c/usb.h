@@ -22,6 +22,7 @@
     #define CART_64DRIVE   1
     #define CART_EVERDRIVE 2
     #define CART_SC64      3
+    #define CART_WII       4
 
     // Data types defintions
     #define DATATYPE_TEXT          0x01
@@ -33,6 +34,15 @@
     #define DATATYPE_HANDSHAKE     0x07
     #define DATATYPE_INGAME_STATE  0x08
     #define DATATYPE_SAVE_FILENAME 0x09
+
+    // Wii receive states
+    #define SERIAL_READ_DONE       0x00
+    #define SERIAL_READ_AVAILABLE  0x01
+    #define SERIAL_READ_CONTINUE   0x02
+
+    // Wii transmit states
+    #define SERIAL_WRITE_DONE      0x00
+    #define SERIAL_WRITE_AVAILABLE 0x01
 
     /*********************************
             Convenience macros

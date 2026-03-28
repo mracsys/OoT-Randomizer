@@ -44,12 +44,13 @@
 .area   0x00200000 ; payload max memory
 PAYLOAD_START:
 
-.area 0x20, 0
+.area 0x24, 0
 RANDO_CONTEXT:
 .word COOP_CONTEXT
 .word COSMETIC_CONTEXT
 .word extern_ctxt
 .word AUTO_TRACKER_CONTEXT
+.word SERIAL_CONTEXT
 .endarea
 
 .include "coop_state.asm" ; This should always come first

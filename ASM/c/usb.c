@@ -196,6 +196,41 @@ https://github.com/buu342/N64-UNFLoader
 
 
 /*********************************
+        Wii macros and types
+*********************************/
+
+typedef enum {
+    SERIALERR_SUCCESS,
+    SERIALERR_FAIL
+} SerialDeviceError;
+
+typedef union {
+    struct {
+        uint32_t key;
+        uint32_t transmit_addr;
+        uint32_t transmit_header;
+        uint32_t receive_addr;
+        uint32_t receive_header;
+        union {
+            struct {
+                uint32_t              : 22;
+                uint32_t reset        : 1;
+                uint32_t error        : 4;
+                uint32_t initialize   : 1;
+                uint32_t receiving    : 1;
+                uint32_t transmitting : 1;
+                uint32_t busy         : 1;
+                uint32_t ready        : 1;
+            };
+            uint32_t status;
+        };
+    };
+    uint32_t regs[6];
+} SerialVirtualDevice;
+
+#define wii_serial_device (*(volatile SerialVirtualDevice *)0xA8060000)
+
+/*********************************
   Libultra types (for libdragon)
 *********************************/
 
@@ -246,6 +281,10 @@ static s8   usb_sc64_write(int datatype, const void* data, u32 size);
 static u32  usb_sc64_poll(void);
 static void usb_sc64_read(void);
 
+static s8   usb_wii_write(int datatype, const void* data, u32 size);
+static u32  usb_wii_poll(void);
+static void usb_wii_read(void);
+
 
 /*********************************
              Globals
@@ -258,13 +297,16 @@ void (*funcPointer_read)(void);
 
 // USB globals
 static s8 usb_cart = CART_NONE;
-static u8 usb_buffer_align[BUFFER_SIZE+16]; // IDO doesn't support GCC's __attribute__((aligned(x))), so this is a workaround
-static u8* usb_buffer;
 static char usb_didtimeout = false;
 static int usb_datatype = 0;
 static int usb_datasize = 0;
 static int usb_dataleft = 0;
 static int usb_readblock = -1;
+
+// read/write buffers.
+extern u8 SERIAL_RECEIVE_BUFFER[BUFFER_SIZE+32];
+extern u8 SERIAL_TRANSMIT_BUFFER[BUFFER_SIZE+32];
+
 
 // Cart specific globals
 static vu8 d64_wasarmed = false;
@@ -449,10 +491,6 @@ static char usb_timeout_check(u32 start_ticks, u32 duration)
 
 char usb_initialize(void)
 {
-    // Initialize the debug related globals
-    usb_buffer = (u8*)OS_DCACHE_ROUNDUP_ADDR(usb_buffer_align);
-    memset(usb_buffer, 0, BUFFER_SIZE);
-
     #ifndef LIBDRAGON
         // Create the message queue
         #if !USE_OSRAW
@@ -481,6 +519,13 @@ char usb_initialize(void)
             funcPointer_poll  = usb_sc64_poll;
             funcPointer_read  = usb_sc64_read;
             break;
+        case CART_WII:
+            funcPointer_write = usb_wii_write;
+            funcPointer_poll  = usb_wii_poll;
+            funcPointer_read  = usb_wii_read;
+            wii_serial_device.receive_addr = (uint32_t)SERIAL_RECEIVE_BUFFER;
+            wii_serial_device.initialize = 1;
+            break;
         default:
             return 0;
     }
@@ -499,6 +544,13 @@ char usb_initialize(void)
 static void usb_findcart(void)
 {
     u32 buff;
+
+    // Check for active Wii VC interface first
+    // "O","O","T","R" = 0x4F4F5452
+    if (wii_serial_device.key == 0x4F4F5452) {
+        usb_cart = CART_WII;
+        return;
+    }
 
     // Before we do anything, check that we are using an emulator
     #if CHECK_EMULATOR
@@ -614,7 +666,7 @@ s8 usb_write(int datatype, const void* data, u32 size)
         return 0;
 
     // If there's data to read first, stop
-    if (usb_dataleft != 0)
+    if (usb_dataleft != 0 && usb_cart != CART_WII)
         return 0;
 
     // Call the correct write function
@@ -694,7 +746,7 @@ void usb_read(void* buffer, u32 nbytes)
         }
 
         // Copy from the USB buffer to the supplied buffer
-        memcpy((void*)(((u32)buffer)+read), usb_buffer+copystart, block);
+        memcpy((void*)(((u32)buffer)+read), SERIAL_RECEIVE_BUFFER+copystart, block);
 
         // Increment/decrement all our counters
         read += block;
@@ -1096,14 +1148,14 @@ static s8 usb_64drive_write(int datatype, const void* data, u32 size)
         u32 block = MIN(left, BUFFER_SIZE);
 
         // Copy data to PI DMA aligned buffer
-        memcpy(usb_buffer, data, block);
+        memcpy(SERIAL_TRANSMIT_BUFFER, data, block);
 
         // Pad the buffer with zeroes if it wasn't 4 byte aligned
         while (block%4)
-            usb_buffer[block++] = 0;
+            SERIAL_TRANSMIT_BUFFER[block++] = 0;
 
         // Copy block of data from RDRAM to SDRAM
-        usb_dma_write(usb_buffer, pi_address, ALIGN(block, 2));
+        usb_dma_write(SERIAL_TRANSMIT_BUFFER, pi_address, ALIGN(block, 2));
 
         // Update pointers and variables
         data = (void*)(((u32)data) + block);
@@ -1163,7 +1215,7 @@ static u32 usb_64drive_poll(void)
 static void usb_64drive_read(void)
 {
     // Set up DMA transfer between RDRAM and the PI
-    usb_dma_read(usb_buffer, D64_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
+    usb_dma_read(SERIAL_RECEIVE_BUFFER, D64_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
 }
 
 
@@ -1270,14 +1322,14 @@ static s8 usb_everdrive_write(int datatype, const void* data, u32 size)
     u32 header = (size & 0x00FFFFFF) | (datatype << 24);
 
     // Put in the DMA header along with length and type information in the global buffer
-    usb_buffer[0] = 'D';
-    usb_buffer[1] = 'M';
-    usb_buffer[2] = 'A';
-    usb_buffer[3] = '@';
-    usb_buffer[4] = (header >> 24) & 0xFF;
-    usb_buffer[5] = (header >> 16) & 0xFF;
-    usb_buffer[6] = (header >> 8)  & 0xFF;
-    usb_buffer[7] = header & 0xFF;
+    SERIAL_TRANSMIT_BUFFER[0] = 'D';
+    SERIAL_TRANSMIT_BUFFER[1] = 'M';
+    SERIAL_TRANSMIT_BUFFER[2] = 'A';
+    SERIAL_TRANSMIT_BUFFER[3] = '@';
+    SERIAL_TRANSMIT_BUFFER[4] = (header >> 24) & 0xFF;
+    SERIAL_TRANSMIT_BUFFER[5] = (header >> 16) & 0xFF;
+    SERIAL_TRANSMIT_BUFFER[6] = (header >> 8)  & 0xFF;
+    SERIAL_TRANSMIT_BUFFER[7] = header & 0xFF;
 
     // Write data to USB until we've finished
     while (left > 0)
@@ -1288,7 +1340,7 @@ static s8 usb_everdrive_write(int datatype, const void* data, u32 size)
             block = BUFFER_SIZE-offset;
 
         // Copy the data to the next available spots in the global buffer
-        memcpy(usb_buffer+offset, (void*)((char*)data+read), block);
+        memcpy(SERIAL_TRANSMIT_BUFFER+offset, (void*)((char*)data+read), block);
 
         // Restart the loop to write the CMP signal if we've finished
         // and there is room in the last data block
@@ -1308,7 +1360,7 @@ static s8 usb_everdrive_write(int datatype, const void* data, u32 size)
 
         // Set USB to write mode and send data through USB
         usb_io_write(ED_REG_USBCFG, ED_USBMODE_WRNOP);
-        usb_dma_write(usb_buffer, ED_REG_USBDAT + baddr, blocksend);
+        usb_dma_write(SERIAL_TRANSMIT_BUFFER, ED_REG_USBDAT + baddr, blocksend);
 
         // Set USB to write mode with the new address and wait for USB to end (or stop if it times out)
         usb_io_write(ED_REG_USBCFG, ED_USBMODE_WR | baddr);
@@ -1383,10 +1435,10 @@ static u32 usb_everdrive_poll(void)
             bytes_do = len;
 
         // Read a chunk from USB and store it into our temp buffer
-        usb_everdrive_readusb(usb_buffer, bytes_do);
+        usb_everdrive_readusb(SERIAL_RECEIVE_BUFFER, bytes_do);
 
         // Copy received block to ROM
-        usb_dma_write(usb_buffer, ED_BASE + usb_getaddr() + offset, bytes_do);
+        usb_dma_write(SERIAL_RECEIVE_BUFFER, ED_BASE + usb_getaddr() + offset, bytes_do);
         offset += bytes_do;
         len -= bytes_do;
     }
@@ -1420,7 +1472,7 @@ static u32 usb_everdrive_poll(void)
 static void usb_everdrive_read(void)
 {
     // Set up DMA transfer between RDRAM and the PI
-    usb_dma_read(usb_buffer, ED_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
+    usb_dma_read(SERIAL_RECEIVE_BUFFER, ED_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
 }
 
 
@@ -1532,10 +1584,10 @@ static s8 usb_sc64_write(int datatype, const void* data, u32 size)
         u32 block = MIN(left, BUFFER_SIZE);
 
         // Copy data to PI DMA aligned buffer
-        memcpy(usb_buffer, data, block);
+        memcpy(SERIAL_TRANSMIT_BUFFER, data, block);
 
         // Copy block of data from RDRAM to SDRAM
-        usb_dma_write(usb_buffer, pi_address, ALIGN(block, 2));
+        usb_dma_write(SERIAL_TRANSMIT_BUFFER, pi_address, ALIGN(block, 2));
 
         // Update pointers and variables
         data = (void*)(((u32)data) + block);
@@ -1628,5 +1680,92 @@ static u32 usb_sc64_poll(void)
 static void usb_sc64_read(void)
 {
     // Set up DMA transfer between RDRAM and the PI
-    usb_dma_read(usb_buffer, SC64_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
+    usb_dma_read(SERIAL_RECEIVE_BUFFER, SC64_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
+}
+
+
+/*==============================
+    usb_wii_write
+    Sends data through USB from the Wii.
+    Can still write if there is data to read from USB.
+    If size is larger than the buffer, give the Wii
+    the data pointer directly to read, assuming that
+    data is still valid at the end of frame emulation
+    (e.g. static data like the save context).
+    @param  The DATATYPE that is being sent
+    @param  A buffer with the data to send
+    @param  The size of the data being sent
+    @return 1 on success, 0 on fail
+==============================*/
+
+static s8 usb_wii_write(int datatype, const void* data, u32 size)
+{
+    if (wii_serial_device.reset) {
+        usb_purge();
+        wii_serial_device.reset = 0;
+    }
+
+    // Equivalent of voiding the data
+    if (!wii_serial_device.ready)
+        return 1;
+
+    u32 header = (size & 0x00FFFFFF) | (datatype << 24);
+
+    wii_serial_device.transmit_addr = (uint32_t)data;
+    wii_serial_device.transmit_header = header;
+    while (wii_serial_device.busy)
+        continue;
+
+    usb_didtimeout = false;
+    return 1;
+}
+
+
+/*==============================
+    usb_wii_poll
+    Returns the header of data being received via USB on the Wii
+    The first byte contains the data type, the next 3 the number of bytes left to read
+    @return The data header, or 0
+==============================*/
+
+static u32 usb_wii_poll(void)
+{
+    if (wii_serial_device.reset) {
+        usb_purge();
+        wii_serial_device.reset = 0;
+    }
+
+    if (!wii_serial_device.ready)
+        return 0;
+
+    // Cache the header to avoid tripping the
+    // virtual device multiple times while setting up.
+    uint32_t header = wii_serial_device.receive_header;
+    if (header != 0) {
+        // Store information about the incoming data
+        usb_datatype = USBHEADER_GETTYPE(header);
+        usb_datasize = USBHEADER_GETSIZE(header);
+        usb_dataleft = usb_datasize;
+        usb_readblock = -1;
+    }
+
+    // Return the data header
+    return USBHEADER_CREATE(usb_datatype, usb_datasize);
+}
+
+
+/*==============================
+    usb_wii_read
+    Stub function as the Wii writes incoming data directly to the global receive buffer
+==============================*/
+
+static void usb_wii_read(void) {
+    if (wii_serial_device.reset) {
+        usb_purge();
+        wii_serial_device.reset = 0;
+    } else if (wii_serial_device.ready) {
+        wii_serial_device.receiving = 1;
+        while (wii_serial_device.busy)
+            continue;
+    }
 }
