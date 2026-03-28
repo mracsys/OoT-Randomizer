@@ -1,3 +1,5 @@
+// Copied from homeboy with some minor changes
+// https://github.com/PracticeROM/homeboy
 #ifndef __VC_DEVICE_H
 #define __VC_DEVICE_H
 

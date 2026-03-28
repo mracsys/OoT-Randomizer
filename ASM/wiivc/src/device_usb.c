@@ -2,6 +2,7 @@
                        device_usb.c
 
                 Handles raw USB communication.
+                Adapted from UNFloader PC client.
 ***************************************************************/
 
 #ifdef DEBUG_MODE

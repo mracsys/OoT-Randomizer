@@ -2,6 +2,7 @@
                        device_wii.c
 
                 Handles Wii USB communication.
+                Adapted from UNFloader PC client.
 ***************************************************************/
 
 #ifdef DEBUG_MODE

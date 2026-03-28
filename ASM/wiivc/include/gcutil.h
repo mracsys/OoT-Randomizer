@@ -16,5 +16,5 @@
 #define _ROTL(v,s)			\
 	(((u32)v<<s)|((u32)v>>(0x20-s)))
 
-#endif /* _GCUTIL_H */
+#endif
 

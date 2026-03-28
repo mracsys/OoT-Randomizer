@@ -1,3 +1,8 @@
+/**
+ * serial_stream.c
+ * State machine to manage connected USB serial adapters
+ */
+
 #include "serial_stream.h"
 #include "vc.h"
 #include "device_wii.h"
@@ -21,6 +26,11 @@ WiiSerialDevice* serial_usb;
 serial_state state = SERIAL_INIT;
 u8 attempts = 0;
 
+/**
+ * @brief Initializes global variables for the USB stack
+ *
+ * @return SERIAL_SETUP on success, SERIAL_INIT otherwise.
+ */
 serial_state serial_init(void) {
     if (USB_Initialize() != IPC_OK)
         return SERIAL_INIT;
@@ -33,6 +43,11 @@ serial_state serial_init(void) {
     return SERIAL_SETUP;
 }
 
+/**
+ * @brief Looks for a compatible connected serial adapter
+ *
+ * @return SERIAL_OPENING on success, SERIAL_SETUP otherwise.
+ */
 serial_state serial_setup(void) {
     if (device_test_wii(serial_usb) != DEVICEERR_OK)
         return SERIAL_SETUP;
@@ -41,6 +56,11 @@ serial_state serial_setup(void) {
     return SERIAL_OPENING;
 }
 
+/**
+ * @brief Initializes the connected serial adapter
+ *
+ * @return SERIAL_IO on success, SERIAL_OPENING for 200 failed attempts, SERIAL_SETUP otherwise.
+ */
 serial_state serial_open(void) {
     if (device_open_wii(serial_usb) != DEVICEERR_OK) {
         attempts += 1;
@@ -56,10 +76,17 @@ serial_state serial_open(void) {
     return SERIAL_IO;
 }
 
+/**
+ * @brief Polls the serial adapter for incoming data and saves to the buffer
+ *
+ * @return SERIAL_IO on success, SERIAL_SETUP otherwise.
+ */
 serial_state serial_poll(void) {
     uint32_t header = 0;
     uint8_t* buffer = NULL;
     if (device_receivedata_wii(serial_usb, &header, &buffer) == DEVICEERR_NODEVICES) {
+        // device disconnected, free buffers, mark as not ready,
+        // and go back to searching for a device
         serial_device_object->ready = 0;
         serial_device_object->reset = 1;
         purge_queue();
@@ -76,17 +103,32 @@ serial_state serial_poll(void) {
     return SERIAL_IO;
 }
 
+/**
+ * @brief Closes the serial adapter
+ *
+ * @return SERIAL_CLEANUP always.
+ */
 serial_state serial_close(void) {
     device_close_wii(serial_usb);
     return SERIAL_CLEANUP;
 }
 
+/**
+ * @brief Frees memory used by the USB stack
+ *
+ * @return SERIAL_SKIP always.
+ */
 serial_state serial_cleanup(void) {
     device_deinitialize_wii(serial_usb);
     USB_Deinitialize();
     return SERIAL_SKIP;
 }
 
+/**
+ * @brief Main loop controlling serial adapter access
+ *
+ * @return bool true always.
+ */
 bool serial_stream(void) {
     switch(state) {
         case SERIAL_INIT:

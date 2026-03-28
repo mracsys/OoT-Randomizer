@@ -4,17 +4,13 @@
 #include "serial_stream.h"
 
 /**
- * @brief Hook in main loop, replacing the function pointer to `cpuExecuteLoadStore` call in `cpuExecute`.
+ * @brief Hook in main loop, replacing the load for the return value of frameEnd (true).
  * 
- * Stream to/from emulated RAM before load/store instructions are executed.
+ * Stream to/from emulated RAM.
  * 
- * @param pCPU The emulated N64 RAM.
- * @param nSize Unused. Original call would set this to either 4MiB or 8MiB depending on game. The hack forces this to 8MiB.
- * @return bool true on success, false otherwise.
+ * @return bool always true.
  */
 bool frameEnd_hook() {
-    //pCPU->gTree->kill_number = 0;
-
     serial_stream();
     return true;
 }

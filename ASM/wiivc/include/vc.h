@@ -1,3 +1,6 @@
+// Copied from homeboy with some minor changes
+// https://github.com/PracticeROM/homeboy
+
 #ifndef __VC_H
 #define __VC_H
 

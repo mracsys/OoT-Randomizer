@@ -1,15 +1,17 @@
-#ifndef _CPU_H
-#define _CPU_H
+// Copied from homeboy with some minor changes
+// https://github.com/PracticeROM/homeboy
+#ifndef __CPU_H
+#define __CPU_H
 
 #include <stdint.h>
 
 #include "types.h"
 
-//#if VC_VERSION == NACE
+#if VC_VERSION == usa
 #define DEVICE_ADDRESS_INDEX_BITS 20
-//#else
-//#define DEVICE_ADDRESS_INDEX_BITS 16
-//#endif
+#else
+#define DEVICE_ADDRESS_INDEX_BITS 16
+#endif
 
 #define DEVICE_ADDRESS_OFFSET_BITS (32 - DEVICE_ADDRESS_INDEX_BITS)
 
