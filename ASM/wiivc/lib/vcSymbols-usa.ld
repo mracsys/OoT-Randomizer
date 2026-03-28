@@ -1,10 +1,6 @@
 cpuExecuteUpdate                    = 0x80032BB4;
 cpuExecuteLoadStore                 = 0x8003A000;
 cpuExecute                          = 0x8003BACC;
-cpuExecuteCall_hook_addr_ha         = 0x8003BB44;
-cpuExecuteCall_hook_addr_l          = 0x8003BB50;
-cpuExecuteLoadStore_hook_addr_ha    = 0x8003BB8C;
-cpuExecuteLoadStore_hook_addr_l     = 0x8003BB98;
 cpuMapObject                        = 0x8003C630;
 cpuSetDeviceGet                     = 0x8003C7CC;
 cpuSetDevicePut                     = 0x8003C7E4;

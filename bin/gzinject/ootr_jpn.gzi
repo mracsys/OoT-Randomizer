@@ -1248,6 +1248,68 @@
 0304 00087cac 4bf79c1c
 0304 00087f6c 4bf77c1d
 0304 00170a7c 01400000
+# Calculating VROM addresses from the oot-vc ELF map
+#   * Find VRAM address in the map or ghidra
+#   * Find a nearby symbol in the map file
+#   * Calculate VRAM offset
+#   * Add offset to the symbol's file offset
+#   * Determine which file the .text section is in (usually the second one)
+#   * Subtract the offset of the start of the section
+#   * File offset for the .text section is 0x3220
+#   * Add the file offset from the DOL header (offset 1 at 0x0000:0000, offset 2 at 0x0000:0004, up to 0x0000:001C)
+#   * File offset for file 2 is 0x25E0 (e.g. total offset for symbols in .text is -0x0C40)
+#   * Confirm by comparing bytes in content1.app in a hex editor or ghidra disassembly
+#
+# resize MEM1 heap for serial payload
+# replaces command to read r3/Arena1Hi from 0x80003110
+# VRAM 0x8008A0E0
+#   8008a0e0 3c 60 80 00     lis        r3,-0x8000
+#   8008a0e4 80 63 31 10     lwz        r3,offset DAT_80003110(r3)
+#   to
+#   lis r3,0x817f
+#   ori r3,r3,0x7000
+0304 000856A0 3C60817F
+0304 000856A4 60630000
+# copy serial payload from load address to end of MEM1
+0304 00002520 80300000
+0304 00002524 817F0000
+0304 00002528 00010000
+#
+# VRAM 80052D34
+# hook at end of frameEnd
+# This runs once per emulated game frame.
+# nop's all the instructions for pCPU->gTree->kill_number = 0
+# and adds jump to per-frame payload
+# original:
+#   80052d34 3c 7f 00 10     addis      r3,r31,0x10
+#   80052d38 38 00 00 00     li         r0,0x0         <-- add bl here, after setting r3 to pCPU
+#   80052d3c 80 83 14 94     lwz        r4,0x1494(r3)
+#   80052d40 38 60 00 01     li         r3,0x1         <-- preserve, return value for frameEnd
+#   80052d44 90 04 00 74     stw        r0,0x74(r4)
+#
+# to:
+#   ori r3,r31,0      # r31 contains pCPU at this point
+#   bl  frameEnd_hook # target address is calculated when building the patch in /ASM/wiivc
+#   ori r0,r0,0
+#   li  r3,0x1
+#   ori r0,r0,0
+#
+0304 0004E2F4 63E30000
+0304 0004E2F8 4979D375
+0304 0004E2FC 60000000
+0304 0004E304 60000000
+#
+# _start hook to initialize the payload heap
+# and virtual serial device
+# VRAM 80007914 at end of systemSetupGameRAM()
+# Replaces call to ramWipe()
+# original:
+#   80007914 48 03 a4 3d     bl         0x80041d50
+#
+# to:
+#   bl  0x817f0000
+#
+0304 00002ED4 497E86ED
 # Change IOS to 58
 0000 00000000 00000064
 0301 0000018B 0000003A

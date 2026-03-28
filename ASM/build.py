@@ -64,12 +64,12 @@ if compile_wii:
     regions = ['usa','jpn']
     gzi_branches = {
         'usa': '0304 0004E314',
-        'jpn': '0304 0004E314',
+        'jpn': '0304 0004E2F8',
     }
     def calculate_branch_bytes(region: str) -> str:
         gzi_vram = {
             'usa': 0x80052d54,
-            'jpn': 0x80052d54,
+            'jpn': 0x80052d38,
         }
         target_addr = 0
         with open(os.path.join(wii_src_dir, 'bin',region,f'mwserial-{region}.map'), 'r') as f:
@@ -79,18 +79,19 @@ if compile_wii:
         instruction_addr = gzi_vram[region]
         offset = ((target_addr - instruction_addr) >> 2) & 0x00FFFFFF
         instruction = (18 << 26) | (offset << 2) | 0b1
-        return f'{instruction:08x}'
+        return f'{instruction:08X}'
     for region in regions:
         bin_file = os.path.join(wii_bin_dir, region, f"mwserial-{region}.bin")
         if os.path.exists(bin_file):
             os.replace(bin_file, os.path.join(wii_out_dir, f"wiivc_{region}.bin"))
         gzi_file = os.path.join(gzinject_dir, f'ootr_{region}.gzi')
         with open(gzi_file, 'r+') as f:
-            for line in f:
+            while line:= f.readline():
                 # update branch to frameEnd_hook() if it shifted
                 if line.startswith(gzi_branches[region]):
                     f.seek(f.tell() - len(line.encode()))
                     f.write(f'{gzi_branches[region]} {calculate_branch_bytes(region)}\n')
+                    break
 
 if not diff_only:
     os.chdir(run_dir + '/src')

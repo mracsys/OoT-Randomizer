@@ -182,8 +182,6 @@ int	snprintf (char *__restrict, size_t, const char *__restrict, ...);
 int	printf (const char *__restrict, ...);
 size_t strnlen (const char *, size_t);
 
-extern u32 reset_flag; // TODO: use decomp name
-
 #define title_id             (*(volatile u32*)0x80003180)
 
 #define ios_heap_addr        0x933E8000
