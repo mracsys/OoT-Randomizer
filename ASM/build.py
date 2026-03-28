@@ -63,13 +63,13 @@ if compile_wii:
     call(clist)
     regions = ['usa','jpn']
     gzi_branches = {
-        'usa': '0304 0004E314',
-        'jpn': '0304 0004E2F8',
+        'usa': '0304 0004E320',
+        'jpn': '0304 0004E304',
     }
     def calculate_branch_bytes(region: str) -> str:
         gzi_vram = {
-            'usa': 0x80052d54,
-            'jpn': 0x80052d38,
+            'usa': 0x80052d60,
+            'jpn': 0x80052d44,
         }
         target_addr = 0
         with open(os.path.join(wii_src_dir, 'bin',region,f'mwserial-{region}.map'), 'r') as f:
