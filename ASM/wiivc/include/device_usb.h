@@ -62,18 +62,13 @@ typedef enum {
     USB_DEVICE_LIST_NOT_READY,
 } USBStatus;
 
-typedef enum {
-    PACKET_START,
-    PACKET_CONTINUE,
-} USBPacketFlag;
-
 
 /*********************************
         Function Prototypes
 *********************************/
 
 USBStatus device_usb_write(int32_t handle, void* buffer, uint16_t size, uint32_t* written);
-USBStatus device_usb_read(int32_t handle, void* buffer, uint16_t size, uint32_t* read, USBPacketFlag continue_packet);
+USBStatus device_usb_read(int32_t handle, void* buffer, uint16_t size, uint32_t* read);
 USBStatus device_usb_getqueuestatus(int32_t handle, uint32_t* bytesleft);
 
 #endif

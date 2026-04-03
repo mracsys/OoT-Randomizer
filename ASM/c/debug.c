@@ -378,6 +378,13 @@ void debug_utilities(z64_disp_buf_t* db)
         z64_link.common.vel_1.y = 6.34375f;
     }
 
+    draw_debug_int(0, wii_serial_device.active_queue_index);
+    draw_debug_int(1, wii_serial_device.incoming_queue_cursor);
+    draw_debug_int(2, wii_serial_device.ready);
+    draw_debug_int(3, wii_serial_device.transmitting);
+    draw_debug_int(4, wii_serial_device.receiving);
+    draw_debug_int(5, wii_serial_device.error);
+
     draw_debug_menu(db);
     draw_debug_numbers(db);
     draw_timeofday(db);

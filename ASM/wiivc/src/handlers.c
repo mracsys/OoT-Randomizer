@@ -26,6 +26,7 @@ uint32_t incoming_data_position = 0;
 bool queue_incoming_buffer(uint32_t header, uint8_t* buffer) {
     if (incoming_queue_cursor >= BUFFER_QUEUE_SIZE - 1) return false;
     incoming_queue_cursor++;
+    serial_device_object->incoming_queue_cursor = incoming_queue_cursor;
     serial_incoming_data_queue[incoming_queue_cursor] = buffer;
     serial_incoming_header_queue[incoming_queue_cursor] = header;
     return true;
@@ -51,6 +52,7 @@ void remove_queued_data_at_index(int queue_index) {
             serial_incoming_header_queue[i] = serial_incoming_header_queue[i + 1];
         }
         incoming_queue_cursor--;
+        serial_device_object->incoming_queue_cursor = incoming_queue_cursor;
     }
 }
 
@@ -69,6 +71,8 @@ void purge_queue(void) {
     }
     incoming_queue_cursor = -1;
     active_queue_index = -1;
+    serial_device_object->incoming_queue_cursor = incoming_queue_cursor;
+    serial_device_object->active_queue_index = active_queue_index;
 }
 
 /**
@@ -80,6 +84,7 @@ uint32_t handle_poll() {
     // N64 is not currently reading anything
     if (incoming_queue_cursor >= 0 && active_queue_index < 0) {
         active_queue_index = incoming_queue_cursor;
+        serial_device_object->active_queue_index = active_queue_index;
         return serial_incoming_header_queue[active_queue_index];
     // N64 is reading a buffer
     } else if (active_queue_index >= 0) {
@@ -121,6 +126,7 @@ void handle_read(SerialVirtualDevice* device) {
             iosFree(hId, buffer);
             remove_queued_data_at_index(active_queue_index);
             active_queue_index = -1;
+            serial_device_object->active_queue_index = active_queue_index;
         }
     }
 

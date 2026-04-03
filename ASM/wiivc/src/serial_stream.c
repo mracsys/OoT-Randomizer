@@ -84,7 +84,8 @@ serial_state serial_open(void) {
 serial_state serial_poll(void) {
     uint32_t header = 0;
     uint8_t* buffer = NULL;
-    if (device_receivedata_wii(serial_usb, &header, &buffer) == DEVICEERR_NODEVICES) {
+    DeviceError read_err = device_receivedata_wii(serial_usb, &header, &buffer);
+    if (read_err == DEVICEERR_NODEVICES) {
         // device disconnected, free buffers, mark as not ready,
         // and go back to searching for a device
         serial_device_object->ready = 0;
@@ -93,11 +94,17 @@ serial_state serial_poll(void) {
         return SERIAL_SETUP;
     }
 
-    if (header != 0) {
+    uint8_t datatype = USBHEADER_GETTYPE(header);
+    uint32_t size = USBHEADER_GETSIZE(header);
+    if (datatype != DATATYPE_UNKNOWN && size > 0 && buffer != NULL) {
         bool queued = queue_incoming_buffer(header, buffer);
         // queue is full, discard incoming data
         if (!queued)
             iosFree(hId, buffer);
+    // somehow got a header of 00000000 with real data, probably
+    // malformed message. Discard data to prevent memory leak.
+    } else if (buffer != NULL) {
+        iosFree(hId, buffer);
     }
 
     return SERIAL_IO;

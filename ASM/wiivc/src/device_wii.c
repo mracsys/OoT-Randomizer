@@ -250,11 +250,10 @@ DeviceError device_receivedata_wii(WiiSerialDevice *serial, uint32_t *dataheader
         uint32_t dataread = 0;
         uint32_t totalread = 0;
         uint32_t offset = 4; // 4-byte header
-        USBPacketFlag packet_status = PACKET_CONTINUE;
         byte     temp[4];
 
         // Get information about the incoming data and store it in dataheader
-        err = device_usb_read(serial->handle, temp, 4, &serial->bytes_read, PACKET_START);
+        err = device_usb_read(serial->handle, temp, 4, &serial->bytes_read);
         if (err != USB_OK)
         {
             #ifdef DEBUG_MODE
@@ -278,7 +277,7 @@ DeviceError device_receivedata_wii(WiiSerialDevice *serial, uint32_t *dataheader
             uint32_t readamount = size-dataread;
             if (readamount > MAX_PACKET_SIZE - offset)
                 readamount = MAX_PACKET_SIZE - offset;
-            err = device_usb_read(serial->handle, (*buff)+dataread, readamount, &serial->bytes_read, packet_status);
+            err = device_usb_read(serial->handle, (*buff)+dataread, readamount, &serial->bytes_read);
             if (err != USB_OK)
             {
                 #ifdef DEBUG_MODE
@@ -289,15 +288,18 @@ DeviceError device_receivedata_wii(WiiSerialDevice *serial, uint32_t *dataheader
             totalread += serial->bytes_read;
             dataread += serial->bytes_read;
             offset = 0;
-            packet_status = PACKET_START;
         }
 
-        // Ensure 4 byte alignment by reading X amount of bytes needed
+        // Ensure 4 byte alignment by reading X amount of bytes needed.
+        // Add status bytes to read bytes even if they weren't included
+        // in the actual message, because every message sent by the client
+        // assumes they are included when calculating padding.
+        totalread += 2;
         if (totalread % alignment != 0)
         {
             byte* tempbuff = (byte*)iosAlloc(hId, alignment*sizeof(byte));
             int left = alignment - (totalread % alignment);
-            err = device_usb_read(serial->handle, tempbuff, left, &serial->bytes_read, PACKET_CONTINUE);
+            err = device_usb_read(serial->handle, tempbuff, left, &serial->bytes_read);
             if (err != USB_OK)
             {
                 #ifdef DEBUG_MODE

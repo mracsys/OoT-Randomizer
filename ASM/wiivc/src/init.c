@@ -25,6 +25,8 @@ INIT bool _start(Ram* pRAM) {
     // "O","O","T","R" = 0x4F4F5452
     serial_device_object->key = 0x4F4F5452;
     n64_dram = pRAM->pBuffer;
+    serial_device_object->active_queue_index = -1;
+    serial_device_object->incoming_queue_cursor = -1;
 
     return true;
 }

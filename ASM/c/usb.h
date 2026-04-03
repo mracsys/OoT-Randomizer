@@ -54,6 +54,44 @@
 
 
     /*********************************
+            Wii macros and types
+    *********************************/
+
+    typedef enum {
+        SERIALERR_SUCCESS,
+        SERIALERR_FAIL
+    } SerialDeviceError;
+
+    typedef union {
+        struct {
+            u32 key;
+            u32 transmit_addr;
+            u32 transmit_header;
+            u32 receive_addr;
+            u32 receive_header;
+            union {
+                struct {
+                    u32              : 22;
+                    u32 reset        : 1;
+                    u32 error        : 4;
+                    u32 initialize   : 1;
+                    u32 receiving    : 1;
+                    u32 transmitting : 1;
+                    u32 busy         : 1;
+                    u32 ready        : 1;
+                };
+                u32 status;
+            };
+            int incoming_queue_cursor;
+            int active_queue_index;
+        };
+        u32 regs[8];
+    } SerialVirtualDevice;
+
+    #define wii_serial_device (*(volatile SerialVirtualDevice *)0xA8060000)
+
+
+    /*********************************
               USB Functions
     *********************************/
 

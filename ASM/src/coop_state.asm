@@ -1,7 +1,7 @@
 COOP_CONTEXT:
 
 COOP_VERSION:
-.word 8 ; Increment this if layout of co-op state changes
+.word 7 ; Increment this if layout of co-op state changes
 
 PLAYER_ID:
 .byte 0x00 ; Written by frontend
@@ -45,6 +45,7 @@ OUTGOING_KEY:
 .word 0x00000000
 .word 0x00000000
 
+.align 4
 SERIAL_CONTEXT:
 SERIAL_VERSION:
 .byte 0

@@ -1295,7 +1295,7 @@
 #   bl  frameEnd_hook # target address is calculated when building the patch in /ASM/wiivc
 #
 0304 0004E300 90040074
-0304 0004E304 4979D369
+0304 0004E304 4979D389
 #
 # VRAM 80007914
 # _start hook to initialize the payload heap

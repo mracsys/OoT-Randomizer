@@ -28,8 +28,10 @@ typedef union {
             };
             uint32_t status;
         };
+        int incoming_queue_cursor;
+        int active_queue_index;
     };
-    uint32_t regs[6];
+    uint32_t regs[8];
 } SerialVirtualDevice;
 
 #define SERIAL_STATUS_RESET       (0b1    << 9)

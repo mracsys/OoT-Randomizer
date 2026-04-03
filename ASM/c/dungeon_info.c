@@ -566,8 +566,8 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
     uint8_t flashcart_new_dungeon_info[0x13] = { 0x05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     pad_t pad_held = z64_ctxt.input[0].raw.pad;
     int draw = CAN_DRAW_DUNGEON_INFO && !CAN_DRAW_TRADE_DPAD && (
-        ((pad_held.dl || pad_held.dr || pad_held.dd || pad_held.du) && CFG_DPAD_DUNGEON_INFO_ENABLE) ||
-        ((pad_held.dl || pad_held.dr || pad_held.dd || pad_held.du) && !CFG_DPAD_DUNGEON_INFO_ENABLE && pad_held.a) ||
+        ((pad_held.dl || pad_held.dr || pad_held.dd || pad_held.du || pad_held.l) && CFG_DPAD_DUNGEON_INFO_ENABLE) ||
+        ((pad_held.dl || pad_held.dr || pad_held.dd || pad_held.du || pad_held.l) && !CFG_DPAD_DUNGEON_INFO_ENABLE && pad_held.a) ||
         pad_held.a);
     if (!draw) {
         return;
@@ -919,7 +919,7 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
 
         // Finish
 
-    } else if (pad_held.du) {
+    } else if (pad_held.du || pad_held.l) {
         int icon_size = 16;
         int padding = 1;
         int rows = 4;

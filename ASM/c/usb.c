@@ -194,42 +194,6 @@ https://github.com/buu342/N64-UNFLoader
 #define SC64_USB_WRITE_STATUS_BUSY  (1 << 31)
 #define SC64_USB_READ_STATUS_BUSY   (1 << 31)
 
-
-/*********************************
-        Wii macros and types
-*********************************/
-
-typedef enum {
-    SERIALERR_SUCCESS,
-    SERIALERR_FAIL
-} SerialDeviceError;
-
-typedef union {
-    struct {
-        uint32_t key;
-        uint32_t transmit_addr;
-        uint32_t transmit_header;
-        uint32_t receive_addr;
-        uint32_t receive_header;
-        union {
-            struct {
-                uint32_t              : 22;
-                uint32_t reset        : 1;
-                uint32_t error        : 4;
-                uint32_t initialize   : 1;
-                uint32_t receiving    : 1;
-                uint32_t transmitting : 1;
-                uint32_t busy         : 1;
-                uint32_t ready        : 1;
-            };
-            uint32_t status;
-        };
-    };
-    uint32_t regs[6];
-} SerialVirtualDevice;
-
-#define wii_serial_device (*(volatile SerialVirtualDevice *)0xA8060000)
-
 /*********************************
   Libultra types (for libdragon)
 *********************************/
