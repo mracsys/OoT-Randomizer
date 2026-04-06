@@ -1477,7 +1477,7 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
             }
         }
         if (changed) {
-            flashcart_queue_message(DATATYPE_RAWBINARY, flashcart_new_dungeon_info, 0x13);
+            flashcart_queue_message(DATATYPE_DUNGEON_REWARDS, flashcart_new_dungeon_info, 0x13);
             for (int i = 0; i < 0x13; i++) {
                 flashcart_last_dungeon_info[i] = flashcart_new_dungeon_info[i];
             }

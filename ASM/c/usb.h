@@ -25,15 +25,27 @@
     #define CART_WII       4
 
     // Data types defintions
-    #define DATATYPE_TEXT          0x01
-    #define DATATYPE_RAWBINARY     0x02
-    #define DATATYPE_HEADER        0x03
-    #define DATATYPE_SCREENSHOT    0x04
-    #define DATATYPE_HEARTBEAT     0x05
-    #define DATATYPE_RDBPACKET     0x06
-    #define DATATYPE_HANDSHAKE     0x07
-    #define DATATYPE_INGAME_STATE  0x08
-    #define DATATYPE_SAVE_FILENAME 0x09
+    #define DATATYPE_EMPTY           0x00
+    #define DATATYPE_TEXT            0x01
+    #define DATATYPE_RAWBINARY       0x02
+    #define DATATYPE_HEADER          0x03
+    #define DATATYPE_SCREENSHOT      0x04
+    #define DATATYPE_HEARTBEAT       0x05
+    #define DATATYPE_RDBPACKET       0x06
+    #define DATATYPE_TCPTEST         0x07
+    #define DATATYPE_ROMUPLOAD       0x08
+    #define DATATYPE_HANDSHAKE       0x09
+    #define DATATYPE_INGAME_STATE    0x0A
+    #define DATATYPE_SAVE_FILENAME   0x0B
+    #define DATATYPE_RESET           0x0C
+    #define DATATYPE_SEND_ITEM       0x0D
+    #define DATATYPE_ACK_ITEM        0x0E
+    #define DATATYPE_DUNGEON_REWARDS 0x0F
+    #define DATATYPE_PLAYER_NAMES    0x10
+    #define DATATYPE_READ_MEMORY     0x11
+    #define DATATYPE_WRITE_MEMORY    0x12
+    #define DATATYPE_WRITE_ACK       0x13
+    #define DATATYPE_UNRECOVERABLE   0x14
 
     // Wii receive states
     #define SERIAL_READ_DONE       0x00

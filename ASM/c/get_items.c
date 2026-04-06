@@ -303,7 +303,6 @@ void move_outgoing_queue() {
         outgoing_queue[7] = (override_t){ 0 };
     } else if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
         uint8_t send_item_packet[16] = {
-            0x03, // Send Item
             (OUTGOING_KEY.all & 0xFF00000000000000) >> 56,
             (OUTGOING_KEY.all & 0x00FF000000000000) >> 48,
             (OUTGOING_KEY.all & 0x0000FF0000000000) >> 40,
@@ -315,10 +314,10 @@ void move_outgoing_queue() {
             (OUTGOING_ITEM & 0xFF00) >> 8,
             OUTGOING_ITEM & 0x00FF,
             OUTGOING_PLAYER,
-            0, 0, 0, 0,
+            0, 0, 0, 0, 0,
         };
         // Keep retrying if queue is too full to send the message
-        bool success = flashcart_queue_message(DATATYPE_RAWBINARY, send_item_packet, 16);
+        bool success = flashcart_queue_message(DATATYPE_SEND_ITEM, send_item_packet, 16);
         if (success) {
             OUTGOING_ITEM = 0;
             OUTGOING_PLAYER = 0;
@@ -383,7 +382,7 @@ void after_key_received(override_key_t key) {
             // dungeon menu (total 19 bytes) and sending items out from the
             // outgoing queue (only 1 sent per frame at 16 bytes total), so
             // this should never fail due to a full queue.
-            flashcart_queue_message(DATATYPE_RAWBINARY, FLASHCART_MESSAGE_ITEM_RECEIVED, 16);
+            flashcart_queue_message(DATATYPE_ACK_ITEM, FLASHCART_MESSAGE_ITEM_RECEIVED, 16);
         }
         INCOMING_ITEM = 0;
         INCOMING_PLAYER = 0;
