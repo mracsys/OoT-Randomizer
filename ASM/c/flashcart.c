@@ -94,7 +94,6 @@ void flashcart_update_in_game(bool in_game) {
             flashcart_in_game = GAME_STATE_PLAY;
     } else {
         uint8_t state_packet[16] = {
-            0x01, // State: File Select
             z64_file.file_name[0],
             z64_file.file_name[1],
             z64_file.file_name[2],
@@ -103,7 +102,7 @@ void flashcart_update_in_game(bool in_game) {
             z64_file.file_name[5],
             z64_file.file_name[6],
             z64_file.file_name[7],
-            0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
         };
         usb_write(DATATYPE_SAVE_FILENAME, state_packet, 16);
         flashcart_in_game = GAME_STATE_MENU;
@@ -144,11 +143,15 @@ void flashcart_frame(bool in_game) {
                 // Data potentially requiring action
                 switch (flashcart_protocol_state) {
                     case FLASHCART_PROTOCOL_STATE_INIT: {
-                        flashcart_handshake();
+                        if (incoming_type == DATATYPE_HANDSHAKE) {
+                            flashcart_handshake();
+                        } else {
+                            usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
+                        }
                         break;
                     }
                     case FLASHCART_PROTOCOL_STATE_HANDSHAKE: {
-                        if (FLASHCART_READ_BUF[0] == 'M' && FLASHCART_READ_BUF[1] == 'W') {
+                        if (incoming_type == DATATYPE_HANDSHAKE && FLASHCART_READ_BUF[0] == 'M' && FLASHCART_READ_BUF[1] == 'W') {
                             if (FLASHCART_READ_BUF[2] != FLASHCART_PROTOCOL_VERSION) {
                                 usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
                                 flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
@@ -158,7 +161,7 @@ void flashcart_frame(bool in_game) {
                                 flashcart_in_game = GAME_STATE_INIT; // uninitialized; ensure state packet is sent
                                 flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_MW;
                             }
-                        } else if (FLASHCART_READ_BUF[0] == 'c') {
+                        } else if (incoming_type == DATATYPE_HANDSHAKE && FLASHCART_READ_BUF[0] == 'c') {
                             flashcart_handshake();
                         } else {
                             usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
