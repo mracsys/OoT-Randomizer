@@ -260,6 +260,7 @@ void flashcart_frame(bool in_game) {
         }
         // Re-test for additional messages in the read queue
         if (usb_poll() == 0) {
+            bool message_sent = false;
             if (FLASHCART_WRITE_QUEUE_CURSOR > 0) {
                 // Flashcart write buffer is emptied all at once.
                 // Clients are expected to handle multiple messages
@@ -270,6 +271,7 @@ void flashcart_frame(bool in_game) {
                     FLASHCART_WRITE_QUEUE_CURSOR -= outgoing_size + sizeof(int) * 2;
                     usb_write(outgoing_type, &FLASHCART_WRITE_QUEUE_BUF[FLASHCART_WRITE_QUEUE_CURSOR], outgoing_size);
                 }
+                message_sent = true;
             } else if (flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW &&
                     ((in_game && flashcart_in_game != GAME_STATE_PLAY) ||
                      !in_game)) {
@@ -283,13 +285,16 @@ void flashcart_frame(bool in_game) {
                     }
                     if (!filenames_match || flashcart_in_game != GAME_STATE_MENU) {
                         flashcart_update_in_game(in_game);
+                        message_sent = true;
                     }
                 } else if (z64_logo_state != 0x802C5880
                         && z64_logo_state != 0
                         && z64_file.game_mode == 0) {
                     flashcart_update_in_game(in_game);
+                    message_sent = true;
                 }
-            } else if (++frames_since_last_ping >= 5 * 20) {
+            }
+            if (++frames_since_last_ping >= 5 * 20 && !message_sent) {
                 // No incoming data to process. Send heartbeat to
                 // maintain connection or signal to a new client we
                 // are ready to handshake.
