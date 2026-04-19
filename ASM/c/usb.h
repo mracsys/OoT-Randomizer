@@ -39,13 +39,12 @@
     #define DATATYPE_SAVE_FILENAME   0x0B
     #define DATATYPE_RESET           0x0C
     #define DATATYPE_SEND_ITEM       0x0D
-    #define DATATYPE_ACK_ITEM        0x0E
+    #define DATATYPE_ACK_MESSAGE     0x0E
     #define DATATYPE_DUNGEON_REWARDS 0x0F
     #define DATATYPE_PLAYER_NAMES    0x10
     #define DATATYPE_READ_MEMORY     0x11
     #define DATATYPE_WRITE_MEMORY    0x12
-    #define DATATYPE_WRITE_ACK       0x13
-    #define DATATYPE_UNRECOVERABLE   0x14
+    #define DATATYPE_UNRECOVERABLE   0x13
 
     // Wii receive states
     #define SERIAL_READ_DONE       0x00
@@ -71,7 +70,8 @@
 
     typedef enum {
         SERIALERR_SUCCESS,
-        SERIALERR_FAIL
+        SERIALERR_FAIL,
+        SERIALERR_TIMEOUT,
     } SerialDeviceError;
 
     typedef union {
@@ -153,9 +153,10 @@
         Reads bytes from USB into the provided buffer
         @param The buffer to put the read data in
         @param The number of bytes to read
+        @return 1 on success, 0 on failure, -1 on timeout
     ==============================*/
 
-    extern void usb_read(void* buffer, u32 size);
+    extern s8 usb_read(void* buffer, u32 size);
 
 
     /*==============================
@@ -194,6 +195,26 @@
 
 
     /*==============================
+        usb_timeout_start
+        Returns current value of COUNT coprocessor 0 register
+        @return C0_COUNT value
+    ==============================*/
+
+    extern u32 usb_timeout_start(void);
+
+
+    /*==============================
+        usb_timeout_check
+        Checks if timeout occurred
+        @param Starting value obtained from usb_timeout_start
+        @param Timeout duration specified in milliseconds
+        @return true if timeout occurred, otherwise false
+    ==============================*/
+
+    extern char usb_timeout_check(u32 start_ticks, u32 duration);
+
+
+    /*==============================
         usb_sendheartbeat
         Sends a heartbeat packet to the PC
     ==============================*/
@@ -211,5 +232,31 @@
     ==============================*/
 
     extern s8 usb_sendhandshake(void);
+
+
+    /*==============================
+        usb_sendreadfailure
+        Sends a message indicating an unrecoverable error
+        while reading from USB.
+    ==============================*/
+
+    extern s8 usb_sendreadfailure(void);
+
+
+    /*==============================
+        usb_sendreadsuccess
+        Sends a message indicating the received message
+        was received and successfully processed.
+    ==============================*/
+
+    extern s8 usb_sendreadsuccess(void);
+
+
+    /*==============================
+        usb_sendreset
+        Sends a message to restart the handshake process.
+    ==============================*/
+
+    extern s8 usb_sendreset(void);
 
 #endif

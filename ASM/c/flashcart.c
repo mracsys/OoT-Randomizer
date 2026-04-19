@@ -19,11 +19,17 @@ uint8_t FLASHCART_READ_BUF[FLASHCART_BUFFER_SIZE];
 // PC messages mid-frame before they can be read.
 // Bypassed in specific instances where it is known the queue
 // is empty, such as sending heartbeats or save file info.
-uint8_t FLASHCART_WRITE_QUEUE_BUF[FLASHCART_BUFFER_SIZE];
-uint8_t FLASHCART_WRITE_QUEUE_CURSOR = 0;
-#define FLASHCART_CAN_QUEUE(x) (FLASHCART_WRITE_QUEUE_CURSOR + x + sizeof(int) * 2 < FLASHCART_BUFFER_SIZE ? 1 : 0)
+typedef struct {
+    uint8_t buffer[FLASHCART_BUFFER_SIZE];
+    uint8_t read_cursor;
+    uint8_t write_cursor;
+} write_queue;
 
-uint8_t FLASHCART_PROTOCOL_VERSION = 2;
+write_queue FLASHCART_WRITE_QUEUE;
+
+#define FLASHCART_CAN_QUEUE(x) (FLASHCART_WRITE_QUEUE.write_cursor + x + sizeof(int) * 2 < FLASHCART_BUFFER_SIZE ? 1 : 0)
+
+uint8_t FLASHCART_PROTOCOL_VERSION = 3;
 extern uint8_t CFG_RANDO_VERSION_MAJOR;
 extern uint8_t CFG_RANDO_VERSION_MINOR;
 extern uint8_t CFG_RANDO_VERSION_PATCH;
@@ -40,13 +46,19 @@ uint8_t flashcart_in_game = 2;
 char flashcart_file_name[0x08] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
 uint8_t flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
 
-// Dummy buffers
-// All logic flow for these end states is handled by header data type
-uint8_t FLASHCART_MESSAGE_ERROR[16] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-uint8_t FLASHCART_MESSAGE_RESET[16] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-uint8_t FLASHCART_MESSAGE_SUCCESS[16] = { 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
 uint8_t frames_since_last_ping = 0;
+
+// Separate write ack monitoring variables in case
+// the timeout start value happens to be 0;
+bool usb_write_block = false;
+uint32_t usb_write_start = 0;
+
+void flashcart_initialize() {
+    memset(FLASHCART_WRITE_QUEUE.buffer, 0, sizeof(FLASHCART_WRITE_QUEUE.buffer));
+    FLASHCART_WRITE_QUEUE.read_cursor = 0;
+    FLASHCART_WRITE_QUEUE.write_cursor = 0;
+    usb_initialize();
+}
 
 void flashcart_handshake() {
     if (FLASHCART_READ_BUF[0] == 'c' && FLASHCART_READ_BUF[1] == 'm' && FLASHCART_READ_BUF[2] == 'd' && FLASHCART_READ_BUF[3] == 't') {
@@ -68,7 +80,7 @@ void flashcart_handshake() {
         usb_write(DATATYPE_HANDSHAKE, reply, 16);
         flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_HANDSHAKE;
     } else {
-        usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
+        usb_sendreset();
         flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
     }
 }
@@ -76,21 +88,7 @@ void flashcart_handshake() {
 void flashcart_update_in_game(bool in_game) {
     if (in_game) {
         // Save context size is 0x1428 in decomp, 0x1450 in z64.h
-        s8 result = usb_write(DATATYPE_INGAME_STATE, &z64_file, 5200); // State: In Game
-        // uint8_t state_packet[16] = {
-        //     0x01, // State: File Select
-        //     z64_file.file_name[0],
-        //     z64_file.file_name[1],
-        //     z64_file.file_name[2],
-        //     z64_file.file_name[3],
-        //     z64_file.file_name[4],
-        //     z64_file.file_name[5],
-        //     z64_file.file_name[6],
-        //     z64_file.file_name[7],
-        //     0, 0, 0, 0, 0, 0, 0,
-        // };
-        // usb_write(DATATYPE_INGAME_STATE, state_packet, 16);
-        if (result == 1)
+        if (flashcart_queue_message(DATATYPE_INGAME_STATE, &z64_file, 5200))
             flashcart_in_game = GAME_STATE_PLAY;
     } else {
         uint8_t state_packet[16] = {
@@ -104,8 +102,8 @@ void flashcart_update_in_game(bool in_game) {
             z64_file.file_name[7],
             0, 0, 0, 0, 0, 0, 0, 0,
         };
-        usb_write(DATATYPE_SAVE_FILENAME, state_packet, 16);
-        flashcart_in_game = GAME_STATE_MENU;
+        if (flashcart_queue_message(DATATYPE_SAVE_FILENAME, state_packet, 16))
+            flashcart_in_game = GAME_STATE_MENU;
         for (int i = 0; i < 8; i++) {
             flashcart_file_name[i] = z64_file.file_name[i];
         }
@@ -113,24 +111,76 @@ void flashcart_update_in_game(bool in_game) {
 }
 
 bool flashcart_queue_message(int datatype, const void* data, int size) {
-    if (!FLASHCART_CAN_QUEUE(size)) return false;
-    memcpy(&FLASHCART_WRITE_QUEUE_BUF[FLASHCART_WRITE_QUEUE_CURSOR], data, size);
-    FLASHCART_WRITE_QUEUE_CURSOR += size;
-    FLASHCART_WRITE_QUEUE_BUF[FLASHCART_WRITE_QUEUE_CURSOR] = datatype;
-    FLASHCART_WRITE_QUEUE_BUF[FLASHCART_WRITE_QUEUE_CURSOR + sizeof(int)] = size;
-    FLASHCART_WRITE_QUEUE_CURSOR += sizeof(int) * 2;
+    switch (datatype) {
+        case DATATYPE_INGAME_STATE:
+            // Queue pointer to save context instead of the data
+            if (!FLASHCART_CAN_QUEUE(sizeof(void*))) return false;
+            break;
+        default:
+            if (!FLASHCART_CAN_QUEUE(size)) return false;
+            break;
+    }
+    memcpy(&FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.write_cursor], &datatype, sizeof(int));
+    FLASHCART_WRITE_QUEUE.write_cursor += sizeof(int);
+    memcpy(&FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.write_cursor], &size, sizeof(int));
+    FLASHCART_WRITE_QUEUE.write_cursor += sizeof(int);
+    switch (datatype) {
+        case DATATYPE_INGAME_STATE:
+            // Queue pointer to save context instead of the data
+            memcpy(&FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.write_cursor], &data, sizeof(void*));
+            FLASHCART_WRITE_QUEUE.write_cursor += sizeof(void*);
+            break;
+        default:
+            memcpy(&FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.write_cursor], data, size);
+            FLASHCART_WRITE_QUEUE.write_cursor += size;
+            break;
+    }
     return true;
+}
+
+void flashcart_pop_message() {
+    int outgoing_size, outgoing_type;
+    memcpy(&outgoing_type, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor], sizeof(int));
+    memcpy(&outgoing_size, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor + sizeof(int)], sizeof(int));
+    switch (outgoing_type) {
+        case DATATYPE_INGAME_STATE:
+            FLASHCART_WRITE_QUEUE.read_cursor += sizeof(int) * 3;
+            break;
+        default:
+            FLASHCART_WRITE_QUEUE.read_cursor += outgoing_size + sizeof(int) * 2;
+            break;
+    }
+    if (FLASHCART_WRITE_QUEUE.read_cursor == FLASHCART_WRITE_QUEUE.write_cursor) {
+        FLASHCART_WRITE_QUEUE.read_cursor = 0;
+        FLASHCART_WRITE_QUEUE.write_cursor = 0;
+    }
 }
 
 void flashcart_frame(bool in_game) {
     if (usb_getcart() != CART_NONE) {
+        // Handle potentially lost acknowledge packet without
+        // total communications loss. Force reset the connection
+        // to avoid duplicating items and desyncing the item counter.
+        // 7000ms chosen to be consistent with PC ack timeout.
+        // Timeout starts after USB write to ensure any lag from
+        // writing does not count against the timeout.
+        if (usb_write_block && usb_timeout_check(usb_write_start, 7000)) {
+            flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
+        }
+        // Clear USB write block and queue in case the connection was reset
+        if (flashcart_protocol_state != FLASHCART_PROTOCOL_STATE_MW) {
+            usb_write_block = false;
+            FLASHCART_WRITE_QUEUE.write_cursor = 0;
+            FLASHCART_WRITE_QUEUE.read_cursor = 0;
+        }
         // Clear USB buffer before potentially writing back
         if (usb_poll() != 0) {
             u32 header = usb_poll();
             int incoming_type = USBHEADER_GETTYPE(header);
             int incoming_size = USBHEADER_GETSIZE(header);
+            s8 read_status = 0; // assume failure
             if (incoming_size <= FLASHCART_BUFFER_SIZE) {
-                usb_read(FLASHCART_READ_BUF, incoming_size);
+                read_status = usb_read(FLASHCART_READ_BUF, incoming_size);
             } else {
                 // Discard packets that are too large for the buffer
                 usb_skip(incoming_size);
@@ -139,21 +189,21 @@ void flashcart_frame(bool in_game) {
             }
             // Heartbeat from external client is ignored in all
             // states as it contains no data to process.
-            if (incoming_type != DATATYPE_HEARTBEAT) {
+            if (read_status && incoming_type != DATATYPE_HEARTBEAT) {
                 // Data potentially requiring action
                 switch (flashcart_protocol_state) {
                     case FLASHCART_PROTOCOL_STATE_INIT: {
                         if (incoming_type == DATATYPE_HANDSHAKE) {
                             flashcart_handshake();
                         } else {
-                            usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
+                            usb_sendreset();
                         }
                         break;
                     }
                     case FLASHCART_PROTOCOL_STATE_HANDSHAKE: {
                         if (incoming_type == DATATYPE_HANDSHAKE && FLASHCART_READ_BUF[0] == 'M' && FLASHCART_READ_BUF[1] == 'W') {
                             if (FLASHCART_READ_BUF[2] != FLASHCART_PROTOCOL_VERSION) {
-                                usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
+                                usb_sendreset();
                                 flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
                             } else {
                                 MW_SEND_OWN_ITEMS = FLASHCART_READ_BUF[3];
@@ -164,24 +214,42 @@ void flashcart_frame(bool in_game) {
                         } else if (incoming_type == DATATYPE_HANDSHAKE && FLASHCART_READ_BUF[0] == 'c') {
                             flashcart_handshake();
                         } else {
-                            usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
+                            usb_sendreset();
                             flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
                         }
                         break;
                     }
                     case FLASHCART_PROTOCOL_STATE_MW: {
-                        if (incoming_type == DATATYPE_HEARTBEAT) {
-                            // ping
+                        if (incoming_type == DATATYPE_ACK_MESSAGE) {
+                            // Check if we actually sent a message to acknowledge.
+                            if (!usb_write_block) {
+                                usb_sendreset();
+                                flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
+                            } else {
+                                flashcart_pop_message();
+                                // Allow sending the next message in queue
+                                usb_write_block = false;
+                            }
+                        } else if (incoming_type == DATATYPE_UNRECOVERABLE) {
+                            // Check if we actually sent a message to acknowledge.
+                            if (!usb_write_block) {
+                                usb_sendreset();
+                                flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
+                            } else {
+                                // Retry sending message, don't remove from queue yet.
+                                usb_write_block = false;
+                            }
                         } else if (incoming_type == DATATYPE_PLAYER_NAMES) {
                             // player data
                             if (incoming_size < 10) {
-                                usb_write(DATATYPE_UNRECOVERABLE, FLASHCART_MESSAGE_ERROR, 16);
+                                usb_sendreadfailure();
                             } else {
                                 uint8_t player_id = FLASHCART_READ_BUF[0];
                                 for (int i = 0; i < 8; i++) {
                                     PLAYER_NAMES[player_id][i] = FLASHCART_READ_BUF[1 + i];
                                 }
                                 MW_PROGRESSIVE_ITEMS_STATE[player_id] = *((mw_progressive_items_state_t*) (&FLASHCART_READ_BUF[9]));
+                                usb_sendreadsuccess();
                             }
                         } else if (incoming_type == DATATYPE_SEND_ITEM) {
                             // get item
@@ -193,12 +261,13 @@ void flashcart_frame(bool in_game) {
                             override.value.base.player = incoming_item == 0xca ? (PLAYER_ID == 1 ? 2 : 1) : PLAYER_ID;
                             override.value.base.item_id = incoming_item;
                             push_pending_item(override);
+                            // success packet queued in get item function
                         } else if (incoming_type == DATATYPE_READ_MEMORY) {
                             // format XXXXXXXXYYYYYYYY
                             // X = RAM address
                             // Y = Total bytes to send
                             if (incoming_size < 8) {
-                                usb_write(DATATYPE_UNRECOVERABLE, FLASHCART_MESSAGE_ERROR, 16);
+                                usb_sendreadfailure();
                             } else {
                                 void* ram_address = (void*)((FLASHCART_READ_BUF[0] << 24) |
                                                     (FLASHCART_READ_BUF[1] << 16) |
@@ -212,8 +281,9 @@ void flashcart_frame(bool in_game) {
                                 if ((uint32_t)ram_address < 0x80000000 || (uint32_t)ram_address > 0x80800000 ||
                                     (uint32_t)ram_address + payload_size > 0x80800000 ||
                                     payload_size > DEBUG_ADDRESS_SIZE) {
-                                    usb_write(DATATYPE_UNRECOVERABLE, FLASHCART_MESSAGE_ERROR, 16);
+                                    usb_sendreadfailure();
                                 } else {
+                                    // data payload in place of success packet
                                     usb_write(DATATYPE_RAWBINARY, ram_address, payload_size);
                                 }
                             }
@@ -223,7 +293,7 @@ void flashcart_frame(bool in_game) {
                             // Y = Total bytes to overwrite
                             // Z = Start of data payload
                             if (incoming_size < 9) {
-                                usb_write(DATATYPE_UNRECOVERABLE, FLASHCART_MESSAGE_ERROR, 16);
+                                usb_sendreadfailure();
                             } else {
                                 volatile uint8_t* ram_address = (void*)((FLASHCART_READ_BUF[0] << 24) |
                                                                 (FLASHCART_READ_BUF[1] << 16) |
@@ -236,7 +306,7 @@ void flashcart_frame(bool in_game) {
                                 // Bounds check for RAM
                                 if ((uint32_t)ram_address < 0x80000000 || (uint32_t)ram_address > 0x80800000 ||
                                     (uint32_t)ram_address + payload_size > 0x80800000) {
-                                    usb_write(DATATYPE_UNRECOVERABLE, FLASHCART_MESSAGE_ERROR, 16);
+                                    usb_sendreadfailure();
                                 } else {
                                     osWritebackDCache((void*)ram_address, payload_size);
                                     osInvalDCache((void*)ram_address, payload_size);
@@ -244,33 +314,42 @@ void flashcart_frame(bool in_game) {
                                         *ram_address = FLASHCART_READ_BUF[i];
                                         ram_address++;
                                     }
-                                    usb_write(DATATYPE_WRITE_ACK, FLASHCART_MESSAGE_SUCCESS, 16);
+                                    usb_sendreadsuccess();
                                 }
                             }
                         } else if (incoming_type == DATATYPE_HANDSHAKE) {
                             flashcart_handshake();
                         } else {
-                            usb_write(DATATYPE_RESET, FLASHCART_MESSAGE_RESET, 16);
+                            usb_sendreset();
                             flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
                         }
                         break;
                     }
                 }
+            } else if (!read_status) {
+                usb_sendreadfailure();
             }
         }
         // Re-test for additional messages in the read queue
         if (usb_poll() == 0) {
             bool message_sent = false;
-            if (FLASHCART_WRITE_QUEUE_CURSOR > 0) {
-                // Flashcart write buffer is emptied all at once.
-                // Clients are expected to handle multiple messages
-                // through the protocol headers.
-                while (FLASHCART_WRITE_QUEUE_CURSOR > 0) {
-                    int outgoing_size = FLASHCART_WRITE_QUEUE_BUF[FLASHCART_WRITE_QUEUE_CURSOR - sizeof(int)];
-                    int outgoing_type = FLASHCART_WRITE_QUEUE_BUF[FLASHCART_WRITE_QUEUE_CURSOR - sizeof(int) * 2];
-                    FLASHCART_WRITE_QUEUE_CURSOR -= outgoing_size + sizeof(int) * 2;
-                    usb_write(outgoing_type, &FLASHCART_WRITE_QUEUE_BUF[FLASHCART_WRITE_QUEUE_CURSOR], outgoing_size);
+            if (FLASHCART_WRITE_QUEUE.write_cursor > 0 && !usb_write_block) {
+                int outgoing_size, outgoing_type;
+                memcpy(&outgoing_type, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor], sizeof(int));
+                memcpy(&outgoing_size, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor + sizeof(int)], sizeof(int));
+                uint8_t temp_cursor = FLASHCART_WRITE_QUEUE.read_cursor + sizeof(int) * 2;
+                switch (outgoing_type) {
+                    case DATATYPE_INGAME_STATE:
+                        void* data;
+                        memcpy(&data, &FLASHCART_WRITE_QUEUE.buffer[temp_cursor], sizeof(void*));
+                        usb_write(outgoing_type, data, outgoing_size);
+                        break;
+                    default:
+                        usb_write(outgoing_type, &FLASHCART_WRITE_QUEUE.buffer[temp_cursor], outgoing_size);
+                        break;
                 }
+                usb_write_start = usb_timeout_start();
+                usb_write_block = true;
                 message_sent = true;
             } else if (flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW &&
                     ((in_game && flashcart_in_game != GAME_STATE_PLAY) ||

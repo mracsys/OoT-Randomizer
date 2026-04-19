@@ -6,6 +6,7 @@
 #include "serial_stream.h"
 #include "vc.h"
 #include "device_wii.h"
+#include "device_usb.h"
 #include "lib_usb.h"
 #include "lib_ipc.h"
 #include "handlers.h"
@@ -92,6 +93,10 @@ serial_state serial_poll(void) {
         serial_device_object->reset = 1;
         purge_queue();
         return SERIAL_SETUP;
+    } else if (read_err != DEVICEERR_OK) {
+        serial_device_object->error = SERIALERR_FAIL;
+        purge_queue();
+        device_usb_purgequeue();
     }
 
     uint8_t datatype = USBHEADER_GETTYPE(header);

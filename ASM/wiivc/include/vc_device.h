@@ -5,7 +5,8 @@
 
 typedef enum {
     SERIALERR_SUCCESS,
-    SERIALERR_FAIL
+    SERIALERR_FAIL,
+    SERIALERR_TIMEOUT,
 } SerialDeviceError;
 
 typedef union {

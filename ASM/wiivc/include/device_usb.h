@@ -60,6 +60,7 @@ typedef enum {
     USB_NOT_SUPPORTED,
     USB_OTHER_ERROR,
     USB_DEVICE_LIST_NOT_READY,
+    USB_IO_TIMEOUT,
 } USBStatus;
 
 
@@ -70,5 +71,6 @@ typedef enum {
 USBStatus device_usb_write(int32_t handle, void* buffer, uint16_t size, uint32_t* written);
 USBStatus device_usb_read(int32_t handle, void* buffer, uint16_t size, uint32_t* read);
 USBStatus device_usb_getqueuestatus(int32_t handle, uint32_t* bytesleft);
+void device_usb_purgequeue();
 
 #endif

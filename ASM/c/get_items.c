@@ -375,14 +375,7 @@ void after_key_received(override_key_t key) {
         uint8_t FLASHCART_MESSAGE_ITEM_RECEIVED[16] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
         if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
-            // Write queue can hold up to 8 messages of 16-byte length
-            // with the current buffer size of 128 bytes. Mido's House MW
-            // will not send another item until receiving this message. The
-            // only other ways to queue messages to PC are currently via the
-            // dungeon menu (total 19 bytes) and sending items out from the
-            // outgoing queue (only 1 sent per frame at 16 bytes total), so
-            // this should never fail due to a full queue.
-            flashcart_queue_message(DATATYPE_ACK_ITEM, FLASHCART_MESSAGE_ITEM_RECEIVED, 16);
+            usb_sendreadsuccess();
         }
         INCOMING_ITEM = 0;
         INCOMING_PLAYER = 0;

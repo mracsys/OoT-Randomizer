@@ -233,21 +233,21 @@ static u32  usb_getaddr();
 
 static s8   usb_64drive_write(int datatype, const void* data, u32 size);
 static u32  usb_64drive_poll(void);
-static void usb_64drive_read(void);
+static s8   usb_64drive_read(void);
 static void usb_64drive_set_extendedaddress(u8 enable);
 static u32  usb_64drive_get_baseaddr();
 
 static s8   usb_everdrive_write(int datatype, const void* data, u32 size);
 static u32  usb_everdrive_poll(void);
-static void usb_everdrive_read(void);
+static s8   usb_everdrive_read(void);
 
 static s8   usb_sc64_write(int datatype, const void* data, u32 size);
 static u32  usb_sc64_poll(void);
-static void usb_sc64_read(void);
+static s8   usb_sc64_read(void);
 
 static s8   usb_wii_write(int datatype, const void* data, u32 size);
 static u32  usb_wii_poll(void);
-static void usb_wii_read(void);
+static s8   usb_wii_read(void);
 
 
 /*********************************
@@ -257,7 +257,7 @@ static void usb_wii_read(void);
 // Function pointers
 s8   (*funcPointer_write)(int datatype, const void* data, u32 size);
 u32  (*funcPointer_poll)(void);
-void (*funcPointer_read)(void);
+s8   (*funcPointer_read)(void);
 
 // USB globals
 static s8 usb_cart = CART_NONE;
@@ -408,7 +408,7 @@ static inline void usb_dma_write(void *ram_address, u32 pi_address, size_t size)
     @return C0_COUNT value
 ==============================*/
 
-static u32 usb_timeout_start(void)
+u32 usb_timeout_start(void)
 {
 #ifndef LIBDRAGON
     return osGetCount();
@@ -426,7 +426,7 @@ static u32 usb_timeout_start(void)
     @return true if timeout occurred, otherwise false
 ==============================*/
 
-static char usb_timeout_check(u32 start_ticks, u32 duration)
+char usb_timeout_check(u32 start_ticks, u32 duration)
 {
 #ifndef LIBDRAGON
     u64 current_ticks = (u64)osGetCount();
@@ -674,9 +674,10 @@ u32 usb_poll(void)
     Reads bytes from USB into the provided buffer
     @param The buffer to put the read data in
     @param The number of bytes to read
+    @return 1 on success, 0 on failure, -1 on timeout
 ==============================*/
 
-void usb_read(void* buffer, u32 nbytes)
+s8 usb_read(void* buffer, u32 nbytes)
 {
     u32 read = 0;
     u32 left = nbytes;
@@ -687,11 +688,11 @@ void usb_read(void* buffer, u32 nbytes)
 
     // If no debug cart exists, stop
     if (usb_cart == CART_NONE)
-        return;
+        return 0;
 
     // If there's no data to read, stop
     if (usb_dataleft == 0)
-        return;
+        return 0;
 
     // Read chunks from ROM
     while (left > 0)
@@ -706,7 +707,11 @@ void usb_read(void* buffer, u32 nbytes)
         if (usb_readblock != blockoffset)
         {
             usb_readblock = blockoffset;
-            funcPointer_read();
+            s8 status = funcPointer_read();
+            if (status < 1) {
+                usb_purge();
+                return status;
+            }
         }
 
         // Copy from the USB buffer to the supplied buffer
@@ -724,6 +729,8 @@ void usb_read(void* buffer, u32 nbytes)
     // Due to hardware issues, we should re-poll the 64Drive for data (which will unarm the buffer if there really isn't any more data)
     if (usb_dataleft == 0 && usb_cart == CART_64DRIVE)
         usb_64drive_poll();
+
+    return 1;
 }
 
 
@@ -838,6 +845,54 @@ s8 usb_sendhandshake(void)
 
     // Send through USB
     return usb_write(DATATYPE_HANDSHAKE, buffer, sizeof(buffer)/sizeof(buffer[0]));
+}
+
+
+/*==============================
+    usb_sendreadfailure
+    Sends a message indicating an unrecoverable error
+    while receiving data, either due to USB errors or
+    incorrect message format.
+==============================*/
+
+s8 usb_sendreadfailure(void)
+{
+    // Empty buffer to have data for the write function
+    u8 buffer[4] = {0, 0, 0, 0};
+
+    // Send through USB
+    return usb_write(DATATYPE_UNRECOVERABLE, buffer, sizeof(buffer)/sizeof(buffer[0]));
+}
+
+
+/*==============================
+    usb_sendreadsuccess
+    Sends a message indicating the received message
+    was received and successfully processed.
+==============================*/
+
+s8 usb_sendreadsuccess(void)
+{
+    // Empty buffer to have data for the write function
+    u8 buffer[4] = {0, 0, 0, 0};
+
+    // Send through USB
+    return usb_write(DATATYPE_ACK_MESSAGE, buffer, sizeof(buffer)/sizeof(buffer[0]));
+}
+
+
+/*==============================
+    usb_sendreset
+    Sends a message to restart the handshake process.
+==============================*/
+
+s8 usb_sendreset(void)
+{
+    // Empty buffer to have data for the write function
+    u8 buffer[4] = {0, 0, 0, 0};
+
+    // Send through USB
+    return usb_write(DATATYPE_RESET, buffer, sizeof(buffer)/sizeof(buffer[0]));
 }
 
 
@@ -1174,12 +1229,14 @@ static u32 usb_64drive_poll(void)
 /*==============================
     usb_64drive_read
     Reads bytes from the 64Drive ROM into the global buffer with the block offset
+    @return 1 on success, 0 on failure, -1 on timeout
 ==============================*/
 
-static void usb_64drive_read(void)
+static s8 usb_64drive_read(void)
 {
     // Set up DMA transfer between RDRAM and the PI
     usb_dma_read(SERIAL_RECEIVE_BUFFER, D64_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
+    return 1;
 }
 
 
@@ -1237,9 +1294,10 @@ static char usb_everdrive_canread(void)
     Reads from the EverDrive USB buffer
     @param The buffer to put the read data in
     @param The number of bytes to read
+    @return 1 on success, 0 on fail, -1 on timeout
 ==============================*/
 
-static void usb_everdrive_readusb(void* buffer, u32 size)
+static s8 usb_everdrive_readusb(void* buffer, u32 size)
 {
     u16 block, addr;
 
@@ -1256,13 +1314,14 @@ static void usb_everdrive_readusb(void* buffer, u32 size)
 
         // Wait for the FPGA to transfer the data to its internal buffer, or stop on timeout
         if (usb_everdrive_usbbusy())
-            return;
+            return -1;
 
         // Read from the internal buffer and store it in our buffer
         usb_dma_read(buffer, ED_REG_USBDAT + addr, block);
         buffer = (char*)buffer + block;
         size -= block;
     }
+    return 1;
 }
 
 
@@ -1380,6 +1439,7 @@ static u32 usb_everdrive_poll(void)
     usb_everdrive_readusb(buff, 8);
     if (buff[0] != 'D' || buff[1] != 'M' || buff[2] != 'A' || buff[3] != '@')
     {
+        usb_sendreadfailure();
         return 0;
     }
     // Store information about the incoming data
@@ -1399,7 +1459,11 @@ static u32 usb_everdrive_poll(void)
             bytes_do = len;
 
         // Read a chunk from USB and store it into our temp buffer
-        usb_everdrive_readusb(SERIAL_RECEIVE_BUFFER, bytes_do);
+        if (usb_everdrive_readusb(SERIAL_RECEIVE_BUFFER, bytes_do) < 1) {
+            usb_purge();
+            usb_sendreadfailure();
+            return 0;
+        }
 
         // Copy received block to ROM
         usb_dma_write(SERIAL_RECEIVE_BUFFER, ED_BASE + usb_getaddr() + offset, bytes_do);
@@ -1410,16 +1474,16 @@ static u32 usb_everdrive_poll(void)
     // Read the CMP Signal
     if (usb_everdrive_usbbusy())
     {
+        usb_purge();
+        usb_sendreadfailure();
         return 0;
     }
     usb_everdrive_readusb(buff, 4);
     if (buff[0] != 'C' || buff[1] != 'M' || buff[2] != 'P' || buff[3] != 'H')
     {
         // Something went wrong with the data
-        usb_datatype = 0;
-        usb_datasize = 0;
-        usb_dataleft = 0;
-        usb_readblock = -1;
+        usb_purge();
+        usb_sendreadfailure();
         return 0;
     }
 
@@ -1431,12 +1495,14 @@ static u32 usb_everdrive_poll(void)
 /*==============================
     usb_everdrive_read
     Reads bytes from the EverDrive ROM into the global buffer with the block offset
+    @return 1 on success, 0 on failure, -1 on timeout
 ==============================*/
 
-static void usb_everdrive_read(void)
+static s8 usb_everdrive_read(void)
 {
     // Set up DMA transfer between RDRAM and the PI
     usb_dma_read(SERIAL_RECEIVE_BUFFER, ED_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
+    return 1;
 }
 
 
@@ -1639,12 +1705,14 @@ static u32 usb_sc64_poll(void)
 /*==============================
     usb_sc64_read
     Reads bytes from the SC64 SDRAM into the global buffer with the block offset
+    @return 1 on success, 0 on failure, -1 on timeout
 ==============================*/
 
-static void usb_sc64_read(void)
+static s8 usb_sc64_read(void)
 {
     // Set up DMA transfer between RDRAM and the PI
     usb_dma_read(SERIAL_RECEIVE_BUFFER, SC64_BASE + usb_getaddr() + usb_readblock, BUFFER_SIZE);
+    return 1;
 }
 
 
@@ -1721,15 +1789,22 @@ static u32 usb_wii_poll(void)
 /*==============================
     usb_wii_read
     Stub function as the Wii writes incoming data directly to the global receive buffer
+    @return 1 on success, 0 on failure, -1 on timeout
 ==============================*/
 
-static void usb_wii_read(void) {
+static s8 usb_wii_read(void) {
     if (wii_serial_device.reset) {
         usb_purge();
         wii_serial_device.reset = 0;
+        return 0;
     } else if (wii_serial_device.ready) {
         wii_serial_device.receiving = 1;
         while (wii_serial_device.busy)
             continue;
+        if (wii_serial_device.error == SERIALERR_FAIL || wii_serial_device.error == SERIALERR_TIMEOUT) {
+            usb_purge();
+            return wii_serial_device.error == SERIALERR_FAIL ? 0 : -1;
+        }
     }
+    return 1;
 }

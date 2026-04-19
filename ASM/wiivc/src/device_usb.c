@@ -108,12 +108,17 @@ USBStatus device_usb_read(int32_t handle, void* buffer, uint16_t size, uint32_t*
     }
 
     // If we're being asked to read more data than we have in our buffer, wait for the USB to give us more
+    s64 start_time = OSGetTime();
     while (readcount > readbuffer_left)
     {
         ret = device_usb_getqueuestatus(handle, NULL);
         if (ret < USB_OK)
         {
             return USB_IO_ERROR;
+        }
+        if (OSGetTime() - start_time > OSMillisecondsToTicks(100))
+        {
+            return USB_IO_TIMEOUT;
         }
     }
 
@@ -122,13 +127,11 @@ USBStatus device_usb_read(int32_t handle, void* buffer, uint16_t size, uint32_t*
     // Detect if we had FTDI status bytes in the original packet
     // that would affect alignment padding.
     uint32_t status_offset = readbuffer_statusoffsets[0];
-    uint32_t status_bytes = 0;
     if (status_offset >= readbuffer_readoffset && status_offset < readbuffer_readoffset + readcount) {
         for (int i = 0; i < copy_statusoffset; i++) {
             readbuffer_statusoffsets[i] = readbuffer_statusoffsets[i + 1];
         }
         copy_statusoffset--;
-        status_bytes = 2;
     }
     readbuffer_left -= readcount;
     // only apply to bytes read as the status bytes are already
@@ -204,4 +207,13 @@ USBStatus device_usb_getqueuestatus(int32_t handle, uint32_t* bytesleft)
     if (bytesleft != NULL)
         (*bytesleft) = readbuffer_left;
     return USB_OK;
+}
+
+void device_usb_purgequeue()
+{
+    readbuffer_left = 0;
+    readbuffer_readoffset = 0;
+    readbuffer_copyoffset = 0;
+    copy_statusoffset = -1;
+    memset(readbuffer_statusoffsets, 0, sizeof(readbuffer_statusoffsets));
 }

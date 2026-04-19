@@ -12,11 +12,10 @@
 
 void flashcart_frame(bool in_game);
 bool flashcart_queue_message(int datatype, const void* data, int size);
+void flashcart_initialize();
 
 extern uint8_t flashcart_protocol_state;
 extern uint8_t FLASHCART_READ_BUF[FLASHCART_BUFFER_SIZE];
-extern uint8_t FLASHCART_WRITE_QUEUE_CURSOR;
-extern uint8_t FLASHCART_WRITE_QUEUE_BUF[FLASHCART_BUFFER_SIZE];
 extern uint8_t frames_since_last_ping;
 extern uint8_t flashcart_in_game;
 

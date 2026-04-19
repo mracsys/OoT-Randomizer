@@ -149,6 +149,9 @@ void ICInvalidateRange(const void* buf, u32 len);
 void DCFlushRange(void *startaddress,u32 len);
 void DCInvalidateRange(void *startaddress,u32 len);
 
+s64 OSGetTime(void);
+u32 OSGetTick(void);
+
 extern s32 ganMapGPR[32];
 extern System* gpSystem;
 extern u32 gnFlagZelda;
