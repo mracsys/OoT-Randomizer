@@ -8,6 +8,7 @@
 #include "usb.h"
 #include "ultratypes.h"
 #include "ultra64.h"
+#include "file_select.h"
 
 #define GAME_STATE_MENU 0
 #define GAME_STATE_PLAY 1
@@ -42,8 +43,8 @@ extern uint8_t MW_PROGRESSIVE_ITEMS_ENABLE;
 extern uint8_t PLAYER_NAMES[256][8];
 extern mw_progressive_items_state_t MW_PROGRESSIVE_ITEMS_STATE[256];
 
-uint8_t flashcart_in_game = 2;
-char flashcart_file_name[0x08] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
+uint8_t flashcart_in_game = GAME_STATE_INIT;
+uint8_t flashcart_file_name[0x08] = { 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF, 0xDF };
 uint8_t flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
 
 uint8_t frames_since_last_ping = 0;
@@ -85,27 +86,27 @@ void flashcart_handshake() {
     }
 }
 
-void flashcart_update_in_game(bool in_game) {
-    if (in_game) {
+void flashcart_update_in_game(z64_menudata_t* menu_data) {
+    if (menu_data == NULL) {
         // Save context size is 0x1428 in decomp, 0x1450 in z64.h
         if (flashcart_queue_message(DATATYPE_INGAME_STATE, &z64_file, 5200))
             flashcart_in_game = GAME_STATE_PLAY;
     } else {
         uint8_t state_packet[16] = {
-            z64_file.file_name[0],
-            z64_file.file_name[1],
-            z64_file.file_name[2],
-            z64_file.file_name[3],
-            z64_file.file_name[4],
-            z64_file.file_name[5],
-            z64_file.file_name[6],
-            z64_file.file_name[7],
+            menu_data->name[menu_data->selected_item][0],
+            menu_data->name[menu_data->selected_item][1],
+            menu_data->name[menu_data->selected_item][2],
+            menu_data->name[menu_data->selected_item][3],
+            menu_data->name[menu_data->selected_item][4],
+            menu_data->name[menu_data->selected_item][5],
+            menu_data->name[menu_data->selected_item][6],
+            menu_data->name[menu_data->selected_item][7],
             0, 0, 0, 0, 0, 0, 0, 0,
         };
         if (flashcart_queue_message(DATATYPE_SAVE_FILENAME, state_packet, 16))
             flashcart_in_game = GAME_STATE_MENU;
         for (int i = 0; i < 8; i++) {
-            flashcart_file_name[i] = z64_file.file_name[i];
+            flashcart_file_name[i] = menu_data->name[menu_data->selected_item][i];
         }
     }
 }
@@ -156,7 +157,7 @@ void flashcart_pop_message() {
     }
 }
 
-void flashcart_frame(bool in_game) {
+void flashcart_frame(z64_menudata_t* menu_data) {
     if (usb_getcart() != CART_NONE) {
         // Handle potentially lost acknowledge packet without
         // total communications loss. Force reset the connection
@@ -261,7 +262,7 @@ void flashcart_frame(bool in_game) {
                             override.value.base.player = incoming_item == 0xca ? (PLAYER_ID == 1 ? 2 : 1) : PLAYER_ID;
                             override.value.base.item_id = incoming_item;
                             push_pending_item(override);
-                            // success packet queued in get item function
+                            usb_sendreadsuccess();
                         } else if (incoming_type == DATATYPE_READ_MEMORY) {
                             // format XXXXXXXXYYYYYYYY
                             // X = RAM address
@@ -352,24 +353,28 @@ void flashcart_frame(bool in_game) {
                 usb_write_block = true;
                 message_sent = true;
             } else if (flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW &&
-                    ((in_game && flashcart_in_game != GAME_STATE_PLAY) ||
-                     !in_game)) {
-                if (!in_game) {
-                    bool filenames_match = true;
-                    for (int i = 0; i < 8; i++) {
-                        if (z64_file.file_name[i] != flashcart_file_name[i]) {
-                            filenames_match = false;
-                            break;
+                    ((menu_data == NULL && flashcart_in_game != GAME_STATE_PLAY) ||
+                     menu_data != NULL)) {
+                if (menu_data != NULL) {
+                    if (menu_data->selected_item < 2) {
+                        if (SLOT_OCCUPIED(menu_data->sram_buffer, menu_data->selected_item)) {
+                            bool filenames_match = true;
+                            for (int i = 0; i < 8; i++) {
+                                if (menu_data->name[menu_data->selected_item][i] != flashcart_file_name[i]) {
+                                    filenames_match = false;
+                                    break;
+                                }
+                            }
+                            if (!filenames_match || flashcart_in_game != GAME_STATE_MENU) {
+                                flashcart_update_in_game(menu_data);
+                                message_sent = true;
+                            }
                         }
-                    }
-                    if (!filenames_match || flashcart_in_game != GAME_STATE_MENU) {
-                        flashcart_update_in_game(in_game);
-                        message_sent = true;
                     }
                 } else if (z64_logo_state != 0x802C5880
                         && z64_logo_state != 0
                         && z64_file.game_mode == 0) {
-                    flashcart_update_in_game(in_game);
+                    flashcart_update_in_game(menu_data);
                     message_sent = true;
                 }
             }

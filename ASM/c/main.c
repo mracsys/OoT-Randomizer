@@ -44,7 +44,7 @@ void c_init() {
 
 void before_game_state_update() {
     rando_display_buffer_reset();
-    flashcart_frame(true);
+    flashcart_frame(NULL);
     handle_pending_items();
     handle_dpad();
     update_misc_colors();

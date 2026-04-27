@@ -375,7 +375,8 @@ void after_key_received(override_key_t key) {
         uint8_t FLASHCART_MESSAGE_ITEM_RECEIVED[16] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
         if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
-            usb_sendreadsuccess();
+            uint8_t buffer[4] = {0, 0, 0, 0};
+            flashcart_queue_message(DATATYPE_ITEM_GIVEN, buffer, sizeof(buffer)/sizeof(buffer[0]));
         }
         INCOMING_ITEM = 0;
         INCOMING_PLAYER = 0;

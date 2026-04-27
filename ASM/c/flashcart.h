@@ -10,7 +10,7 @@
 
 #define FLASHCART_BUFFER_SIZE 128
 
-void flashcart_frame(bool in_game);
+void flashcart_frame(z64_menudata_t* menu_data);
 bool flashcart_queue_message(int datatype, const void* data, int size);
 void flashcart_initialize();
 

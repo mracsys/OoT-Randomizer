@@ -242,7 +242,7 @@ void manage_password(z64_disp_buf_t* db, z64_menudata_t* menu_data) {
 }
 
 void draw_file_select_hash(uint32_t fade_out_alpha, z64_menudata_t* menu_data) {
-    flashcart_frame(false);
+    flashcart_frame(menu_data);
 
     z64_disp_buf_t* db = &(z64_ctxt.gfx->poly_opa);
 

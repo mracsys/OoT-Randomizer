@@ -1803,7 +1803,10 @@ static s8 usb_wii_read(void) {
             continue;
         if (wii_serial_device.error == SERIALERR_FAIL || wii_serial_device.error == SERIALERR_TIMEOUT) {
             usb_purge();
-            return wii_serial_device.error == SERIALERR_FAIL ? 0 : -1;
+            s8 err = wii_serial_device.error == SERIALERR_FAIL ? 0 : -1;
+            // reset error once processed
+            wii_serial_device.error = SERIALERR_SUCCESS;
+            return err;
         }
     }
     return 1;

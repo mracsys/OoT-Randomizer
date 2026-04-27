@@ -283,6 +283,7 @@ DeviceError device_receivedata_wii(WiiSerialDevice *serial, uint32_t *dataheader
                 #ifdef DEBUG_MODE
                 printf("Failed to read payload: %d\n", err);
                 #endif
+                iosFree(hId, (*buff));
                 return DEVICEERR_READFAIL;
             }
             totalread += serial->bytes_read;

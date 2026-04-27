@@ -20,6 +20,16 @@ typedef enum {
     /* 1 */ FS_BTN_CONFIRM_QUIT,
 } ConfirmButtonIndex;
 
+#define GET_NEWF(sramFile, slotNum, index) (sramFile->primary_saves[slotNum].original_save.id[index])
+
+#define SLOT_OCCUPIED(sramFile, slotNum) \
+    ((GET_NEWF(sramFile, slotNum, 0) == 'Z') || \
+     (GET_NEWF(sramFile, slotNum, 1) == 'E') || \
+     (GET_NEWF(sramFile, slotNum, 2) == 'L') || \
+     (GET_NEWF(sramFile, slotNum, 3) == 'D') || \
+     (GET_NEWF(sramFile, slotNum, 4) == 'A') || \
+     (GET_NEWF(sramFile, slotNum, 5) == 'Z'))
+
 void draw_file_select_hash(uint32_t fade_out_alpha, z64_menudata_t* menu_data);
 
 void Audio_StopCurrentMusic(uint16_t arg0);

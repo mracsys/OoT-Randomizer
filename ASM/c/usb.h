@@ -45,6 +45,8 @@
     #define DATATYPE_READ_MEMORY     0x11
     #define DATATYPE_WRITE_MEMORY    0x12
     #define DATATYPE_UNRECOVERABLE   0x13
+    #define DATATYPE_ITEM_GIVEN      0x14
+    #define DATATYPE_PROG_ITEM_STATE 0x15
 
     // Wii receive states
     #define SERIAL_READ_DONE       0x00

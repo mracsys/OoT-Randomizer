@@ -193,7 +193,7 @@ size_t strnlen (const char *, size_t);
 #define ios_heap_addr        0x933E8000
 #define allocMEM2(ptr, size) xlHeapTake((void**)(ptr), (0x70000000 | (size)))
 
-#define OS_BUS_CLOCK_SPEED (*(vs64*)0x800000F8)
+#define OS_BUS_CLOCK_SPEED (*(vs32*)0x800000F8)
 
 // Time base frequency = 1/4 bus clock
 #define OS_TIME_SPEED (OS_BUS_CLOCK_SPEED / 4)
