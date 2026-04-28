@@ -85,12 +85,15 @@ if compile_wii:
         if os.path.exists(bin_file):
             os.replace(bin_file, os.path.join(wii_out_dir, f"wiivc_{region}.bin"))
         gzi_file = os.path.join(gzinject_dir, f'ootr_{region}.gzi')
-        with open(gzi_file, 'r+') as f:
-            while line:= f.readline():
+        # Has to be read in byte mode to handle Windows-style \r\n line endings
+        with open(gzi_file, 'r+b') as f:
+            while line_bytes := f.readline():
                 # update branch to frameEnd_hook() if it shifted
+                line = line_bytes.decode()
                 if line.startswith(gzi_branches[region]):
-                    f.seek(f.tell() - len(line.encode()))
-                    f.write(f'{gzi_branches[region]} {calculate_branch_bytes(region)}\n')
+                    f.seek(f.tell() - len(line_bytes))
+                    new_line = f'{gzi_branches[region]} {calculate_branch_bytes(region)}'
+                    f.write(new_line.encode())
                     break
 
 if not diff_only:
