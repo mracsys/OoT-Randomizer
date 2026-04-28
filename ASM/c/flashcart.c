@@ -254,7 +254,11 @@ void flashcart_frame(z64_menudata_t* menu_data) {
                             }
                         } else if (incoming_type == DATATYPE_SEND_ITEM) {
                             // get item
+                            if (incoming_size < 2)
+                                usb_sendreadfailure();
                             uint16_t incoming_item = FLASHCART_READ_BUF[0] << 8 | FLASHCART_READ_BUF[1];
+                            if (incoming_item == 0)
+                                usb_sendreadfailure();
                             override_t override = { 0 };
                             override.key.scene = 0xFF;
                             override.key.type = OVR_DELAYED;

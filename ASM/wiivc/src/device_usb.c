@@ -131,6 +131,7 @@ USBStatus device_usb_read(int32_t handle, void* buffer, uint16_t size, uint32_t*
         for (int i = 0; i < copy_statusoffset; i++) {
             readbuffer_statusoffsets[i] = readbuffer_statusoffsets[i + 1];
         }
+        readbuffer_statusoffsets[copy_statusoffset] = 0;
         copy_statusoffset--;
     }
     readbuffer_left -= readcount;

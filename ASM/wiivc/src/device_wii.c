@@ -292,23 +292,34 @@ DeviceError device_receivedata_wii(WiiSerialDevice *serial, uint32_t *dataheader
         }
 
         // Ensure 4 byte alignment by reading X amount of bytes needed.
-        // Add status bytes to read bytes even if they weren't included
-        // in the actual message, because every message sent by the client
-        // assumes they are included when calculating padding.
-        totalread += 2;
-        if (totalread % alignment != 0)
+        // 3 bytes odd payload size, 2 bytes even.
+        // Status bytes are irrelevant to padding size. The extra padding
+        // is to ensure that if a message does not have status bytes (i.e.
+        // it's not the first message of the packet), it's padded to at
+        // least 4 bytes to preserve the payload data. Unaligned bytes
+        // after the last aligned block will always be 0 from the USB DMA
+        // transfer. As long as those bytes are padding, it doesn't matter.
+        // ---------------------------------------------------------
+        // | Payload | w/Status | Padding | Total | Total w/Status |
+        // |       1 |        3 |       3 |     4 |              6 |
+        // |       2 |        4 |       2 |     4 |              6 |
+        // |       3 |        5 |       3 |     6 |              8 |
+        // |       4 |        6 |       2 |     6 |              8 |
+        // ---------------------------------------------------------
+        if (totalread % 2 != 0) {
+            alignment = 3;
+        } else {
+            alignment = 2;
+        }
+        byte* tempbuff[4] = { 0, 0, 0, 0 };
+        err = device_usb_read(serial->handle, tempbuff, alignment, &serial->bytes_read);
+        if (err != USB_OK)
         {
-            byte* tempbuff = (byte*)iosAlloc(hId, alignment*sizeof(byte));
-            int left = alignment - (totalread % alignment);
-            err = device_usb_read(serial->handle, tempbuff, left, &serial->bytes_read);
-            if (err != USB_OK)
-            {
-                #ifdef DEBUG_MODE
-                printf("Failed to read padding: %d\n", err);
-                #endif
-                return DEVICEERR_READFAIL;
-            }
-            iosFree(hId, tempbuff);
+            #ifdef DEBUG_MODE
+            printf("Failed to read padding: %d\n", err);
+            #endif
+            iosFree(hId, (*buff));
+            return DEVICEERR_READFAIL;
         }
         #ifdef DEBUG_MODE
         printf("Received message of size %d\n", size);
