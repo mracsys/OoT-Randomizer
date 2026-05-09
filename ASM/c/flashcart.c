@@ -14,21 +14,21 @@
 #define GAME_STATE_PLAY 1
 #define GAME_STATE_INIT 2
 
-uint8_t FLASHCART_READ_BUF[FLASHCART_BUFFER_SIZE];
+uint8_t FLASHCART_READ_BUF[FLASHCART_WRITE_BUFFER_SIZE];
 
 // Intermediate write buffer to ensure we don't interfere with
 // PC messages mid-frame before they can be read.
 // Bypassed in specific instances where it is known the queue
 // is empty, such as sending heartbeats or save file info.
 typedef struct {
-    uint8_t buffer[FLASHCART_BUFFER_SIZE];
+    uint8_t buffer[FLASHCART_WRITE_BUFFER_SIZE];
     uint8_t read_cursor;
     uint8_t write_cursor;
 } write_queue;
 
 write_queue FLASHCART_WRITE_QUEUE;
 
-#define FLASHCART_CAN_QUEUE(x) (FLASHCART_WRITE_QUEUE.write_cursor + x + sizeof(int) * 2 < FLASHCART_BUFFER_SIZE ? 1 : 0)
+#define FLASHCART_CAN_QUEUE(x) (FLASHCART_WRITE_QUEUE.write_cursor + x + sizeof(int) * 2 < FLASHCART_WRITE_BUFFER_SIZE ? 1 : 0)
 
 uint8_t FLASHCART_PROTOCOL_VERSION = 3;
 extern uint8_t CFG_RANDO_VERSION_MAJOR;
@@ -53,6 +53,9 @@ uint8_t frames_since_last_ping = 0;
 // the timeout start value happens to be 0;
 bool usb_write_block = false;
 uint32_t usb_write_start = 0;
+
+bool filename_queued = false;
+bool savectxt_queued = false;
 
 void flashcart_initialize() {
     memset(FLASHCART_WRITE_QUEUE.buffer, 0, sizeof(FLASHCART_WRITE_QUEUE.buffer));
@@ -89,22 +92,15 @@ void flashcart_handshake() {
 void flashcart_update_in_game(z64_menudata_t* menu_data) {
     if (menu_data == NULL) {
         // Save context size is 0x1428 in decomp, 0x1450 in z64.h
-        if (flashcart_queue_message(DATATYPE_INGAME_STATE, &z64_file, 5200))
+        if (flashcart_queue_message(DATATYPE_INGAME_STATE, &z64_file, 5200)) {
+            savectxt_queued = true;
             flashcart_in_game = GAME_STATE_PLAY;
+        }
     } else {
-        uint8_t state_packet[16] = {
-            menu_data->name[menu_data->selected_item][0],
-            menu_data->name[menu_data->selected_item][1],
-            menu_data->name[menu_data->selected_item][2],
-            menu_data->name[menu_data->selected_item][3],
-            menu_data->name[menu_data->selected_item][4],
-            menu_data->name[menu_data->selected_item][5],
-            menu_data->name[menu_data->selected_item][6],
-            menu_data->name[menu_data->selected_item][7],
-            0, 0, 0, 0, 0, 0, 0, 0,
-        };
-        if (flashcart_queue_message(DATATYPE_SAVE_FILENAME, state_packet, 16))
+        if (flashcart_queue_message(DATATYPE_SAVE_FILENAME, flashcart_file_name, 16)) {
+            filename_queued = true;
             flashcart_in_game = GAME_STATE_MENU;
+        }
         for (int i = 0; i < 8; i++) {
             flashcart_file_name[i] = menu_data->name[menu_data->selected_item][i];
         }
@@ -112,8 +108,11 @@ void flashcart_update_in_game(z64_menudata_t* menu_data) {
 }
 
 bool flashcart_queue_message(int datatype, const void* data, int size) {
+    if ((savectxt_queued && datatype == DATATYPE_INGAME_STATE) || (filename_queued && datatype == DATATYPE_SAVE_FILENAME))
+        return true;
     switch (datatype) {
         case DATATYPE_INGAME_STATE:
+        case DATATYPE_SAVE_FILENAME:
             // Queue pointer to save context instead of the data
             if (!FLASHCART_CAN_QUEUE(sizeof(void*))) return false;
             break;
@@ -127,6 +126,7 @@ bool flashcart_queue_message(int datatype, const void* data, int size) {
     FLASHCART_WRITE_QUEUE.write_cursor += sizeof(int);
     switch (datatype) {
         case DATATYPE_INGAME_STATE:
+        case DATATYPE_SAVE_FILENAME:
             // Queue pointer to save context instead of the data
             memcpy(&FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.write_cursor], &data, sizeof(void*));
             FLASHCART_WRITE_QUEUE.write_cursor += sizeof(void*);
@@ -145,6 +145,7 @@ void flashcart_pop_message() {
     memcpy(&outgoing_size, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor + sizeof(int)], sizeof(int));
     switch (outgoing_type) {
         case DATATYPE_INGAME_STATE:
+        case DATATYPE_SAVE_FILENAME:
             FLASHCART_WRITE_QUEUE.read_cursor += sizeof(int) * 3;
             break;
         default:
@@ -168,11 +169,9 @@ void flashcart_frame(z64_menudata_t* menu_data) {
         if (usb_write_block && usb_timeout_check(usb_write_start, 7000)) {
             flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
         }
-        // Clear USB write block and queue in case the connection was reset
+        // Clear USB write block in case the connection was reset
         if (flashcart_protocol_state != FLASHCART_PROTOCOL_STATE_MW) {
             usb_write_block = false;
-            FLASHCART_WRITE_QUEUE.write_cursor = 0;
-            FLASHCART_WRITE_QUEUE.read_cursor = 0;
         }
         // Clear USB buffer before potentially writing back
         if (usb_poll() != 0) {
@@ -180,7 +179,7 @@ void flashcart_frame(z64_menudata_t* menu_data) {
             int incoming_type = USBHEADER_GETTYPE(header);
             int incoming_size = USBHEADER_GETSIZE(header);
             s8 read_status = 0; // assume failure
-            if (incoming_size <= FLASHCART_BUFFER_SIZE) {
+            if (incoming_size <= FLASHCART_READ_BUFFER_SIZE) {
                 read_status = usb_read(FLASHCART_READ_BUF, incoming_size);
             } else {
                 // Discard packets that are too large for the buffer
@@ -227,6 +226,10 @@ void flashcart_frame(z64_menudata_t* menu_data) {
                                 usb_sendreset();
                                 flashcart_protocol_state = FLASHCART_PROTOCOL_STATE_INIT;
                             } else {
+                                int outgoing_type;
+                                memcpy(&outgoing_type, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor], sizeof(int));
+                                if (outgoing_type == DATATYPE_INGAME_STATE) savectxt_queued = false;
+                                if (outgoing_type == DATATYPE_SAVE_FILENAME) filename_queued = false;
                                 flashcart_pop_message();
                                 // Allow sending the next message in queue
                                 usb_write_block = false;
@@ -338,7 +341,7 @@ void flashcart_frame(z64_menudata_t* menu_data) {
         // Re-test for additional messages in the read queue
         if (usb_poll() == 0) {
             bool message_sent = false;
-            if (FLASHCART_WRITE_QUEUE.write_cursor > 0 && !usb_write_block) {
+            if (FLASHCART_WRITE_QUEUE.write_cursor > 0 && !usb_write_block && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
                 int outgoing_size, outgoing_type;
                 memcpy(&outgoing_type, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor], sizeof(int));
                 memcpy(&outgoing_size, &FLASHCART_WRITE_QUEUE.buffer[FLASHCART_WRITE_QUEUE.read_cursor + sizeof(int)], sizeof(int));
@@ -348,6 +351,11 @@ void flashcart_frame(z64_menudata_t* menu_data) {
                         void* data;
                         memcpy(&data, &FLASHCART_WRITE_QUEUE.buffer[temp_cursor], sizeof(void*));
                         usb_write(outgoing_type, data, outgoing_size);
+                        break;
+                    case DATATYPE_SAVE_FILENAME:
+                        uint8_t state_packet[16] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+                        memcpy(state_packet, flashcart_file_name, 8);
+                        usb_write(outgoing_type, (void*)state_packet, 16);
                         break;
                     default:
                         usb_write(outgoing_type, &FLASHCART_WRITE_QUEUE.buffer[temp_cursor], outgoing_size);
