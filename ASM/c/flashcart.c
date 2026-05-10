@@ -266,7 +266,7 @@ void flashcart_frame(z64_menudata_t* menu_data) {
                             override.key.scene = 0xFF;
                             override.key.type = OVR_DELAYED;
                             override.key.flag = 0xFF;
-                            override.value.base.player = incoming_item == 0xca ? (PLAYER_ID == 1 ? 2 : 1) : PLAYER_ID;
+                            override.value.base.player = incoming_item == 0xCA ? (PLAYER_ID == 1 ? 2 : 1) : PLAYER_ID;
                             override.value.base.item_id = incoming_item;
                             push_pending_item(override);
                             usb_sendreadsuccess();

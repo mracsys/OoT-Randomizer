@@ -563,7 +563,7 @@ void draw_world_info(z64_disp_buf_t* db) {
 
 void draw_dungeon_info(z64_disp_buf_t* db) {
     show_dungeon_info = 0;
-    uint8_t flashcart_new_dungeon_info[0x13] = { 0x05, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    uint8_t flashcart_new_dungeon_info[0x12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     pad_t pad_held = z64_ctxt.input[0].raw.pad;
     int draw = CAN_DRAW_DUNGEON_INFO && !CAN_DRAW_TRADE_DPAD && (
         ((pad_held.dl || pad_held.dr || pad_held.dd || pad_held.du || pad_held.l) && CFG_DPAD_DUNGEON_INFO_ENABLE) ||
@@ -657,8 +657,8 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                     reward_index = 0;
                 }
 
-                flashcart_new_dungeon_info[2 * reward + 7] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
-                flashcart_new_dungeon_info[2 * reward + 8] = d->hint_area;
+                flashcart_new_dungeon_info[2 * reward + 6] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
+                flashcart_new_dungeon_info[2 * reward + 7] = d->hint_area;
 
                 medal_t* c = &(medals[reward_index]);
                 gDPSetPrimColor(db->p++, 0, 0, c->r, c->g, c->b, 0xFF);
@@ -684,8 +684,8 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                 int reward = CFG_DUNGEON_REWARDS[d->index];
                 if (reward < 0 || reward >= 3) continue;
 
-                flashcart_new_dungeon_info[2 * reward + 1] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
-                flashcart_new_dungeon_info[2 * reward + 2] = d->hint_area;
+                flashcart_new_dungeon_info[2 * reward + 0] = PLAYER_ID; // CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE implies own world
+                flashcart_new_dungeon_info[2 * reward + 1] = d->hint_area;
 
                 int top = start_top + ((icon_size + padding) * i);
                 sprite_draw(db, &stones_sprite, reward,
@@ -1137,8 +1137,8 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
                     continue;
                 }
 
-                flashcart_new_dungeon_info[2 * i + 1] = CFG_DUNGEON_REWARD_WORLDS[i];
-                flashcart_new_dungeon_info[2 * i + 2] = CFG_DUNGEON_REWARD_AREAS[i];
+                flashcart_new_dungeon_info[2 * i + 0] = CFG_DUNGEON_REWARD_WORLDS[i];
+                flashcart_new_dungeon_info[2 * i + 1] = CFG_DUNGEON_REWARD_AREAS[i];
 
                 int top = start_top + ((icon_size + padding) * i) + 1;
                 text_print(db, hint_area_names[CFG_DUNGEON_REWARD_AREAS[i]], left, top);
@@ -1470,15 +1470,15 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
     // Finish
     if (show_dungeon_info && usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
         bool changed = false;
-        for (int i = 0; i < 0x13; i++) {
+        for (int i = 0; i < 0x12; i++) {
             if (flashcart_new_dungeon_info[i] != flashcart_last_dungeon_info[i]) {
                 changed = true;
                 break;
             }
         }
         if (changed) {
-            flashcart_queue_message(DATATYPE_DUNGEON_REWARDS, flashcart_new_dungeon_info, 0x13);
-            for (int i = 0; i < 0x13; i++) {
+            flashcart_queue_message(DATATYPE_DUNGEON_REWARDS, flashcart_new_dungeon_info, 0x12);
+            for (int i = 0; i < 0x12; i++) {
                 flashcart_last_dungeon_info[i] = flashcart_new_dungeon_info[i];
             }
         }

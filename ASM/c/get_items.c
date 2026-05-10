@@ -372,7 +372,6 @@ void pop_pending_item() {
 void after_key_received(override_key_t key) {
     if (key.type == OVR_DELAYED && key.flag == 0xFF) {
         extern uint8_t flashcart_protocol_state;
-        uint8_t FLASHCART_MESSAGE_ITEM_RECEIVED[16] = { 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
         if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
             uint8_t buffer[4] = {0, 0, 0, 0};
