@@ -369,5 +369,8 @@ CFG_DUNGEON_ENTRANCES:
 CFG_BOSSES:
 .endarea
 ; Bosses are listed twice, first 12 are sorted by the same order as the dungeon entrances (including the 3 with no bosses), then 9 in the usual dungeon order.
+.area 12 * 0x4, 0x00
+CFG_DUNGEON_ENTRANCE_IDS:
+.endarea
 
 .align 4

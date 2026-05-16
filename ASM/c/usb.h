@@ -23,6 +23,7 @@
     #define CART_EVERDRIVE 2
     #define CART_SC64      3
     #define CART_WII       4
+    #define CART_EMULATOR  5
 
     // Data types defintions
     #define DATATYPE_EMPTY           0x00
@@ -47,6 +48,18 @@
     #define DATATYPE_UNRECOVERABLE   0x13
     #define DATATYPE_ITEM_GIVEN      0x14
     #define DATATYPE_PROG_ITEM_STATE 0x15
+    #define DATATYPE_SEND_HINT       0x16
+    #define DATATYPE_SEND_ENTRANCE   0x17
+
+    // Hint types definitions
+    // Start at 1 so that empty hint data can be detected
+    #define HINTTYPE_WOTH       0x01
+    #define HINTTYPE_GOAL       0x02
+    #define HINTTYPE_FOOLISH    0x03
+    #define HINTTYPE_ITEM       0x04
+    #define HINTTYPE_LOCATION   0x05
+    #define HINTTYPE_ENTRANCE   0x06
+    #define HINTTYPE_MAJOR_ITEM 0x07
 
     // Wii receive states
     #define SERIAL_READ_DONE       0x00
@@ -103,6 +116,8 @@
     } SerialVirtualDevice;
 
     #define wii_serial_device (*(volatile SerialVirtualDevice *)0xA8060000)
+    extern volatile SerialVirtualDevice EMULATOR_DEVICE;
+    extern volatile u8 SERIAL_ENABLE;
 
 
     /*********************************

@@ -19,5 +19,7 @@ extern uint8_t flashcart_protocol_state;
 extern uint8_t FLASHCART_READ_BUF[FLASHCART_READ_BUFFER_SIZE];
 extern uint8_t frames_since_last_ping;
 extern uint8_t flashcart_in_game;
+extern uint8_t SERIAL_PROCESSING;
+extern uint8_t* pending_gossip_hint;
 
 #endif

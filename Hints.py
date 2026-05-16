@@ -90,25 +90,32 @@ class GossipStone:
         self.location: str = location
         self.reachable: bool = True
 
-
 class GossipText:
     def __init__(self, text: str, colors: Optional[list[str]] = None, hinted_locations: Optional[list[str]] = None,
-                 hinted_items: Optional[list[str]] = None, *, prefix: str = "They say that ", capitalize: bool = True) -> None:
+                 hinted_items: Optional[list[str]] = None, *, hinted_area: Optional[HintArea] = None,
+                 hinted_entrance: Optional[Entrance] = None, hinted_exit: Optional[Entrance] = None,
+                 prefix: str = "They say that ", capitalize: bool = True) -> None:
         text = prefix + text
         if capitalize:
             text = text[:1].upper() + text[1:]
         self.text: str = text
         self.colors: Optional[list[str]] = colors
-        self.hinted_locations: Optional[list[str]] = hinted_locations
-        self.hinted_items: Optional[list[str]] = hinted_items
+        self.hinted_locations: Optional[list[Location]] = hinted_locations
+        self.hinted_items: Optional[list[Item]] = hinted_items
         self.hint_type: Optional[str] = None
+        self.hinted_area: Optional[HintArea] = hinted_area
+        self.hinted_entrance: Optional[Entrance] = hinted_entrance
+        self.hinted_exit: Optional[Entrance] = hinted_exit
 
     def to_json(self) -> dict:
         return {
             'text': self.text,
             'colors': self.colors,
-            'hinted_locations': self.hinted_locations,
-            'hinted_items': self.hinted_items,
+            'hinted_area': str(self.hinted_area) if self.hinted_area is not None else None,
+            'hinted_locations': [loc.name for loc in self.hinted_locations] if self.hinted_locations is not None else None,
+            'hinted_items': [item.name for item in self.hinted_items] if self.hinted_items is not None else None,
+            'hinted_entrance': self.hinted_entrance.name if self.hinted_entrance is not None else None,
+            'hinted_exit': self.hinted_exit.name if self.hinted_exit is not None else None,
             'hint_type': self.hint_type,
         }
 
@@ -597,7 +604,7 @@ def get_woth_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, 
         world.woth_dungeon += 1
     location_text = hint_area.text(world.settings.clearer_hints)
 
-    return GossipText('%s is on the way of the hero.' % location_text, ['Light Blue'], [location.name], [location.item.name]), [location]
+    return GossipText('%s is on the way of the hero.' % location_text, ['Light Blue'], [location], [location.item], hinted_area=hint_area), [location]
 
 
 def get_goal_category(spoiler: Spoiler, world: World, goal_categories: dict[str, GoalCategory], skip_empty: bool = True) -> GoalCategory:
@@ -701,9 +708,10 @@ def get_goal_legacy_hint(spoiler: Spoiler, world: World, checked: dict[HintArea 
 
     mark_checked(checked, location.name)
 
-    location_text = HintArea.at(location).text(world.settings.clearer_hints, world=None if location.world.id == world.id else location.world.id + 1)
+    hint_area = HintArea.at(location)
+    location_text = hint_area.text(world.settings.clearer_hints, world=None if location.world.id == world.id else location.world.id + 1)
 
-    return GossipText(f'{location_text} is on the {goal.hint_text}.', ['Light Blue', goal.color], [location.name], [location.item.name]), [location]
+    return GossipText(f'{location_text} is on the {goal.hint_text}.', ['Light Blue', goal.color], [location], [location.item], hinted_area=hint_area), [location]
 
 def get_goal_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
     goal_category = get_goal_category(spoiler, world, world.goal_categories)
@@ -784,7 +792,8 @@ def get_goal_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, 
     # Once all goals in a category are 0, selection is true random
     goal.weight = 0
 
-    location_text = HintArea.at(location).text(world.settings.clearer_hints)
+    hint_area = HintArea.at(location)
+    location_text = hint_area.text(world.settings.clearer_hints)
     if world_id == world.id:
         player_text = "the"
         goal_text = goal.hint_text
@@ -792,7 +801,7 @@ def get_goal_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, 
         player_text = "Player %s's" % (world_id + 1)
         goal_text = spoiler.goal_categories[world_id][goal_category.name].get_goal(goal.name).hint_text
 
-    return GossipText('%s is on %s %s.' % (location_text, player_text, goal_text), ['Light Blue', goal.color], [location.name], [location.item.name]), [location]
+    return GossipText('%s is on %s %s.' % (location_text, player_text, goal_text), ['Light Blue', goal.color], [location], [location.item], hinted_area=hint_area), [location]
 
 def get_goal_count_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
     goal_category = get_goal_category(spoiler, world, world.goal_categories, skip_empty=False)
@@ -879,7 +888,7 @@ def get_playthrough_location_hint(spoiler: Spoiler, world: World, checked: dict[
     hint_area = HintArea.at(location)
     location_text = hint_area.text(world.settings.clearer_hints)
 
-    return GossipText('%s is on the way of the #wanderer#.' % location_text, ['Light Blue', 'Yellow'], [location.name], [location.item.name]), [location]
+    return GossipText('%s is on the way of the #wanderer#.' % location_text, ['Light Blue', 'Yellow'], [location], [location.item], hinted_area=hint_area), [location]
 
 def get_unlock_woth_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
     return get_unlock_hint(spoiler, world, checked, 'unlock-woth')
@@ -983,7 +992,7 @@ def get_unlock_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str
     else:
         gossip_colors = ['Light Blue', 'Light Blue']
 
-    return GossipText(gossip_text, gossip_colors, [required_location.name, location.name], [required_location.item.name, location.item.name]), [required_location, location]
+    return GossipText(gossip_text, gossip_colors, [required_location, location], [required_location.item, location.item]), [required_location, location]
 
 def get_barren_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
     if not hasattr(world, 'get_barren_hint_prev'):
@@ -1057,7 +1066,7 @@ def get_barren_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str
 
     mark_checked(checked, area)
 
-    return GossipText("plundering %s is a foolish choice." % area.text(world.settings.clearer_hints), ['Pink']), None
+    return GossipText("plundering %s is a foolish choice." % area.text(world.settings.clearer_hints), ['Pink'], hinted_area=area), None
 
 
 def is_checked(locations: Iterable[Location], checked: dict[HintArea | str, set[CheckedKind]], *, ignore: Iterable[CheckedKind] = ()) -> bool:
@@ -1099,10 +1108,10 @@ def get_good_item_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | 
     hint_area = HintArea.at(location)
     if hint_area.is_dungeon:
         location_text = hint_area.text(world.settings.clearer_hints)
-        return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location.name], [location.item.name]), [location]
+        return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location], [location.item], hinted_area=hint_area), [location]
     else:
         location_text = hint_area.text(world.settings.clearer_hints, preposition=True)
-        return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location.name], [location.item.name]), [location]
+        return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location], [location.item], hinted_area=hint_area), [location]
 
 
 def get_specific_item_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
@@ -1152,13 +1161,13 @@ def get_specific_item_hint(spoiler: Spoiler, world: World, checked: dict[HintAre
         hint_area = HintArea.at(location)
         if world.hint_dist_user.get('vague_named_items', False):
             location_text = hint_area.text(world.settings.clearer_hints)
-            return GossipText('%s may be on the hero\'s path.' % location_text, ['Green'], [location.name], [location.item.name]), [location]
+            return GossipText('%s may be on the hero\'s path.' % location_text, ['Green'], [location], [location.item], hinted_area=hint_area), [location]
         elif hint_area.is_dungeon:
             location_text = hint_area.text(world.settings.clearer_hints)
-            return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location.name], [location.item.name]), [location]
+            return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location], [location.item], hinted_area=hint_area), [location]
         else:
             location_text = hint_area.text(world.settings.clearer_hints, preposition=True)
-            return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location.name], [location.item.name]), [location]
+            return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location], [location.item], hinted_area=hint_area), [location]
 
     else:
         while True:
@@ -1233,13 +1242,13 @@ def get_specific_item_hint(spoiler: Spoiler, world: World, checked: dict[HintAre
         hint_area = HintArea.at(location)
         if world.hint_dist_user.get('vague_named_items', False):
             location_text = hint_area.text(world.settings.clearer_hints, world=location.world.id + 1)
-            return GossipText('%s may be on the hero\'s path.' % location_text, ['Green'], [location.name], [location.item.name]), [location]
+            return GossipText('%s may be on the hero\'s path.' % location_text, ['Green'], [location], [location.item], hinted_area=hint_area), [location]
         elif hint_area.is_dungeon:
             location_text = hint_area.text(world.settings.clearer_hints, world=location.world.id + 1)
-            return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location.name], [location.item.name]), [location]
+            return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location], [location.item], hinted_area=hint_area), [location]
         else:
             location_text = hint_area.text(world.settings.clearer_hints, preposition=True, world=location.world.id + 1)
-            return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location.name], [location.item.name]), [location]
+            return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location], [location.item], hinted_area=hint_area), [location]
 
 
 def get_random_location_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
@@ -1262,10 +1271,10 @@ def get_random_location_hint(spoiler: Spoiler, world: World, checked: dict[HintA
     hint_area = HintArea.at(location)
     if hint_area.is_dungeon:
         location_text = hint_area.text(world.settings.clearer_hints)
-        return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location.name], [location.item.name]), [location]
+        return GossipText('%s hoards #%s#.' % (location_text, item_text), ['Red', 'Green'], [location], [location.item], hinted_area=hint_area), [location]
     else:
         location_text = hint_area.text(world.settings.clearer_hints, preposition=True)
-        return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location.name], [location.item.name]), [location]
+        return GossipText('#%s# can be found %s.' % (item_text, location_text), ['Green', 'Red'], [location], [location.item], hinted_area=hint_area), [location]
 
 
 def get_specific_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]], hint_type: str) -> HintReturn:
@@ -1307,7 +1316,7 @@ def get_specific_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | s
         location_text = '#%s#' % location_text
     item_text = get_hint(get_item_generic_name(location.item), world.settings.clearer_hints).text
 
-    return GossipText('%s #%s#.' % (location_text, item_text), ['Red', 'Green'], [location.name], [location.item.name]), [location]
+    return GossipText('%s #%s#.' % (location_text, item_text), ['Red', 'Green'], [location], [location.item]), [location]
 
 
 def get_sometimes_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
@@ -1389,7 +1398,7 @@ def get_specific_multi_hint(spoiler: Spoiler, world: World, checked: dict[HintAr
 
     items = [location.item for location in locations]
     text_segments = [multi_text] + [get_hint(get_item_generic_name(item), world.settings.clearer_hints).text for item in items]
-    return GossipText(gossip_string % tuple(text_segments), colors, [location.name for location in locations], [item.name for item in items]), locations
+    return GossipText(gossip_string % tuple(text_segments), colors, locations, items), locations
 
 
 def get_dual_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
@@ -1429,7 +1438,7 @@ def get_entrance_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | s
     if '#' not in region_text:
         region_text = '#%s#' % region_text
 
-    return GossipText('%s %s.' % (entrance_text, region_text), ['Green', 'Light Blue']), None
+    return GossipText('%s %s.' % (entrance_text, region_text), ['Green', 'Light Blue'], hinted_entrance=entrance, hinted_exit=entrance.replaces), None
 
 
 def get_junk_hint(spoiler: Spoiler, world: World, checked: dict[HintArea | str, set[CheckedKind]]) -> HintReturn:
@@ -1460,6 +1469,7 @@ def get_important_check_hint(spoiler: Spoiler, world: World, checked: dict[HintA
     if not top_level_locations:
         return None
     hint_area = random.choice(top_level_locations)
+    hinted_locations: list[Location] = []
     item_count = 0
     for location in world.get_filled_locations():
         if HintArea.at(location) == hint_area:
@@ -1482,6 +1492,7 @@ def get_important_check_hint(spoiler: Spoiler, world: World, checked: dict[HintA
                     or world.shuffle_ganon_bosskey == 'dungeons' or world.shuffle_ganon_bosskey == 'specific_rewards'
                     or world.shuffle_ganon_bosskey == 'tokens' or world.shuffle_ganon_bosskey == 'hearts'))):
                 item_count = item_count + 1
+                hinted_locations.append(location)
 
     mark_checked(checked, hint_area, CheckedKind.IMPORTANT_CHECK)
 
@@ -1496,7 +1507,7 @@ def get_important_check_hint(spoiler: Spoiler, world: World, checked: dict[HintA
     else:
         numcolor = 'Green'
 
-    return GossipText('%s has #%d# major item%s.' % (hint_area.text(world.settings.clearer_hints), item_count, "s" if item_count != 1 else ""), ['Green', numcolor]), None
+    return GossipText('%s has #%d# major item%s.' % (hint_area.text(world.settings.clearer_hints), item_count, "s" if item_count != 1 else ""), ['Green', numcolor], hinted_locations, [location.item for location in hinted_locations], hinted_area=hint_area), None
 
 
 hint_func: dict[str, HintFunc | BarrenFunc] = {
@@ -1784,7 +1795,7 @@ def build_world_gossip_hints(spoiler: Spoiler, world: World, checked_locations: 
                 location_text = '#%s#' % location_text
             first_item_text = get_hint(get_item_generic_name(first_location.item), world.settings.clearer_hints).text
             second_item_text = get_hint(get_item_generic_name(second_location.item), world.settings.clearer_hints).text
-            add_hint(spoiler, world, stone_groups, GossipText('%s #%s# and #%s#.' % (location_text, first_item_text, second_item_text), ['Red', 'Green', 'Green'], [first_location.name, second_location.name], [first_location.item.name, second_location.item.name]), hint_dist['dual_always'][1], [first_location, second_location], force_reachable=True, hint_type='dual_always')
+            add_hint(spoiler, world, stone_groups, GossipText('%s #%s# and #%s#.' % (location_text, first_item_text, second_item_text), ['Red', 'Green', 'Green'], [first_location, second_location], [first_location.item, second_location.item]), hint_dist['dual_always'][1], [first_location, second_location], force_reachable=True, hint_type='dual_always')
             logging.getLogger('').debug('Placed dual_always hint for %s.', hint.name)
 
     # Add required location hints, only if hint copies > 0
@@ -1804,7 +1815,7 @@ def build_world_gossip_hints(spoiler: Spoiler, world: World, checked_locations: 
             if '#' not in location_text:
                 location_text = '#%s#' % location_text
             item_text = get_hint(get_item_generic_name(location.item), world.settings.clearer_hints).text
-            add_hint(spoiler, world, stone_groups, GossipText('%s #%s#.' % (location_text, item_text), ['Red', 'Green'], [location.name], [location.item.name]), hint_dist['always'][1], [location], force_reachable=True, hint_type='always')
+            add_hint(spoiler, world, stone_groups, GossipText('%s #%s#.' % (location_text, item_text), ['Red', 'Green'], [location], [location.item]), hint_dist['always'][1], [location], force_reachable=True, hint_type='always')
             logging.getLogger('').debug('Placed always hint for %s.', location.name)
 
     # Add required entrance hints, only if hint copies > 0
@@ -1830,7 +1841,7 @@ def build_world_gossip_hints(spoiler: Spoiler, world: World, checked_locations: 
                 if '#' not in region_text:
                     region_text = '#%s#' % region_text
 
-                add_hint(spoiler, world, stone_groups, GossipText('%s %s.' % (entrance_text, region_text), ['Green', 'Light Blue']), hint_dist['entrance_always'][1], None, force_reachable=True, hint_type='entrance_always')
+                add_hint(spoiler, world, stone_groups, GossipText('%s %s.' % (entrance_text, region_text), ['Green', 'Light Blue'], hinted_entrance=entrance, hinted_exit=entrance.replaces), hint_dist['entrance_always'][1], None, force_reachable=True, hint_type='entrance_always')
 
     # Add trial hints, only if hint copies > 0
     if hint_dist['trial'][1] > 0:

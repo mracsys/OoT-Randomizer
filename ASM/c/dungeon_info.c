@@ -1488,3 +1488,69 @@ void draw_dungeon_info(z64_disp_buf_t* db) {
 int dungeon_info_is_drawn() {
     return show_dungeon_info;
 }
+
+void send_dungeon_locations() {
+    if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
+        bool show_dungeons = CFG_DUNGEON_BOSS_INFO[0] > 0;
+        bool show_bosses = CFG_DUNGEON_BOSS_INFO[1] > 0;
+        // If neither setting is on, don't display this menu at all.
+        if (!show_dungeons && !show_bosses) {
+            return;
+        }
+        uint8_t rows = 13;
+        // Draw the list of dungeons interiors.
+        if (show_dungeons) {
+            for (uint8_t i = 0; i < rows - 1; i++) {
+                if (CFG_DUNGEON_BOSS_INFO[i + 2] > 10 || z64_file.dungeon_items[CFG_DUNGEON_BOSS_INFO[i + 2]].map) {
+                    uint8_t* entrance_hint_data = &CFG_DUNGEON_ENTRANCE_IDS[i * 4];
+                    uint8_t entrance_hint[7] = { 0xFF, 0xFF, HINTTYPE_ENTRANCE, 0, 0, 0, 0 };
+                    memcpy(&entrance_hint[3], entrance_hint_data, 4);
+                    flashcart_queue_message(DATATYPE_SEND_HINT, entrance_hint, 7);
+                }
+            }
+        }
+        
+    }
+}
+
+void send_dungeon_reward_areas() {
+    if (usb_getcart() != CART_NONE && flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW) {
+        uint8_t flashcart_new_dungeon_info[0x12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        uint16_t altar_flags = z64_file.inf_table[27];
+        int show_medals = CFG_DUNGEON_INFO_REWARD_ENABLE && (!CFG_DUNGEON_INFO_REWARD_NEED_ALTAR || (altar_flags & 1)) && CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE;
+        int show_stones = CFG_DUNGEON_INFO_REWARD_ENABLE && (!CFG_DUNGEON_INFO_REWARD_NEED_ALTAR || (altar_flags & 2)) && CFG_DUNGEON_INFO_REWARD_SUMMARY_ENABLE;
+
+        for (int i = 0; i < 9; i++) {
+            if (i < 3 ? show_stones : show_medals) {
+                uint8_t reward = reward_rows[i];
+                bool display_area = true;
+                switch (CFG_DUNGEON_INFO_REWARD_NEED_COMPASS) {
+                    case 1:
+                        for (int j = 0; j < 8; j++) {
+                            uint8_t dungeon_idx = dungeons[j].index;
+                            if (CFG_DUNGEON_REWARDS[dungeon_idx] == reward) {
+                                if (!z64_file.dungeon_items[dungeon_idx].compass) {
+                                    display_area = false;
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        if (i != 3) { // always display Light Medallion
+                            dungeon_entry_t* d = &(dungeons[i - (i < 3 ? 0 : 1)]); // vanilla location of the reward
+                            display_area = z64_file.dungeon_items[d->index].compass;
+                        }
+                        break;
+                }
+                if (!display_area) {
+                    continue;
+                }
+
+                flashcart_new_dungeon_info[2 * i + 0] = CFG_DUNGEON_REWARD_WORLDS[i];
+                flashcart_new_dungeon_info[2 * i + 1] = CFG_DUNGEON_REWARD_AREAS[i];
+            }
+        }
+        flashcart_queue_message(DATATYPE_DUNGEON_REWARDS, flashcart_new_dungeon_info, 0x12);
+    }
+}

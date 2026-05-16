@@ -44,6 +44,11 @@ void c_init() {
 
 void before_game_state_update() {
     rando_display_buffer_reset();
+    // Re-test for emulators connecting after the game boots.
+    if (SERIAL_ENABLE) {
+        flashcart_initialize();
+        SERIAL_ENABLE = 0;
+    }
     flashcart_frame(NULL);
     handle_pending_items();
     handle_dpad();

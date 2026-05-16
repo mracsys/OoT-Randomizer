@@ -9,6 +9,7 @@
 #include "ultratypes.h"
 #include "ultra64.h"
 #include "file_select.h"
+#include "dungeon_info.h"
 
 #define GAME_STATE_MENU 0
 #define GAME_STATE_PLAY 1
@@ -57,6 +58,8 @@ uint32_t usb_write_start = 0;
 bool filename_queued = false;
 bool savectxt_queued = false;
 
+uint8_t* pending_gossip_hint = NULL;
+
 void flashcart_initialize() {
     memset(FLASHCART_WRITE_QUEUE.buffer, 0, sizeof(FLASHCART_WRITE_QUEUE.buffer));
     FLASHCART_WRITE_QUEUE.read_cursor = 0;
@@ -96,6 +99,8 @@ void flashcart_update_in_game(z64_menudata_t* menu_data) {
             savectxt_queued = true;
             flashcart_in_game = GAME_STATE_PLAY;
         }
+        send_dungeon_reward_areas();
+        send_dungeon_locations();
     } else {
         if (flashcart_queue_message(DATATYPE_SAVE_FILENAME, flashcart_file_name, 16)) {
             filename_queued = true;
@@ -160,6 +165,7 @@ void flashcart_pop_message() {
 
 void flashcart_frame(z64_menudata_t* menu_data) {
     if (usb_getcart() != CART_NONE) {
+        bool signal_processing = SERIAL_PROCESSING != 0 ? true : false;
         // Handle potentially lost acknowledge packet without
         // total communications loss. Force reset the connection
         // to avoid duplicating items and desyncing the item counter.
@@ -389,6 +395,9 @@ void flashcart_frame(z64_menudata_t* menu_data) {
                     flashcart_update_in_game(menu_data);
                     message_sent = true;
                 }
+            } else if (flashcart_protocol_state == FLASHCART_PROTOCOL_STATE_MW && pending_gossip_hint != NULL) {
+                flashcart_queue_message(DATATYPE_SEND_HINT, pending_gossip_hint, 25);
+                pending_gossip_hint = NULL;
             }
             if (++frames_since_last_ping >= 5 * 20 && !message_sent) {
                 // No incoming data to process. Send heartbeat to
@@ -402,5 +411,8 @@ void flashcart_frame(z64_menudata_t* menu_data) {
                 frames_since_last_ping = 0;
             }
         }
+        // Only signal that processing is done if messages were
+        // ready for processing at the beginning of the function
+        if (signal_processing) SERIAL_PROCESSING = 0;
     }
 }

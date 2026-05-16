@@ -1,5 +1,6 @@
 from __future__ import annotations
 import datetime
+from enum import IntEnum
 import itertools
 import random
 import re
@@ -1421,6 +1422,51 @@ def patch_rom(spoiler: Spoiler, world: World, rom: Rom) -> Rom:
     else:
         write_gossip_stone_hints(spoiler, world, messages)
 
+        class HintTypeIDs(IntEnum):
+            WOTH       = 1,
+            GOAL       = 2,
+            FOOLISH    = 3,
+            ITEM       = 4,
+            LOCATION   = 5,
+            ENTRANCE   = 6,
+            MAJOR_ITEM = 7,
+
+        def hint_to_bytes(gossip: GossipText) -> bytearray:
+            if gossip.hint_type == 'woth':
+                return HintTypeIDs.WOTH.to_bytes(1, 'big') + gossip.hinted_area.c_index.to_bytes(1) + int.to_bytes(0, 22)
+            elif gossip.hint_type == 'goal' or gossip.hint_type == 'goal-legacy' or gossip.hint_type == 'goal-legacy-single':
+                return int.to_bytes(0, 24, 'big')
+            elif gossip.hint_type == 'barren':
+                return HintTypeIDs.FOOLISH.to_bytes(1, 'big') + gossip.hinted_area.c_index.to_bytes(1) + int.to_bytes(0, 22)
+            elif gossip.hint_type == 'item':
+                return HintTypeIDs.ITEM.to_bytes(1, 'big') + (gossip.hinted_items[0].world + 1).to_bytes(1) + gossip.hinted_items[0].index.to_bytes(2, 'big') + int.to_bytes(0, 20)
+            elif gossip.hint_type == 'sometimes' or gossip.hint_type == 'dual' or gossip.hint_type == 'song' or gossip.hint_type == 'overworld' or gossip.hint_type == 'dungeon' or gossip.hint_type == 'random' or gossip.hint_type == 'always' or gossip.hint_type == 'dual_always':
+                data = HintTypeIDs.LOCATION.to_bytes(1, 'big') + len(gossip.hinted_locations).to_bytes(1)
+                remaining = 22
+                for location in gossip.hinted_locations:
+                    scene, loc_type, default, item_id, player_id, _ = get_override_entry(location)
+                    override_key = scene.to_bytes(1) + loc_type.to_bytes(1) + int.to_bytes(0, 2) + default.to_bytes(4, 'big')
+                    data += override_key + player_id.to_bytes(1) + item_id.to_bytes(2, 'big')
+                    remaining -= 11
+                    if remaining <= 0:
+                        break
+                if remaining > 0:
+                    data += int.to_bytes(0, remaining)
+                return data
+            elif gossip.hint_type == 'entrance' or gossip.hint_type == 'entrance_always':
+                return HintTypeIDs.ENTRANCE.to_bytes(1, 'big') + gossip.hinted_entrance.data['index'].to_bytes(2, 'big') + gossip.hinted_exit.data['index'].to_bytes(2, 'big') + int.to_bytes(0, 19)
+            elif gossip.hint_type == 'important_check':
+                return HintTypeIDs.MAJOR_ITEM.to_bytes(1, 'big') + gossip.hinted_area.c_index.to_bytes(1) + len(gossip.hinted_locations).to_bytes(1) + int.to_bytes(0, 21)
+            else:
+                return int.to_bytes(0, 24, 'big')
+
+        hint_data = bytearray()
+        for id, gossip_text in spoiler.hints[world.id].items():
+            hint_data += id.to_bytes(2, 'big') + hint_to_bytes(gossip_text)
+        if len(hint_data) != 1040:
+            raise Exception(f'wrong size for hint data: {len(hint_data)}')
+        rom.write_bytes(rom.sym('GOSSIP_HINT_DATA'), hint_data)
+
         if world.settings.hints == 'mask':
             rom.write_int32(symbol, 0)
         elif world.settings.hints == 'always':
@@ -2778,6 +2824,7 @@ def configure_dungeon_info(rom: Rom, world: World) -> None:
 
     dungeon_info = []
     dungeon_entrances = bytearray()
+    dungeon_entrance_ids = bytearray()
     boss_index = []
     if 'map_dungeon_location' in world.settings.enhance_map_compass and world.settings.shuffle_dungeon_entrances != 'off':
         if 'Dungeon' in world.mix_entrance_pools:
@@ -2790,17 +2837,21 @@ def configure_dungeon_info(rom: Rom, world: World) -> None:
             areas = []
             #TODO This won't work for Decoupled.
             for dungeon_entrance_reverse in dungeon_entrances_reverse_list:
-                connected_region = world.get_entrance(dungeon_entrance_reverse).connected_region
+                entrance = world.get_entrance(dungeon_entrance_reverse)
+                connected_region = entrance.connected_region
                 area = HintArea.at(connected_region)
                 areas.append(area)
                 # Every area probably needs a shorter name.
                 dungeon_entrances += area.shorter_name.encode('ascii').ljust(0x8) + b'\0'
+                dungeon_entrance_ids += entrance.data['index'].to_bytes(2, 'big') + (entrance.replaces or entrance).data['index'].to_bytes(2, 'big')
         else:
             dungeon_info.append(1)
             for dungeon_entrance in dungeon_entrances_list:
-                connected_region = world.get_entrance(dungeon_entrance).connected_region
+                entrance = world.get_entrance(dungeon_entrance)
+                connected_region = entrance.connected_region
                 area = HintArea.at(connected_region)
                 dungeon_entrances += area.shorter_name.encode('ascii').ljust(0x8) + b'\0'
+                dungeon_entrance_ids += entrance.data['index'].to_bytes(2, 'big') + (entrance.replaces or entrance).data['index'].to_bytes(2, 'big')
                 if (area in [HintArea.GERUDO_TRAINING_GROUND, HintArea.ICE_CAVERN, HintArea.BOTTOM_OF_THE_WELL]):
                     boss_index.append(-1)
                 else:
@@ -2889,6 +2940,7 @@ def configure_dungeon_info(rom: Rom, world: World) -> None:
     rom.write_bytes(rom.sym('CFG_DUNGEON_PRECOMPLETED'), dungeon_precompleted)
     rom.write_bytes(rom.sym('CFG_DUNGEON_BOSS_INFO'), dungeon_info)
     rom.write_bytes(rom.sym('CFG_DUNGEON_ENTRANCES'), dungeon_entrances)
+    rom.write_bytes(rom.sym('CFG_DUNGEON_ENTRANCE_IDS'), dungeon_entrance_ids)
     rom.write_bytes(rom.sym('CFG_BOSSES'), bosses)
 
 

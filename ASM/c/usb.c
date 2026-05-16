@@ -249,6 +249,10 @@ static s8   usb_wii_write(int datatype, const void* data, u32 size);
 static u32  usb_wii_poll(void);
 static s8   usb_wii_read(void);
 
+static s8   emulator_write(int datatype, const void* data, u32 size);
+static u32  emulator_poll(void);
+static s8   emulator_read(void);
+
 
 /*********************************
              Globals
@@ -490,6 +494,13 @@ char usb_initialize(void)
             wii_serial_device.receive_addr = (uint32_t)SERIAL_RECEIVE_BUFFER;
             wii_serial_device.initialize = 1;
             break;
+        case CART_EMULATOR:
+            funcPointer_write = emulator_write;
+            funcPointer_poll = emulator_poll;
+            funcPointer_read = emulator_read;
+            EMULATOR_DEVICE.receive_addr = (uint32_t)SERIAL_RECEIVE_BUFFER;
+            EMULATOR_DEVICE.initialize = 1;
+            EMULATOR_DEVICE.ready = 1;
         default:
             return 0;
     }
@@ -513,6 +524,13 @@ static void usb_findcart(void)
     // "O","O","T","R" = 0x4F4F5452
     if (wii_serial_device.key == 0x4F4F5452) {
         usb_cart = CART_WII;
+        return;
+    }
+
+    // Check for active Wii VC interface first
+    // "O","O","T","R" = 0x4F4F5452
+    if (EMULATOR_DEVICE.key == 0x4F4F5452) {
+        usb_cart = CART_EMULATOR;
         return;
     }
 
@@ -630,7 +648,7 @@ s8 usb_write(int datatype, const void* data, u32 size)
         return 0;
 
     // If there's data to read first, stop
-    if (usb_dataleft != 0 && usb_cart != CART_WII)
+    if (usb_dataleft != 0 && usb_cart != CART_WII && usb_cart != CART_EMULATOR)
         return 0;
 
     // Call the correct write function
@@ -1788,7 +1806,7 @@ static u32 usb_wii_poll(void)
 
 /*==============================
     usb_wii_read
-    Stub function as the Wii writes incoming data directly to the global receive buffer
+    Wii writes incoming data directly to the global receive buffer.
     @return 1 on success, 0 on failure, -1 on timeout
 ==============================*/
 
@@ -1808,6 +1826,93 @@ static s8 usb_wii_read(void) {
             wii_serial_device.error = SERIALERR_SUCCESS;
             return err;
         }
+    }
+    return 1;
+}
+
+
+/*==============================
+    emulator_write
+    Queues data for an emulator to send to a connected client.
+    Can still write if there is data to read from the buffer.
+    If size is larger than the buffer, give the emulator
+    the data pointer directly to read.
+    @param  The DATATYPE that is being sent
+    @param  A buffer with the data to send
+    @param  The size of the data being sent
+    @return 1 on success, 0 on fail
+==============================*/
+
+static s8 emulator_write(int datatype, const void* data, u32 size)
+{
+    if (EMULATOR_DEVICE.reset) {
+        usb_purge();
+        EMULATOR_DEVICE.reset = 0;
+    }
+
+    // Equivalent of voiding the data
+    if (!EMULATOR_DEVICE.ready)
+        return 1;
+
+    u32 header = (size & 0x00FFFFFF) | (datatype << 24);
+
+    EMULATOR_DEVICE.transmit_addr = (uint32_t)data;
+    EMULATOR_DEVICE.transmit_header = header;
+    EMULATOR_DEVICE.busy = 1;
+    while (EMULATOR_DEVICE.busy)
+        continue;
+
+    usb_didtimeout = false;
+    return 1;
+}
+
+
+/*==============================
+    emulator_poll
+    Returns the header of data being received via emulator API
+    The first byte contains the data type, the next 3 the number of bytes left to read
+    @return The data header, or 0
+==============================*/
+
+static u32 emulator_poll(void)
+{
+    if (EMULATOR_DEVICE.reset) {
+        usb_purge();
+        EMULATOR_DEVICE.reset = 0;
+        EMULATOR_DEVICE.receive_header = 0;
+    }
+
+    if (!EMULATOR_DEVICE.ready)
+        return 0;
+
+    uint32_t header = EMULATOR_DEVICE.receive_header;
+    if (header != 0) {
+        // Store information about the incoming data
+        usb_datatype = USBHEADER_GETTYPE(header);
+        usb_datasize = USBHEADER_GETSIZE(header);
+        usb_dataleft = usb_datasize;
+        usb_readblock = -1;
+    }
+    // Reset for next poll
+    EMULATOR_DEVICE.receive_header = 0;
+
+    // Return the data header
+    return USBHEADER_CREATE(usb_datatype, usb_datasize);
+}
+
+
+/*==============================
+    emulator_read
+    Stub function as emulators write incoming data
+    directly to the global receive buffer in one cycle.
+    @return 1 on success, 0 on failure, -1 on timeout
+==============================*/
+
+static s8 emulator_read(void) {
+    if (EMULATOR_DEVICE.reset) {
+        usb_purge();
+        EMULATOR_DEVICE.reset = 0;
+        return 0;
     }
     return 1;
 }

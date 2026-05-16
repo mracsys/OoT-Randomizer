@@ -1,3 +1,12 @@
+; 40 gossip stone hints, assume each could be a dual hint:
+; 2-byte message ID, 1-byte hint type ID, 1-byte location count, 2x 8-byte location override keys,
+; 2x 1-byte item world IDs, 2x 2-byte item IDs, 26 total bytes per row
+.align 4
+.area 1040, 0x00
+GOSSIP_HINT_DATA:
+.endarea
+
+.align 4
 gossip_hints:
     addiu   sp, sp, -0x1C
     sw      s1, 0x0014(sp)
@@ -57,6 +66,9 @@ gossip_hints:
 @@return:
     ; Set the message id to play and return
     sh      s1, 0x010E(s0)
+    or      a0, s0, r0
+    jal     send_hint_message
+    nop
     lw      ra, 0x0018(sp)
     lw      s1, 0x0014(sp)
     jr      ra

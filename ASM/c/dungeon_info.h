@@ -77,12 +77,15 @@ void draw_silver_rupee_count(z64_game_t* globalCtx, z64_disp_buf_t* db);
 void draw_boss_key(z64_game_t* globalCtx, z64_disp_buf_t* db);
 extern uint8_t bk_display;
 int dungeon_info_is_drawn();
+void send_dungeon_locations();
+void send_dungeon_reward_areas();
 
 extern unsigned char CFG_DUNGEON_IS_MQ[14];
 extern uint32_t CFG_DUNGEON_INFO_ENABLE;
 extern uint8_t CFG_DPAD_DUNGEON_INFO_ENABLE;
 extern char CFG_DUNGEON_BOSS_INFO[14];
 extern char CFG_DUNGEON_ENTRANCES[12][0x9];
+extern uint8_t CFG_DUNGEON_ENTRANCE_IDS[48];
 extern char CFG_BOSSES[21][0x9];
 
 static int show_dungeon_info = 0;

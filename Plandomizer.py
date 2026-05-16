@@ -116,8 +116,20 @@ class GossipRecord(Record):
         self.hinted_locations: Optional[Sequence[str]] = None
         self.hinted_items: Optional[Sequence[str]] = None
         self.hint_type: Optional[str] = None
+        self.hinted_area: Optional[str] = None
+        self.hinted_entrance: Optional[str] = None
+        self.hinted_exit: Optional[str] = None
 
-        super().__init__({'text': None, 'colors': None, 'hinted_locations': None, 'hinted_items': None, 'hint_type': None}, src_dict)
+        super().__init__({
+            'text': None,
+            'colors': None,
+            'hinted_locations': None,
+            'hinted_items': None,
+            'hint_type': None,
+            'hinted_area': None,
+            'hinted_entrance': None,
+            'hinted_exit': None
+        }, src_dict)
 
     def to_json(self) -> dict[str, Any]:
         if self.colors is not None:

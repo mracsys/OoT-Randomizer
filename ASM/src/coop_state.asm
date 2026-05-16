@@ -48,9 +48,16 @@ OUTGOING_KEY:
 .align 4
 SERIAL_CONTEXT:
 SERIAL_VERSION:
-.byte 0
+.byte 1
 SERIAL_ENABLE:
 .byte 0
+SERIAL_PROCESSING:
+.byte 0
+.align 4
+.area 32, 0x00
+; SerialVirtualDevice struct, structure in usb.h
+EMULATOR_DEVICE:
+.endarea
 
 ; 32-byte alignment required for the Wii's USB DMA engine
 ; Buffer sizes are 512 byte payload plus 32 bytes for
