@@ -19,6 +19,9 @@
 * Fix blowing up a specific bombable wall in MQ Dodongo's Cavern opening the door controlled by the silver rupees.
 * Fix a generator failure when Water Temple is MQ and `Logic Rules` are `Advanced`.
 
+## Other changes
+* Python 3.9 through 3.12 are no longer supported.
+
 # 9.1
 
 ## New features
