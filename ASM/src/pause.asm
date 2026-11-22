@@ -128,11 +128,7 @@ KaleidoScope_Draw_ContinuePromtHack:
     bnel    a0, at, KaleidoScope_Draw_ContinuePromtHack_skip
     lw      v1, 0x2C0(s0)
 KaleidoScope_Draw_Texture_Logic:
-    lui     t6, 0x8012
-    lbu     t6, -0x4627(t6)
     lw      a0, 0x02C0(s0)
-    sll     t8, t6, 2
-    addu    a1, a1, t8
     ori     at, zero, 0x13
     slt     at, at, s6
     ori     s6, zero, 0

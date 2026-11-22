@@ -8,7 +8,7 @@
     .word 0x46012D24 ; should relocate lo(0x8082A388)
 .org 0x8082F780
     .word 0x4500DB7C ; should relocate hi(0x80829E40)
-    .word 0x4600DB84 ; should relocate lo(0x80829E40)
+    .word 0x4600DB94 ; should relocate lo(0x80829E40)
 
 .org 0x8082389C
     nop
@@ -57,13 +57,13 @@
 
 .org 0x8082133C
     lui     a1, 0x8083
+    lui     t6, 0x8012
+    lbu     t6, -0x4627(t6)
+    sll     t8, t6, 2
+    addu    a1, a1, t8
     jal     KaleidoScope_Draw_ContinuePromtHack
     lw      a1, -0x61C0(a1)
     bne     at, zero, 0x808214F0
-    nop
-    nop
-    nop
-    nop
     nop
     nop
     nop
