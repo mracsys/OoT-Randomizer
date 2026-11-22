@@ -196,6 +196,43 @@ kaleidoScope_draw_select_hack_return:
     jr      ra
     addiu   sp, sp, 0x0014
 
+
+kaleidoScope_prompt_cursor_fix:
+    lui     t8, 0x0001
+    ori     t8, t8, 0x04F0
+    lw      t6, 0x00A0(sp)
+    addu    t8, t8, t6
+    lh      t6, 0x0244(t8)
+    slti    t8, t6, 0x00EB
+    beq     t8, $zero, kaleidoScope_prompt_cursor_return
+    nop
+    lui     t8, 0xDE00
+    lui     t6, 0xDE00
+    bne     t7, $zero, kaleidoScopeRightPromptCursor
+    addiu   a3, $zero, 0x0010
+    lw      v1, 0x02C0(s0)
+    lui     t9, 0x0809
+    addiu   t9, t9, 0x87F8
+    addiu   t6, v1, 0x0008
+    sw      t6, 0x02C0(s0)
+    sw      t9, 0x0004(v1)
+    sw      t8, 0x0000(v1)
+    b       kaleidoScope_prompt_cursor_return
+    lw      v1, 0x02C0(s0)
+kaleidoScopeRightPromptCursor:
+    lw      v1, 0x02C0(s0)
+    lui     t8, 0x0809
+    addiu   t8, t8, 0x8848
+    addiu   t7, v1, 0x0008
+    sw      t7, 0x02C0(s0)
+    sw      t8, 0x0004(v1)
+    sw      t6, 0x0000(v1)
+    lw      v1, 0x02C0(s0)
+kaleidoScope_prompt_cursor_return:
+    jr      ra
+    nop
+
+
 ICON_STATIC_GAME_OVER:
 .word 0x00000000
 

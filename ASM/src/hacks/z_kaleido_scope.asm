@@ -70,3 +70,26 @@
     nop
     nop
     nop
+
+.org 0x808213DC
+    jal     kaleidoScope_prompt_cursor_fix
+    addiu   a3, $zero, 0x0010
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
